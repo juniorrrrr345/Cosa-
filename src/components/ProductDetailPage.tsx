@@ -403,7 +403,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         <BackButton onClick={onBack}>
           ← Retour
         </BackButton>
-        <LogoImage src="/logo.svg" alt="Logo" />
+        <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
         <div style={{ width: '60px' }}></div>
       </Header>
 

@@ -367,7 +367,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     >
       {/* Header avec logo */}
       <Header>
-        <LogoImage src="/logo.svg" alt="Logo" />
+        <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
       </Header>
 
       {/* Section filtres avec design noir/blanc */}

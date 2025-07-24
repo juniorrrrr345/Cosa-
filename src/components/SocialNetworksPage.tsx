@@ -363,7 +363,7 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
     <div style={getBackgroundStyle(config)}>
       {/* Header avec logo */}
       <PageHeader>
-        <LogoImage src="/logo.svg" alt="Logo" />
+        <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
       </PageHeader>
       
       <ContentWrapper>

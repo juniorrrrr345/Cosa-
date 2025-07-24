@@ -109,9 +109,45 @@ const defaultSocialNetworks: SocialNetwork[] = [
 export class DataService {
   private static instance: DataService;
   private configCache: ShopConfig | null = null;
+
+  // Clés localStorage
+  private readonly PRODUCTS_KEY = 'bipcosa06_products';
+  private readonly CATEGORIES_KEY = 'bipcosa06_categories';
+  private readonly FARMS_KEY = 'bipcosa06_farms';
+  private readonly CONFIG_KEY = 'bipcosa06_config';
   
   constructor() {
-    console.log('🚀 DataService SIMPLE initialisé');
+    console.log('🚀 DataService DYNAMIQUE initialisé');
+    this.initializeDefaultData();
+  }
+
+  // Initialiser les données par défaut si localStorage est vide
+  private initializeDefaultData(): void {
+    if (typeof window === 'undefined') return;
+
+    try {
+      // Initialiser les produits
+      if (!localStorage.getItem(this.PRODUCTS_KEY)) {
+        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+        console.log('📦 Produits par défaut initialisés');
+      }
+
+      // Initialiser les catégories
+      if (!localStorage.getItem(this.CATEGORIES_KEY)) {
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+        console.log('📂 Catégories par défaut initialisées');
+      }
+
+      // Initialiser les fermes
+      if (!localStorage.getItem(this.FARMS_KEY)) {
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+        console.log('🏠 Fermes par défaut initialisées');
+      }
+
+      console.log('✅ DataService - Données par défaut initialisées');
+    } catch (error) {
+      console.error('❌ Erreur initialisation données par défaut:', error);
+    }
   }
 
   static getInstance(): DataService {
@@ -121,125 +157,268 @@ export class DataService {
     return DataService.instance;
   }
 
-  // === PRODUITS ===
+  // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
-    console.log('📦 getProducts - Retour données statiques');
-    return [...STATIC_PRODUCTS];
+    return this.getProductsSync();
   }
 
   getProductsSync(): Product[] {
-    return [...STATIC_PRODUCTS];
+    try {
+      if (typeof window === 'undefined') return [];
+      
+      const stored = localStorage.getItem(this.PRODUCTS_KEY);
+      if (stored) {
+        const products = JSON.parse(stored);
+        console.log('📦 getProductsSync - Produits depuis localStorage:', products.length);
+        return products;
+      }
+      
+      console.log('📦 getProductsSync - Aucun produit trouvé');
+      return [];
+    } catch (error) {
+      console.error('❌ Erreur lecture produits:', error);
+      return [];
+    }
   }
 
   async addProduct(productData: any): Promise<Product> {
-    const newId = Math.max(...STATIC_PRODUCTS.map(p => p.id), 0) + 1;
-    const newProduct: Product = {
-      ...productData,
-      id: newId,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    STATIC_PRODUCTS.push(newProduct);
-    this.notifyDataUpdate();
-    return newProduct;
+    try {
+      const products = this.getProductsSync();
+      
+      // Générer un nouvel ID
+      const newId = Math.max(...products.map(p => p.id), 0) + 1;
+      const newProduct: Product = {
+        ...productData,
+        id: newId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      products.push(newProduct);
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+      console.log('✅ Produit ajouté:', newProduct.name);
+      this.notifyDataUpdate();
+      
+      return newProduct;
+    } catch (error) {
+      console.error('❌ Erreur ajout produit:', error);
+      throw error;
+    }
   }
 
   async updateProduct(id: number, updates: Partial<Product>): Promise<Product | null> {
-    const index = STATIC_PRODUCTS.findIndex(p => p.id === id);
-    if (index !== -1) {
-      STATIC_PRODUCTS[index] = { ...STATIC_PRODUCTS[index], ...updates };
-      this.notifyDataUpdate();
-      return STATIC_PRODUCTS[index];
+    try {
+      const products = this.getProductsSync();
+      const index = products.findIndex(p => p.id === id);
+      
+      if (index !== -1) {
+        products[index] = { ...products[index], ...updates, updatedAt: new Date() };
+        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+        console.log('✅ Produit mis à jour:', id);
+        this.notifyDataUpdate();
+        return products[index];
+      }
+      
+      console.log('❌ Produit non trouvé pour mise à jour:', id);
+      return null;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour produit:', error);
+      return null;
     }
-    return null;
   }
 
   async deleteProduct(id: number): Promise<boolean> {
-    const index = STATIC_PRODUCTS.findIndex(p => p.id === id);
-    if (index !== -1) {
-      STATIC_PRODUCTS.splice(index, 1);
-      this.notifyDataUpdate();
-      return true;
+    try {
+      const products = this.getProductsSync();
+      const index = products.findIndex(p => p.id === id);
+      
+      if (index !== -1) {
+        const deletedProduct = products[index];
+        products.splice(index, 1);
+        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+        console.log('✅ Produit supprimé:', deletedProduct.name, '- Restants:', products.length);
+        this.notifyDataUpdate();
+        return true;
+      }
+      
+      console.log('❌ Produit non trouvé pour suppression:', id);
+      return false;
+    } catch (error) {
+      console.error('❌ Erreur suppression produit:', error);
+      return false;
     }
-    return false;
   }
 
-  // === CATÉGORIES ===
+  // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
   async getCategories(): Promise<Category[]> {
-    console.log('📂 getCategories - Retour données statiques:', STATIC_CATEGORIES);
-    return [...STATIC_CATEGORIES];
+    return this.getCategoriesSync();
   }
 
   getCategoriesSync(): Category[] {
-    return [...STATIC_CATEGORIES];
+    try {
+      if (typeof window === 'undefined') return [];
+      
+      const stored = localStorage.getItem(this.CATEGORIES_KEY);
+      if (stored) {
+        const categories = JSON.parse(stored);
+        console.log('📂 getCategoriesSync - Catégories depuis localStorage:', categories.length);
+        return categories;
+      }
+      
+      console.log('📂 getCategoriesSync - Aucune catégorie trouvée');
+      return [];
+    } catch (error) {
+      console.error('❌ Erreur lecture catégories:', error);
+      return [];
+    }
   }
 
   async addCategory(category: Category): Promise<Category> {
-    const existingIndex = STATIC_CATEGORIES.findIndex(c => c.value === category.value);
-    if (existingIndex === -1) {
-      STATIC_CATEGORIES.push(category);
-      this.notifyDataUpdate();
+    try {
+      const categories = this.getCategoriesSync();
+      const existingIndex = categories.findIndex(c => c.value === category.value);
+      
+      if (existingIndex === -1) {
+        categories.push(category);
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+        console.log('✅ Catégorie ajoutée:', category.label);
+        this.notifyDataUpdate();
+      }
+      
+      return category;
+    } catch (error) {
+      console.error('❌ Erreur ajout catégorie:', error);
+      throw error;
     }
-    return category;
   }
 
   async updateCategory(value: string, updates: Partial<Category>): Promise<Category | null> {
-    const index = STATIC_CATEGORIES.findIndex(c => c.value === value);
-    if (index !== -1) {
-      STATIC_CATEGORIES[index] = { ...STATIC_CATEGORIES[index], ...updates };
-      this.notifyDataUpdate();
-      return STATIC_CATEGORIES[index];
+    try {
+      const categories = this.getCategoriesSync();
+      const index = categories.findIndex(c => c.value === value);
+      
+      if (index !== -1) {
+        categories[index] = { ...categories[index], ...updates };
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+        console.log('✅ Catégorie mise à jour:', value);
+        this.notifyDataUpdate();
+        return categories[index];
+      }
+      
+      console.log('❌ Catégorie non trouvée pour mise à jour:', value);
+      return null;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour catégorie:', error);
+      return null;
     }
-    return null;
   }
 
   async deleteCategory(value: string): Promise<boolean> {
-    const index = STATIC_CATEGORIES.findIndex(c => c.value === value);
-    if (index !== -1) {
-      STATIC_CATEGORIES.splice(index, 1);
-      this.notifyDataUpdate();
-      return true;
+    try {
+      const categories = this.getCategoriesSync();
+      const index = categories.findIndex(c => c.value === value);
+      
+      if (index !== -1) {
+        const deletedCategory = categories[index];
+        categories.splice(index, 1);
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+                console.log('✅ Catégorie supprimée:', deletedCategory.label, '- Restantes:', categories.length);
+        this.notifyDataUpdate();
+        return true;
+      }
+      
+      console.log('❌ Catégorie non trouvée pour suppression:', value);
+      return false;
+    } catch (error) {
+      console.error('❌ Erreur suppression catégorie:', error);
+      return false;
     }
-    return false;
   }
 
-  // === FERMES ===
+  // === FERMES - SYSTÈME DYNAMIQUE ===
   async getFarms(): Promise<Farm[]> {
-    console.log('🏠 getFarms - Retour données statiques:', STATIC_FARMS);
-    return [...STATIC_FARMS];
+    return this.getFarmsSync();
   }
 
   getFarmsSync(): Farm[] {
-    return [...STATIC_FARMS];
+    try {
+      if (typeof window === 'undefined') return [];
+      
+      const stored = localStorage.getItem(this.FARMS_KEY);
+      if (stored) {
+        const farms = JSON.parse(stored);
+        console.log('🏠 getFarmsSync - Fermes depuis localStorage:', farms.length);
+        return farms;
+      }
+      
+      console.log('🏠 getFarmsSync - Aucune ferme trouvée');
+      return [];
+    } catch (error) {
+      console.error('❌ Erreur lecture fermes:', error);
+      return [];
+    }
   }
 
   async addFarm(farm: Farm): Promise<Farm> {
-    const existingIndex = STATIC_FARMS.findIndex(f => f.value === farm.value);
-    if (existingIndex === -1) {
-      STATIC_FARMS.push(farm);
-      this.notifyDataUpdate();
+    try {
+      const farms = this.getFarmsSync();
+      const existingIndex = farms.findIndex(f => f.value === farm.value);
+      
+      if (existingIndex === -1) {
+        farms.push(farm);
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        console.log('✅ Ferme ajoutée:', farm.label);
+        this.notifyDataUpdate();
+      }
+      
+      return farm;
+    } catch (error) {
+      console.error('❌ Erreur ajout ferme:', error);
+      throw error;
     }
-    return farm;
   }
 
   async updateFarm(value: string, updates: Partial<Farm>): Promise<Farm | null> {
-    const index = STATIC_FARMS.findIndex(f => f.value === value);
-    if (index !== -1) {
-      STATIC_FARMS[index] = { ...STATIC_FARMS[index], ...updates };
-      this.notifyDataUpdate();
-      return STATIC_FARMS[index];
+    try {
+      const farms = this.getFarmsSync();
+      const index = farms.findIndex(f => f.value === value);
+      
+      if (index !== -1) {
+        farms[index] = { ...farms[index], ...updates };
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        console.log('✅ Ferme mise à jour:', value);
+        this.notifyDataUpdate();
+        return farms[index];
+      }
+      
+      console.log('❌ Ferme non trouvée pour mise à jour:', value);
+      return null;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour ferme:', error);
+      return null;
     }
-    return null;
   }
 
   async deleteFarm(value: string): Promise<boolean> {
-    const index = STATIC_FARMS.findIndex(f => f.value === value);
-    if (index !== -1) {
-      STATIC_FARMS.splice(index, 1);
-      this.notifyDataUpdate();
-      return true;
+    try {
+      const farms = this.getFarmsSync();
+      const index = farms.findIndex(f => f.value === value);
+      
+      if (index !== -1) {
+        const deletedFarm = farms[index];
+        farms.splice(index, 1);
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        console.log('✅ Ferme supprimée:', deletedFarm.label, '- Restantes:', farms.length);
+        this.notifyDataUpdate();
+        return true;
+      }
+      
+      console.log('❌ Ferme non trouvée pour suppression:', value);
+      return false;
+    } catch (error) {
+      console.error('❌ Erreur suppression ferme:', error);
+      return false;
     }
-    return false;
   }
 
   // === CONFIGURATION ===

@@ -257,7 +257,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
     <div style={getBackgroundStyle(config)}>
       {/* Header avec nom de la boutique */}
       <Header>
-        <LogoImage src="/logo.svg" alt="Logo" />
+        <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
       </Header>
 
       {/* Contenu principal */}

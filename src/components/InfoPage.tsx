@@ -255,7 +255,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
     <div style={getBackgroundStyle(config)}>
       {/* Header avec nom de la boutique */}
       <Header>
-        <LogoImage src="/logo.svg" alt="Logo" />
+        <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
       </Header>
 
       {/* Contenu principal */}

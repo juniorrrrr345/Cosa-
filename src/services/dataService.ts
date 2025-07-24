@@ -174,26 +174,44 @@ class DataService {
   }
 
   private initializeDefaultData(): void {
+    console.log('🎯 Initialisation des données par défaut...');
+    
+    // Forcer le chargement depuis localStorage d'abord
+    this.loadCategoriesFromStorage();
+    this.loadFarmsFromStorage();
+    this.loadProductsFromStorage();
+    
     // Initialiser avec des données de base si rien en localStorage
     if (this.categoriesCache.length === 0) {
+      console.log('📂 Initialisation des catégories par défaut');
       this.categoriesCache = this.getStaticCategories();
       this.saveCategoriesFromStorage();
     }
     
     if (this.farmsCache.length === 0) {
+      console.log('🏠 Initialisation des fermes par défaut');
       this.farmsCache = this.getStaticFarms();
       this.saveFarmsFromStorage();
     }
     
     if (this.socialNetworksCache.length === 0) {
+      console.log('📱 Initialisation des réseaux sociaux par défaut');
       this.socialNetworksCache = [...defaultSocialNetworks];
-      this.saveSocialNetworksToStorage();
+      this.saveSocialNetworksToStorage(this.socialNetworksCache);
     }
 
     if (this.productsCache.length === 0) {
-      this.productsCache = this.getFallbackProducts();
+      console.log('🛍️ Initialisation des produits d\'exemple');
+      this.productsCache = this.getExampleProducts();
       this.saveProductsToStorage();
     }
+    
+    console.log('✅ Données initialisées:', {
+      categories: this.categoriesCache.length,
+      farms: this.farmsCache.length,
+      products: this.productsCache.length,
+      socialNetworks: this.socialNetworksCache.length
+    });
   }
 
   // === GESTION LOCALE DES PRODUITS ===
@@ -308,8 +326,8 @@ class DataService {
     };
   }
 
-  // Données de fallback si les APIs ne sont pas disponibles
-  private getFallbackProducts(): Product[] {
+  // Produits d'exemple complets pour démonstration
+  private getExampleProducts(): Product[] {
     return [
       {
         id: 1,
@@ -333,7 +351,7 @@ class DataService {
       {
         id: 2,
         name: "POWER HAZE",
-        quality: "Qualité mid",
+        quality: "Qualité Mid",
         image: "https://images.unsplash.com/photo-1574781330855-d0db2706b3d0?w=400&h=300&fit=crop&crop=center",
         flagColor: "#333333",
         flagText: "🇪🇸 ESPAGNOL",
@@ -346,6 +364,82 @@ class DataService {
           { id: "3", weight: "7g", price: "60€" },
           { id: "4", weight: "14g", price: "110€" },
           { id: "5", weight: "28g", price: "200€" }
+        ],
+        video: "https://www.w3schools.com/html/mov_bbb.mp4"
+      },
+      {
+        id: 3,
+        name: "PURPLE KUSH",
+        quality: "Qualité Top",
+        image: "https://images.unsplash.com/photo-1536431311719-398b6704d4cc?w=400&h=300&fit=crop&crop=center",
+        flagColor: "#6a1b9a",
+        flagText: "🏴‍☠️ CALISPAIN",
+        category: "indica",
+        farm: "calispain",
+        description: "Indica puissante aux tons violets caractéristiques. Effets relaxants profonds et arômes fruités.",
+        prices: [
+          { id: "1", weight: "1g", price: "15€" },
+          { id: "2", weight: "3.5g", price: "50€" },
+          { id: "3", weight: "7g", price: "95€" },
+          { id: "4", weight: "14g", price: "180€" },
+          { id: "5", weight: "28g", price: "340€" }
+        ],
+        video: "https://www.w3schools.com/html/mov_bbb.mp4"
+      },
+      {
+        id: 4,
+        name: "BLUE DREAM",
+        quality: "Qualité Premium",
+        image: "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=400&h=300&fit=crop&crop=center",
+        flagColor: "#2196F3",
+        flagText: "⭐ PREMIUM",
+        category: "hybrid",
+        farm: "premium",
+        description: "Hybride équilibré avec des effets cérébraux créatifs et une relaxation corporelle douce. Goût de myrtille.",
+        prices: [
+          { id: "1", weight: "1g", price: "18€" },
+          { id: "2", weight: "3.5g", price: "60€" },
+          { id: "3", weight: "7g", price: "110€" },
+          { id: "4", weight: "14g", price: "200€" },
+          { id: "5", weight: "28g", price: "380€" }
+        ],
+        video: "https://www.w3schools.com/html/mov_bbb.mp4"
+      },
+      {
+        id: 5,
+        name: "GREEN CRACK",
+        quality: "Qualité Top",
+        image: "https://images.unsplash.com/photo-1585567679103-dd8e4fec5df3?w=400&h=300&fit=crop&crop=center",
+        flagColor: "#4CAF50",
+        flagText: "🌱 OUTDOOR",
+        category: "sativa",
+        farm: "espagne",
+        description: "Sativa énergisante parfaite pour la journée. Cultivation outdoor avec des saveurs citronnées.",
+        prices: [
+          { id: "1", weight: "1g", price: "9€" },
+          { id: "2", weight: "3.5g", price: "28€" },
+          { id: "3", weight: "7g", price: "50€" },
+          { id: "4", weight: "14g", price: "90€" },
+          { id: "5", weight: "28g", price: "170€" }
+        ],
+        video: "https://www.w3schools.com/html/mov_bbb.mp4"
+      },
+      {
+        id: 6,
+        name: "WHITE WIDOW",
+        quality: "Qualité Premium",
+        image: "https://images.unsplash.com/photo-1616680214084-22670de1bc82?w=400&h=300&fit=crop&crop=center",
+        flagColor: "#FF9800",
+        flagText: "🏠 INDOOR",
+        category: "hybrid",
+        farm: "holland",
+        description: "Classique hollandaise indoor. Hybride équilibré avec une couche de résine blanche caractéristique.",
+        prices: [
+          { id: "1", weight: "1g", price: "14€" },
+          { id: "2", weight: "3.5g", price: "45€" },
+          { id: "3", weight: "7g", price: "85€" },
+          { id: "4", weight: "14g", price: "160€" },
+          { id: "5", weight: "28g", price: "300€" }
         ],
         video: "https://www.w3schools.com/html/mov_bbb.mp4"
       }
@@ -876,14 +970,19 @@ class DataService {
         if (stored) {
           const categories = JSON.parse(stored);
           this.categoriesCache = categories;
-          console.log('📂 Catégories chargées depuis localStorage:', categories.length);
+          console.log('📂 Catégories chargées depuis localStorage:', categories.length, categories);
           return categories;
+        } else {
+          console.log('📂 Aucune catégorie en localStorage, utilisation des valeurs par défaut');
         }
       } catch (error) {
         console.error('❌ Erreur chargement catégories:', error);
       }
     }
-    return [];
+    // Retourner les valeurs par défaut si rien en localStorage
+    const defaultCategories = this.getStaticCategories();
+    this.categoriesCache = defaultCategories;
+    return defaultCategories;
   }
 
   private saveCategoriesFromStorage(): void {
@@ -905,14 +1004,19 @@ class DataService {
         if (stored) {
           const farms = JSON.parse(stored);
           this.farmsCache = farms;
-          console.log('🏠 Fermes chargées depuis localStorage:', farms.length);
+          console.log('🏠 Fermes chargées depuis localStorage:', farms.length, farms);
           return farms;
+        } else {
+          console.log('🏠 Aucune ferme en localStorage, utilisation des valeurs par défaut');
         }
       } catch (error) {
         console.error('❌ Erreur chargement fermes:', error);
       }
     }
-    return [];
+    // Retourner les valeurs par défaut si rien en localStorage
+    const defaultFarms = this.getStaticFarms();
+    this.farmsCache = defaultFarms;
+    return defaultFarms;
   }
 
   private saveFarmsFromStorage(): void {
@@ -1041,6 +1145,46 @@ class DataService {
     this.notifyDataUpdate();
 
     console.log('✅ Réseaux sociaux réordonnés');
+  }
+
+  // === MÉTHODES DE MAINTENANCE ===
+  
+  // Forcer la réinitialisation complète des données
+  forceResetAllData(): void {
+    console.log('🔄 RESET COMPLET - Réinitialisation de toutes les données...');
+    
+    if (typeof window !== 'undefined') {
+      // Supprimer toutes les données localStorage BIPCOSA06
+      const keysToRemove = [
+        'bipcosa06_config',
+        'bipcosa06_products',
+        'bipcosa06_categories', 
+        'bipcosa06_farms',
+        'bipcosa06_social_networks',
+        'bipcosa06_info_content',
+        'bipcosa06_contact_content'
+      ];
+      
+      keysToRemove.forEach(key => {
+        localStorage.removeItem(key);
+        console.log(`🗑️ Supprimé: ${key}`);
+      });
+    }
+    
+    // Reset des caches mémoire
+    this.productsCache = [];
+    this.categoriesCache = [];
+    this.farmsCache = [];
+    this.socialNetworksCache = [];
+    this.configCache = null;
+    
+    // Réinitialiser avec les données par défaut
+    this.initializeDefaultData();
+    
+    // Notifier la mise à jour
+    this.notifyDataUpdate();
+    
+    console.log('✅ RESET COMPLET terminé - Nouvelles données initialisées');
   }
 }
 

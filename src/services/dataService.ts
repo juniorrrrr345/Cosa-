@@ -227,8 +227,11 @@ class DataService {
     ];
   }
 
-  // Méthodes pour données statiques (catégories et fermes)
+  // Méthodes pour données statiques (catégories et fermes) - maintenant modifiables
   private getStaticCategories(): Category[] {
+    const stored = this.loadCategoriesFromStorage();
+    if (stored.length > 0) return stored;
+    
     return [
       { value: 'all', label: 'Toutes catégories' },
       { value: 'indica', label: 'Indica' },
@@ -240,6 +243,9 @@ class DataService {
   }
 
   private getStaticFarms(): Farm[] {
+    const stored = this.loadFarmsFromStorage();
+    if (stored.length > 0) return stored;
+    
     return [
       { value: 'all', label: 'Toutes fermes' },
       { value: 'holland', label: 'Holland', country: '🇳🇱' },
@@ -472,23 +478,48 @@ class DataService {
 
   async updateConfig(updates: Partial<ShopConfig>): Promise<ShopConfig> {
     try {
-      const response = await fetch('/api/config', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
-      });
+      // Essayer l'API d'abord
+      try {
+        const response = await fetch('/api/config', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de la mise à jour');
+        if (response.ok) {
+          const updatedConfig = await response.json();
+          await this.refreshCache();
+          this.notifyConfigUpdate();
+          return updatedConfig;
+        }
+      } catch (apiError) {
+        console.log('⚠️ API config non disponible, utilisation cache local');
       }
 
-      const updatedConfig = await response.json();
-      await this.refreshCache();
+      // Fallback : mise à jour du cache local
+      const currentConfig = this.configCache || this.getFallbackConfig();
+      const updatedConfig = { ...currentConfig, ...updates };
+      
+      // Mettre à jour le cache
+      this.configCache = updatedConfig;
+      
+      // Sauvegarder dans localStorage pour persistance
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
+          console.log('💾 Configuration sauvegardée dans localStorage');
+        } catch (storageError) {
+          console.error('❌ Erreur localStorage:', storageError);
+        }
+      }
+
+      // Notifier la mise à jour
       this.notifyConfigUpdate();
+      console.log('✅ Configuration mise à jour (cache local):', updates);
+      
       return updatedConfig;
     } catch (error) {
-      console.error('Erreur lors de la mise à jour de la config:', error);
+      console.error('❌ Erreur lors de la mise à jour de la config:', error);
       throw error;
     }
   }
@@ -558,6 +589,7 @@ class DataService {
       try {
         const storedInfo = localStorage.getItem(this.CONTENT_CACHE_KEY_INFO);
         const storedContact = localStorage.getItem(this.CONTENT_CACHE_KEY_CONTACT);
+        const storedConfig = localStorage.getItem('bipcosa06_config');
         
         if (storedInfo) {
           this.infoContents = JSON.parse(storedInfo);
@@ -567,6 +599,11 @@ class DataService {
         if (storedContact) {
           this.contactContents = JSON.parse(storedContact);
           console.log('📥 Contact content chargé depuis localStorage');
+        }
+        
+        if (storedConfig) {
+          this.configCache = JSON.parse(storedConfig);
+          console.log('📥 Configuration chargée depuis localStorage');
         }
       } catch (error) {
         console.error('❌ Erreur lors du chargement localStorage:', error);
@@ -602,6 +639,150 @@ class DataService {
     this.loadContentFromStorage();
     this.notifyDataUpdate();
     console.log('🔄 Synchronisation forcée des contenus Info/Contact');
+  }
+
+  // === GESTION DES CATÉGORIES ===
+  private loadCategoriesFromStorage(): Category[] {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('bipcosa06_categories');
+        return stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error('❌ Erreur chargement catégories:', error);
+        return [];
+      }
+    }
+    return [];
+  }
+
+  private saveCategoriestoStorage(categories: Category[]): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('bipcosa06_categories', JSON.stringify(categories));
+        console.log('💾 Catégories sauvegardées');
+      } catch (error) {
+        console.error('❌ Erreur sauvegarde catégories:', error);
+      }
+    }
+  }
+
+  addCategory(category: Omit<Category, 'value'>): Category {
+    const newCategory: Category = {
+      value: category.label.toLowerCase().replace(/\s+/g, '_'),
+      ...category
+    };
+
+    const categories = this.getStaticCategories();
+    categories.push(newCategory);
+    this.categoriesCache = categories;
+    this.saveCategoriestoStorage(categories);
+    this.notifyDataUpdate();
+    
+    console.log('✅ Catégorie ajoutée:', newCategory);
+    return newCategory;
+  }
+
+  updateCategory(value: string, updates: Partial<Category>): Category | null {
+    const categories = this.getStaticCategories();
+    const index = categories.findIndex(cat => cat.value === value);
+    
+    if (index === -1) return null;
+    
+    categories[index] = { ...categories[index], ...updates };
+    this.categoriesCache = categories;
+    this.saveCategoriestoStorage(categories);
+    this.notifyDataUpdate();
+    
+    console.log('✅ Catégorie modifiée:', categories[index]);
+    return categories[index];
+  }
+
+  deleteCategory(value: string): boolean {
+    if (value === 'all') return false; // Ne pas supprimer "Toutes catégories"
+    
+    const categories = this.getStaticCategories();
+    const filteredCategories = categories.filter(cat => cat.value !== value);
+    
+    if (filteredCategories.length === categories.length) return false;
+    
+    this.categoriesCache = filteredCategories;
+    this.saveCategoriestoStorage(filteredCategories);
+    this.notifyDataUpdate();
+    
+    console.log('✅ Catégorie supprimée:', value);
+    return true;
+  }
+
+  // === GESTION DES FERMES ===
+  private loadFarmsFromStorage(): Farm[] {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('bipcosa06_farms');
+        return stored ? JSON.parse(stored) : [];
+      } catch (error) {
+        console.error('❌ Erreur chargement fermes:', error);
+        return [];
+      }
+    }
+    return [];
+  }
+
+  private saveFarmsToStorage(farms: Farm[]): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('bipcosa06_farms', JSON.stringify(farms));
+        console.log('💾 Fermes sauvegardées');
+      } catch (error) {
+        console.error('❌ Erreur sauvegarde fermes:', error);
+      }
+    }
+  }
+
+  addFarm(farm: Omit<Farm, 'value'>): Farm {
+    const newFarm: Farm = {
+      value: farm.label.toLowerCase().replace(/\s+/g, '_'),
+      ...farm
+    };
+
+    const farms = this.getStaticFarms();
+    farms.push(newFarm);
+    this.farmsCache = farms;
+    this.saveFarmsToStorage(farms);
+    this.notifyDataUpdate();
+    
+    console.log('✅ Ferme ajoutée:', newFarm);
+    return newFarm;
+  }
+
+  updateFarm(value: string, updates: Partial<Farm>): Farm | null {
+    const farms = this.getStaticFarms();
+    const index = farms.findIndex(farm => farm.value === value);
+    
+    if (index === -1) return null;
+    
+    farms[index] = { ...farms[index], ...updates };
+    this.farmsCache = farms;
+    this.saveFarmsToStorage(farms);
+    this.notifyDataUpdate();
+    
+    console.log('✅ Ferme modifiée:', farms[index]);
+    return farms[index];
+  }
+
+  deleteFarm(value: string): boolean {
+    if (value === 'all') return false; // Ne pas supprimer "Toutes fermes"
+    
+    const farms = this.getStaticFarms();
+    const filteredFarms = farms.filter(farm => farm.value !== value);
+    
+    if (filteredFarms.length === farms.length) return false;
+    
+    this.farmsCache = filteredFarms;
+    this.saveFarmsToStorage(filteredFarms);
+    this.notifyDataUpdate();
+    
+    console.log('✅ Ferme supprimée:', value);
+    return true;
   }
 }
 

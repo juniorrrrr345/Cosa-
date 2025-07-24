@@ -239,11 +239,11 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
+        <NavItem $active={false} onClick={() => window.open('https://t.me/bipcosa06', '_blank')}>
           <NavIcon>✈️</NavIcon>
           <NavLabel>Canal</NavLabel>
         </NavItem>
-        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
+        <NavItem $active={false} onClick={() => onNavigate?.('contact')}>
           <NavIcon>✉️</NavIcon>
           <NavLabel>Contact</NavLabel>
         </NavItem>

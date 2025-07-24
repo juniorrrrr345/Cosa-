@@ -1,7 +1,7 @@
 {
-  "name": "canagood-69-nextjs",
+  "name": "bipcosa06",
   "version": "1.0.0",
-  "description": "CANAGOOD 69 App - Next.js avec page info et panel admin",
+  "description": "BIPCOSA06 - CANAGOOD 69 App - Next.js Cannabis Store",
   "private": true,
   "scripts": {
     "dev": "next dev",

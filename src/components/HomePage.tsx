@@ -220,35 +220,59 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedFarm, setSelectedFarm] = useState<string>('all');
+  const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());
 
   useEffect(() => {
     loadData();
     
     // Écouter les mises à jour depuis le panel admin
-    const handleDataUpdate = () => {
-      console.log('Données mises à jour depuis le panel admin');
-      loadData();
+    const handleDataUpdate = (event: any) => {
+      console.log('🔄 Boutique: Données mises à jour depuis le panel admin', event.detail);
+      // Force reload with delay to ensure localStorage is updated
+      setTimeout(() => {
+        loadData();
+      }, 150);
     };
     
-    const handleConfigUpdate = () => {
-      console.log('Configuration mise à jour depuis le panel admin');
-      loadData();
+    const handleConfigUpdate = (event: any) => {
+      console.log('🔄 Boutique: Configuration mise à jour depuis le panel admin', event.detail);
+      setTimeout(() => {
+        loadData();
+      }, 150);
     };
 
     window.addEventListener('dataUpdated', handleDataUpdate);
     window.addEventListener('configUpdated', handleConfigUpdate);
 
+    // Check for updates every 5 seconds as fallback (reduced frequency)
+    const interval = setInterval(() => {
+      loadData();
+    }, 5000);
+
     return () => {
       window.removeEventListener('dataUpdated', handleDataUpdate);
       window.removeEventListener('configUpdated', handleConfigUpdate);
+      clearInterval(interval);
     };
   }, []);
 
   const loadData = () => {
-    setProducts(dataService.getProducts());
-    setCategories(dataService.getCategories());
-    setFarms(dataService.getFarms());
-    setConfig(dataService.getConfig());
+    const newProducts = dataService.getProducts();
+    const newCategories = dataService.getCategories();
+    const newFarms = dataService.getFarms();
+    const newConfig = dataService.getConfig();
+    
+    console.log('🛍️ Boutique: Chargement des données:', {
+      products: newProducts.length,
+      categories: newCategories.length,
+      farms: newFarms.length
+    });
+    
+    setProducts(newProducts);
+    setCategories(newCategories);
+    setFarms(newFarms);
+    setConfig(newConfig);
+    setLastSyncTime(new Date());
   };
 
 

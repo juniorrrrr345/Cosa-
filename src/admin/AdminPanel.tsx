@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // Types pour les sections admin
-type AdminSection = 'dashboard' | 'products' | 'orders' | 'config' | 'seo' | 'telegram';
+type AdminSection = 'dashboard' | 'products' | 'config' | 'seo' | 'telegram';
 
 interface AdminPanelProps {
   onBack?: () => void;
@@ -278,7 +278,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const menuItems = [
     { id: 'dashboard' as AdminSection, icon: '📊', label: 'Tableau de bord' },
     { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
-    { id: 'orders' as AdminSection, icon: '📦', label: 'Commandes' },
     { id: 'telegram' as AdminSection, icon: '✈️', label: 'Telegram' },
     { id: 'seo' as AdminSection, icon: '🔍', label: 'SEO & Meta' },
     { id: 'config' as AdminSection, icon: '⚙️', label: 'Configuration' },
@@ -294,24 +293,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       case 'dashboard':
         return (
           <>
-            <StatsGrid>
-              <StatCard>
-                <StatValue>4</StatValue>
-                <StatLabel>Produits</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>127</StatValue>
-                <StatLabel>Commandes</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>€2,840</StatValue>
-                <StatLabel>Revenus</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>95%</StatValue>
-                <StatLabel>Satisfaction</StatLabel>
-              </StatCard>
-            </StatsGrid>
+                         <StatsGrid>
+               <StatCard>
+                 <StatValue>4</StatValue>
+                 <StatLabel>Produits</StatLabel>
+               </StatCard>
+             </StatsGrid>
             <ContentSection>
               <SectionTitle>Vue d'ensemble BIPCOSA06</SectionTitle>
               <p>Bienvenue dans le panel d'administration de votre boutique Cannabis. Gérez tous les aspects de BIPCOSA06 depuis cette interface.</p>
@@ -347,18 +334,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
           </ContentSection>
         );
 
-      case 'orders':
-        return (
-          <ContentSection>
-            <SectionTitle>Gestion des Commandes</SectionTitle>
-            <p>Suivi des commandes Telegram et gestion des livraisons.</p>
-            <FormGroup>
-              <Label>Rechercher une commande</Label>
-              <Input type="text" placeholder="Nom du client ou numéro de commande" />
-            </FormGroup>
-            <Button>Rechercher</Button>
-          </ContentSection>
-        );
+      
 
       case 'telegram':
         return (

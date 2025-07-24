@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import HomePage from '@/components/HomePage';
 import InfoPage from '@/components/InfoPage';
-
+import ContactPage from '@/components/ContactPage';
 import ProductDetailPage from '@/components/ProductDetailPage';
 import AdminPanel from '@/admin/AdminPanel';
 
 export default function MainPage() {
-  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'product-detail'>('menu');
+  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact' | 'product-detail'>('menu');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const handleNavigation = (view: string) => {
@@ -17,9 +17,7 @@ export default function MainPage() {
     } else if (view === 'info') {
       setCurrentView('info');
     } else if (view === 'contact') {
-      // Redirection vers le lien externe Telegram
-      window.open('https://t.me/bipcosa06', '_blank');
-      return;
+      setCurrentView('contact');
     } else {
       setCurrentView('menu');
     }
@@ -60,11 +58,13 @@ export default function MainPage() {
     return <AdminPanel onBack={() => setCurrentView('menu')} />;
   }
 
-  if (currentView === 'info') {
+    if (currentView === 'info') {
     return <InfoPage onNavigate={handleNavigation} currentView={currentView} />;
   }
 
-
+  if (currentView === 'contact') {
+    return <ContactPage onNavigate={handleNavigation} currentView={currentView} />;
+  }
 
   if (currentView === 'product-detail' && selectedProduct) {
     return (

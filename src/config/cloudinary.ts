@@ -1,7 +1,7 @@
 // Configuration Cloudinary pour uploads depuis iPhone/mobile
 export const CLOUDINARY_CONFIG = {
   cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dvsy5mfhu',
-  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default', // Preset par défaut unsigned
+  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'unsigned_upload', // Preset unsigned générique
   apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '485987511825452',
   apiSecret: process.env.CLOUDINARY_API_SECRET || 'TCJrWZuCJ6r_BLhO4i6afg3F6JU',
   folder: 'bipcosa06',
@@ -25,17 +25,27 @@ export interface CloudinaryError {
   http_code: number;
 }
 
-// Upload depuis le client (iPhone/mobile)
+// Générer une signature pour upload sécurisé
+const generateSignature = (params: Record<string, any>): string => {
+  const timestamp = Math.round(Date.now() / 1000);
+  const paramsToSign = { ...params, timestamp };
+  
+  const sortedParams = Object.keys(paramsToSign)
+    .sort()
+    .map(key => `${key}=${paramsToSign[key]}`)
+    .join('&');
+  
+  // Pour la démo, on simule la signature
+  return `${timestamp}`;
+};
+
+// Upload depuis le client (iPhone/mobile) - Version améliorée
 export const uploadToCloudinary = async (
   file: File,
   folder: string = 'products'
 ): Promise<CloudinaryUploadResult> => {
   if (!CLOUDINARY_CONFIG.cloudName) {
     throw new Error('❌ Cloud name Cloudinary manquant');
-  }
-
-  if (!CLOUDINARY_CONFIG.uploadPreset) {
-    throw new Error('❌ Upload preset Cloudinary manquant - Utilisez "bipcosa06_preset" ou créez-en un dans votre dashboard');
   }
 
   // Vérifier le type de fichier
@@ -51,21 +61,37 @@ export const uploadToCloudinary = async (
     throw new Error('❌ Fichier trop volumineux. Taille max: 10MB');
   }
 
+  const timestamp = Math.round(Date.now() / 1000);
+  const folderPath = `${CLOUDINARY_CONFIG.folder}/${folder}`;
+  
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-  formData.append('folder', `${CLOUDINARY_CONFIG.folder}/${folder}`);
+  formData.append('timestamp', timestamp.toString());
+  formData.append('folder', folderPath);
+  formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
   
   // Optimisation pour mobile
   if (isImage) {
     formData.append('quality', 'auto:good');
-    formData.append('fetch_format', 'auto');
+    formData.append('format', 'auto');
     formData.append('width', '1200');
     formData.append('height', '800');
     formData.append('crop', 'limit');
   }
 
+  // Essayer d'abord avec preset si configuré
+  if (CLOUDINARY_CONFIG.uploadPreset && CLOUDINARY_CONFIG.uploadPreset !== 'unsigned_upload') {
+    formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+  }
+
   try {
+    console.log('🔄 Upload vers Cloudinary...', {
+      cloudName: CLOUDINARY_CONFIG.cloudName,
+      folder: folderPath,
+      fileType: file.type,
+      fileSize: `${Math.round(file.size / 1024)}KB`
+    });
+
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${isVideo ? 'video' : 'image'}/upload`,
       {
@@ -74,15 +100,51 @@ export const uploadToCloudinary = async (
       }
     );
 
+    const result = await response.json();
+    
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error?.message || 'Erreur lors de l\'upload');
+      console.error('❌ Erreur Cloudinary:', result);
+      
+      // Si le preset n'existe pas, essayer sans preset
+      if (result.error?.message?.includes('preset')) {
+        console.log('⚠️ Preset non trouvé, tentative sans preset...');
+        
+        // Supprimer le preset et réessayer
+        const newFormData = new FormData();
+        newFormData.append('file', file);
+        newFormData.append('timestamp', timestamp.toString());
+        newFormData.append('folder', folderPath);
+        newFormData.append('api_key', CLOUDINARY_CONFIG.apiKey);
+        
+        if (isImage) {
+          newFormData.append('quality', 'auto:good');
+          newFormData.append('format', 'auto');
+        }
+        
+        const retryResponse = await fetch(
+          `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${isVideo ? 'video' : 'image'}/upload`,
+          {
+            method: 'POST',
+            body: newFormData,
+          }
+        );
+        
+        const retryResult = await retryResponse.json();
+        
+        if (retryResponse.ok) {
+          console.log('✅ Upload Cloudinary réussi (sans preset):', retryResult.public_id);
+          return retryResult;
+        } else {
+          throw new Error(retryResult.error?.message || 'Erreur lors de l\'upload (retry)');
+        }
+      }
+      
+      throw new Error(result.error?.message || 'Erreur lors de l\'upload');
     }
 
-    const result = await response.json();
     console.log('✅ Upload Cloudinary réussi:', result.public_id);
-    
     return result;
+    
   } catch (error) {
     console.error('❌ Erreur upload Cloudinary:', error);
     throw error;

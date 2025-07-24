@@ -702,6 +702,39 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     }
   };
 
+  // Fonction pour gérer l'upload d'images
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Vérifier la taille du fichier (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('L\'image est trop volumineuse. Veuillez choisir une image de moins de 5MB.');
+      return;
+    }
+
+    // Vérifier le type de fichier
+    if (!file.type.startsWith('image/')) {
+      alert('Veuillez sélectionner un fichier image valide.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64String = e.target?.result as string;
+      if (base64String) {
+        handleSaveConfig({ backgroundImage: base64String });
+        console.log('✅ Image uploadée et convertie en base64');
+      }
+    };
+
+    reader.onerror = () => {
+      alert('Erreur lors de la lecture du fichier image.');
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   // Fonctions pour gérer les catégories
   const handleAddCategory = () => {
     setIsAddingCategory(true);
@@ -1162,15 +1195,38 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                  </FormGroup>
 
                  {config.backgroundType === 'image' && (
-                   <FormGroup>
-                     <Label>URL de l'image de fond</Label>
-                     <Input 
-                       type="url" 
-                       value={config.backgroundImage || ''} 
-                       onChange={(e) => handleSaveConfig({ backgroundImage: e.target.value })}
-                       placeholder="https://images.unsplash.com/..." 
-                     />
-                   </FormGroup>
+                   <div>
+                     <FormGroup>
+                       <Label>Upload d'image personnalisée</Label>
+                       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                         <input
+                           type="file"
+                           accept="image/*"
+                           onChange={handleImageUpload}
+                           style={{
+                             color: 'white',
+                             background: 'rgba(255,255,255,0.1)',
+                             border: '1px solid rgba(255,255,255,0.2)',
+                             borderRadius: '8px',
+                             padding: '10px',
+                             fontSize: '14px',
+                             cursor: 'pointer',
+                             width: '100%'
+                           }}
+                         />
+                       </div>
+                     </FormGroup>
+                     
+                     <FormGroup>
+                       <Label>Ou URL de l'image de fond</Label>
+                       <Input 
+                         type="url" 
+                         value={config.backgroundImage || ''} 
+                         onChange={(e) => handleSaveConfig({ backgroundImage: e.target.value })}
+                         placeholder="https://images.unsplash.com/..." 
+                       />
+                     </FormGroup>
+                   </div>
                  )}
 
                  <ConfigPreview 

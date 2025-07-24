@@ -66,7 +66,13 @@ class DataService {
   private farmsCache: Farm[] = [];
   private configCache: ShopConfig | null = null;
   private cacheTimestamp = 0;
-  private readonly CACHE_DURATION = 30000; // 30 secondes
+  private readonly CACHE_DURATION = 5000; // 5 secondes pour une sync plus rapide
+  
+  // Cache pour les contenus Info et Contact
+  private infoCacheTimestamp = 0;
+  private contactCacheTimestamp = 0;
+  private readonly CONTENT_CACHE_KEY_INFO = 'bipcosa06_info_content';
+  private readonly CONTENT_CACHE_KEY_CONTACT = 'bipcosa06_contact_content';
 
   // Données statiques pour Info et Contact
   private infoContents: InfoContent[] = [
@@ -99,6 +105,7 @@ class DataService {
   private constructor() {
     // Le constructeur ne fait plus d'initialisation synchrone
     this.refreshCache();
+    this.loadContentFromStorage();
   }
 
   static getInstance(): DataService {
@@ -505,9 +512,15 @@ class DataService {
       this.infoContents.push({ id: 'main-info', title: '', description: '', items: [], ...content });
     }
     
+    // Sauvegarder dans localStorage pour persistance
+    this.saveContentToStorage();
+    
+    // Invalider le cache
+    this.infoCacheTimestamp = 0;
+    
     // Notifier la mise à jour
     this.notifyDataUpdate();
-    console.log('📝 Info content mis à jour:', content);
+    console.log('📝 Info content mis à jour et sauvegardé:', content);
   }
 
   updateContactContent(content: Partial<ContactContent>): void {
@@ -518,9 +531,49 @@ class DataService {
       this.contactContents.push({ id: 'main-contact', title: '', description: '', ...content });
     }
     
+    // Sauvegarder dans localStorage pour persistance
+    this.saveContentToStorage();
+    
+    // Invalider le cache
+    this.contactCacheTimestamp = 0;
+    
     // Notifier la mise à jour
     this.notifyDataUpdate();
-    console.log('📧 Contact content mis à jour:', content);
+    console.log('📧 Contact content mis à jour et sauvegardé:', content);
+  }
+
+  // Méthodes de persistance localStorage
+  private saveContentToStorage(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(this.CONTENT_CACHE_KEY_INFO, JSON.stringify(this.infoContents));
+        localStorage.setItem(this.CONTENT_CACHE_KEY_CONTACT, JSON.stringify(this.contactContents));
+        console.log('💾 Contenus sauvegardés dans localStorage');
+      } catch (error) {
+        console.error('❌ Erreur lors de la sauvegarde localStorage:', error);
+      }
+    }
+  }
+
+  private loadContentFromStorage(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        const storedInfo = localStorage.getItem(this.CONTENT_CACHE_KEY_INFO);
+        const storedContact = localStorage.getItem(this.CONTENT_CACHE_KEY_CONTACT);
+        
+        if (storedInfo) {
+          this.infoContents = JSON.parse(storedInfo);
+          console.log('📥 Info content chargé depuis localStorage');
+        }
+        
+        if (storedContact) {
+          this.contactContents = JSON.parse(storedContact);
+          console.log('📥 Contact content chargé depuis localStorage');
+        }
+      } catch (error) {
+        console.error('❌ Erreur lors du chargement localStorage:', error);
+      }
+    }
   }
 
   // Méthodes de notification pour la synchronisation temps réel
@@ -538,8 +591,19 @@ class DataService {
 
   // Méthode pour forcer l'actualisation du cache
   async forceRefresh(): Promise<void> {
-    this.cacheTimestamp = 0; // Force la mise à jour
+    this.cacheTimestamp = 0; // Force la mise à jour des données principales
+    this.infoCacheTimestamp = 0; // Force la mise à jour du contenu Info
+    this.contactCacheTimestamp = 0; // Force la mise à jour du contenu Contact
     await this.refreshCache();
+    this.loadContentFromStorage(); // Recharger les contenus depuis localStorage
+    this.notifyDataUpdate(); // Notifier tous les composants
+  }
+
+  // Méthode pour synchroniser instantanément
+  forceSyncContent(): void {
+    this.loadContentFromStorage();
+    this.notifyDataUpdate();
+    console.log('🔄 Synchronisation forcée des contenus Info/Contact');
   }
 }
 

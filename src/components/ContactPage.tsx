@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
@@ -32,17 +32,16 @@ const HeaderTitle = styled.h1`
 `;
 
 const Content = styled.div`
-  padding: 40px 20px;
-  max-width: 400px;
+  padding: 30px 20px;
+  max-width: 500px;
   margin: 0 auto;
-  text-align: center;
 `;
 
 const ContactCard = styled.div`
   background: rgba(0,0,0,0.7);
   backdrop-filter: blur(20px);
   border-radius: 20px;
-  padding: 30px;
+  padding: 25px;
   border: 1px solid rgba(255,255,255,0.2);
   margin-bottom: 20px;
   transition: all 0.3s ease;
@@ -58,31 +57,143 @@ const ContactCard = styled.div`
 const ContactTitle = styled.h2`
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 15px;
+  margin: 0 0 15px 0;
   color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 const ContactInfo = styled.p`
   font-size: 16px;
   color: rgba(255,255,255,0.8);
-  margin: 10px 0;
+  margin: 0 0 20px 0;
   line-height: 1.5;
 `;
 
 const ContactLink = styled.a`
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-  display: inline-block;
-  margin: 10px 5px;
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  border-radius: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 5px 10px 5px 0;
   transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.2);
 
   &:hover {
     background: rgba(255,255,255,0.2);
     transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.3);
+  }
+`;
+
+const TelegramButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0088cc, #0066aa);
+  color: white;
+  text-decoration: none;
+  padding: 15px 25px;
+  border-radius: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0,136,204,0.3);
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,136,204,0.4);
+    background: linear-gradient(135deg, #0099dd, #0077bb);
+  }
+`;
+
+const QuickMessageForm = styled.div`
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.2);
+  margin-bottom: 20px;
+`;
+
+const FormTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  color: white;
+`;
+
+const FormSelect = styled.select`
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  outline: none;
+
+  &:focus {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.15);
+  }
+
+  option {
+    background: #1a1a1a;
+    color: white;
+  }
+`;
+
+const FormTextarea = styled.textarea`
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+
+  &:focus {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.15);
+  }
+
+  &::placeholder {
+    color: rgba(255,255,255,0.5);
+  }
+`;
+
+const SendButton = styled.button`
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  border: none;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76,175,80,0.3);
   }
 `;
 
@@ -133,6 +244,36 @@ interface ContactPageProps {
 }
 
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
+  const [messageType, setMessageType] = useState('info');
+  const [customMessage, setCustomMessage] = useState('');
+
+  const handleQuickMessage = () => {
+    let message = '';
+    
+    switch (messageType) {
+      case 'info':
+        message = 'Bonjour, je souhaite avoir plus d\'informations sur vos produits et services.';
+        break;
+      case 'catalog':
+        message = 'Bonjour, pouvez-vous m\'envoyer votre catalogue complet avec les prix ?';
+        break;
+      case 'delivery':
+        message = 'Bonjour, je voudrais connaître les modalités de livraison pour ma zone.';
+        break;
+      case 'quality':
+        message = 'Bonjour, pouvez-vous me donner plus de détails sur la qualité de vos produits ?';
+        break;
+      case 'custom':
+        message = customMessage;
+        break;
+      default:
+        message = 'Bonjour BIPCOSA06 !';
+    }
+
+    const telegramUrl = `https://t.me/bipcosa06?text=${encodeURIComponent(message)}`;
+    window.open(telegramUrl, '_blank');
+  };
+
   return (
     <PageContainer>
       <Header>
@@ -141,35 +282,73 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
 
       <Content>
         <ContactCard>
-          <ContactTitle>📱 Contact</ContactTitle>
+          <ContactTitle>📱 Contact Principal</ContactTitle>
           <ContactInfo>
-            Pour nous contacter directement
+            Notre canal de communication principal via Telegram pour toutes vos commandes et questions.
           </ContactInfo>
-          <ContactLink href="mailto:contact@bipcosa06.com">
-            ✉️ Email
-          </ContactLink>
-          <ContactLink href="tel:+33123456789">
-            📞 Téléphone
-          </ContactLink>
+          <TelegramButton href="https://t.me/bipcosa06" target="_blank">
+            <span>📱</span>
+            Ouvrir Telegram @bipcosa06
+          </TelegramButton>
+        </ContactCard>
+
+        <QuickMessageForm>
+          <FormTitle>💬 Message Rapide</FormTitle>
+          <FormSelect 
+            value={messageType} 
+            onChange={(e) => setMessageType(e.target.value)}
+          >
+            <option value="info">Demande d'informations générales</option>
+            <option value="catalog">Demande de catalogue et prix</option>
+            <option value="delivery">Question sur la livraison</option>
+            <option value="quality">Question sur la qualité</option>
+            <option value="custom">Message personnalisé</option>
+          </FormSelect>
+
+          {messageType === 'custom' && (
+            <FormTextarea
+              value={customMessage}
+              onChange={(e) => setCustomMessage(e.target.value)}
+              placeholder="Tapez votre message personnalisé ici..."
+            />
+          )}
+
+          <SendButton onClick={handleQuickMessage}>
+            Envoyer via Telegram
+          </SendButton>
+        </QuickMessageForm>
+
+        <ContactCard>
+          <ContactTitle>🕒 Disponibilité</ContactTitle>
+          <ContactInfo>
+            Nous sommes disponibles 7j/7 pour répondre à vos questions :
+          </ContactInfo>
+          <ContactInfo style={{ fontSize: '14px', marginBottom: '0' }}>
+            • Lundi - Dimanche : 10h00 - 22h00<br/>
+            • Réponse rapide garantie<br/>
+            • Service client réactif
+          </ContactInfo>
         </ContactCard>
 
         <ContactCard>
-          <ContactTitle>✈️ Telegram Canal</ContactTitle>
+          <ContactTitle>🌍 Zones de Livraison</ContactTitle>
           <ContactInfo>
-            Rejoignez notre canal Telegram pour les dernières actualités
+            Nous livrons dans les zones suivantes :
           </ContactInfo>
-          <ContactLink href="https://t.me/bipcosa06" target="_blank">
-            🚀 Rejoindre le Canal
-          </ContactLink>
+          <ContactInfo style={{ fontSize: '14px', marginBottom: '0' }}>
+            • Lyon et région (69)<br/>
+            • Rhône-Alpes (71, 01, 42, 38)<br/>
+            • Toute l'Europe via envoi postal
+          </ContactInfo>
         </ContactCard>
 
         <ContactCard>
-          <ContactTitle>🏪 Boutique</ContactTitle>
-          <ContactInfo>
-            BIPCOSA06 - Votre boutique de confiance
-          </ContactInfo>
-          <ContactInfo>
-            Livraison rapide et service professionnel
+          <ContactTitle>ℹ️ Informations Importantes</ContactTitle>
+          <ContactInfo style={{ fontSize: '14px', marginBottom: '0' }}>
+            • Commandes uniquement via Telegram<br/>
+            • Paiement à la livraison ou virement<br/>
+            • Livraison discrète garantie<br/>
+            • Produits de qualité certifiée
           </ContactInfo>
         </ContactCard>
       </Content>

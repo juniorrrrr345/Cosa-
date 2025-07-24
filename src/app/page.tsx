@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import HomePage from '@/components/HomePage';
 import InfoPage from '@/components/InfoPage';
 import ContactPage from '@/components/ContactPage';
+import ProductDetailPage from '@/components/ProductDetailPage';
 import AdminPanel from '@/admin/AdminPanel';
 
 export default function MainPage() {
-  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact'>('menu');
+  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact' | 'product-detail'>('menu');
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const handleNavigation = (view: string) => {
     if (view === 'admin') {
@@ -19,6 +21,16 @@ export default function MainPage() {
     } else {
       setCurrentView('menu');
     }
+  };
+
+  const handleProductClick = (product: any) => {
+    setSelectedProduct(product);
+    setCurrentView('product-detail');
+  };
+
+  const handleBackToMenu = () => {
+    setSelectedProduct(null);
+    setCurrentView('menu');
   };
 
   // Fonction pour basculer vers l'admin (peut être appelée via console ou URL)
@@ -50,8 +62,23 @@ export default function MainPage() {
     return <ContactPage onNavigate={handleNavigation} currentView={currentView} />;
   }
 
+  if (currentView === 'product-detail' && selectedProduct) {
+    return (
+      <ProductDetailPage 
+        product={selectedProduct}
+        onNavigate={handleNavigation}
+        onBack={handleBackToMenu}
+        currentView="menu"
+      />
+    );
+  }
+
   // Vue Menu par défaut (la boutique avec les produits)
   return (
-    <HomePage onNavigate={handleNavigation} currentView={currentView} />
+    <HomePage 
+      onNavigate={handleNavigation} 
+      onProductClick={handleProductClick}
+      currentView={currentView} 
+    />
   );
 }

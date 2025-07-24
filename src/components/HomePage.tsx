@@ -40,13 +40,13 @@ const FiltersSection = styled.div`
   gap: 15px;
 `;
 
-const FilterDropdown = styled.div`
+const FilterDropdown = styled.div<{ $active?: boolean }>`
   flex: 1;
-  background: rgba(0,0,0,0.8);
+  background: ${props => props.$active ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.8)'};
   backdrop-filter: blur(20px);
   border-radius: 15px;
   padding: 15px 20px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid ${props => props.$active ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'};
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -85,6 +85,7 @@ const ProductCard = styled.div`
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.2);
   transition: all 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-5px);
@@ -97,7 +98,7 @@ const ProductCard = styled.div`
 const ProductImage = styled.div<{ $image: string }>`
   width: 100%;
   height: 140px;
-  background: ${props => `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${props.$image})`};
+  background: ${props => `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${props.$image})`};
   background-size: cover;
   background-position: center;
   position: relative;
@@ -181,52 +182,124 @@ const NavLabel = styled.div`
 
 interface HomePageProps {
   onNavigate?: (view: string) => void;
+  onProductClick?: (product: any) => void;
   currentView?: string;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ onNavigate, currentView = 'menu' }) => {
+const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, currentView = 'menu' }) => {
   const [config, setConfig] = useState<Config>(configService.defaultConfig);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedFarm, setSelectedFarm] = useState<string>('all');
 
   useEffect(() => {
     const loadedConfig = configService.getConfig();
     setConfig(loadedConfig);
   }, []);
 
-  // Images des produits cannabis améliorées
+  // Photos réelles de produits cannabis
   const products = [
     {
       id: 1,
       name: "ANIMAL COOKIES",
       quality: "Qualité Top",
-      image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDIwMCAxNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSIjMjAyMDIwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNzAiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIj5BTklNQUwgQ09PS0lFUzwvdGV4dD4KPC9zdmc+",
+      image: "https://images.unsplash.com/photo-1576694430187-f4d93bb96b5c?w=400&h=300&fit=crop&crop=center",
       flagColor: "#333333",
-      flagText: "🇳🇱 HOLLAND"
+      flagText: "🇳🇱 HOLLAND",
+      category: "indica",
+      farm: "holland",
+      description: "Une variété indica premium avec des arômes sucrés et terreux. Parfaite pour la relaxation en soirée.",
+      prices: [
+        { weight: "1g", price: "12€" },
+        { weight: "3.5g", price: "40€" },
+        { weight: "7g", price: "75€" },
+        { weight: "14g", price: "140€" },
+        { weight: "28g", price: "260€" }
+      ],
+      video: "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
       id: 2,
       name: "POWER HAZE",
       quality: "Qualité mid",
-      image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDIwMCAxNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSIjMTUxNTE1Ii8+Cjx0ZXh0IHg9IjEwMCIgeT0iNzAiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIj5QT1dFUiBIQVpFPC90ZXh0Pgo8L3N2Zz4=",
+      image: "https://images.unsplash.com/photo-1518442745675-b26dbe08f0aa?w=400&h=300&fit=crop&crop=center",
       flagColor: "#333333",
-      flagText: "🇪🇸 ESPAGNOL"
+      flagText: "🇪🇸 ESPAGNOL",
+      category: "sativa",
+      farm: "espagne",
+      description: "Sativa énergisante avec des effets cérébraux puissants. Idéale pour la créativité et l'activité diurne.",
+      prices: [
+        { weight: "1g", price: "10€" },
+        { weight: "3.5g", price: "32€" },
+        { weight: "7g", price: "60€" },
+        { weight: "14g", price: "110€" },
+        { weight: "28g", price: "200€" }
+      ],
+      video: "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
       id: 3,
       name: "NINE LIONS",
       quality: "Qualité A+++",
-      image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDIwMCAxNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSIjMGEwYTBhIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNzAiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIj5OSU5FIExJT05TPC90ZXh0Pgo8L3N2Zz4=",
+      image: "https://images.unsplash.com/photo-1574899420662-b4f36025552a?w=400&h=300&fit=crop&crop=center",
       flagColor: "#333333",
-      flagText: "🇺🇸🇪🇸 CALISPAIN"
+      flagText: "🇺🇸🇪🇸 CALISPAIN",
+      category: "hybrid",
+      farm: "calispain",
+      description: "Hybride équilibré de Californie et d'Espagne. Combinaison parfaite d'euphorie et de relaxation.",
+      prices: [
+        { weight: "1g", price: "15€" },
+        { weight: "3.5g", price: "50€" },
+        { weight: "7g", price: "95€" },
+        { weight: "14g", price: "180€" },
+        { weight: "28g", price: "340€" }
+      ],
+      video: "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
       id: 4,
       name: "BUBBLEGUM GELATO",
       quality: "Qualité Premium",
-      image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDIwMCAxNDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTQwIiBmaWxsPSIjMTAxMDEwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNjAiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIj5CVUJCTEVHVU08L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iODAiIGZpbGw9IndoaXRlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJjZW50cmFsIj5HRUxBVE88L3RleHQ+Cjwvc3ZnPg==",
+      image: "https://images.unsplash.com/photo-1545139813-4e3e9ac2dbb2?w=400&h=300&fit=crop&crop=center",
       flagColor: "#333333",
-      flagText: "PREMIUM"
+      flagText: "PREMIUM",
+      category: "hybrid",
+      farm: "premium",
+      description: "Variété premium avec des saveurs de bubble-gum et gelato. Expérience gustative unique et effets équilibrés.",
+      prices: [
+        { weight: "1g", price: "18€" },
+        { weight: "3.5g", price: "60€" },
+        { weight: "7g", price: "110€" },
+        { weight: "14g", price: "200€" },
+        { weight: "28g", price: "380€" }
+      ],
+      video: "https://www.w3schools.com/html/mov_bbb.mp4"
     }
   ];
+
+  const categories = [
+    { value: 'all', label: 'Toutes les catégories' },
+    { value: 'indica', label: 'Indica' },
+    { value: 'sativa', label: 'Sativa' },
+    { value: 'hybrid', label: 'Hybride' }
+  ];
+
+  const farms = [
+    { value: 'all', label: 'Toutes les farms' },
+    { value: 'holland', label: 'Holland' },
+    { value: 'espagne', label: 'Espagne' },
+    { value: 'calispain', label: 'Calispain' },
+    { value: 'premium', label: 'Premium' }
+  ];
+
+  const filteredProducts = products.filter(product => {
+    const categoryMatch = selectedCategory === 'all' || product.category === selectedCategory;
+    const farmMatch = selectedFarm === 'all' || product.farm === selectedFarm;
+    return categoryMatch && farmMatch;
+  });
+
+  const handleProductClick = (product: any) => {
+    onProductClick?.(product);
+  };
 
   return (
     <PageContainer>
@@ -237,12 +310,50 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, currentView = 'menu' })
 
       {/* Section filtres avec design noir/blanc */}
       <FiltersSection>
-        <FilterDropdown>
-          <span>Toutes les catégories</span>
+        <FilterDropdown $active={selectedCategory !== 'all'}>
+          <select 
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: 'white',
+              fontSize: '14px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              outline: 'none',
+              width: '100%'
+            }}
+          >
+            {categories.map(cat => (
+              <option key={cat.value} value={cat.value} style={{ background: '#1a1a1a', color: 'white' }}>
+                {cat.label}
+              </option>
+            ))}
+          </select>
           <DropdownIcon>⌄</DropdownIcon>
         </FilterDropdown>
-        <FilterDropdown>
-          <span>Toutes les farms</span>
+        <FilterDropdown $active={selectedFarm !== 'all'}>
+          <select 
+            value={selectedFarm}
+            onChange={(e) => setSelectedFarm(e.target.value)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: 'white',
+              fontSize: '14px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              outline: 'none',
+              width: '100%'
+            }}
+          >
+            {farms.map(farm => (
+              <option key={farm.value} value={farm.value} style={{ background: '#1a1a1a', color: 'white' }}>
+                {farm.label}
+              </option>
+            ))}
+          </select>
           <DropdownIcon>⌄</DropdownIcon>
         </FilterDropdown>
       </FiltersSection>
@@ -250,8 +361,8 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, currentView = 'menu' })
       {/* Section produits avec design amélioré */}
       <ProductsSection>
         <ProductsGrid>
-          {products.map((product) => (
-            <ProductCard key={product.id}>
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} onClick={() => handleProductClick(product)}>
               <ProductImage $image={product.image}>
                 <ProductFlag $color={product.flagColor}>
                   {product.flagText}

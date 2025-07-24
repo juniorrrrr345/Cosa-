@@ -1481,11 +1481,17 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                                 }));
                                 
                                 // Sauvegarder en base
+                                console.log('💾 Sauvegarde config background...', {
+                                  backgroundType: 'image',
+                                  backgroundImage: result.secure_url
+                                });
+                                
                                 await handleSaveConfig({ 
                                   backgroundType: 'image',
                                   backgroundImage: result.secure_url 
                                 });
                                 
+                                console.log('✅ Configuration background sauvegardée');
                                 alert('✅ Image de fond uploadée avec succès !');
                                 
                               } catch (error) {

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import InfoPage from '@/components/InfoPage';
+import HomePage from '@/components/HomePage';
 import AdminPanel from '@/admin/AdminPanel';
 
-export default function HomePage() {
+export default function MainPage() {
   const [currentView, setCurrentView] = useState<'info' | 'admin'>('info');
 
   const handleNavigation = (view: string) => {
@@ -38,23 +38,7 @@ export default function HomePage() {
 
   return (
     <>
-      <InfoPage onNavigate={handleNavigation} />
-      
-      {/* Bouton secret pour accéder à l'admin - invisible mais cliquable */}
-      <div
-        onClick={toggleAdmin}
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: 0,
-          width: '50px',
-          height: '50px',
-          background: 'transparent',
-          cursor: 'pointer',
-          zIndex: 9999
-        }}
-        title="Accès admin (invisible)"
-      />
+      <HomePage onNavigate={handleNavigation} />
     </>
   );
 }

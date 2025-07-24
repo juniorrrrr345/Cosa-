@@ -218,16 +218,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
           </InfoList>
         </InfoCard>
 
-        <InfoCard>
-          <InfoTitle>⭐ Qualité Garantie</InfoTitle>
-          <InfoDescription>Notre engagement qualité :</InfoDescription>
-          <InfoList>
-            <InfoItem>Produits testés en laboratoire</InfoItem>
-            <InfoItem>Taux de THC/CBD certifiés</InfoItem>
-            <InfoItem>Conservation optimale</InfoItem>
-            <InfoItem>Satisfaction client 100%</InfoItem>
-          </InfoList>
-        </InfoCard>
+
       </Content>
 
       <BottomNavigation>

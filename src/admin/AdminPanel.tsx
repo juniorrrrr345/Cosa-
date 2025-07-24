@@ -1,52 +1,171 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { configService, Config } from '@/services/configService';
 
+// Types pour les sections admin
+type AdminSection = 'dashboard' | 'products' | 'orders' | 'config' | 'seo' | 'telegram';
+
+interface AdminPanelProps {
+  onBack?: () => void;
+}
+
+// Styles responsive pour le panel admin
 const AdminContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+  color: white;
+  display: flex;
+  position: relative;
 `;
 
-const AdminHeader = styled.div`
-  background: white;
-  border-radius: 15px;
-  padding: 30px;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+const Sidebar = styled.div<{ $isOpen: boolean }>`
+  width: ${props => props.$isOpen ? '280px' : '0'};
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: fixed;
+  height: 100vh;
+  z-index: 1000;
+
+  @media (min-width: 768px) {
+    position: relative;
+    width: ${props => props.$isOpen ? '280px' : '60px'};
+  }
+
+  @media (min-width: 1024px) {
+    width: 280px;
+  }
+`;
+
+const SidebarToggle = styled.button`
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: rgba(0,0,0,0.8);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+  }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+`;
+
+const SidebarHeader = styled.div`
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   text-align: center;
 `;
 
-const Title = styled.h1`
-  color: #333;
-  font-size: 28px;
-  margin-bottom: 10px;
-  font-weight: 600;
+const SidebarTitle = styled.h2`
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  letter-spacing: 1px;
 `;
 
-const Subtitle = styled.p`
-  color: #666;
+const SidebarMenu = styled.div`
+  padding: 20px 0;
+`;
+
+const MenuItem = styled.div<{ $active: boolean }>`
+  padding: 15px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
+  border-left: ${props => props.$active ? '3px solid #fff' : '3px solid transparent'};
+  
+  &:hover {
+    background: rgba(255,255,255,0.05);
+  }
+`;
+
+const MenuIcon = styled.span`
+  margin-right: 12px;
   font-size: 16px;
 `;
 
-const ConfigSection = styled.div`
-  background: white;
-  border-radius: 15px;
-  padding: 30px;
-  margin-bottom: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+const MenuLabel = styled.span`
+  font-size: 14px;
+  font-weight: 500;
 `;
 
-const SectionTitle = styled.h2`
-  color: #333;
-  font-size: 20px;
-  margin-bottom: 20px;
+const MainContent = styled.div<{ $sidebarOpen: boolean }>`
+  flex: 1;
+  padding: 20px;
+  margin-left: ${props => props.$sidebarOpen ? '0' : '0'};
+  transition: all 0.3s ease;
+
+  @media (min-width: 768px) {
+    margin-left: 0;
+  }
+`;
+
+const ContentHeader = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  margin-bottom: 30px;
+  padding: 0 20px;
+
+  @media (max-width: 768px) {
+    padding: 0 60px 0 0;
+  }
+`;
+
+const ContentTitle = styled.h1`
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
+
+const BackButton = styled.button`
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255,255,255,0.2);
+  }
+`;
+
+const ContentSection = styled.div`
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 20px;
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  color: white;
 `;
 
 const FormGroup = styled.div`
@@ -55,268 +174,299 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   display: block;
-  color: #333;
-  font-weight: 500;
-  margin-bottom: 8px;
   font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 8px;
 `;
 
 const Input = styled.input`
   width: 100%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
   padding: 12px 15px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #667eea;
-  }
-`;
-
-const FileInput = styled.input`
-  width: 100%;
-  padding: 12px 15px;
-  border: 2px dashed #e1e5e9;
-  border-radius: 8px;
-  background: #f8f9fa;
-  cursor: pointer;
+  outline: none;
   transition: all 0.3s ease;
 
-  &:hover {
-    border-color: #667eea;
-    background: #f0f2ff;
+  &:focus {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.15);
+  }
+
+  &::placeholder {
+    color: rgba(255,255,255,0.5);
   }
 `;
 
-const ColorInput = styled.input`
+const TextArea = styled.textarea`
   width: 100%;
-  height: 50px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: white;
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  transition: all 0.3s ease;
 
   &:focus {
-    outline: none;
-    border-color: #667eea;
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.15);
+  }
+
+  &::placeholder {
+    color: rgba(255,255,255,0.5);
   }
 `;
 
 const Button = styled.button`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #333, #555);
+  border: 1px solid rgba(255,255,255,0.2);
   color: white;
-  border: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 10px;
+  cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  margin-right: 10px;
+  transition: all 0.3s ease;
 
   &:hover {
+    background: linear-gradient(135deg, #444, #666);
     transform: translateY(-2px);
   }
-
-  &:active {
-    transform: translateY(0);
-  }
 `;
 
-const PreviewButton = styled(Button)`
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+const StatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
 `;
 
-const SaveButton = styled(Button)`
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-`;
-
-const PreviewContainer = styled.div<{ $backgroundImage?: string | null; $backgroundColor?: string }>`
-  background: ${props => props.$backgroundImage 
-    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
-    : props.$backgroundColor || '#1a1a1a'};
-  background-size: cover;
-  background-position: center;
+const StatCard = styled.div`
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
   border-radius: 15px;
-  padding: 30px;
-  color: white;
+  padding: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
   text-align: center;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
-const PreviewLogo = styled.div`
-  font-size: 60px;
-  font-weight: 900;
-  background: linear-gradient(45deg, #ffd700, #ffed4a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 10px;
-`;
-
-const PreviewTitle = styled.h3`
+const StatValue = styled.div`
   font-size: 24px;
+  font-weight: 700;
+  color: white;
   margin-bottom: 5px;
+`;
+
+const StatLabel = styled.div`
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
   letter-spacing: 1px;
 `;
 
-const PreviewSubtitle = styled.p`
-  opacity: 0.8;
-  font-size: 14px;
-`;
-
-const BackButton = styled(Button)`
-  background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-`;
-
-interface AdminPanelProps {
-  onBack: () => void;
-}
-
 const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
-  const [config, setConfig] = useState<Config>(configService.getConfig());
-  const [previewMode, setPreviewMode] = useState(false);
+  const [activeSection, setActiveSection] = useState<AdminSection>('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // États pour les formulaires
-  const [shopName, setShopName] = useState(config.shopName);
-  const [shopDescription, setShopDescription] = useState(config.shopDescription);
-  const [backgroundColor, setBackgroundColor] = useState(config.backgroundColor);
-  const [backgroundImage, setBackgroundImage] = useState(config.backgroundImage);
+  const menuItems = [
+    { id: 'dashboard' as AdminSection, icon: '📊', label: 'Tableau de bord' },
+    { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
+    { id: 'orders' as AdminSection, icon: '📦', label: 'Commandes' },
+    { id: 'telegram' as AdminSection, icon: '✈️', label: 'Telegram' },
+    { id: 'seo' as AdminSection, icon: '🔍', label: 'SEO & Meta' },
+    { id: 'config' as AdminSection, icon: '⚙️', label: 'Configuration' },
+  ];
 
-  useEffect(() => {
-    const loadedConfig = configService.getConfig();
-    setConfig(loadedConfig);
-    setShopName(loadedConfig.shopName);
-    setShopDescription(loadedConfig.shopDescription);
-    setBackgroundColor(loadedConfig.backgroundColor);
-    setBackgroundImage(loadedConfig.backgroundImage);
-  }, []);
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setBackgroundImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleMenuClick = (section: AdminSection) => {
+    setActiveSection(section);
+    setSidebarOpen(false); // Fermer la sidebar sur mobile après clic
   };
 
-  const handleSave = () => {
-    try {
-      const newConfig = configService.saveConfig({
-        shopName,
-        shopDescription,
-        backgroundColor,
-        backgroundImage
-      });
-      setConfig(newConfig);
-      alert('Configuration sauvegardée avec succès !');
-    } catch (error) {
-      alert('Erreur lors de la sauvegarde : ' + (error as Error).message);
-    }
-  };
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return (
+          <>
+            <StatsGrid>
+              <StatCard>
+                <StatValue>4</StatValue>
+                <StatLabel>Produits</StatLabel>
+              </StatCard>
+              <StatCard>
+                <StatValue>127</StatValue>
+                <StatLabel>Commandes</StatLabel>
+              </StatCard>
+              <StatCard>
+                <StatValue>€2,840</StatValue>
+                <StatLabel>Revenus</StatLabel>
+              </StatCard>
+              <StatCard>
+                <StatValue>95%</StatValue>
+                <StatLabel>Satisfaction</StatLabel>
+              </StatCard>
+            </StatsGrid>
+            <ContentSection>
+              <SectionTitle>Vue d'ensemble BIPCOSA06</SectionTitle>
+              <p>Bienvenue dans le panel d'administration de votre boutique Cannabis. Gérez tous les aspects de BIPCOSA06 depuis cette interface.</p>
+            </ContentSection>
+          </>
+        );
 
-  const handleRemoveBackground = () => {
-    setBackgroundImage(null);
+      case 'products':
+        return (
+          <ContentSection>
+            <SectionTitle>Gestion des Produits</SectionTitle>
+            <FormGroup>
+              <Label>Nom du produit</Label>
+              <Input type="text" placeholder="Ex: ANIMAL COOKIES" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Catégorie</Label>
+              <Input type="text" placeholder="indica, sativa, hybrid" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Farm d'origine</Label>
+              <Input type="text" placeholder="holland, espagne, calispain, premium" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Description</Label>
+              <TextArea placeholder="Description détaillée du produit..." />
+            </FormGroup>
+            <FormGroup>
+              <Label>URL de l'image</Label>
+              <Input type="url" placeholder="https://images.unsplash.com/..." />
+            </FormGroup>
+            <Button>Ajouter le produit</Button>
+          </ContentSection>
+        );
+
+      case 'orders':
+        return (
+          <ContentSection>
+            <SectionTitle>Gestion des Commandes</SectionTitle>
+            <p>Suivi des commandes Telegram et gestion des livraisons.</p>
+            <FormGroup>
+              <Label>Rechercher une commande</Label>
+              <Input type="text" placeholder="Nom du client ou numéro de commande" />
+            </FormGroup>
+            <Button>Rechercher</Button>
+          </ContentSection>
+        );
+
+      case 'telegram':
+        return (
+          <ContentSection>
+            <SectionTitle>Configuration Telegram</SectionTitle>
+            <FormGroup>
+              <Label>Nom d'utilisateur Telegram</Label>
+              <Input type="text" defaultValue="bipcosa06" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Message de bienvenue</Label>
+              <TextArea defaultValue="Bonjour ! Bienvenue chez BIPCOSA06, votre boutique Cannabis de confiance." />
+            </FormGroup>
+            <FormGroup>
+              <Label>Template commande</Label>
+              <TextArea defaultValue="Bonjour, je souhaite commander {produit} de BIPCOSA06. Pouvez-vous me donner plus d'informations ?" />
+            </FormGroup>
+            <Button>Sauvegarder</Button>
+          </ContentSection>
+        );
+
+      case 'seo':
+        return (
+          <ContentSection>
+            <SectionTitle>SEO & Métadonnées</SectionTitle>
+            <FormGroup>
+              <Label>Titre du site</Label>
+              <Input type="text" defaultValue="BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Description</Label>
+              <TextArea defaultValue="BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel." />
+            </FormGroup>
+            <FormGroup>
+              <Label>Mots-clés</Label>
+              <Input type="text" defaultValue="BIPCOSA06, CANAGOOD, Lyon, boutique, livraison, 69, cannabis, CBD" />
+            </FormGroup>
+            <Button>Mettre à jour</Button>
+          </ContentSection>
+        );
+
+      case 'config':
+        return (
+          <ContentSection>
+            <SectionTitle>Configuration générale</SectionTitle>
+            <FormGroup>
+              <Label>Nom de la boutique</Label>
+              <Input type="text" defaultValue="BIPCOSA06" />
+            </FormGroup>
+            <FormGroup>
+              <Label>URL de base</Label>
+              <Input type="url" defaultValue="https://bipcosa06.vercel.app" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Email de contact</Label>
+              <Input type="email" placeholder="contact@bipcosa06.com" />
+            </FormGroup>
+            <FormGroup>
+              <Label>Zones de livraison</Label>
+              <TextArea defaultValue="Lyon et région Rhône-Alpes (69, 71, 01, 42, 38)" />
+            </FormGroup>
+            <Button>Sauvegarder</Button>
+          </ContentSection>
+        );
+
+      default:
+        return <ContentSection><SectionTitle>Section en cours de développement</SectionTitle></ContentSection>;
+    }
   };
 
   return (
     <AdminContainer>
-      <BackButton onClick={onBack}>← Retour</BackButton>
-      
-      <AdminHeader>
-        <Title>🛠️ Panel d&apos;Administration</Title>
-        <Subtitle>Configurez l&apos;apparence de votre boutique CANAGOOD 69</Subtitle>
-      </AdminHeader>
+      <SidebarToggle onClick={() => setSidebarOpen(!sidebarOpen)}>
+        ☰
+      </SidebarToggle>
 
-      <ConfigSection>
-        <SectionTitle>🏪 Informations de la Boutique</SectionTitle>
-        
-        <FormGroup>
-          <Label>Nom de la boutique</Label>
-          <Input
-            type="text"
-            value={shopName}
-            onChange={(e) => setShopName(e.target.value)}
-            placeholder="CANAGOOD 69"
-          />
-        </FormGroup>
+      <Sidebar $isOpen={sidebarOpen}>
+        <SidebarHeader>
+          <SidebarTitle>ADMIN BIPCOSA06</SidebarTitle>
+        </SidebarHeader>
+        <SidebarMenu>
+          {menuItems.map(item => (
+            <MenuItem
+              key={item.id}
+              $active={activeSection === item.id}
+              onClick={() => handleMenuClick(item.id)}
+            >
+              <MenuIcon>{item.icon}</MenuIcon>
+              <MenuLabel>{item.label}</MenuLabel>
+            </MenuItem>
+          ))}
+        </SidebarMenu>
+      </Sidebar>
 
-        <FormGroup>
-          <Label>Description</Label>
-          <Input
-            type="text"
-            value={shopDescription}
-            onChange={(e) => setShopDescription(e.target.value)}
-            placeholder="mini-application"
-          />
-        </FormGroup>
-      </ConfigSection>
-
-      <ConfigSection>
-        <SectionTitle>🎨 Configuration du Background</SectionTitle>
-        
-        <FormGroup>
-          <Label>Couleur de fond (utilisée si aucune image n&apos;est définie)</Label>
-          <ColorInput
-            type="color"
-            value={backgroundColor}
-            onChange={(e) => setBackgroundColor(e.target.value)}
-          />
-        </FormGroup>
-
-        <FormGroup>
-          <Label>Image de fond (optionnel)</Label>
-          <FileInput
-            type="file"
-            accept="image/*"
-            onChange={handleFileUpload}
-          />
-          {backgroundImage && (
-            <div style={{ marginTop: '10px' }}>
-              <small style={{ color: '#666' }}>Image chargée</small>
-              <Button onClick={handleRemoveBackground} style={{ marginLeft: '10px', fontSize: '12px', padding: '6px 12px' }}>
-                Supprimer
-              </Button>
-            </div>
+      <MainContent $sidebarOpen={sidebarOpen}>
+        <ContentHeader>
+          <ContentTitle>
+            {menuItems.find(item => item.id === activeSection)?.label || 'Admin'}
+          </ContentTitle>
+          {onBack && (
+            <BackButton onClick={onBack}>
+              ← Retour à la boutique
+            </BackButton>
           )}
-        </FormGroup>
+        </ContentHeader>
 
-        <div style={{ marginTop: '30px' }}>
-          <PreviewButton onClick={() => setPreviewMode(!previewMode)}>
-            {previewMode ? 'Masquer l\'aperçu' : 'Aperçu'}
-          </PreviewButton>
-          <SaveButton onClick={handleSave}>
-            Sauvegarder
-          </SaveButton>
-        </div>
-      </ConfigSection>
-
-      {previewMode && (
-        <ConfigSection>
-          <SectionTitle>👀 Aperçu</SectionTitle>
-          <PreviewContainer 
-            $backgroundImage={backgroundImage}
-            $backgroundColor={backgroundColor}
-          >
-            <PreviewLogo>69</PreviewLogo>
-            <PreviewTitle>{shopName}</PreviewTitle>
-            <PreviewSubtitle>{shopDescription}</PreviewSubtitle>
-          </PreviewContainer>
-        </ConfigSection>
-      )}
+        {renderContent()}
+      </MainContent>
     </AdminContainer>
   );
 };

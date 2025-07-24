@@ -11,7 +11,12 @@ export interface Product {
   category: string;
   farm: string;
   description: string;
-  prices: Array<{ weight: string; price: string }>;
+  prices: Array<{ 
+    weight: string; 
+    price: string; 
+    quantity?: number; // Quantité disponible
+    id?: string; // ID unique pour la gestion
+  }>;
   video?: string;
   videoPublicId?: string; // ID Cloudinary pour la vidéo
   createdAt?: Date;
@@ -197,11 +202,11 @@ class DataService {
         farm: "holland",
         description: "Une variété indica premium avec des arômes sucrés et terreux. Parfaite pour la relaxation en soirée.",
         prices: [
-          { weight: "1g", price: "12€" },
-          { weight: "3.5g", price: "40€" },
-          { weight: "7g", price: "75€" },
-          { weight: "14g", price: "140€" },
-          { weight: "28g", price: "260€" }
+          { id: "1", weight: "1g", price: "12€", quantity: 50 },
+          { id: "2", weight: "3.5g", price: "40€", quantity: 30 },
+          { id: "3", weight: "7g", price: "75€", quantity: 20 },
+          { id: "4", weight: "14g", price: "140€", quantity: 15 },
+          { id: "5", weight: "28g", price: "260€", quantity: 10 }
         ],
         video: "https://www.w3schools.com/html/mov_bbb.mp4"
       },
@@ -216,11 +221,11 @@ class DataService {
         farm: "espagne",
         description: "Sativa énergisante avec des effets cérébraux puissants. Idéale pour la créativité et l'activité diurne.",
         prices: [
-          { weight: "1g", price: "10€" },
-          { weight: "3.5g", price: "32€" },
-          { weight: "7g", price: "60€" },
-          { weight: "14g", price: "110€" },
-          { weight: "28g", price: "200€" }
+          { id: "1", weight: "1g", price: "10€", quantity: 60 },
+          { id: "2", weight: "3.5g", price: "32€", quantity: 40 },
+          { id: "3", weight: "7g", price: "60€", quantity: 25 },
+          { id: "4", weight: "14g", price: "110€", quantity: 18 },
+          { id: "5", weight: "28g", price: "200€", quantity: 12 }
         ],
         video: "https://www.w3schools.com/html/mov_bbb.mp4"
       }

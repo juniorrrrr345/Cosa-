@@ -573,6 +573,43 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
 
+  // Fonctions pour gérer les prix multiples
+  const addPrice = () => {
+    const currentPrices = formData.prices || [];
+    const newPrice = {
+      id: Date.now().toString(),
+      weight: '',
+      price: '',
+      quantity: 0
+    };
+    setFormData({
+      ...formData,
+      prices: [...currentPrices, newPrice]
+    });
+  };
+
+  const updatePrice = (index: number, field: string, value: string | number) => {
+    const currentPrices = formData.prices || [];
+    const updatedPrices = [...currentPrices];
+    updatedPrices[index] = {
+      ...updatedPrices[index],
+      [field]: value
+    };
+    setFormData({
+      ...formData,
+      prices: updatedPrices
+    });
+  };
+
+  const removePrice = (index: number) => {
+    const currentPrices = formData.prices || [];
+    const updatedPrices = currentPrices.filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      prices: updatedPrices
+    });
+  };
+
   useEffect(() => {
     refreshData();
   }, []);
@@ -689,7 +726,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product);
-    setFormData(product);
+    // S'assurer que les prix ont des IDs pour la gestion
+    const productWithIds = {
+      ...product,
+      prices: product.prices?.map((price, index) => ({
+        ...price,
+        id: price.id || `${Date.now()}-${index}`
+      })) || []
+    };
+    setFormData(productWithIds);
   };
 
   const handleAddProduct = () => {
@@ -704,9 +749,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       farm: 'holland',
       description: '',
       prices: [
-        { weight: '1g', price: '10€' },
-        { weight: '3.5g', price: '30€' },
-        { weight: '7g', price: '55€' }
+        { id: '1', weight: '1g', price: '10€', quantity: 50 },
+        { id: '2', weight: '3.5g', price: '30€', quantity: 30 },
+        { id: '3', weight: '7g', price: '55€', quantity: 20 }
       ],
       video: ''
     });
@@ -1623,6 +1668,87 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               onChange={(e) => setFormData({...formData, video: e.target.value})}
               placeholder="https://..." 
             />
+          </FormGroup>
+
+          {/* Section Prix Multiples */}
+          <FormGroup>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+              <Label>💰 Prix et Quantités</Label>
+              <ActionButton $variant="add" onClick={addPrice} style={{ padding: '8px 12px', fontSize: '12px' }}>
+                + Ajouter un prix
+              </ActionButton>
+            </div>
+            
+            <div style={{ display: 'grid', gap: '15px' }}>
+              {(formData.prices || []).map((price, index) => (
+                <div key={price.id || index} style={{ 
+                  background: 'rgba(255,255,255,0.05)', 
+                  padding: '15px', 
+                  borderRadius: '10px',
+                  border: '1px solid rgba(255,255,255,0.1)'
+                }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '10px', alignItems: 'center' }}>
+                    <div>
+                      <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
+                        Poids
+                      </label>
+                      <Input 
+                        type="text" 
+                        placeholder="1g, 3.5g..."
+                        value={price.weight || ''} 
+                        onChange={(e) => updatePrice(index, 'weight', e.target.value)}
+                        style={{ fontSize: '14px', padding: '8px' }}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
+                        Prix
+                      </label>
+                      <Input 
+                        type="text" 
+                        placeholder="10€, 30€..."
+                        value={price.price || ''} 
+                        onChange={(e) => updatePrice(index, 'price', e.target.value)}
+                        style={{ fontSize: '14px', padding: '8px' }}
+                      />
+                    </div>
+                    
+                    <div>
+                      <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
+                        Stock
+                      </label>
+                      <Input 
+                        type="number" 
+                        placeholder="50"
+                        value={price.quantity || 0} 
+                        onChange={(e) => updatePrice(index, 'quantity', parseInt(e.target.value) || 0)}
+                        style={{ fontSize: '14px', padding: '8px' }}
+                      />
+                    </div>
+                    
+                    <ActionButton 
+                      $variant="delete" 
+                      onClick={() => removePrice(index)}
+                      style={{ padding: '8px', fontSize: '12px', marginTop: '20px' }}
+                    >
+                      🗑️
+                    </ActionButton>
+                  </div>
+                </div>
+              ))}
+              
+              {(!formData.prices || formData.prices.length === 0) && (
+                <div style={{ 
+                  textAlign: 'center', 
+                  padding: '20px', 
+                  color: 'rgba(255,255,255,0.5)',
+                  fontStyle: 'italic' 
+                }}>
+                  Aucun prix configuré. Cliquez sur "+ Ajouter un prix" pour commencer.
+                </div>
+              )}
+            </div>
           </FormGroup>
 
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '30px' }}>

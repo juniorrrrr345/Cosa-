@@ -26,8 +26,8 @@ const PageContainer = styled.div<{ $config?: any }>`
       return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${config.backgroundImage})`;
     }
     
-    // Dégradé personnalisé ou par défaut
-    return config.backgroundColor || 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+    // Dégradé par défaut
+    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   }};
   background-size: cover;
   background-position: center;

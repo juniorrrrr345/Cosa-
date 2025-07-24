@@ -503,28 +503,23 @@ const Select = styled.select`
   }
 `;
 
-const ColorPicker = styled.input`
-  width: 100%;
-  height: 50px;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 10px;
-  cursor: pointer;
-  
-  &:focus {
-    border-color: rgba(255,255,255,0.4);
-  }
-`;
 
-const ConfigPreview = styled.div<{ $bgType: string; $bgColor: string; $bgImage?: string }>`
+
+const ConfigPreview = styled.div<{ $bgType: string; $bgImage?: string; $bgUrl?: string }>`
   width: 100%;
   height: 200px;
   border-radius: 15px;
   background: ${props => {
+    // URL externe (Imgur, etc.)
+    if (props.$bgType === 'url' && props.$bgUrl) {
+      return `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${props.$bgUrl})`;
+    }
+    // Image Cloudinary
     if (props.$bgType === 'image' && props.$bgImage) {
       return `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${props.$bgImage})`;
     }
-    return `linear-gradient(135deg, ${props.$bgColor} 0%, #1a1a1a 50%, ${props.$bgColor} 100%)`;
+    // Dégradé par défaut (pas de couleur personnalisée)
+    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   }};
   background-size: cover;
   background-position: center;
@@ -1562,19 +1557,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                    🎨 Configuration du Background
                  </h4>
                  
-                 <FormGroup>
-                   <Label>Couleur principale</Label>
-                   <ColorPicker 
-                     type="color" 
-                     value={config.backgroundColor} 
-                     onChange={(e) => handleSaveConfig({ backgroundColor: e.target.value })}
-                   />
-                 </FormGroup>
+
 
                  <ConfigPreview 
                    $bgType={config.backgroundType} 
-                   $bgColor={config.backgroundColor}
                    $bgImage={config.backgroundImage}
+                   $bgUrl={config.backgroundUrl}
                  >
                    {config.shopName}
                  </ConfigPreview>

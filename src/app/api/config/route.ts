@@ -10,7 +10,6 @@ export async function GET(request: NextRequest) {
     // Fallback avec config par défaut
     const fallbackConfig = {
       backgroundType: 'gradient',
-      backgroundColor: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       backgroundImage: '',
       backgroundUrl: '',
       shopName: 'BIPCOSA06',
@@ -32,7 +31,6 @@ export async function PUT(request: NextRequest) {
     // Fallback : retourner les updates avec config par défaut
     const fallbackConfig = {
       backgroundType: 'gradient',
-      backgroundColor: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       backgroundImage: '',
       backgroundUrl: '',
       shopName: 'BIPCOSA06',

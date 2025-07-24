@@ -4,7 +4,7 @@ import { SocialNetwork } from '@/models/SocialNetwork';
 import { ShopConfig } from '@/services/dataService';
 import dataService from '@/services/dataService';
 
-const SocialContainer = styled.div<{ $bgType?: string; $bgColor?: string; $bgImage?: string; $bgUrl?: string }>`
+const SocialContainer = styled.div<{ $bgType?: string; $bgImage?: string; $bgUrl?: string }>`
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -12,14 +12,14 @@ const SocialContainer = styled.div<{ $bgType?: string; $bgColor?: string; $bgIma
   align-items: center;
   padding: 20px;
   
-  ${({ $bgType, $bgColor, $bgImage, $bgUrl }) => {
+  ${({ $bgType, $bgImage, $bgUrl }) => {
     if ($bgType === 'url' && $bgUrl) {
       return `background: url('${$bgUrl}') center/cover;`;
     }
     if ($bgType === 'image' && $bgImage) {
       return `background: url('${$bgImage}') center/cover;`;
     }
-    return `background: ${$bgColor || 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'};`;
+    return `background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);`;
   }}
 `;
 
@@ -221,7 +221,7 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
       return { backgroundImage: `url('${config.backgroundImage}')` };
     }
     return { 
-      background: config.backgroundColor || 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)' 
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)' 
     };
   };
 
@@ -229,7 +229,7 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
     <SocialContainer 
       style={getBackgroundStyle()}
       $bgType={config.backgroundType}
-      $bgColor={config.backgroundColor}
+
       $bgImage={config.backgroundImage}
       $bgUrl={config.backgroundUrl}
     >

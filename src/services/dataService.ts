@@ -54,7 +54,6 @@ export interface ContactContent {
 export interface ShopConfig {
   _id?: string;
   backgroundType: 'gradient' | 'image' | 'url';
-  backgroundColor: string;
   backgroundImage?: string; // Cloudinary ou upload local
   backgroundUrl?: string; // URL externe (Imgur, etc.)
   backgroundImagePublicId?: string; // ID Cloudinary pour l'image de fond
@@ -264,7 +263,6 @@ class DataService {
   private getFallbackConfig(): ShopConfig {
     return {
       backgroundType: 'gradient',
-      backgroundColor: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       backgroundImage: '', // Image Cloudinary
       backgroundUrl: '', // URL d'image externe (Imgur, etc.)
       shopName: 'BIPCOSA06',

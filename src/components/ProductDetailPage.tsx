@@ -57,24 +57,30 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 15px 20px;
+  background: transparent;
+  border-bottom: none;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 10px 15px;
+  }
 `;
 
 const BackButton = styled.button`
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.3);
   color: white;
   padding: 8px 15px;
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
-
+  backdrop-filter: blur(10px);
+  
   &:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.9);
+    border-color: rgba(255,255,255,0.5);
     transform: translateY(-2px);
   }
 `;

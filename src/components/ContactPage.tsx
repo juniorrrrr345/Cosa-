@@ -62,10 +62,14 @@ const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 20px;
-  background: rgba(0,0,0,0.9);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding: 15px 20px;
+  background: transparent;
+  border-bottom: none;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 10px 15px;
+  }
 `;
 
 const LogoImage = styled.img`

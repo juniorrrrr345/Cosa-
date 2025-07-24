@@ -12,7 +12,13 @@ export default function MainPage() {
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const handleNavigation = (view: string) => {
+    // Nettoyer le mode admin quand on navigue vers une autre vue
+    if (view !== 'admin') {
+      localStorage.removeItem('adminMode');
+    }
+    
     if (view === 'admin') {
+      localStorage.setItem('adminMode', 'true');
       setCurrentView('admin');
     } else if (view === 'info') {
       setCurrentView('info');
@@ -29,13 +35,21 @@ export default function MainPage() {
   };
 
   const handleBackToMenu = () => {
+    // Nettoyer le mode admin quand on revient au menu
+    localStorage.removeItem('adminMode');
     setSelectedProduct(null);
     setCurrentView('menu');
   };
 
   // Fonction pour basculer vers l'admin (peut être appelée via console ou URL)
   const toggleAdmin = () => {
-    setCurrentView(currentView === 'admin' ? 'menu' : 'admin');
+    if (currentView === 'admin') {
+      localStorage.removeItem('adminMode');
+      setCurrentView('menu');
+    } else {
+      localStorage.setItem('adminMode', 'true');
+      setCurrentView('admin');
+    }
   };
 
   // Exposer la fonction toggleAdmin globalement et vérifier les paramètres URL
@@ -43,19 +57,28 @@ export default function MainPage() {
     // Exposer la fonction globalement
     (window as any).toggleAdmin = toggleAdmin;
     
-    // Vérifier les paramètres URL au chargement
+    // Vérifier les paramètres URL au chargement SEULEMENT
     const urlParams = new URLSearchParams(window.location.search);
     const currentPath = window.location.pathname;
     
-    if (urlParams.get('admin') === 'true' || 
-        localStorage.getItem('adminMode') === 'true' || 
-        currentPath.includes('/panel')) {
+    // Ne vérifier le localStorage que si on est sur la page /panel
+    if (urlParams.get('admin') === 'true' || currentPath.includes('/panel')) {
+      localStorage.setItem('adminMode', 'true');
       setCurrentView('admin');
+    } else {
+      // Si on n'est pas sur /panel, nettoyer le localStorage et aller vers la boutique
+      localStorage.removeItem('adminMode');
+      setCurrentView('menu');
     }
   }, []);
 
+  const handleAdminBack = () => {
+    localStorage.removeItem('adminMode');
+    setCurrentView('menu');
+  };
+
   if (currentView === 'admin') {
-    return <AdminPanel onBack={() => setCurrentView('menu')} />;
+    return <AdminPanel onBack={handleAdminBack} />;
   }
 
     if (currentView === 'info') {

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
 // Types pour les sections admin
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'config';
+type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'content-info' | 'content-contact' | 'config';
 
 interface AdminPanelProps {
   onBack?: () => void;
@@ -594,6 +594,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
     { id: 'categories' as AdminSection, icon: '📂', label: 'Catégories' },
     { id: 'farms' as AdminSection, icon: '🏠', label: 'Farms' },
+    { id: 'content-info' as AdminSection, icon: 'ℹ️', label: 'Contenu Info' },
+    { id: 'content-contact' as AdminSection, icon: '✉️', label: 'Contenu Contact' },
     { id: 'config' as AdminSection, icon: '⚙️', label: 'Configuration' },
   ];
 

@@ -64,6 +64,39 @@ const ProductImage = styled.div<{ $image: string }>`
   position: relative;
 `;
 
+const VideoSection = styled.div`
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 25px;
+  border: 1px solid rgba(255,255,255,0.2);
+  margin-bottom: 20px;
+`;
+
+const VideoTitle = styled.h3`
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 15px 0;
+  color: white;
+  text-align: center;
+`;
+
+const VideoContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #000;
+`;
+
+const VideoElement = styled.video`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+`;
+
 const ProductFlag = styled.div`
   position: absolute;
   top: 15px;
@@ -253,6 +286,7 @@ interface Product {
   image: string;
   flagText: string;
   description: string;
+  video?: string;
   prices: Array<{
     weight: string;
     price: string;
@@ -298,6 +332,18 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           <ProductQuality>{product.quality}</ProductQuality>
           <ProductDescription>{product.description}</ProductDescription>
         </ProductInfo>
+
+        {product.video && (
+          <VideoSection>
+            <VideoTitle>🎥 Vidéo du produit</VideoTitle>
+            <VideoContainer>
+              <VideoElement controls>
+                <source src={product.video} type="video/mp4" />
+                Votre navigateur ne supporte pas la vidéo HTML5.
+              </VideoElement>
+            </VideoContainer>
+          </VideoSection>
+        )}
 
         <PricesSection>
           <PricesTitle>💰 Prix disponibles</PricesTitle>

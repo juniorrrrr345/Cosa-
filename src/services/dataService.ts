@@ -468,7 +468,7 @@ export class DataService {
       backgroundImage: '',
       backgroundUrl: '',
       shopName: 'BIPCOSA06',
-      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
+      description: 'Boutique BIPCOSA06 - Votre référence qualité'
     };
     return this.configCache;
   }
@@ -490,7 +490,7 @@ export class DataService {
       backgroundImage: '',
       backgroundUrl: '',
       shopName: 'BIPCOSA06',
-      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
+      description: 'Boutique BIPCOSA06 - Votre référence qualité'
     };
   }
 

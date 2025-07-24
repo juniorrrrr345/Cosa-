@@ -1,7 +1,7 @@
 {
   "name": "bipcosa06",
   "version": "1.0.0",
-  "description": "BIPCOSA06 - CANAGOOD 69 App - Next.js Cannabis Store",
+  "description": "BIPCOSA06 - Application Next.js Boutique Premium",
   "private": true,
   "scripts": {
     "dev": "next dev",

@@ -1,18 +1,18 @@
-# BIPCOSA06 - Boutique Cannabis Premium
+# BIPCOSA06 - Boutique Premium
 
 **🚀 Application Next.js Complète - Déployée Automatiquement sur Vercel**
 
 ## 🎯 Application E-commerce Complète
 
 ### ✅ **Fonctionnalités Business**
-- **Photos réelles** de produits cannabis (Unsplash)
+- **Photos réelles** de produits (Unsplash)
 - **Vidéos de présentation** dans pages détail
 - **Filtres fonctionnels** par catégories et farms
 - **Pages détail** avec 5 prix par produit
 - **Commande Telegram** intégrée partout
 - **Pages Info/Contact** professionnelles
 
-### ✅ **Produits Cannabis Premium**
+### ✅ **Produits Premium**
 - 🇳🇱 **ANIMAL COOKIES** (Indica Top) - 12€ à 260€
 - 🇪🇸 **POWER HAZE** (Sativa mid) - 10€ à 200€  
 - 🇺🇸🇪🇸 **NINE LIONS** (Hybride A+++) - 15€ à 340€
@@ -198,7 +198,7 @@ Pages Info/Contact → Formulaires + liens directs
 
 ---
 
-**🌿 BIPCOSA06 - E-commerce Cannabis Premium**  
+**🌿 BIPCOSA06 - E-commerce Premium**  
 **🚀 Déployé automatiquement sur Vercel**  
 **📱 Ready for Business !** ✨
 

@@ -2,21 +2,21 @@ import type { Metadata } from 'next';
 import StyledComponentsRegistry from './registry';
 
 export const metadata: Metadata = {
-  title: 'BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon',
-  description: 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel.',
-  keywords: 'BIPCOSA06, CANAGOOD, Lyon, boutique, livraison, 69, cannabis, CBD',
+  title: 'BIPCOSA06 - Boutique Premium | Votre référence qualité',
+  description: 'BIPCOSA06 - Votre boutique de confiance. Produits premium, service professionnel, livraison rapide.',
+  keywords: 'BIPCOSA06, boutique, livraison, qualité, service, premium',
   robots: 'index, follow',
   metadataBase: new URL('https://juniorrrrr345.github.io/Cosa-'),
   openGraph: {
-    title: 'BIPCOSA06 - CANAGOOD 69 APP',
-    description: 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon',
+    title: 'BIPCOSA06 - Boutique Premium',
+    description: 'BIPCOSA06 - Votre boutique de confiance pour des produits de qualité',
     type: 'website',
     locale: 'fr_FR',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BIPCOSA06 - CANAGOOD 69 APP',
-    description: 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon',
+    title: 'BIPCOSA06 - Boutique Premium',
+    description: 'BIPCOSA06 - Votre boutique de confiance pour des produits de qualité',
   }
 };
 

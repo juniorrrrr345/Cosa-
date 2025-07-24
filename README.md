@@ -200,3 +200,8 @@ Configurations sauvegardées dans `localStorage` :
 - 🚀 **Deploy facile** : Vercel + GitHub Pages
 
 **Votre boutique CANAGOOD 69 est maintenant optimisée avec Next.js !** 🌿✨
+
+---
+**✅ LIVE sur Vercel :** https://cosa-chi.vercel.app  
+**🛠️ Admin :** https://cosa-chi.vercel.app?admin=true  
+**⚡ Déploiement automatique activé**

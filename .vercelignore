@@ -1,0 +1,30 @@
+# Fichiers à ignorer lors du déploiement Vercel
+
+# Development
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.cache/
+/public/temp/
+
+# Documentation
+DEPLOY.md
+deploy.sh

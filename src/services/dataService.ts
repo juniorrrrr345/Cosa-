@@ -76,6 +76,39 @@ class DataService {
   }
 
   private initializeData() {
+    // Initialiser le contenu Info par défaut
+    if (this.infoContents.length === 0) {
+      this.infoContents = [
+        {
+          id: 'main-info',
+          title: '📋 Informations Boutique',
+          description: 'Votre boutique BIPCOSA06 - Service professionnel et livraison rapide.',
+          items: [
+            '✅ Livraison dans les zones : 69, 71, 01, 42, 38',
+            '🕒 Horaires de livraison : 10h - 22h',
+            '📱 Commandes via Telegram uniquement',
+            '🔒 Service discret et professionnel',
+            '⚡ Livraison rapide (30-60 min)',
+            '💎 Produits de qualité premium'
+          ]
+        }
+      ];
+    }
+
+    // Initialiser le contenu Contact par défaut
+    if (this.contactContents.length === 0) {
+      this.contactContents = [
+        {
+          id: 'main-contact',
+          title: '✉️ Nous Contacter',
+          description: 'Pour passer commande ou obtenir des informations, contactez-nous directement via Telegram.',
+          telegramUsername: '@bipcosa06',
+          telegramLink: 'https://t.me/bipcosa06',
+          additionalInfo: '📍 Zone de livraison : Lyon et alentours (69, 71, 01, 42, 38)\n🕒 Réponse rapide 24h/7j'
+        }
+      ];
+    }
+
     // Initialiser les catégories
     this.categories = [
       { value: 'all', label: 'Toutes les catégories' },
@@ -300,6 +333,50 @@ class DataService {
     this.notifyConfigUpdate();
   }
 
+  // Info Content methods
+  getInfoContents(): InfoContent[] {
+    return [...this.infoContents];
+  }
+
+  updateInfoContent(id: string, content: Partial<InfoContent>): void {
+    const index = this.infoContents.findIndex(item => item.id === id);
+    if (index !== -1) {
+      this.infoContents[index] = { ...this.infoContents[index], ...content };
+    } else {
+      this.infoContents.push({ id, ...content } as InfoContent);
+    }
+    this.saveToLocalStorage();
+    this.notifyDataUpdate();
+  }
+
+  deleteInfoContent(id: string): void {
+    this.infoContents = this.infoContents.filter(item => item.id !== id);
+    this.saveToLocalStorage();
+    this.notifyDataUpdate();
+  }
+
+  // Contact Content methods
+  getContactContents(): ContactContent[] {
+    return [...this.contactContents];
+  }
+
+  updateContactContent(id: string, content: Partial<ContactContent>): void {
+    const index = this.contactContents.findIndex(item => item.id === id);
+    if (index !== -1) {
+      this.contactContents[index] = { ...this.contactContents[index], ...content };
+    } else {
+      this.contactContents.push({ id, ...content } as ContactContent);
+    }
+    this.saveToLocalStorage();
+    this.notifyDataUpdate();
+  }
+
+  deleteContactContent(id: string): void {
+    this.contactContents = this.contactContents.filter(item => item.id !== id);
+    this.saveToLocalStorage();
+    this.notifyDataUpdate();
+  }
+
   // Force global sync
   forceSync(): void {
     this.loadFromLocalStorage();
@@ -357,6 +434,8 @@ class DataService {
         products: this.products,
         categories: this.categories,
         farms: this.farms,
+        infoContents: this.infoContents,
+        contactContents: this.contactContents,
         config: this.config,
         timestamp: this.lastUpdate
       };
@@ -377,6 +456,8 @@ class DataService {
           }
           if (data.categories) this.categories = data.categories;
           if (data.farms) this.farms = data.farms;
+          if (data.infoContents) this.infoContents = data.infoContents;
+          if (data.contactContents) this.contactContents = data.contactContents;
           if (data.config) this.config = data.config;
           if (data.timestamp) this.lastUpdate = data.timestamp;
         } catch (error) {

@@ -1,4 +1,12 @@
-// Service pour gérer la configuration de l'application
+// Service pour gérer la configuration de l'application CANAGOOD 69
+interface Config {
+  backgroundImage: string | null;
+  backgroundColor: string;
+  logoUrl: string | null;
+  shopName: string;
+  shopDescription: string;
+}
+
 export const configService = {
   // Clé pour le localStorage
   CONFIG_KEY: 'canagood_config',
@@ -10,10 +18,12 @@ export const configService = {
     logoUrl: null,
     shopName: 'CANAGOOD 69',
     shopDescription: 'mini-application'
-  },
+  } as Config,
 
   // Obtenir la configuration
-  getConfig() {
+  getConfig(): Config {
+    if (typeof window === 'undefined') return this.defaultConfig;
+    
     try {
       const saved = localStorage.getItem(this.CONFIG_KEY);
       if (saved) {
@@ -26,7 +36,9 @@ export const configService = {
   },
 
   // Sauvegarder la configuration
-  saveConfig(config) {
+  saveConfig(config: Partial<Config>): Config {
+    if (typeof window === 'undefined') return this.defaultConfig;
+    
     try {
       const currentConfig = this.getConfig();
       const newConfig = { ...currentConfig, ...config };
@@ -39,7 +51,7 @@ export const configService = {
   },
 
   // Mettre à jour le background
-  updateBackground(backgroundData) {
+  updateBackground(backgroundData: { backgroundImage?: string | null; backgroundColor?: string }) {
     return this.saveConfig({
       backgroundImage: backgroundData.backgroundImage,
       backgroundColor: backgroundData.backgroundColor
@@ -47,7 +59,7 @@ export const configService = {
   },
 
   // Mettre à jour les informations de la boutique
-  updateShopInfo(shopData) {
+  updateShopInfo(shopData: { shopName?: string; shopDescription?: string; logoUrl?: string }) {
     return this.saveConfig({
       shopName: shopData.shopName,
       shopDescription: shopData.shopDescription,
@@ -55,3 +67,5 @@ export const configService = {
     });
   }
 };
+
+export type { Config };

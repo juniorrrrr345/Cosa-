@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import InfoPage from './components/InfoPage';
-import AdminPanel from './admin/AdminPanel';
-import './App.css';
+'use client';
 
-function App() {
-  const [currentView, setCurrentView] = useState('info');
+import React, { useState, useEffect } from 'react';
+import InfoPage from '@/components/InfoPage';
+import AdminPanel from '@/admin/AdminPanel';
 
-  const handleNavigation = (view) => {
-    setCurrentView(view);
-  };
+export default function HomePage() {
+  const [currentView, setCurrentView] = useState<'info' | 'admin'>('info');
 
-  // Vérifier si on doit afficher le panel admin (par exemple avec un paramètre URL secret)
-  const showAdmin = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('admin') === 'true' || currentView === 'admin';
+  const handleNavigation = (view: string) => {
+    if (view === 'admin') {
+      setCurrentView('admin');
+    } else {
+      setCurrentView('info');
+    }
   };
 
   // Fonction pour basculer vers l'admin (peut être appelée via console ou URL)
@@ -21,9 +20,10 @@ function App() {
     setCurrentView(currentView === 'admin' ? 'info' : 'admin');
   };
 
-  // Exposer la fonction toggleAdmin globalement pour pouvoir l'appeler depuis la console
-  React.useEffect(() => {
-    window.toggleAdmin = toggleAdmin;
+  // Exposer la fonction toggleAdmin globalement et vérifier les paramètres URL
+  useEffect(() => {
+    // Exposer la fonction globalement
+    (window as any).toggleAdmin = toggleAdmin;
     
     // Vérifier les paramètres URL au chargement
     const urlParams = new URLSearchParams(window.location.search);
@@ -32,12 +32,12 @@ function App() {
     }
   }, []);
 
-  if (showAdmin() || currentView === 'admin') {
+  if (currentView === 'admin') {
     return <AdminPanel onBack={() => setCurrentView('info')} />;
   }
 
   return (
-    <div className="App">
+    <>
       <InfoPage onNavigate={handleNavigation} />
       
       {/* Bouton secret pour accéder à l'admin - invisible mais cliquable */}
@@ -55,8 +55,6 @@ function App() {
         }}
         title="Accès admin (invisible)"
       />
-    </div>
+    </>
   );
 }
-
-export default App;

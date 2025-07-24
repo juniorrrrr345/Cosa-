@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { configService } from '../services/configService';
+import { configService, Config } from '@/services/configService';
 
 const AdminContainer = styled.div`
   min-height: 100vh;
@@ -73,23 +75,6 @@ const Input = styled.input`
   }
 `;
 
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 12px 15px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
-  font-size: 14px;
-  min-height: 80px;
-  resize: vertical;
-  font-family: inherit;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #667eea;
-  }
-`;
-
 const FileInput = styled.input`
   width: 100%;
   padding: 12px 15px;
@@ -148,10 +133,10 @@ const SaveButton = styled(Button)`
   background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 `;
 
-const PreviewContainer = styled.div`
-  background: ${props => props.backgroundImage 
-    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.backgroundImage})`
-    : props.backgroundColor || '#1a1a1a'};
+const PreviewContainer = styled.div<{ $backgroundImage?: string | null; $backgroundColor?: string }>`
+  background: ${props => props.$backgroundImage 
+    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
+    : props.$backgroundColor || '#1a1a1a'};
   background-size: cover;
   background-position: center;
   border-radius: 15px;
@@ -194,8 +179,12 @@ const BackButton = styled(Button)`
   z-index: 1000;
 `;
 
-const AdminPanel = ({ onBack }) => {
-  const [config, setConfig] = useState(configService.getConfig());
+interface AdminPanelProps {
+  onBack: () => void;
+}
+
+const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
+  const [config, setConfig] = useState<Config>(configService.getConfig());
   const [previewMode, setPreviewMode] = useState(false);
 
   // États pour les formulaires
@@ -213,12 +202,12 @@ const AdminPanel = ({ onBack }) => {
     setBackgroundImage(loadedConfig.backgroundImage);
   }, []);
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setBackgroundImage(e.target.result);
+        setBackgroundImage(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -235,7 +224,7 @@ const AdminPanel = ({ onBack }) => {
       setConfig(newConfig);
       alert('Configuration sauvegardée avec succès !');
     } catch (error) {
-      alert('Erreur lors de la sauvegarde : ' + error.message);
+      alert('Erreur lors de la sauvegarde : ' + (error as Error).message);
     }
   };
 
@@ -248,8 +237,8 @@ const AdminPanel = ({ onBack }) => {
       <BackButton onClick={onBack}>← Retour</BackButton>
       
       <AdminHeader>
-        <Title>🛠️ Panel d'Administration</Title>
-        <Subtitle>Configurez l'apparence de votre boutique CANAGOOD 69</Subtitle>
+        <Title>🛠️ Panel d&apos;Administration</Title>
+        <Subtitle>Configurez l&apos;apparence de votre boutique CANAGOOD 69</Subtitle>
       </AdminHeader>
 
       <ConfigSection>
@@ -280,7 +269,7 @@ const AdminPanel = ({ onBack }) => {
         <SectionTitle>🎨 Configuration du Background</SectionTitle>
         
         <FormGroup>
-          <Label>Couleur de fond (utilisée si aucune image n'est définie)</Label>
+          <Label>Couleur de fond (utilisée si aucune image n&apos;est définie)</Label>
           <ColorInput
             type="color"
             value={backgroundColor}
@@ -319,8 +308,8 @@ const AdminPanel = ({ onBack }) => {
         <ConfigSection>
           <SectionTitle>👀 Aperçu</SectionTitle>
           <PreviewContainer 
-            backgroundImage={backgroundImage}
-            backgroundColor={backgroundColor}
+            $backgroundImage={backgroundImage}
+            $backgroundColor={backgroundColor}
           >
             <PreviewLogo>69</PreviewLogo>
             <PreviewTitle>{shopName}</PreviewTitle>

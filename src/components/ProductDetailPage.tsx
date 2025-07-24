@@ -80,15 +80,27 @@ const BackButton = styled.button`
 `;
 
 const LogoImage = styled.img`
-  height: 70px;
-  max-width: 350px;
+  height: 100px;
+  max-width: 450px;
   width: auto;
-  filter: drop-shadow(0 0 12px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 0 18px rgba(0,0,0,0.9));
   transition: transform 0.3s ease, filter 0.3s ease;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    height: 80px;
+    max-width: 350px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    height: 60px;
+    max-width: 250px;
+  }
   
   &:hover {
     transform: scale(1.05);
-    filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
+    filter: drop-shadow(0 0 25px rgba(0,0,0,1));
   }
 `;
 

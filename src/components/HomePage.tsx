@@ -58,22 +58,39 @@ const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 20px;
+  padding: 30px 20px;
   background: rgba(0,0,0,0.9);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255,255,255,0.1);
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 20px 15px;
+  }
 `;
 
 const LogoImage = styled.img`
-  height: 80px;
-  max-width: 400px;
+  height: 120px;
+  max-width: 500px;
   width: auto;
-  filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
   transition: transform 0.3s ease, filter 0.3s ease;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    height: 100px;
+    max-width: 400px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    height: 80px;
+    max-width: 300px;
+  }
   
   &:hover {
     transform: scale(1.05);
-    filter: drop-shadow(0 0 25px rgba(0,0,0,0.9));
+    filter: drop-shadow(0 0 30px rgba(0,0,0,1));
   }
 `;
 

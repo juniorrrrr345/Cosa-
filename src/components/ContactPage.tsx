@@ -163,23 +163,31 @@ const NavLabel = styled.div`
 
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+  const [contactContents, setContactContents] = useState<ContactContent[]>([]);
 
   useEffect(() => {
     const loadData = () => {
-      setConfig(dataService.getConfig());
+      setConfig(dataService.getConfigSync());
+      setContactContents(dataService.getContactContents());
     };
 
     loadData();
     
-    // Écouter les mises à jour de configuration
+    // Écouter les mises à jour de configuration et de données
     const handleConfigUpdate = () => {
+      loadData();
+    };
+    
+    const handleDataUpdate = () => {
       loadData();
     };
 
     window.addEventListener('configUpdated', handleConfigUpdate);
+    window.addEventListener('dataUpdated', handleDataUpdate);
 
     return () => {
       window.removeEventListener('configUpdated', handleConfigUpdate);
+      window.removeEventListener('dataUpdated', handleDataUpdate);
     };
   }, []);
 
@@ -193,14 +201,37 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
       </Header>
 
       <Content>
-        <ContactCard>
-          <ContactTitle>✉️ Page Contact</ContactTitle>
-          <ContactInfo>
-            Cette page sera configurée depuis le panel administrateur.
-            <br />
-            Utilisez l'interface d'administration pour ajouter le contenu de contact.
-          </ContactInfo>
-        </ContactCard>
+        {contactContents.length > 0 ? (
+          contactContents.map((contact) => (
+            <ContactCard key={contact.id}>
+              <ContactTitle>{contact.title}</ContactTitle>
+              <ContactInfo>
+                {contact.description}
+              </ContactInfo>
+              
+              {contact.telegramUsername && contact.telegramLink && (
+                <TelegramButton href={contact.telegramLink} target="_blank" rel="noopener noreferrer">
+                  ✈️ Contacter {contact.telegramUsername}
+                </TelegramButton>
+              )}
+              
+              {contact.additionalInfo && (
+                <ContactInfo style={{ marginTop: '20px', fontSize: '13px', lineHeight: '1.8' }}>
+                  {contact.additionalInfo.split('\n').map((line, index) => (
+                    <div key={index}>{line}</div>
+                  ))}
+                </ContactInfo>
+              )}
+            </ContactCard>
+          ))
+        ) : (
+          <ContactCard>
+            <ContactTitle>✉️ Page Contact</ContactTitle>
+            <ContactInfo>
+              Configuration en cours... Utilisez le panel administrateur pour ajouter le contenu.
+            </ContactInfo>
+          </ContactCard>
+        )}
       </Content>
 
       <BottomNavigation>

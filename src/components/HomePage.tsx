@@ -58,15 +58,15 @@ const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 25px 20px;
   background: rgba(0,0,0,0.9);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255,255,255,0.1);
 `;
 
 const LogoImage = styled.img`
-  height: 60px;
-  max-width: 300px;
+  height: 80px;
+  max-width: 400px;
   width: auto;
   filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
   transition: transform 0.3s ease, filter 0.3s ease;

@@ -46,8 +46,8 @@ const BackButton = styled.button`
 `;
 
 const LogoImage = styled.img`
-  height: 50px;
-  max-width: 250px;
+  height: 70px;
+  max-width: 350px;
   width: auto;
   filter: drop-shadow(0 0 12px rgba(0,0,0,0.8));
   transition: transform 0.3s ease, filter 0.3s ease;

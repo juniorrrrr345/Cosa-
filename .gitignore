@@ -45,4 +45,4 @@ Thumbs.db
 
 # BIPCOSA06 specific
 /public/temp/
-.cache/
+.cache/core

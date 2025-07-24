@@ -747,13 +747,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
   const handleSaveConfig = async (newConfig: Partial<ShopConfig>) => {
     try {
-      console.log('⚙️ Admin: Mise à jour de la configuration');
-      await dataService.updateConfig(newConfig);
+      console.log('⚙️ Admin: Mise à jour de la configuration:', newConfig);
+      
+      // Mise à jour via dataService
+      const updatedConfig = await dataService.updateConfig(newConfig);
+      
+      // Mettre à jour l'état local
+      setConfig(updatedConfig);
+      
       console.log('✅ Configuration mise à jour avec succès');
+      
+      // Rafraîchir les données
       await refreshData();
+      
+      // Notification de succès
+      setTimeout(() => {
+        console.log('🔄 Synchronisation config terminée');
+      }, 100);
+      
     } catch (error) {
       console.error('❌ Erreur lors de la mise à jour de la config:', error);
-      alert('Erreur lors de la mise à jour de la configuration');
+      alert(`❌ Erreur lors de la mise à jour de la configuration: ${error.message || error}`);
     }
   };
 
@@ -954,10 +968,23 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         case 'categories':
           return (
             <ContentSection>
-              <SectionTitle>📂 Gestion des Catégories</SectionTitle>
-              <p style={{ textAlign: 'center', marginBottom: '20px', color: 'rgba(255,255,255,0.8)' }}>
-                Gérez les catégories de produits Cannabis (Indica, Sativa, Hybride)
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <SectionTitle>📂 Gestion des Catégories</SectionTitle>
+                <ActionButton $variant="add" onClick={() => {
+                  const label = prompt('📂 Nom de la nouvelle catégorie:');
+                  if (label && label.trim()) {
+                    try {
+                      dataService.addCategory({ label: label.trim() });
+                      refreshData();
+                      alert('✅ Catégorie ajoutée avec succès !');
+                    } catch (error) {
+                      alert('❌ Erreur lors de l\'ajout');
+                    }
+                  }
+                }}>
+                  + Ajouter une catégorie
+                </ActionButton>
+              </div>
               
               <DataGrid>
                 {categories.filter(c => c.value !== 'all').map((category) => (
@@ -968,27 +995,62 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                         <ProductDetails>Code: {category.value}</ProductDetails>
                       </div>
                       <ActionButtons>
-                        <ActionButton $variant="edit">✏️ Modifier</ActionButton>
-                        <ActionButton $variant="delete">🗑️ Supprimer</ActionButton>
+                        <ActionButton $variant="edit" onClick={() => {
+                          const newLabel = prompt('✏️ Nouveau nom:', category.label);
+                          if (newLabel && newLabel.trim() !== category.label) {
+                            try {
+                              dataService.updateCategory(category.value, { label: newLabel.trim() });
+                              refreshData();
+                              alert('✅ Catégorie modifiée !');
+                            } catch (error) {
+                              alert('❌ Erreur lors de la modification');
+                            }
+                          }
+                        }}>✏️ Modifier</ActionButton>
+                        <ActionButton $variant="delete" onClick={() => {
+                          if (confirm(`🗑️ Supprimer la catégorie "${category.label}" ?`)) {
+                            try {
+                              const success = dataService.deleteCategory(category.value);
+                              if (success) {
+                                refreshData();
+                                alert('✅ Catégorie supprimée !');
+                              } else {
+                                alert('❌ Impossible de supprimer cette catégorie');
+                              }
+                            } catch (error) {
+                              alert('❌ Erreur lors de la suppression');
+                            }
+                          }
+                        }}>🗑️ Supprimer</ActionButton>
                       </ActionButtons>
                     </div>
                   </DataItem>
                 ))}
               </DataGrid>
-              
-              <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <ActionButton $variant="add">+ Ajouter une catégorie</ActionButton>
-              </div>
             </ContentSection>
           );
 
         case 'farms':
           return (
             <ContentSection>
-              <SectionTitle>🏠 Gestion des Farms</SectionTitle>
-              <p style={{ textAlign: 'center', marginBottom: '20px', color: 'rgba(255,255,255,0.8)' }}>
-                Gérez les fermes et origines des produits Cannabis
-              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                <SectionTitle>🏠 Gestion des Farms</SectionTitle>
+                <ActionButton $variant="add" onClick={() => {
+                  const label = prompt('🏠 Nom de la nouvelle ferme:');
+                  if (label && label.trim()) {
+                    const country = prompt('🌍 Emoji du pays (ex: 🇫🇷):', '🌍') || '🌍';
+                    try {
+                      dataService.addFarm({ label: label.trim(), country });
+                      refreshData();
+                      alert('✅ Ferme ajoutée avec succès !');
+                    } catch (error) {
+                      alert('❌ Erreur lors de l\'ajout');
+                    }
+                  }
+                }}>
+                  + Ajouter une ferme
+                </ActionButton>
+              </div>
               
               <DataGrid>
                 {farms.filter(f => f.value !== 'all').map((farm) => (
@@ -999,17 +1061,42 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                         <ProductDetails>Code: {farm.value}</ProductDetails>
                       </div>
                       <ActionButtons>
-                        <ActionButton $variant="edit">✏️ Modifier</ActionButton>
-                        <ActionButton $variant="delete">🗑️ Supprimer</ActionButton>
+                        <ActionButton $variant="edit" onClick={() => {
+                          const newLabel = prompt('✏️ Nouveau nom:', farm.label);
+                          const newCountry = prompt('🌍 Nouveau pays:', farm.country);
+                          if ((newLabel && newLabel.trim() !== farm.label) || (newCountry && newCountry !== farm.country)) {
+                            try {
+                              const updates: any = {};
+                              if (newLabel && newLabel.trim() !== farm.label) updates.label = newLabel.trim();
+                              if (newCountry && newCountry !== farm.country) updates.country = newCountry;
+                              dataService.updateFarm(farm.value, updates);
+                              refreshData();
+                              alert('✅ Ferme modifiée !');
+                            } catch (error) {
+                              alert('❌ Erreur lors de la modification');
+                            }
+                          }
+                        }}>✏️ Modifier</ActionButton>
+                        <ActionButton $variant="delete" onClick={() => {
+                          if (confirm(`🗑️ Supprimer la ferme "${farm.label}" ?`)) {
+                            try {
+                              const success = dataService.deleteFarm(farm.value);
+                              if (success) {
+                                refreshData();
+                                alert('✅ Ferme supprimée !');
+                              } else {
+                                alert('❌ Impossible de supprimer cette ferme');
+                              }
+                            } catch (error) {
+                              alert('❌ Erreur lors de la suppression');
+                            }
+                          }
+                        }}>🗑️ Supprimer</ActionButton>
                       </ActionButtons>
                     </div>
                   </DataItem>
                 ))}
               </DataGrid>
-              
-              <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <ActionButton $variant="add">+ Ajouter une farm</ActionButton>
-              </div>
             </ContentSection>
           );
 

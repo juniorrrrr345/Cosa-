@@ -580,6 +580,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
   const [backgroundUploading, setBackgroundUploading] = useState(false);
+  const [videoUploading, setVideoUploading] = useState(false);
+  const [imageUploading, setImageUploading] = useState(false);
 
   // Fonctions pour gérer les prix multiples
   const addPrice = () => {
@@ -1964,32 +1966,43 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               padding: '15px', 
               border: '1px dashed rgba(255,255,255,0.3)', 
               borderRadius: '8px',
-              textAlign: 'center' 
+              textAlign: 'center',
+              opacity: videoUploading ? 0.5 : 1
             }}>
               <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginBottom: '8px' }}>
-                🎥 Upload VIDÉO depuis iPhone/mobile
+                {videoUploading ? '📤 Upload vidéo vers Cloudinary...' : '🎥 Upload VIDÉO depuis iPhone/mobile'}
               </div>
+              {videoUploading && (
+                <div style={{ 
+                  color: '#4ecdc4', 
+                  fontSize: '12px', 
+                  marginTop: '8px',
+                  fontWeight: 'bold'
+                }}>
+                  ⏳ Traitement de votre vidéo... (peut prendre plus de temps)
+                </div>
+              )}
               <Input 
                 type="file" 
                 accept="video/*"
                 style={{ fontSize: '12px' }}
+                disabled={videoUploading}
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
-                  if (file) {
+                  if (file && !videoUploading) {
+                    setVideoUploading(true);
+                    
                     try {
-                      const { uploadToCloudinary } = await import('@/config/cloudinary');
+                      console.log('🎥 Upload vidéo vers Cloudinary...', file.name, `${Math.round(file.size / 1024 / 1024)}MB`);
                       
-                      // Loading state
-                      const uploadArea = e.target.parentElement;
-                      if (uploadArea) {
-                        uploadArea.style.opacity = '0.5';
-                        uploadArea.innerHTML += '<div style="color: #4ecdc4;">📤 Upload vidéo...</div>';
-                      }
+                      const { uploadToCloudinary } = await import('@/config/cloudinary');
                       
                       const result = await uploadToCloudinary(file, 'videos');
                       
+                      console.log('✅ Vidéo uploadée:', result.secure_url);
+                      
                       // Mettre à jour le champ vidéo avec l'URL Cloudinary
-                      setFormData({...formData, video: result.secure_url});
+                      setFormData(prevData => ({...prevData, video: result.secure_url}));
                       
                       alert('✅ Vidéo uploadée vers Cloudinary !');
                       
@@ -1997,15 +2010,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                       console.error('❌ Erreur upload vidéo:', error);
                       alert(`❌ Erreur upload vidéo: ${error.message}`);
                     } finally {
-                      // Restaurer
-                      const uploadArea = e.target.parentElement;
-                      if (uploadArea) {
-                        uploadArea.style.opacity = '1';
-                        const loadingDiv = uploadArea.querySelector('div:last-child');
-                        if (loadingDiv && loadingDiv.textContent.includes('📤')) {
-                          loadingDiv.remove();
-                        }
-                      }
+                      setVideoUploading(false);
+                      // Reset le input file pour permettre de re-sélectionner
+                      e.target.value = '';
                     }
                   }
                 }}

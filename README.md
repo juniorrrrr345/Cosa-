@@ -84,20 +84,33 @@ src/
 └── index.js                 # Point d'entrée
 ```
 
-## 🚀 Déploiement sur Vercel
+## 🚀 Déploiement sur GitHub Pages
 
-1. **Connecter à GitHub** :
-   - Push le code sur un repository GitHub
-   - Se connecter à [Vercel](https://vercel.com)
-   - Importer le project depuis GitHub
+### Méthode 1: Déploiement Automatique (Recommandé)
 
-2. **Configuration automatique** :
-   - Vercel détecte automatiquement React
-   - Build command: `npm run build`
-   - Output directory: `build`
+1. **Activer GitHub Pages** :
+   - Aller dans Settings du repository
+   - Scroll jusqu'à "Pages"
+   - Source: "GitHub Actions"
 
-3. **Variables d'environnement** (optionnel) :
-   - Aucune variable requise pour cette application
+2. **Push vers main** :
+   - Le déploiement se fait automatiquement
+   - Via GitHub Actions workflow
+
+3. **URL Live** :
+   - `https://juniorrrrr345.github.io/Cosa-`
+
+### Méthode 2: Déploiement Manuel
+
+```bash
+npm run deploy
+```
+
+### Alternative: Déploiement sur Vercel
+
+1. **Se connecter à [Vercel](https://vercel.com)**
+2. **Importer le repository GitHub**
+3. **Configuration automatique**
 
 ## 🎨 Personnalisation
 

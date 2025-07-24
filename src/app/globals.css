@@ -1,0 +1,14 @@
+/* CANAGOOD 69 APP - Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #000;
+  color: white;
+}
+
+/* Optimisé pour Vercel - Deploy automatique */

@@ -227,42 +227,25 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
     };
   }, []);
 
-  // Fonction pour charger les données avec priorité localStorage pour config
-  const loadData = async () => {
+  // Fonction pour charger les données - VERSION SIMPLIFIEE
+  const loadData = () => {
     try {
       console.log('📥 ContactPage - Chargement des données...');
       
-      // Charger config en priorité depuis localStorage (panel admin)
-      let configData;
-      if (typeof window !== 'undefined') {
-        const storedConfig = localStorage.getItem('bipcosa06_config');
-        if (storedConfig) {
-          try {
-            configData = JSON.parse(storedConfig);
-            console.log('📥 ContactPage - Config depuis localStorage (panel admin):', configData);
-          } catch (e) {
-            console.error('❌ Erreur parsing config localStorage');
-          }
-        }
-      }
-      
-      // Si pas de config localStorage, utiliser l'API
-      if (!configData) {
-        configData = await dataService.getConfig();
-        console.log('📥 ContactPage - Config depuis API:', configData);
-      }
-      
+      // Utiliser directement les méthodes synchrones du dataService
+      const configData = dataService.getConfigSync();
       const contactData = dataService.getContactContents();
       
       setConfig(configData);
       setContactContents(contactData);
       
-      console.log('✅ ContactPage - Données chargées:', {
-        config: configData,
-        contactContents: contactData.length
-      });
+      console.log('✅ ContactPage - Données chargées avec succès');
     } catch (error) {
-      console.error('❌ ContactPage - Erreur lors du chargement:', error);
+      console.error('❌ Erreur lors du chargement des données:', error);
+      
+      // Fallback minimal
+      setConfig({} as ShopConfig);
+      setContactContents([]);
     }
   };
 

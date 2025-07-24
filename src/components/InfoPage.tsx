@@ -230,42 +230,25 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
     };
   }, []);
 
-  // Fonction pour charger les données avec priorité localStorage pour config
-  const loadData = async () => {
+  // Fonction pour charger les données - VERSION SIMPLIFIEE
+  const loadData = () => {
     try {
       console.log('📥 InfoPage - Chargement des données...');
       
-      // Charger config en priorité depuis localStorage (panel admin)
-      let configData;
-      if (typeof window !== 'undefined') {
-        const storedConfig = localStorage.getItem('bipcosa06_config');
-        if (storedConfig) {
-          try {
-            configData = JSON.parse(storedConfig);
-            console.log('📥 InfoPage - Config depuis localStorage (panel admin):', configData);
-          } catch (e) {
-            console.error('❌ Erreur parsing config localStorage');
-          }
-        }
-      }
-      
-      // Si pas de config localStorage, utiliser l'API
-      if (!configData) {
-        configData = await dataService.getConfig();
-        console.log('📥 InfoPage - Config depuis API:', configData);
-      }
-      
+      // Utiliser directement les méthodes synchrones du dataService
+      const configData = dataService.getConfigSync();
       const infoData = dataService.getInfoContents();
       
       setConfig(configData);
       setInfoContents(infoData);
       
-      console.log('✅ InfoPage - Données chargées:', {
-        config: configData,
-        infoContents: infoData.length
-      });
+      console.log('✅ InfoPage - Données chargées avec succès');
     } catch (error) {
-      console.error('❌ InfoPage - Erreur lors du chargement:', error);
+      console.error('❌ Erreur lors du chargement des données:', error);
+      
+      // Fallback minimal
+      setConfig({} as ShopConfig);
+      setInfoContents([]);
     }
   };
 

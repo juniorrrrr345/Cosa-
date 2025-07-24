@@ -323,9 +323,8 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
       </Header>
 
       <Content>
-        <ProductImage $image={product.image}>
-          <ProductFlag>{product.flagText}</ProductFlag>
-        </ProductImage>
+        {/* Pas d'image dans la page détail */}
+        <ProductFlag>{product.flagText}</ProductFlag>
 
         <ProductInfo>
           <ProductName>{product.name}</ProductName>

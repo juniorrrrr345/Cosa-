@@ -757,20 +757,39 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   };
 
   const handleSaveProduct = async () => {
-    if (!formData.name || !formData.description) {
-      alert('Veuillez remplir tous les champs obligatoires');
+    if (!formData.name || !formData.category || !formData.farm) {
+      alert('Veuillez remplir le nom, la catégorie et la ferme');
       return;
     }
 
     try {
+      // Préparer les données avec des valeurs par défaut
+      const productData = {
+        name: formData.name,
+        quality: formData.quality || 'Qualité Standard',
+        image: formData.image || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400',
+        flagColor: formData.flagColor || '#333333',
+        flagText: formData.flagText || '🌿',
+        category: formData.category,
+        farm: formData.farm,
+        description: formData.description || '',
+        prices: formData.prices || [{ id: '1', weight: '1g', price: '10€' }],
+        video: formData.video || ''
+      };
+
       if (editingProduct) {
         console.log('✏️ Admin: Modification du produit', editingProduct.id);
-        await dataService.updateProduct(editingProduct.id, formData as Partial<Product>);
+        await dataService.updateProduct(editingProduct.id, productData);
         console.log('✅ Produit modifié avec succès');
+        alert('✅ Produit modifié avec succès !');
       } else {
         console.log('➕ Admin: Ajout d\'un nouveau produit');
-        await dataService.addProduct(formData as Omit<Product, '_id' | 'id' | 'createdAt' | 'updatedAt'>);
+        await dataService.addProduct({
+          ...productData,
+          id: Date.now() // ID unique pour les nouveaux produits
+        });
         console.log('✅ Produit ajouté avec succès');
+        alert('✅ Produit ajouté avec succès !');
       }
       
       await refreshData();
@@ -779,7 +798,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       setFormData({});
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde:', error);
-      alert('Erreur lors de la sauvegarde du produit');
+      alert(`❌ Erreur lors de la sauvegarde: ${error.message || error}`);
     }
   };
 
@@ -1594,7 +1613,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               placeholder="https://images.unsplash.com/... ou upload via Cloudinary" 
             />
             
-            {/* Upload Cloudinary pour produits */}
+            {/* Upload Cloudinary pour images */}
             <div style={{ 
               marginTop: '10px', 
               padding: '15px', 
@@ -1603,11 +1622,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               textAlign: 'center' 
             }}>
               <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginBottom: '8px' }}>
-                📱 Ou upload depuis iPhone/mobile
+                📷 Upload IMAGE depuis iPhone/mobile
               </div>
               <Input 
                 type="file" 
-                accept="image/*,video/*"
+                accept="image/*"
                 style={{ fontSize: '12px' }}
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
@@ -1619,7 +1638,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                       const uploadArea = e.target.parentElement;
                       if (uploadArea) {
                         uploadArea.style.opacity = '0.5';
-                        uploadArea.innerHTML += '<div style="color: #4ecdc4;">📤 Upload...</div>';
+                        uploadArea.innerHTML += '<div style="color: #4ecdc4;">📤 Upload image...</div>';
                       }
                       
                       const result = await uploadToCloudinary(file, 'products');
@@ -1630,8 +1649,72 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                       alert('✅ Image uploadée vers Cloudinary !');
                       
                     } catch (error) {
-                      console.error('❌ Erreur upload produit:', error);
-                      alert(`❌ Erreur: ${error.message}`);
+                      console.error('❌ Erreur upload image:', error);
+                      alert(`❌ Erreur upload image: ${error.message}`);
+                    } finally {
+                      // Restaurer
+                      const uploadArea = e.target.parentElement;
+                      if (uploadArea) {
+                        uploadArea.style.opacity = '1';
+                        const loadingDiv = uploadArea.querySelector('div:last-child');
+                        if (loadingDiv && loadingDiv.textContent.includes('📤')) {
+                          loadingDiv.remove();
+                        }
+                      }
+                    }
+                  }
+                }}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Vidéo du produit (optionnel)</Label>
+            <Input 
+              type="url" 
+              value={formData.video || ''} 
+              onChange={(e) => setFormData({...formData, video: e.target.value})}
+              placeholder="https://... ou upload via Cloudinary" 
+            />
+            
+            {/* Upload Cloudinary pour vidéos */}
+            <div style={{ 
+              marginTop: '10px', 
+              padding: '15px', 
+              border: '1px dashed rgba(255,255,255,0.3)', 
+              borderRadius: '8px',
+              textAlign: 'center' 
+            }}>
+              <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginBottom: '8px' }}>
+                🎥 Upload VIDÉO depuis iPhone/mobile
+              </div>
+              <Input 
+                type="file" 
+                accept="video/*"
+                style={{ fontSize: '12px' }}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    try {
+                      const { uploadToCloudinary } = await import('@/config/cloudinary');
+                      
+                      // Loading state
+                      const uploadArea = e.target.parentElement;
+                      if (uploadArea) {
+                        uploadArea.style.opacity = '0.5';
+                        uploadArea.innerHTML += '<div style="color: #4ecdc4;">📤 Upload vidéo...</div>';
+                      }
+                      
+                      const result = await uploadToCloudinary(file, 'videos');
+                      
+                      // Mettre à jour le champ vidéo avec l'URL Cloudinary
+                      setFormData({...formData, video: result.secure_url});
+                      
+                      alert('✅ Vidéo uploadée vers Cloudinary !');
+                      
+                    } catch (error) {
+                      console.error('❌ Erreur upload vidéo:', error);
+                      alert(`❌ Erreur upload vidéo: ${error.message}`);
                     } finally {
                       // Restaurer
                       const uploadArea = e.target.parentElement;
@@ -1659,15 +1742,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             />
           </FormGroup>
 
-          <FormGroup>
-            <Label>URL vidéo (optionnel)</Label>
-            <Input 
-              type="url" 
-              value={formData.video || ''} 
-              onChange={(e) => setFormData({...formData, video: e.target.value})}
-              placeholder="https://..." 
-            />
-          </FormGroup>
+
 
           {/* Section Prix Multiples */}
           <FormGroup>

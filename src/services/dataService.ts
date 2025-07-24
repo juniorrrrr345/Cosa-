@@ -47,9 +47,10 @@ export interface ContactContent {
 
 export interface ShopConfig {
   _id?: string;
-  backgroundType: 'gradient' | 'image';
+  backgroundType: 'gradient' | 'image' | 'url';
   backgroundColor: string;
-  backgroundImage?: string;
+  backgroundImage?: string; // Cloudinary ou upload local
+  backgroundUrl?: string; // URL externe (Imgur, etc.)
   backgroundImagePublicId?: string; // ID Cloudinary pour l'image de fond
   shopName: string;
   description: string;
@@ -160,25 +161,15 @@ class DataService {
   }
 
   private async fetchCategories(): Promise<Category[]> {
-    try {
-      const response = await fetch('/api/categories');
-      if (!response.ok) throw new Error('Erreur API categories');
-      return await response.json();
-    } catch (error) {
-      console.error('Erreur fetch categories:', error);
-      return this.getFallbackCategories();
-    }
+    // TOUJOURS utiliser les données statiques (pas de MongoDB)
+    console.log('📂 Utilisation des catégories statiques (sans MongoDB)');
+    return this.getStaticCategories();
   }
 
   private async fetchFarms(): Promise<Farm[]> {
-    try {
-      const response = await fetch('/api/farms');
-      if (!response.ok) throw new Error('Erreur API farms');
-      return await response.json();
-    } catch (error) {
-      console.error('Erreur fetch farms:', error);
-      return this.getFallbackFarms();
-    }
+    // TOUJOURS utiliser les données statiques (pas de MongoDB)
+    console.log('🏭 Utilisation des fermes statiques (sans MongoDB)');
+    return this.getStaticFarms();
   }
 
   private async fetchConfig(): Promise<ShopConfig> {
@@ -236,16 +227,21 @@ class DataService {
     ];
   }
 
-  private getFallbackCategories(): Category[] {
+  // Méthodes pour données statiques (catégories et fermes)
+  private getStaticCategories(): Category[] {
     return [
+      { value: 'all', label: 'Toutes catégories' },
       { value: 'indica', label: 'Indica' },
       { value: 'sativa', label: 'Sativa' },
-      { value: 'hybrid', label: 'Hybride' }
+      { value: 'hybrid', label: 'Hybride' },
+      { value: 'indoor', label: 'Indoor' },
+      { value: 'outdoor', label: 'Outdoor' }
     ];
   }
 
-  private getFallbackFarms(): Farm[] {
+  private getStaticFarms(): Farm[] {
     return [
+      { value: 'all', label: 'Toutes fermes' },
       { value: 'holland', label: 'Holland', country: '🇳🇱' },
       { value: 'espagne', label: 'Espagne', country: '🇪🇸' },
       { value: 'calispain', label: 'Calispain', country: '🇺🇸🇪🇸' },
@@ -257,6 +253,8 @@ class DataService {
     return {
       backgroundType: 'gradient',
       backgroundColor: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
+      backgroundImage: '', // Image Cloudinary
+      backgroundUrl: '', // URL d'image externe (Imgur, etc.)
       shopName: 'BIPCOSA06',
       description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
     };
@@ -265,8 +263,8 @@ class DataService {
   private useFallbackData() {
     console.log('⚠️ Utilisation des données de fallback');
     this.productsCache = this.getFallbackProducts();
-    this.categoriesCache = this.getFallbackCategories();
-    this.farmsCache = this.getFallbackFarms();
+    this.categoriesCache = this.getStaticCategories(); // Corrigé
+    this.farmsCache = this.getStaticFarms(); // Corrigé
     this.configCache = this.getFallbackConfig();
   }
 

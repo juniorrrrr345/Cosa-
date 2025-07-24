@@ -1,9 +1,9 @@
 // Configuration Cloudinary pour uploads depuis iPhone/mobile
 export const CLOUDINARY_CONFIG = {
-  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dqr6vjwtr', // Cloud name public de démo
-  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'bipcosa06_unsigned', // Preset unsigned
-  apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '', // Pas nécessaire pour unsigned
-  apiSecret: process.env.CLOUDINARY_API_SECRET || '', // Pas nécessaire pour unsigned
+  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dvsy5mfhu',
+  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'bipcosa06_preset',
+  apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '485987511825452',
+  apiSecret: process.env.CLOUDINARY_API_SECRET || 'TCJrWZuCJ6r_BLhO4i6afg3F6JU',
   folder: 'bipcosa06',
   formats: ['jpg', 'jpeg', 'png', 'webp', 'mp4', 'mov'],
   maxSize: 10485760, // 10MB
@@ -35,7 +35,7 @@ export const uploadToCloudinary = async (
   }
 
   if (!CLOUDINARY_CONFIG.uploadPreset) {
-    throw new Error('❌ Upload preset Cloudinary manquant - Créez un preset "unsigned" dans votre dashboard Cloudinary');
+    throw new Error('❌ Upload preset Cloudinary manquant - Utilisez "bipcosa06_preset" ou créez-en un dans votre dashboard');
   }
 
   // Vérifier le type de fichier

@@ -180,6 +180,7 @@ class DataService {
     };
     this.products.push(newProduct);
     this.saveToLocalStorage();
+    this.notifyDataUpdate();
     return newProduct;
   }
 
@@ -189,6 +190,7 @@ class DataService {
     
     this.products[index] = { ...this.products[index], ...updates };
     this.saveToLocalStorage();
+    this.notifyDataUpdate();
     return this.products[index];
   }
 
@@ -198,6 +200,7 @@ class DataService {
     
     this.products.splice(index, 1);
     this.saveToLocalStorage();
+    this.notifyDataUpdate();
     return true;
   }
 
@@ -255,6 +258,24 @@ class DataService {
   updateConfig(newConfig: Partial<ShopConfig>): void {
     this.config = { ...this.config, ...newConfig };
     this.saveToLocalStorage();
+    this.notifyConfigUpdate();
+  }
+
+  // Notification system for real-time sync
+  private notifyDataUpdate(): void {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('dataUpdated', { 
+        detail: { timestamp: Date.now() }
+      }));
+    }
+  }
+
+  private notifyConfigUpdate(): void {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('configUpdated', { 
+        detail: { config: this.config, timestamp: Date.now() }
+      }));
+    }
   }
 
   // Persistance localStorage

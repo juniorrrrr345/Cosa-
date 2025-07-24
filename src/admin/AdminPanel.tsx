@@ -382,25 +382,38 @@ const ActionButton = styled.button<{ $variant?: 'edit' | 'delete' | 'add' }>`
     switch (props.$variant) {
       case 'edit':
         return `
-          background: linear-gradient(135deg, #4facfe, #00f2fe);
+          background: rgba(255,255,255,0.15);
+          border: 1px solid rgba(255,255,255,0.3);
           color: white;
-          &:hover { transform: translateY(-2px); }
+          &:hover { 
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px); 
+          }
         `;
       case 'delete':
         return `
-          background: linear-gradient(135deg, #fc466b, #3f5efb);
+          background: rgba(0,0,0,0.7);
+          border: 1px solid rgba(255,255,255,0.2);
           color: white;
-          &:hover { transform: translateY(-2px); }
+          &:hover { 
+            background: rgba(0,0,0,0.9);
+            transform: translateY(-2px); 
+          }
         `;
       case 'add':
         return `
-          background: linear-gradient(135deg, #43e97b, #38f9d7);
+          background: rgba(255,255,255,0.2);
+          border: 1px solid rgba(255,255,255,0.4);
           color: white;
-          &:hover { transform: translateY(-2px); }
+          &:hover { 
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px); 
+          }
         `;
       default:
         return `
           background: rgba(255,255,255,0.1);
+          border: 1px solid rgba(255,255,255,0.2);
           color: white;
           &:hover { background: rgba(255,255,255,0.2); }
         `;

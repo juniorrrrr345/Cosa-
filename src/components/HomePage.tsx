@@ -4,9 +4,15 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div`
+const PageContainer = styled.div<{ $backgroundImage?: string }>`
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+  background: ${props => props.$backgroundImage 
+    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
+    : 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+  };
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   position: relative;
@@ -262,7 +268,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   };
 
   return (
-    <PageContainer>
+    <PageContainer $backgroundImage={config.backgroundImage}>
       {/* Header simplifié avec juste BIPCOSA06 */}
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>

@@ -2,11 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { configService, Config } from '@/services/configService';
+import { dataService, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div`
+const PageContainer = styled.div<{ $backgroundImage?: string }>`
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+  background: ${props => props.$backgroundImage 
+    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
+    : 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+  };
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   position: relative;
@@ -152,15 +158,29 @@ interface InfoPageProps {
 }
 
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
-  const [config, setConfig] = useState<Config>(configService.defaultConfig);
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
 
   useEffect(() => {
-    const loadedConfig = configService.getConfig();
-    setConfig(loadedConfig);
+    const loadData = () => {
+      setConfig(dataService.getConfig());
+    };
+
+    loadData();
+    
+    // Écouter les mises à jour de configuration
+    const handleConfigUpdate = () => {
+      loadData();
+    };
+
+    window.addEventListener('configUpdated', handleConfigUpdate);
+
+    return () => {
+      window.removeEventListener('configUpdated', handleConfigUpdate);
+    };
   }, []);
 
   return (
-    <PageContainer>
+    <PageContainer $backgroundImage={config.backgroundImage}>
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>
       </Header>

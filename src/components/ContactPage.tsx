@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { dataService, ShopConfig } from '@/services/dataService';
 
 interface ContactPageProps {
   onNavigate?: (view: string) => void;
@@ -9,9 +10,15 @@ interface ContactPageProps {
 }
 
 // Styles pour la page Contact
-const PageContainer = styled.div`
+const PageContainer = styled.div<{ $backgroundImage?: string }>`
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+  background: ${props => props.$backgroundImage 
+    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
+    : 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+  };
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   position: relative;
@@ -91,7 +98,8 @@ const TelegramButton = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, #0088cc, #0066aa);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
   color: white;
   text-decoration: none;
   padding: 15px 25px;
@@ -99,13 +107,14 @@ const TelegramButton = styled.a`
   font-size: 16px;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 20px rgba(0,136,204,0.3);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
   margin-top: 10px;
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,136,204,0.4);
-    background: linear-gradient(135deg, #0099dd, #0077bb);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.4);
   }
 `;
 
@@ -122,35 +131,58 @@ const BottomNavigation = styled.div`
   border-top: 1px solid rgba(255,255,255,0.2);
 `;
 
-const NavItem = styled.div<{ $active: boolean }>`
+const NavItem = styled.div<{ $active?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
   cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 12px;
+  color: ${props => props.$active ? '#ffffff' : 'rgba(255,255,255,0.6)'};
+  background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
   transition: all 0.3s ease;
-  opacity: ${props => props.$active ? 1 : 0.7};
-  transform: ${props => props.$active ? 'scale(1.1)' : 'scale(1)'};
 
   &:hover {
-    opacity: 1;
-    transform: scale(1.1);
+    color: #ffffff;
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
   }
 `;
 
 const NavIcon = styled.div`
-  font-size: 20px;
+  font-size: 22px;
 `;
 
-const NavLabel = styled.span`
+const NavLabel = styled.div`
   font-size: 11px;
-  font-weight: 500;
-  color: white;
+  font-weight: 600;
 `;
 
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+
+  useEffect(() => {
+    const loadData = () => {
+      setConfig(dataService.getConfig());
+    };
+
+    loadData();
+    
+    // Écouter les mises à jour de configuration
+    const handleConfigUpdate = () => {
+      loadData();
+    };
+
+    window.addEventListener('configUpdated', handleConfigUpdate);
+
+    return () => {
+      window.removeEventListener('configUpdated', handleConfigUpdate);
+    };
+  }, []);
+
   return (
-    <PageContainer>
+    <PageContainer $backgroundImage={config.backgroundImage}>
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>
       </Header>

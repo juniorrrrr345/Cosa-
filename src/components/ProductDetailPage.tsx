@@ -1,11 +1,18 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { dataService, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div`
+const PageContainer = styled.div<{ $backgroundImage?: string }>`
   min-height: 100vh;
-  background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+  background: ${props => props.$backgroundImage 
+    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
+    : 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+  };
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   position: relative;
@@ -221,7 +228,8 @@ const TelegramButton = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, #0088cc, #0066aa);
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
   color: white;
   text-decoration: none;
   padding: 15px 30px;
@@ -306,6 +314,27 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   onBack,
   currentView = 'menu' 
 }) => {
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+
+  useEffect(() => {
+    const loadData = () => {
+      setConfig(dataService.getConfig());
+    };
+
+    loadData();
+    
+    // Écouter les mises à jour de configuration
+    const handleConfigUpdate = () => {
+      loadData();
+    };
+
+    window.addEventListener('configUpdated', handleConfigUpdate);
+
+    return () => {
+      window.removeEventListener('configUpdated', handleConfigUpdate);
+    };
+  }, []);
+
   const handleTelegramOrder = (productName: string) => {
     const message = `Bonjour, je souhaite commander ${productName} de BIPCOSA06. Pouvez-vous me donner plus d'informations ?`;
     const telegramUrl = `https://t.me/bipcosa06?text=${encodeURIComponent(message)}`;
@@ -313,7 +342,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   };
 
   return (
-    <PageContainer>
+    <PageContainer $backgroundImage={config.backgroundImage}>
       <Header>
         <BackButton onClick={onBack}>
           ← Retour

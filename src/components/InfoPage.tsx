@@ -237,7 +237,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
       
       // Utiliser directement les méthodes synchrones du dataService
       const configData = dataService.getConfigSync();
-      const infoData = dataService.getInfoContents();
+      const infoData = dataService.getInfoContentsSync();
       
       setConfig(configData);
       setInfoContents(infoData);
@@ -265,6 +265,11 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
           <InfoSection key={info.id}>
             <InfoTitle>{info.title}</InfoTitle>
             <InfoDescription>{info.description}</InfoDescription>
+            {info.additionalInfo && (
+              <InfoDescription style={{ fontStyle: 'italic', marginTop: '10px', opacity: 0.9 }}>
+                {info.additionalInfo}
+              </InfoDescription>
+            )}
             {info.items && info.items.length > 0 && (
               <InfoList>
                 {info.items.map((item, index) => (

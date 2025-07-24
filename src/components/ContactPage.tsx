@@ -234,7 +234,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
       
       // Utiliser directement les méthodes synchrones du dataService
       const configData = dataService.getConfigSync();
-      const contactData = dataService.getContactContents();
+      const contactData = dataService.getContactContentsSync();
       
       setConfig(configData);
       setContactContents(contactData);

@@ -66,22 +66,14 @@ export const uploadToCloudinary = async (
   
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('timestamp', timestamp.toString());
   formData.append('folder', folderPath);
-  formData.append('api_key', CLOUDINARY_CONFIG.apiKey);
   
-  // Optimisation pour mobile
-  if (isImage) {
-    formData.append('quality', 'auto:good');
-    formData.append('format', 'auto');
-    formData.append('width', '1200');
-    formData.append('height', '800');
-    formData.append('crop', 'limit');
-  }
-
-  // Essayer d'abord avec preset si configuré
+  // Pour les uploads non signés, SEUL upload_preset est requis
+  // Tous les autres paramètres doivent être dans le preset
   if (CLOUDINARY_CONFIG.uploadPreset && CLOUDINARY_CONFIG.uploadPreset !== 'unsigned_upload') {
     formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+  } else {
+    throw new Error('Upload preset manquant - Créez un preset dans Cloudinary console');
   }
 
   try {
@@ -104,40 +96,6 @@ export const uploadToCloudinary = async (
     
     if (!response.ok) {
       console.error('❌ Erreur Cloudinary:', result);
-      
-      // Si le preset n'existe pas, essayer sans preset
-      if (result.error?.message?.includes('preset')) {
-        console.log('⚠️ Preset non trouvé, tentative sans preset...');
-        
-        // Supprimer le preset et réessayer
-        const newFormData = new FormData();
-        newFormData.append('file', file);
-        newFormData.append('timestamp', timestamp.toString());
-        newFormData.append('folder', folderPath);
-        newFormData.append('api_key', CLOUDINARY_CONFIG.apiKey);
-        
-        if (isImage) {
-          newFormData.append('quality', 'auto:good');
-          newFormData.append('format', 'auto');
-        }
-        
-        const retryResponse = await fetch(
-          `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${isVideo ? 'video' : 'image'}/upload`,
-          {
-            method: 'POST',
-            body: newFormData,
-          }
-        );
-        
-        const retryResult = await retryResponse.json();
-        
-        if (retryResponse.ok) {
-          console.log('✅ Upload Cloudinary réussi (sans preset):', retryResult.public_id);
-          return retryResult;
-        } else {
-          throw new Error(retryResult.error?.message || 'Erreur lors de l\'upload (retry)');
-        }
-      }
       
       throw new Error(result.error?.message || 'Erreur lors de l\'upload');
     }

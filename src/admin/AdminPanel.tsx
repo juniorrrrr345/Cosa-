@@ -572,6 +572,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   // État pour les uploads
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
+  const [backgroundUploading, setBackgroundUploading] = useState(false);
 
   // Fonctions pour gérer les prix multiples
   const addPrice = () => {
@@ -1429,52 +1430,64 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                       }}>
                         <div style={{ fontSize: '48px', marginBottom: '10px' }}>📱</div>
                         <div style={{ color: 'rgba(255,255,255,0.8)' }}>
-                          Upload depuis iPhone/mobile via Cloudinary
+                          {backgroundUploading ? '📤 Upload en cours vers Cloudinary...' : 'Upload depuis iPhone/mobile via Cloudinary'}
                         </div>
                         <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '5px' }}>
-                          Glissez-déposez ou cliquez pour sélectionner
+                          {backgroundUploading ? '⏳ Traitement de votre image...' : 'Glissez-déposez ou cliquez pour sélectionner'}
                         </div>
+                        {backgroundUploading && (
+                          <div style={{ 
+                            color: '#4ecdc4', 
+                            fontSize: '12px', 
+                            marginTop: '10px',
+                            fontWeight: 'bold'
+                          }}>
+                            🔄 Optimisation automatique en cours...
+                          </div>
+                        )}
                         <Input 
                           type="file" 
                           accept="image/*,video/*"
-                          style={{ marginTop: '15px', opacity: 0.7 }}
+                          style={{ marginTop: '15px', opacity: backgroundUploading ? 0.5 : 0.7 }}
+                          disabled={backgroundUploading}
                           onChange={async (e) => {
                             const file = e.target.files?.[0];
-                            if (file) {
+                            if (file && !backgroundUploading) {
+                              setBackgroundUploading(true);
+                              
                               try {
+                                console.log('🔄 Upload background vers Cloudinary...', file.name);
+                                
                                 // Import Cloudinary dynamiquement
                                 const { uploadToCloudinary } = await import('@/config/cloudinary');
-                                
-                                // Afficher le loading
-                                const uploadBtn = e.target.parentElement;
-                                if (uploadBtn) {
-                                  uploadBtn.style.opacity = '0.5';
-                                  uploadBtn.innerHTML += '<div>📤 Upload en cours...</div>';
-                                }
                                 
                                 // Upload vers Cloudinary
                                 const result = await uploadToCloudinary(file, 'backgrounds');
                                 
+                                console.log('✅ Background uploadé:', result.secure_url);
+                                
                                 // Mettre à jour la config avec l'URL Cloudinary
+                                setConfig(prevConfig => ({
+                                  ...prevConfig,
+                                  backgroundType: 'image',
+                                  backgroundImage: result.secure_url
+                                }));
+                                
+                                // Sauvegarder en base
                                 await handleSaveConfig({ 
                                   backgroundType: 'image',
                                   backgroundImage: result.secure_url 
                                 });
                                 
-                                alert('✅ Image uploadée avec succès vers Cloudinary !');
-                                console.log('📤 Background uploadé:', result.secure_url);
+                                alert('✅ Image de fond uploadée avec succès !');
                                 
                               } catch (error) {
-                                console.error('❌ Erreur upload:', error);
-                                alert(`❌ Erreur: ${error.message}`);
+                                console.error('❌ Erreur upload background:', error);
+                                alert(`❌ Erreur upload background: ${error.message}`);
                               } finally {
-                                // Restaurer l'affichage
-                                const uploadBtn = e.target.parentElement;
-                                if (uploadBtn) {
-                                  uploadBtn.style.opacity = '1';
-                                  const loadingDiv = uploadBtn.querySelector('div');
-                                  if (loadingDiv) loadingDiv.remove();
-                                }
+                                setBackgroundUploading(false);
+                                // Reset le input file pour permettre de re-sélectionner le même fichier
+                                e.target.value = '';
                               }
                             }
                           }}

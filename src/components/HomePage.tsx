@@ -4,12 +4,14 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div<{ $backgroundImage?: string }>`
+const PageContainer = styled.div<{ $backgroundImage?: string; $backgroundType?: string }>`
   min-height: 100vh;
-  background: ${props => props.$backgroundImage 
-    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
-    : 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-  };
+  background: ${props => {
+    if (props.$backgroundType === 'image' && props.$backgroundImage) {
+      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`;
+    }
+    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+  }};
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -236,15 +238,9 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     window.addEventListener('dataUpdated', handleDataUpdate);
     window.addEventListener('configUpdated', handleConfigUpdate);
 
-    // Vérifier les mises à jour périodiquement (fallback)
-    const interval = setInterval(() => {
-      loadData();
-    }, 5000);
-
     return () => {
       window.removeEventListener('dataUpdated', handleDataUpdate);
       window.removeEventListener('configUpdated', handleConfigUpdate);
-      clearInterval(interval);
     };
   }, []);
 
@@ -268,7 +264,10 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   };
 
   return (
-    <PageContainer $backgroundImage={config.backgroundImage}>
+    <PageContainer 
+      $backgroundImage={config.backgroundImage} 
+      $backgroundType={config.backgroundType}
+    >
       {/* Header simplifié avec juste BIPCOSA06 */}
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>

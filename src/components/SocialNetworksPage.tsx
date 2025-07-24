@@ -55,6 +55,45 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
   };
 };
 
+const PageHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 20px;
+  background: transparent;
+  border-bottom: none;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 10px 15px;
+  }
+`;
+
+const LogoImage = styled.img`
+  height: 120px;
+  max-width: 500px;
+  width: auto;
+  filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
+  transition: transform 0.3s ease, filter 0.3s ease;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    height: 100px;
+    max-width: 400px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    height: 80px;
+    max-width: 300px;
+  }
+  
+  &:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 30px rgba(0,0,0,1));
+  }
+`;
+
 const ContentWrapper = styled.div`
   max-width: 600px;
   width: 100%;
@@ -63,7 +102,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 160px);
 `;
 
 const Header = styled.div`
@@ -156,8 +195,8 @@ const SocialLink = styled.div`
 `;
 
 const BackButton = styled.button`
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.7);
+  border: 1px solid rgba(255,255,255,0.3);
   color: white;
   padding: 12px 24px;
   border-radius: 10px;
@@ -165,9 +204,11 @@ const BackButton = styled.button`
   font-size: 14px;
   transition: all 0.3s ease;
   margin-bottom: 30px;
+  backdrop-filter: blur(10px);
 
   &:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.9);
+    border-color: rgba(255,255,255,0.5);
     transform: translateY(-2px);
   }
 `;
@@ -320,6 +361,11 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
 
   return (
     <div style={getBackgroundStyle(config)}>
+      {/* Header avec logo */}
+      <PageHeader>
+        <LogoImage src="/logo.svg" alt="Logo" />
+      </PageHeader>
+      
       <ContentWrapper>
         <BackButton onClick={onBack}>
           ← Retour à la boutique

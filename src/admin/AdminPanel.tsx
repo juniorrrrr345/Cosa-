@@ -579,8 +579,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     const newPrice = {
       id: Date.now().toString(),
       weight: '',
-      price: '',
-      quantity: 0
+      price: ''
     };
     setFormData({
       ...formData,
@@ -748,11 +747,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       category: 'indica',
       farm: 'holland',
       description: '',
-      prices: [
-        { id: '1', weight: '1g', price: '10€', quantity: 50 },
-        { id: '2', weight: '3.5g', price: '30€', quantity: 30 },
-        { id: '3', weight: '7g', price: '55€', quantity: 20 }
-      ],
+              prices: [
+          { id: '1', weight: '1g', price: '10€' },
+          { id: '2', weight: '3.5g', price: '30€' },
+          { id: '3', weight: '7g', price: '55€' }
+        ],
       video: ''
     });
   };
@@ -1463,17 +1462,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                    <Label>Nom de la boutique</Label>
                    <Input 
                      type="text" 
-                     value={config.shopName} 
-                     onChange={(e) => handleSaveConfig({ shopName: e.target.value })}
-                   />
-                 </FormGroup>
-                 
-                 <FormGroup>
-                   <Label>Description</Label>
-                   <Input 
-                     type="text" 
-                     value={config.description} 
-                     onChange={(e) => handleSaveConfig({ description: e.target.value })}
+                     value={config.shopName || ''} 
+                     onChange={(e) => {
+                       const newShopName = e.target.value;
+                       setConfig({...config, shopName: newShopName});
+                       handleSaveConfig({ shopName: newShopName });
+                     }}
+                     placeholder="BIPCOSA06"
                    />
                  </FormGroup>
                </div>
@@ -1677,7 +1672,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
           {/* Section Prix Multiples */}
           <FormGroup>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-              <Label>💰 Prix et Quantités</Label>
+              <Label>💰 Prix</Label>
               <ActionButton $variant="add" onClick={addPrice} style={{ padding: '8px 12px', fontSize: '12px' }}>
                 + Ajouter un prix
               </ActionButton>
@@ -1691,54 +1686,41 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   borderRadius: '10px',
                   border: '1px solid rgba(255,255,255,0.1)'
                 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '10px', alignItems: 'center' }}>
-                    <div>
-                      <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
-                        Poids
-                      </label>
-                      <Input 
-                        type="text" 
-                        placeholder="1g, 3.5g..."
-                        value={price.weight || ''} 
-                        onChange={(e) => updatePrice(index, 'weight', e.target.value)}
-                        style={{ fontSize: '14px', padding: '8px' }}
-                      />
-                    </div>
-                    
-                    <div>
-                      <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
-                        Prix
-                      </label>
-                      <Input 
-                        type="text" 
-                        placeholder="10€, 30€..."
-                        value={price.price || ''} 
-                        onChange={(e) => updatePrice(index, 'price', e.target.value)}
-                        style={{ fontSize: '14px', padding: '8px' }}
-                      />
-                    </div>
-                    
-                    <div>
-                      <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
-                        Stock
-                      </label>
-                      <Input 
-                        type="number" 
-                        placeholder="50"
-                        value={price.quantity || 0} 
-                        onChange={(e) => updatePrice(index, 'quantity', parseInt(e.target.value) || 0)}
-                        style={{ fontSize: '14px', padding: '8px' }}
-                      />
-                    </div>
-                    
-                    <ActionButton 
-                      $variant="delete" 
-                      onClick={() => removePrice(index)}
-                      style={{ padding: '8px', fontSize: '12px', marginTop: '20px' }}
-                    >
-                      🗑️
-                    </ActionButton>
-                  </div>
+                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '10px', alignItems: 'center' }}>
+                     <div>
+                       <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
+                         Poids
+                       </label>
+                       <Input 
+                         type="text" 
+                         placeholder="1g, 3.5g..."
+                         value={price.weight || ''} 
+                         onChange={(e) => updatePrice(index, 'weight', e.target.value)}
+                         style={{ fontSize: '14px', padding: '8px' }}
+                       />
+                     </div>
+                     
+                     <div>
+                       <label style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', display: 'block', marginBottom: '5px' }}>
+                         Prix
+                       </label>
+                       <Input 
+                         type="text" 
+                         placeholder="10€, 30€..."
+                         value={price.price || ''} 
+                         onChange={(e) => updatePrice(index, 'price', e.target.value)}
+                         style={{ fontSize: '14px', padding: '8px' }}
+                       />
+                     </div>
+                     
+                     <ActionButton 
+                       $variant="delete" 
+                       onClick={() => removePrice(index)}
+                       style={{ padding: '8px', fontSize: '12px', marginTop: '20px' }}
+                     >
+                       🗑️
+                     </ActionButton>
+                   </div>
                 </div>
               ))}
               

@@ -1,29 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import Category from '@/models/Category';
+import mongoService from '@/services/mongoService';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-    const categories = await Category.find({}).sort({ createdAt: -1 });
+    const categories = await mongoService.getCategories();
     return NextResponse.json(categories);
   } catch (error) {
-    console.error('Erreur lors de la récupération des catégories:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+    console.error('Erreur API GET categories:', error);
+    return NextResponse.json(
+      { error: 'Erreur lors de la récupération des catégories' },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
-    const data = await request.json();
+    const categoryData = await request.json();
     
-    const category = new Category(data);
-    await category.save();
+    // Validation des données requises
+    if (!categoryData.value || !categoryData.label) {
+      return NextResponse.json(
+        { error: 'La valeur et le label sont requis' },
+        { status: 400 }
+      );
+    }
+
+    const createdCategory = await mongoService.addCategory(categoryData);
     
-    return NextResponse.json(category, { status: 201 });
+    return NextResponse.json(createdCategory, { status: 201 });
   } catch (error) {
-    console.error('Erreur lors de la création de la catégorie:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+    console.error('Erreur API POST categories:', error);
+    return NextResponse.json(
+      { error: 'Erreur lors de la création de la catégorie' },
+      { status: 500 }
+    );
   }
 }

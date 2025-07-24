@@ -15,7 +15,9 @@
     "postbuild": "node scripts/post-build.js"
   },
   "dependencies": {
+    "cloudinary": "^2.7.0",
     "mongoose": "^8.16.4",
+    "multer": "^2.0.2",
     "next": "14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

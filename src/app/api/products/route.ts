@@ -1,29 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import Product from '@/models/Product';
+import mongoService from '@/services/mongoService';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-    const products = await Product.find({}).sort({ createdAt: -1 });
+    const products = await mongoService.getProducts();
     return NextResponse.json(products);
   } catch (error) {
-    console.error('Erreur lors de la récupération des produits:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+    console.error('Erreur API GET products:', error);
+    return NextResponse.json(
+      { error: 'Erreur lors de la récupération des produits' },
+      { status: 500 }
+    );
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    await connectDB();
-    const data = await request.json();
+    const productData = await request.json();
     
-    const product = new Product(data);
-    await product.save();
+    // Validation des données requises
+    if (!productData.name || !productData.description) {
+      return NextResponse.json(
+        { error: 'Le nom et la description sont requis' },
+        { status: 400 }
+      );
+    }
+
+    const createdProduct = await mongoService.addProduct(productData);
     
-    return NextResponse.json(product, { status: 201 });
+    return NextResponse.json(createdProduct, { status: 201 });
   } catch (error) {
-    console.error('Erreur lors de la création du produit:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+    console.error('Erreur API POST products:', error);
+    return NextResponse.json(
+      { error: 'Erreur lors de la création du produit' },
+      { status: 500 }
+    );
   }
 }

@@ -1,9 +1,11 @@
-// Service de gestion des données BIPCOSA06
+// Service de gestion des données BIPCOSA06 avec APIs MongoDB et Cloudinary
 export interface Product {
+  _id?: string;
   id: number;
   name: string;
   quality: string;
   image: string;
+  imagePublicId?: string; // ID Cloudinary pour l'image
   flagColor: string;
   flagText: string;
   category: string;
@@ -11,6 +13,9 @@ export interface Product {
   description: string;
   prices: Array<{ weight: string; price: string }>;
   video?: string;
+  videoPublicId?: string; // ID Cloudinary pour la vidéo
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Category {
@@ -41,31 +46,59 @@ export interface ContactContent {
 }
 
 export interface ShopConfig {
+  _id?: string;
   backgroundType: 'gradient' | 'image';
   backgroundColor: string;
   backgroundImage?: string;
+  backgroundImagePublicId?: string; // ID Cloudinary pour l'image de fond
   shopName: string;
   description: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 class DataService {
   private static instance: DataService;
-  private products: Product[] = [];
-  private categories: Category[] = [];
-  private farms: Farm[] = [];
-  private infoContents: InfoContent[] = [];
-  private contactContents: ContactContent[] = [];
-  private lastUpdate: number = 0;
-  private config: ShopConfig = {
-    backgroundType: 'gradient',
-    backgroundColor: '#000000',
-    shopName: 'BIPCOSA06',
-    description: 'Boutique Cannabis Premium'
-  };
+  
+  // Cache pour optimiser les performances côté client
+  private productsCache: Product[] = [];
+  private categoriesCache: Category[] = [];
+  private farmsCache: Farm[] = [];
+  private configCache: ShopConfig | null = null;
+  private cacheTimestamp = 0;
+  private readonly CACHE_DURATION = 30000; // 30 secondes
+
+  // Données statiques pour Info et Contact
+  private infoContents: InfoContent[] = [
+    {
+      id: 'main-info',
+      title: '📋 Informations Boutique',
+      description: 'Votre boutique BIPCOSA06 - Service professionnel et livraison rapide.',
+      items: [
+        '✅ Livraison dans les zones : 69, 71, 01, 42, 38',
+        '🕒 Horaires de livraison : 10h - 22h',
+        '📱 Commandes via Telegram uniquement',
+        '🔒 Service discret et professionnel',
+        '⚡ Livraison rapide (30-60 min)',
+        '💎 Produits de qualité premium'
+      ]
+    }
+  ];
+
+  private contactContents: ContactContent[] = [
+    {
+      id: 'main-contact',
+      title: '✉️ Nous Contacter',
+      description: 'Pour passer commande ou obtenir des informations, contactez-nous directement via Telegram.',
+      telegramUsername: '@bipcosa06',
+      telegramLink: 'https://t.me/bipcosa06',
+      additionalInfo: '📍 Zone de livraison : Lyon et alentours (69, 71, 01, 42, 38)\n🕒 Réponse rapide 24h/7j'
+    }
+  ];
 
   private constructor() {
-    this.loadFromLocalStorage();
-    this.initializeData();
+    // Le constructeur ne fait plus d'initialisation synchrone
+    this.refreshCache();
   }
 
   static getInstance(): DataService {
@@ -75,59 +108,86 @@ class DataService {
     return DataService.instance;
   }
 
-  private initializeData() {
-    // Initialiser le contenu Info par défaut
-    if (this.infoContents.length === 0) {
-      this.infoContents = [
-        {
-          id: 'main-info',
-          title: '📋 Informations Boutique',
-          description: 'Votre boutique BIPCOSA06 - Service professionnel et livraison rapide.',
-          items: [
-            '✅ Livraison dans les zones : 69, 71, 01, 42, 38',
-            '🕒 Horaires de livraison : 10h - 22h',
-            '📱 Commandes via Telegram uniquement',
-            '🔒 Service discret et professionnel',
-            '⚡ Livraison rapide (30-60 min)',
-            '💎 Produits de qualité premium'
-          ]
-        }
-      ];
+  // Méthode pour rafraîchir le cache
+  private async refreshCache(): Promise<void> {
+    try {
+      const now = Date.now();
+      if (now - this.cacheTimestamp < this.CACHE_DURATION && this.productsCache.length > 0) {
+        return; // Cache encore valide
+      }
+
+      console.log('🔄 Actualisation du cache des données...');
+      
+      // Récupérer les données depuis les APIs
+      const [productsData, categoriesData, farmsData, configData] = await Promise.all([
+        this.fetchProducts(),
+        this.fetchCategories(), 
+        this.fetchFarms(),
+        this.fetchConfig()
+      ]);
+      
+      this.productsCache = productsData;
+      this.categoriesCache = categoriesData;
+      this.farmsCache = farmsData;
+      this.configCache = configData;
+      
+      this.cacheTimestamp = now;
+      console.log('✅ Cache actualisé');
+    } catch (error) {
+      console.error('❌ Erreur lors de l\'actualisation du cache:', error);
+      // En cas d'erreur, utiliser les données de fallback
+      this.useFallbackData();
     }
+  }
 
-    // Initialiser le contenu Contact par défaut
-    if (this.contactContents.length === 0) {
-      this.contactContents = [
-        {
-          id: 'main-contact',
-          title: '✉️ Nous Contacter',
-          description: 'Pour passer commande ou obtenir des informations, contactez-nous directement via Telegram.',
-          telegramUsername: '@bipcosa06',
-          telegramLink: 'https://t.me/bipcosa06',
-          additionalInfo: '📍 Zone de livraison : Lyon et alentours (69, 71, 01, 42, 38)\n🕒 Réponse rapide 24h/7j'
-        }
-      ];
+  // Méthodes d'appel aux APIs
+  private async fetchProducts(): Promise<Product[]> {
+    try {
+      const response = await fetch('/api/products');
+      if (!response.ok) throw new Error('Erreur API products');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur fetch products:', error);
+      return this.getFallbackProducts();
     }
+  }
 
-    // Initialiser les catégories
-    this.categories = [
-      { value: 'all', label: 'Toutes les catégories' },
-      { value: 'indica', label: 'Indica' },
-      { value: 'sativa', label: 'Sativa' },
-      { value: 'hybrid', label: 'Hybride' }
-    ];
+  private async fetchCategories(): Promise<Category[]> {
+    try {
+      const response = await fetch('/api/categories');
+      if (!response.ok) throw new Error('Erreur API categories');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur fetch categories:', error);
+      return this.getFallbackCategories();
+    }
+  }
 
-    // Initialiser les farms
-    this.farms = [
-      { value: 'all', label: 'Toutes les farms', country: '' },
-      { value: 'holland', label: 'Holland', country: '🇳🇱' },
-      { value: 'espagne', label: 'Espagne', country: '🇪🇸' },
-      { value: 'calispain', label: 'Calispain', country: '🇺🇸🇪🇸' },
-      { value: 'premium', label: 'Premium', country: '⭐' }
-    ];
+  private async fetchFarms(): Promise<Farm[]> {
+    try {
+      const response = await fetch('/api/farms');
+      if (!response.ok) throw new Error('Erreur API farms');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur fetch farms:', error);
+      return this.getFallbackFarms();
+    }
+  }
 
-    // Initialiser les produits
-    this.products = [
+  private async fetchConfig(): Promise<ShopConfig> {
+    try {
+      const response = await fetch('/api/config');
+      if (!response.ok) throw new Error('Erreur API config');
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur fetch config:', error);
+      return this.getFallbackConfig();
+    }
+  }
+
+  // Données de fallback si les APIs ne sont pas disponibles
+  private getFallbackProducts(): Product[] {
+    return [
       {
         id: 1,
         name: "ANIMAL COOKIES",
@@ -165,307 +225,298 @@ class DataService {
           { weight: "28g", price: "200€" }
         ],
         video: "https://www.w3schools.com/html/mov_bbb.mp4"
-      },
-      {
-        id: 3,
-        name: "NINE LIONS",
-        quality: "Qualité A+++",
-        image: "https://images.unsplash.com/photo-1574899420662-b4f36025552a?w=400&h=300&fit=crop&crop=center",
-        flagColor: "#333333",
-        flagText: "🇺🇸🇪🇸 CALISPAIN",
-        category: "hybrid",
-        farm: "calispain",
-        description: "Hybride équilibré de Californie et d'Espagne. Combinaison parfaite d'euphorie et de relaxation.",
-        prices: [
-          { weight: "1g", price: "15€" },
-          { weight: "3.5g", price: "50€" },
-          { weight: "7g", price: "95€" },
-          { weight: "14g", price: "180€" },
-          { weight: "28g", price: "340€" }
-        ],
-        video: "https://www.w3schools.com/html/mov_bbb.mp4"
-      },
-      {
-        id: 4,
-        name: "BUBBLEGUM GELATO",
-        quality: "Qualité Premium",
-        image: "https://images.unsplash.com/photo-1545139813-4e3e9ac2dbb2?w=400&h=300&fit=crop&crop=center",
-        flagColor: "#333333",
-        flagText: "PREMIUM",
-        category: "hybrid",
-        farm: "premium",
-        description: "Variété premium avec des saveurs de bubble-gum et gelato. Expérience gustative unique et effets équilibrés.",
-        prices: [
-          { weight: "1g", price: "18€" },
-          { weight: "3.5g", price: "60€" },
-          { weight: "7g", price: "110€" },
-          { weight: "14g", price: "200€" },
-          { weight: "28g", price: "380€" }
-        ],
-        video: "https://www.w3schools.com/html/mov_bbb.mp4"
       }
     ];
   }
 
-  // Getters with intelligent refresh
-  getProducts(): Product[] {
-    // Only reload if data seems stale (more than 1 second old)
-    const lastUpdate = this.getLastUpdateTime();
-    if (Date.now() - lastUpdate > 1000) {
-      this.loadFromLocalStorage();
-    }
-    return [...this.products];
+  private getFallbackCategories(): Category[] {
+    return [
+      { value: 'indica', label: 'Indica' },
+      { value: 'sativa', label: 'Sativa' },
+      { value: 'hybrid', label: 'Hybride' }
+    ];
   }
 
-  getCategories(): Category[] {
-    // Only reload if data seems stale
-    const lastUpdate = this.getLastUpdateTime();
-    if (Date.now() - lastUpdate > 1000) {
-      this.loadFromLocalStorage();
-    }
-    return [...this.categories];
+  private getFallbackFarms(): Farm[] {
+    return [
+      { value: 'holland', label: 'Holland', country: '🇳🇱' },
+      { value: 'espagne', label: 'Espagne', country: '🇪🇸' },
+      { value: 'calispain', label: 'Calispain', country: '🇺🇸🇪🇸' },
+      { value: 'premium', label: 'Premium', country: '⭐' }
+    ];
   }
 
-  getFarms(): Farm[] {
-    // Only reload if data seems stale
-    const lastUpdate = this.getLastUpdateTime();
-    if (Date.now() - lastUpdate > 1000) {
-      this.loadFromLocalStorage();
-    }
-    return [...this.farms];
-  }
-
-  getConfig(): ShopConfig {
-    // Only reload if data seems stale
-    const lastUpdate = this.getLastUpdateTime();
-    if (Date.now() - lastUpdate > 1000) {
-      this.loadFromLocalStorage();
-    }
-    return { ...this.config };
-  }
-
-  // Products management
-  addProduct(product: Omit<Product, 'id'>): Product {
-    const newProduct = {
-      ...product,
-      id: Math.max(...this.products.map(p => p.id), 0) + 1
+  private getFallbackConfig(): ShopConfig {
+    return {
+      backgroundType: 'gradient',
+      backgroundColor: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
+      shopName: 'BIPCOSA06',
+      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
     };
-    this.products.push(newProduct);
-    this.saveToLocalStorage();
-    this.notifyDataUpdate();
-    return newProduct;
   }
 
-  updateProduct(id: number, updates: Partial<Product>): Product | null {
-    const index = this.products.findIndex(p => p.id === id);
-    if (index === -1) return null;
-    
-    this.products[index] = { ...this.products[index], ...updates };
-    this.saveToLocalStorage();
-    this.notifyDataUpdate();
-    return this.products[index];
+  private useFallbackData() {
+    console.log('⚠️ Utilisation des données de fallback');
+    this.productsCache = this.getFallbackProducts();
+    this.categoriesCache = this.getFallbackCategories();
+    this.farmsCache = this.getFallbackFarms();
+    this.configCache = this.getFallbackConfig();
   }
 
-  deleteProduct(id: number): boolean {
-    const index = this.products.findIndex(p => p.id === id);
-    if (index === -1) return false;
-    
-    this.products.splice(index, 1);
-    this.saveToLocalStorage();
-    this.notifyDataUpdate();
-    return true;
+  // === MÉTHODES PUBLIQUES ===
+
+  // Produits
+  async getProducts(): Promise<Product[]> {
+    await this.refreshCache();
+    return [...this.productsCache];
   }
 
-  // Categories management
-  addCategory(category: Category): void {
-    if (!this.categories.find(c => c.value === category.value)) {
-      this.categories.push(category);
+  getProductsSync(): Product[] {
+    return [...this.productsCache];
+  }
+
+  async addProduct(productData: Omit<Product, '_id' | 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    try {
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(productData)
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de l\'ajout');
+      }
+
+      const createdProduct = await response.json();
+      
+      // Actualiser le cache
+      await this.refreshCache();
+      this.notifyDataUpdate();
+      
+      return createdProduct;
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout du produit:', error);
+      throw error;
     }
   }
 
-  updateCategory(oldValue: string, newCategory: Category): boolean {
-    const index = this.categories.findIndex(c => c.value === oldValue);
-    if (index === -1) return false;
-    
-    this.categories[index] = newCategory;
-    return true;
-  }
+  async updateProduct(id: string | number, updates: Partial<Product>): Promise<Product | null> {
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
 
-  deleteCategory(value: string): boolean {
-    if (value === 'all') return false; // Can't delete "all"
-    
-    const index = this.categories.findIndex(c => c.value === value);
-    if (index === -1) return false;
-    
-    this.categories.splice(index, 1);
-    return true;
-  }
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la mise à jour');
+      }
 
-  // Farms management
-  addFarm(farm: Farm): void {
-    if (!this.farms.find(f => f.value === farm.value)) {
-      this.farms.push(farm);
+      const updatedProduct = await response.json();
+      
+      // Actualiser le cache
+      await this.refreshCache();
+      this.notifyDataUpdate();
+      
+      return updatedProduct;
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du produit:', error);
+      throw error;
     }
   }
 
-  updateFarm(oldValue: string, newFarm: Farm): boolean {
-    const index = this.farms.findIndex(f => f.value === oldValue);
-    if (index === -1) return false;
-    
-    this.farms[index] = newFarm;
-    return true;
+  async deleteProduct(id: string | number): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la suppression');
+      }
+
+      // Actualiser le cache
+      await this.refreshCache();
+      this.notifyDataUpdate();
+      
+      return true;
+    } catch (error) {
+      console.error('Erreur lors de la suppression du produit:', error);
+      throw error;
+    }
   }
 
-  deleteFarm(value: string): boolean {
-    if (value === 'all') return false; // Can't delete "all"
-    
-    const index = this.farms.findIndex(f => f.value === value);
-    if (index === -1) return false;
-    
-    this.farms.splice(index, 1);
-    return true;
+  // Catégories
+  async getCategories(): Promise<Category[]> {
+    await this.refreshCache();
+    return [{ value: 'all', label: 'Toutes les catégories' }, ...this.categoriesCache];
   }
 
-  // Config management
-  updateConfig(newConfig: Partial<ShopConfig>): void {
-    this.config = { ...this.config, ...newConfig };
-    this.saveToLocalStorage();
-    this.notifyConfigUpdate();
+  getCategoriesSync(): Category[] {
+    return [{ value: 'all', label: 'Toutes les catégories' }, ...this.categoriesCache];
   }
 
-  // Info Content methods
+  async addCategory(category: Category): Promise<Category> {
+    try {
+      const response = await fetch('/api/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(category)
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de l\'ajout');
+      }
+
+      const createdCategory = await response.json();
+      await this.refreshCache();
+      this.notifyDataUpdate();
+      return createdCategory;
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la catégorie:', error);
+      throw error;
+    }
+  }
+
+  async deleteCategory(value: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/categories/${value}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la suppression');
+      }
+
+      await this.refreshCache();
+      this.notifyDataUpdate();
+      return true;
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la catégorie:', error);
+      throw error;
+    }
+  }
+
+  // Farms
+  async getFarms(): Promise<Farm[]> {
+    await this.refreshCache();
+    return [{ value: 'all', label: 'Toutes les farms', country: '' }, ...this.farmsCache];
+  }
+
+  getFarmsSync(): Farm[] {
+    return [{ value: 'all', label: 'Toutes les farms', country: '' }, ...this.farmsCache];
+  }
+
+  async addFarm(farm: Farm): Promise<Farm> {
+    try {
+      const response = await fetch('/api/farms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(farm)
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de l\'ajout');
+      }
+
+      const createdFarm = await response.json();
+      await this.refreshCache();
+      this.notifyDataUpdate();
+      return createdFarm;
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout de la farm:', error);
+      throw error;
+    }
+  }
+
+  async deleteFarm(value: string): Promise<boolean> {
+    try {
+      const response = await fetch(`/api/farms/${value}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la suppression');
+      }
+
+      await this.refreshCache();
+      this.notifyDataUpdate();
+      return true;
+    } catch (error) {
+      console.error('Erreur lors de la suppression de la farm:', error);
+      throw error;
+    }
+  }
+
+  // Configuration
+  async getConfig(): Promise<ShopConfig> {
+    await this.refreshCache();
+    return this.configCache || this.getFallbackConfig();
+  }
+
+  getConfigSync(): ShopConfig {
+    return this.configCache || this.getFallbackConfig();
+  }
+
+  async updateConfig(updates: Partial<ShopConfig>): Promise<ShopConfig> {
+    try {
+      const response = await fetch('/api/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de la mise à jour');
+      }
+
+      const updatedConfig = await response.json();
+      await this.refreshCache();
+      this.notifyConfigUpdate();
+      return updatedConfig;
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de la config:', error);
+      throw error;
+    }
+  }
+
+  // Info et Contact (statiques pour l'instant)
   getInfoContents(): InfoContent[] {
     return [...this.infoContents];
   }
 
-  updateInfoContent(id: string, content: Partial<InfoContent>): void {
-    const index = this.infoContents.findIndex(item => item.id === id);
-    if (index !== -1) {
-      this.infoContents[index] = { ...this.infoContents[index], ...content };
-    } else {
-      this.infoContents.push({ id, ...content } as InfoContent);
-    }
-    this.saveToLocalStorage();
-    this.notifyDataUpdate();
-  }
-
-  deleteInfoContent(id: string): void {
-    this.infoContents = this.infoContents.filter(item => item.id !== id);
-    this.saveToLocalStorage();
-    this.notifyDataUpdate();
-  }
-
-  // Contact Content methods
   getContactContents(): ContactContent[] {
     return [...this.contactContents];
   }
 
-  updateContactContent(id: string, content: Partial<ContactContent>): void {
-    const index = this.contactContents.findIndex(item => item.id === id);
-    if (index !== -1) {
-      this.contactContents[index] = { ...this.contactContents[index], ...content };
-    } else {
-      this.contactContents.push({ id, ...content } as ContactContent);
-    }
-    this.saveToLocalStorage();
-    this.notifyDataUpdate();
-  }
-
-  deleteContactContent(id: string): void {
-    this.contactContents = this.contactContents.filter(item => item.id !== id);
-    this.saveToLocalStorage();
-    this.notifyDataUpdate();
-  }
-
-  // Force global sync
-  forceSync(): void {
-    this.loadFromLocalStorage();
-    this.notifyDataUpdate();
-    this.notifyConfigUpdate();
-  }
-
-  // Get last update timestamp
-  private getLastUpdateTime(): number {
-    return this.lastUpdate;
-  }
-
-  // Update timestamp
-  private updateTimestamp(): void {
-    this.lastUpdate = Date.now();
-  }
-
-  // Notification system for real-time sync
-  private notifyDataUpdate(): void {
+  // Méthodes de notification pour la synchronisation temps réel
+  private notifyDataUpdate() {
     if (typeof window !== 'undefined') {
-      // Force immediate sync with small delay to ensure all operations complete
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('dataUpdated', { 
-          detail: { 
-            timestamp: Date.now(),
-            products: this.products.length,
-            source: 'dataService'
-          }
-        }));
-        console.log('🔄 Data update notification sent:', this.products.length, 'products');
-      }, 100);
+      window.dispatchEvent(new CustomEvent('dataUpdated'));
     }
   }
 
-  private notifyConfigUpdate(): void {
+  private notifyConfigUpdate() {
     if (typeof window !== 'undefined') {
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('configUpdated', { 
-          detail: { 
-            config: this.config, 
-            timestamp: Date.now(),
-            source: 'dataService'
-          }
-        }));
-        console.log('🔄 Config update notification sent');
-      }, 100);
+      window.dispatchEvent(new CustomEvent('configUpdated'));
     }
   }
 
-  // Persistance localStorage
-  private saveToLocalStorage(): void {
-    if (typeof window !== 'undefined') {
-      this.updateTimestamp();
-      const data = {
-        products: this.products,
-        categories: this.categories,
-        farms: this.farms,
-        infoContents: this.infoContents,
-        contactContents: this.contactContents,
-        config: this.config,
-        timestamp: this.lastUpdate
-      };
-      localStorage.setItem('bipcosa06-data', JSON.stringify(data));
-      console.log('💾 Données sauvegardées dans localStorage:', data.products.length, 'produits');
-    }
-  }
-
-  private loadFromLocalStorage(): void {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('bipcosa06-data');
-      if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          if (data.products) {
-            this.products = data.products;
-            console.log('📦 Products loaded from localStorage:', this.products.length);
-          }
-          if (data.categories) this.categories = data.categories;
-          if (data.farms) this.farms = data.farms;
-          if (data.infoContents) this.infoContents = data.infoContents;
-          if (data.contactContents) this.contactContents = data.contactContents;
-          if (data.config) this.config = data.config;
-          if (data.timestamp) this.lastUpdate = data.timestamp;
-        } catch (error) {
-          console.warn('Erreur chargement données localStorage:', error);
-        }
-      }
-    }
+  // Méthode pour forcer l'actualisation du cache
+  async forceRefresh(): Promise<void> {
+    this.cacheTimestamp = 0; // Force la mise à jour
+    await this.refreshCache();
   }
 }
 
+// Singleton instance
 export const dataService = DataService.getInstance();
+export default dataService;

@@ -1,12 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // output: 'export', // Désactivé pour permettre les API routes
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
-  distDir: 'out',
+  // distDir: 'out', // Utilisera .next par défaut
   images: {
     unoptimized: true,
-    domains: ['images.unsplash.com', 'unsplash.com']
+    domains: ['images.unsplash.com', 'unsplash.com', 'res.cloudinary.com']
   },
   compiler: {
     styledComponents: true

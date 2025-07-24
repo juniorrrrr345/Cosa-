@@ -551,16 +551,42 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [formData, setFormData] = useState<Partial<Product>>({});
+  
+  // État pour les uploads
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     refreshData();
   }, []);
 
-  const refreshData = () => {
-    setProducts(dataService.getProducts());
-    setCategories(dataService.getCategories());
-    setFarms(dataService.getFarms());
-    setConfig(dataService.getConfig());
+  const refreshData = async () => {
+    try {
+      const [productsData, categoriesData, farmsData, configData] = await Promise.all([
+        dataService.getProducts(),
+        dataService.getCategories(),
+        dataService.getFarms(),
+        dataService.getConfig()
+      ]);
+      
+      setProducts(productsData);
+      setCategories(categoriesData);
+      setFarms(farmsData);
+      setConfig(configData);
+      
+      console.log('🔄 Admin: Données actualisées', {
+        products: productsData.length,
+        categories: categoriesData.length,
+        farms: farmsData.length
+      });
+    } catch (error) {
+      console.error('❌ Erreur lors de l\'actualisation des données:', error);
+      // Fallback sur les données synchrones
+      setProducts(dataService.getProductsSync());
+      setCategories(dataService.getCategoriesSync());
+      setFarms(dataService.getFarmsSync());
+      setConfig(dataService.getConfigSync());
+    }
   };
 
   const menuItems = [
@@ -578,13 +604,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     setSidebarOpen(false); // Fermer la sidebar sur mobile après clic
   };
 
-  const handleDeleteProduct = (id: number) => {
+  const handleDeleteProduct = async (id: number) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-      console.log('🗑️ Admin: Suppression du produit', id);
-      dataService.deleteProduct(id);
-      setTimeout(() => {
-        refreshData();
-      }, 200);
+      try {
+        console.log('🗑️ Admin: Suppression du produit', id);
+        const success = await dataService.deleteProduct(id);
+        if (success) {
+          console.log('✅ Produit supprimé avec succès');
+          await refreshData();
+        } else {
+          alert('Erreur lors de la suppression du produit');
+        }
+      } catch (error) {
+        console.error('❌ Erreur lors de la suppression:', error);
+        alert('Erreur lors de la suppression du produit');
+      }
     }
   };
 
@@ -613,26 +647,31 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     });
   };
 
-  const handleSaveProduct = () => {
+  const handleSaveProduct = async () => {
     if (!formData.name || !formData.description) {
       alert('Veuillez remplir tous les champs obligatoires');
       return;
     }
 
-    if (editingProduct) {
-      console.log('✏️ Admin: Modification du produit', editingProduct.id);
-      dataService.updateProduct(editingProduct.id, formData as Partial<Product>);
-    } else {
-      console.log('➕ Admin: Ajout d\'un nouveau produit');
-      dataService.addProduct(formData as Omit<Product, 'id'>);
-    }
-    
-    setTimeout(() => {
-      refreshData();
+    try {
+      if (editingProduct) {
+        console.log('✏️ Admin: Modification du produit', editingProduct.id);
+        await dataService.updateProduct(editingProduct.id, formData as Partial<Product>);
+        console.log('✅ Produit modifié avec succès');
+      } else {
+        console.log('➕ Admin: Ajout d\'un nouveau produit');
+        await dataService.addProduct(formData as Omit<Product, '_id' | 'id' | 'createdAt' | 'updatedAt'>);
+        console.log('✅ Produit ajouté avec succès');
+      }
+      
+      await refreshData();
       setEditingProduct(null);
       setIsAddingProduct(false);
       setFormData({});
-    }, 200);
+    } catch (error) {
+      console.error('❌ Erreur lors de la sauvegarde:', error);
+      alert('Erreur lors de la sauvegarde du produit');
+    }
   };
 
   const handleCloseModal = () => {
@@ -641,12 +680,144 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     setFormData({});
   };
 
-  const handleSaveConfig = (newConfig: Partial<ShopConfig>) => {
-    console.log('⚙️ Admin: Mise à jour de la configuration');
-    dataService.updateConfig(newConfig);
-    setTimeout(() => {
-      refreshData();
-    }, 200);
+  const handleSaveConfig = async (newConfig: Partial<ShopConfig>) => {
+    try {
+      console.log('⚙️ Admin: Mise à jour de la configuration');
+      await dataService.updateConfig(newConfig);
+      console.log('✅ Configuration mise à jour avec succès');
+      await refreshData();
+    } catch (error) {
+      console.error('❌ Erreur lors de la mise à jour de la config:', error);
+      alert('Erreur lors de la mise à jour de la configuration');
+    }
+  };
+
+  // Fonctions d'upload avec Cloudinary
+  const handleImageUpload = async (file: File, type: 'product' | 'background' = 'product') => {
+    if (!file) return null;
+
+    setUploading(true);
+    setUploadProgress({ [file.name]: 0 });
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', type === 'product' ? 'bipcosa06/products' : 'bipcosa06/backgrounds');
+      
+      if (type === 'product' && editingProduct) {
+        formData.append('publicId', `product_${editingProduct.id}`);
+      }
+
+      const response = await fetch('/api/upload/image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de l\'upload');
+      }
+
+      const result = await response.json();
+      setUploadProgress({ [file.name]: 100 });
+      
+      console.log('✅ Image uploadée:', result.data.url);
+      return result.data;
+
+    } catch (error) {
+      console.error('❌ Erreur upload image:', error);
+      alert(`Erreur lors de l'upload: ${error.message}`);
+      return null;
+    } finally {
+      setUploading(false);
+      setTimeout(() => setUploadProgress({}), 2000);
+    }
+  };
+
+  const handleVideoUpload = async (file: File) => {
+    if (!file) return null;
+
+    setUploading(true);
+    setUploadProgress({ [file.name]: 0 });
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'bipcosa06/videos');
+      
+      if (editingProduct) {
+        formData.append('publicId', `video_${editingProduct.id}`);
+      }
+
+      const response = await fetch('/api/upload/video', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Erreur lors de l\'upload');
+      }
+
+      const result = await response.json();
+      setUploadProgress({ [file.name]: 100 });
+      
+      console.log('✅ Vidéo uploadée:', result.data.url);
+      return result.data;
+
+    } catch (error) {
+      console.error('❌ Erreur upload vidéo:', error);
+      alert(`Erreur lors de l'upload: ${error.message}`);
+      return null;
+    } finally {
+      setUploading(false);
+      setTimeout(() => setUploadProgress({}), 2000);
+    }
+  };
+
+  // Gestion des uploads dans les formulaires
+  const handleProductImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const result = await handleImageUpload(file, 'product');
+    if (result) {
+      setFormData(prev => ({
+        ...prev,
+        image: result.url,
+        imagePublicId: result.publicId
+      }));
+    }
+  };
+
+  const handleProductVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const result = await handleVideoUpload(file);
+    if (result) {
+      setFormData(prev => ({
+        ...prev,
+        video: result.url,
+        videoPublicId: result.publicId
+      }));
+    }
+  };
+
+  const handleBackgroundImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const result = await handleImageUpload(file, 'background');
+    if (result) {
+      const newConfig = {
+        ...config,
+        backgroundType: 'image' as const,
+        backgroundImage: result.url,
+        backgroundImagePublicId: result.publicId
+      };
+      await handleSaveConfig(newConfig);
+    }
   };
 
   const renderContent = () => {

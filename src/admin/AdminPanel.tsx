@@ -948,7 +948,107 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             </ContentSection>
           );
 
+        case 'content-info':
+          return (
+            <ContentSection>
+              <SectionTitle>ℹ️ Gestion du Contenu Info</SectionTitle>
+              <p style={{ textAlign: 'center', marginBottom: '30px', color: 'rgba(255,255,255,0.8)' }}>
+                Gérez le contenu qui s'affiche dans la page "Infos" de la boutique
+              </p>
+              
+              <div style={{ display: 'grid', gap: '20px' }}>
+                <FormGroup>
+                  <Label>Titre de la section Info</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="Ex: À propos de BIPCOSA06"
+                    defaultValue="À propos de BIPCOSA06"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Description principale</Label>
+                  <TextArea 
+                    placeholder="Description qui apparaît en haut de la page Info..."
+                    defaultValue="BIPCOSA06 est votre boutique de confiance pour les produits Cannabis de qualité supérieure dans la région lyonnaise."
+                    rows={4}
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Éléments de la liste (un par ligne)</Label>
+                  <TextArea 
+                    placeholder="Saisissez chaque élément sur une ligne séparée..."
+                    defaultValue={`✅ Produits de qualité premium
+✅ Livraison rapide et discrète  
+✅ Service client 24/7
+✅ Paiement sécurisé
+✅ Garantie satisfaction`}
+                    rows={8}
+                  />
+                </FormGroup>
+                
+                <div style={{ textAlign: 'center' }}>
+                  <Button>💾 Sauvegarder le contenu Info</Button>
+                </div>
+              </div>
+            </ContentSection>
+          );
 
+        case 'content-contact':
+          return (
+            <ContentSection>
+              <SectionTitle>✉️ Gestion du Contenu Contact</SectionTitle>
+              <p style={{ textAlign: 'center', marginBottom: '30px', color: 'rgba(255,255,255,0.8)' }}>
+                Gérez les informations de contact qui s'affichent dans la page "Contact" de la boutique
+              </p>
+              
+              <div style={{ display: 'grid', gap: '20px' }}>
+                <FormGroup>
+                  <Label>Nom d'utilisateur Telegram</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="Ex: @bipcosa06"
+                    defaultValue="@bipcosa06"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Lien Telegram complet</Label>
+                  <Input 
+                    type="url" 
+                    placeholder="Ex: https://t.me/bipcosa06"
+                    defaultValue="https://t.me/bipcosa06"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Message d'accueil</Label>
+                  <TextArea 
+                    placeholder="Message qui s'affiche sur la page Contact..."
+                    defaultValue="Contactez-nous directement via Telegram pour toutes vos commandes et questions. Notre équipe est disponible 24h/24 pour vous servir."
+                    rows={4}
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Informations supplémentaires</Label>
+                  <TextArea 
+                    placeholder="Informations additionnelles (horaires, zones de livraison, etc.)..."
+                    defaultValue={`📍 Zones de livraison: Lyon et région (69, 71, 01, 42, 38)
+⏰ Horaires: 24h/24 - 7j/7
+💳 Paiements acceptés: Espèces, Crypto
+🚚 Livraison: Rapide et discrète`}
+                    rows={6}
+                  />
+                </FormGroup>
+                
+                <div style={{ textAlign: 'center' }}>
+                  <Button>💾 Sauvegarder le contenu Contact</Button>
+                </div>
+              </div>
+            </ContentSection>
+          );
 
              case 'config':
          return (

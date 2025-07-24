@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
 // Types pour les sections admin
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'config' | 'seo' | 'telegram';
+type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'config';
 
 interface AdminPanelProps {
   onBack?: () => void;
@@ -594,8 +594,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
     { id: 'categories' as AdminSection, icon: '📂', label: 'Catégories' },
     { id: 'farms' as AdminSection, icon: '🏠', label: 'Farms' },
-    { id: 'telegram' as AdminSection, icon: '✈️', label: 'Telegram' },
-    { id: 'seo' as AdminSection, icon: '🔍', label: 'SEO & Meta' },
     { id: 'config' as AdminSection, icon: '⚙️', label: 'Configuration' },
   ];
 
@@ -948,45 +946,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             </ContentSection>
           );
 
-        case 'telegram':
-        return (
-          <ContentSection>
-            <SectionTitle>Configuration Telegram</SectionTitle>
-            <FormGroup>
-              <Label>Nom d'utilisateur Telegram</Label>
-              <Input type="text" defaultValue="bipcosa06" />
-            </FormGroup>
-            <FormGroup>
-              <Label>Message de bienvenue</Label>
-              <TextArea defaultValue="Bonjour ! Bienvenue chez BIPCOSA06, votre boutique Cannabis de confiance." />
-            </FormGroup>
-            <FormGroup>
-              <Label>Template commande</Label>
-              <TextArea defaultValue="Bonjour, je souhaite commander {produit} de BIPCOSA06. Pouvez-vous me donner plus d'informations ?" />
-            </FormGroup>
-            <Button>Sauvegarder</Button>
-          </ContentSection>
-        );
 
-      case 'seo':
-        return (
-          <ContentSection>
-            <SectionTitle>SEO & Métadonnées</SectionTitle>
-            <FormGroup>
-              <Label>Titre du site</Label>
-              <Input type="text" defaultValue="BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon" />
-            </FormGroup>
-            <FormGroup>
-              <Label>Description</Label>
-              <TextArea defaultValue="BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel." />
-            </FormGroup>
-            <FormGroup>
-              <Label>Mots-clés</Label>
-              <Input type="text" defaultValue="BIPCOSA06, CANAGOOD, Lyon, boutique, livraison, 69, cannabis, CBD" />
-            </FormGroup>
-            <Button>Mettre à jour</Button>
-          </ContentSection>
-        );
 
              case 'config':
          return (
@@ -1004,14 +964,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                  </h4>
                  
                  <FormGroup>
-                   <Label>Type de background</Label>
-                   <Select value={config.backgroundType} onChange={(e) => handleSaveConfig({ backgroundType: e.target.value as 'gradient' | 'image' })}>
-                     <option value="gradient">Dégradé de couleurs</option>
-                     <option value="image">Image personnalisée</option>
-                   </Select>
-                 </FormGroup>
-
-                 <FormGroup>
                    <Label>Couleur principale</Label>
                    <ColorPicker 
                      type="color" 
@@ -1019,18 +971,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                      onChange={(e) => handleSaveConfig({ backgroundColor: e.target.value })}
                    />
                  </FormGroup>
-
-                 {config.backgroundType === 'image' && (
-                   <FormGroup>
-                     <Label>URL de l'image de fond</Label>
-                     <Input 
-                       type="url" 
-                       value={config.backgroundImage || ''} 
-                       onChange={(e) => handleSaveConfig({ backgroundImage: e.target.value })}
-                       placeholder="https://images.unsplash.com/..." 
-                     />
-                   </FormGroup>
-                 )}
 
                  <ConfigPreview 
                    $bgType={config.backgroundType} 

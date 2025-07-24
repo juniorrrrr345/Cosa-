@@ -216,8 +216,15 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
       setTimeout(loadData, 100); // Petit délai pour s'assurer que les données sont à jour
     };
 
+    // Écouter l'événement spécifique de changement de config (background)
+    const handleConfigChanged = (event: any) => {
+      console.log('🎯 InfoPage: Config changée (background):', event.detail);
+      setConfig(event.detail);
+    };
+
     window.addEventListener('configUpdated', handleConfigUpdate);
     window.addEventListener('dataUpdated', handleDataUpdate);
+    window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
 
     return () => {
       window.removeEventListener('configUpdated', handleConfigUpdate);

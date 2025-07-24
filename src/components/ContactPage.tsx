@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { dataService, ShopConfig } from '@/services/dataService';
+import { dataService, ShopConfig, ContactContent } from '@/services/dataService';
 
 interface ContactPageProps {
   onNavigate?: (view: string) => void;
@@ -194,59 +194,11 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
 
       <Content>
         <ContactCard>
-          <ContactTitle>
-            ✈️ Contact Telegram Principal
-          </ContactTitle>
+          <ContactTitle>✉️ Page Contact</ContactTitle>
           <ContactInfo>
-            Notre canal de communication principal pour toutes vos commandes et questions.
-          </ContactInfo>
-          <TelegramButton href="https://t.me/bipcosa06" target="_blank" rel="noopener noreferrer">
-            <span>✈️</span>
-            Contacter @bipcosa06
-          </TelegramButton>
-        </ContactCard>
-
-        <ContactCard>
-          <ContactTitle>
-            📱 Commandes Express
-          </ContactTitle>
-          <ContactInfo>
-            Pour vos commandes rapides, contactez-nous directement sur Telegram avec le nom du produit souhaité.
-          </ContactInfo>
-          <ContactInfo>
-            <strong>Format :</strong> "Bonjour, je souhaite commander [PRODUIT] de BIPCOSA06"
-          </ContactInfo>
-        </ContactCard>
-
-        <ContactCard>
-          <ContactTitle>
-            🚚 Zones de Livraison
-          </ContactTitle>
-          <ContactInfo>
-            <strong>Livraison rapide :</strong><br/>
-            • Lyon et région Rhône-Alpes<br/>
-            • Départements : 69, 71, 01, 42, 38<br/>
-            • Délai : 24-48h
-          </ContactInfo>
-        </ContactCard>
-
-        <ContactCard>
-          <ContactTitle>
-            ⏰ Horaires de Service
-          </ContactTitle>
-          <ContactInfo>
-            <strong>Support client :</strong> 7j/7<br/>
-            <strong>Commandes :</strong> Tous les jours<br/>
-            <strong>Livraisons :</strong> Selon disponibilités
-          </ContactInfo>
-        </ContactCard>
-
-        <ContactCard>
-          <ContactTitle>
-            🔐 Confidentialité
-          </ContactTitle>
-          <ContactInfo>
-            Toutes vos communications sont sécurisées. Nous garantissons la discrétion absolue de vos commandes et informations personnelles.
+            Cette page sera configurée depuis le panel administrateur.
+            <br />
+            Utilisez l'interface d'administration pour ajouter le contenu de contact.
           </ContactInfo>
         </ContactCard>
       </Content>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { dataService, ShopConfig } from '@/services/dataService';
+import { dataService, ShopConfig, InfoContent } from '@/services/dataService';
 
 const PageContainer = styled.div<{ $backgroundImage?: string; $backgroundType?: string }>`
   min-height: 100vh;
@@ -52,6 +52,62 @@ const Content = styled.div`
   min-height: calc(100vh - 200px);
   justify-content: center;
   align-items: center;
+`;
+
+const InfoSection = styled.div`
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin: 20px 0;
+  padding: 30px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(0,0,0,0.8);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+`;
+
+const InfoTitle = styled.h2`
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+  color: white;
+  text-shadow: 0 0 20px rgba(255,255,255,0.3);
+  text-align: center;
+`;
+
+const InfoDescription = styled.p`
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.9);
+  margin: 0 0 20px 0;
+  text-align: center;
+`;
+
+const InfoList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const InfoItem = styled.li`
+  padding: 12px 20px;
+  margin: 8px 0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border-left: 3px solid rgba(255,255,255,0.3);
+  font-size: 15px;
+  color: rgba(255,255,255,0.9);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+    border-left-color: rgba(255,255,255,0.5);
+    transform: translateX(5px);
+  }
 `;
 
 const EmptyState = styled.div`
@@ -126,23 +182,31 @@ interface InfoPageProps {
 
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+  const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
 
   useEffect(() => {
     const loadData = () => {
       setConfig(dataService.getConfig());
+      setInfoContents(dataService.getInfoContents());
     };
 
     loadData();
     
-    // Écouter les mises à jour de configuration
+    // Écouter les mises à jour de configuration et de données
     const handleConfigUpdate = () => {
       loadData();
     };
 
+    const handleDataUpdate = () => {
+      loadData();
+    };
+
     window.addEventListener('configUpdated', handleConfigUpdate);
+    window.addEventListener('dataUpdated', handleDataUpdate);
 
     return () => {
       window.removeEventListener('configUpdated', handleConfigUpdate);
+      window.removeEventListener('dataUpdated', handleDataUpdate);
     };
   }, []);
 
@@ -156,14 +220,30 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
       </Header>
 
       <Content>
-        <EmptyState>
-          <EmptyTitle>📋 Page Info</EmptyTitle>
-          <EmptyDescription>
-            Cette page sera configurée depuis le panel administrateur.
-            <br />
-            Utilisez l'interface d'administration pour ajouter le contenu.
-          </EmptyDescription>
-        </EmptyState>
+        {infoContents.length > 0 ? (
+          infoContents.map((info) => (
+            <InfoSection key={info.id}>
+              <InfoTitle>{info.title}</InfoTitle>
+              <InfoDescription>{info.description}</InfoDescription>
+              {info.items && info.items.length > 0 && (
+                <InfoList>
+                  {info.items.map((item, index) => (
+                    <InfoItem key={index}>{item}</InfoItem>
+                  ))}
+                </InfoList>
+              )}
+            </InfoSection>
+          ))
+        ) : (
+          <EmptyState>
+            <EmptyTitle>📋 Page Info</EmptyTitle>
+            <EmptyDescription>
+              Cette page sera configurée depuis le panel administrateur.
+              <br />
+              Utilisez l'interface d'administration pour ajouter le contenu.
+            </EmptyDescription>
+          </EmptyState>
+        )}
       </Content>
 
       <BottomNavigation>

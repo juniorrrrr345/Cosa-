@@ -517,9 +517,18 @@ class DataService {
         }
       }
 
-      // Notifier la mise à jour
+      // Notifier TOUS les composants et pages
       this.notifyConfigUpdate();
-      console.log('✅ Configuration mise à jour (cache local):', updates);
+      this.notifyDataUpdate(); // Aussi notifier data update pour sync complète
+      
+      // Dispatcher un événement global pour les pages de la boutique
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('bipcosa06ConfigChanged', { 
+          detail: updatedConfig 
+        }));
+      }
+      
+      console.log('✅ Configuration mise à jour et synchronisée:', updates);
       
       return updatedConfig;
     } catch (error) {
@@ -630,12 +639,19 @@ class DataService {
 
   // Méthode pour forcer l'actualisation du cache
   async forceRefresh(): Promise<void> {
+    console.log('🔄 Force refresh du cache...');
     this.cacheTimestamp = 0; // Force la mise à jour des données principales
     this.infoCacheTimestamp = 0; // Force la mise à jour du contenu Info
     this.contactCacheTimestamp = 0; // Force la mise à jour du contenu Contact
+    
     await this.refreshCache();
     this.loadContentFromStorage(); // Recharger les contenus depuis localStorage
-    this.notifyDataUpdate(); // Notifier tous les composants
+    
+    // Notifier TOUS les composants de la mise à jour
+    this.notifyDataUpdate();
+    this.notifyConfigUpdate();
+    
+    console.log('✅ Cache forcé et composants notifiés');
   }
 
   // Méthode pour synchroniser instantanément

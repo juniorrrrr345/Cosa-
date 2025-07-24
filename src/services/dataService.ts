@@ -262,9 +262,9 @@ class DataService {
 
   private getFallbackConfig(): ShopConfig {
     return {
-      backgroundType: 'gradient',
+      backgroundType: 'url',
       backgroundImage: '', // Image Cloudinary
-      backgroundUrl: '', // URL d'image externe (Imgur, etc.)
+      backgroundUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80', // Test image
       shopName: 'BIPCOSA06',
       description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
     };

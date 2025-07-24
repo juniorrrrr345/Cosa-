@@ -1274,8 +1274,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                         borderRadius: '10px',
                         fontSize: '14px'
                       }}
-                      value={config.backgroundType} 
-                      onChange={(e) => handleSaveConfig({ backgroundType: e.target.value as 'gradient' | 'image' | 'url' })}
+                      value={config.backgroundType || 'gradient'} 
+                      onChange={(e) => {
+                        const newType = e.target.value as 'gradient' | 'image' | 'url';
+                        setConfig({...config, backgroundType: newType});
+                        handleSaveConfig({ backgroundType: newType });
+                      }}
                     >
                       <option value="gradient">🌈 Dégradé (par défaut)</option>
                       <option value="image">📁 Image Cloudinary</option>

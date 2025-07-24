@@ -1,7 +1,7 @@
 // Configuration Cloudinary pour uploads depuis iPhone/mobile
 export const CLOUDINARY_CONFIG = {
   cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dvsy5mfhu',
-  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'bipcosa06_preset',
+  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'ml_default', // Preset par défaut unsigned
   apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '485987511825452',
   apiSecret: process.env.CLOUDINARY_API_SECRET || 'TCJrWZuCJ6r_BLhO4i6afg3F6JU',
   folder: 'bipcosa06',

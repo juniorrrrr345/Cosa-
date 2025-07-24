@@ -1295,8 +1295,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                       value={config.backgroundType || 'gradient'} 
                       onChange={(e) => {
                         const newType = e.target.value as 'gradient' | 'image' | 'url';
-                        setConfig({...config, backgroundType: newType});
-                        handleSaveConfig({ backgroundType: newType });
+                        console.log('🔄 Changement type background:', newType);
+                        
+                        // Mise à jour immédiate de l'état local
+                        setConfig(prevConfig => ({
+                          ...prevConfig, 
+                          backgroundType: newType
+                        }));
+                        
+                        // Sauvegarde en arrière-plan (sans attendre)
+                        setTimeout(() => {
+                          handleSaveConfig({ backgroundType: newType }).catch(error => {
+                            console.error('Erreur sauvegarde background type:', error);
+                          });
+                        }, 100);
                       }}
                     >
                       <option value="gradient">🌈 Dégradé (par défaut)</option>

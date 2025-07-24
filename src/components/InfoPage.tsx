@@ -146,9 +146,10 @@ const NavLabel = styled.div`
 
 interface InfoPageProps {
   onNavigate?: (view: string) => void;
+  currentView?: string;
 }
 
-const InfoPage: React.FC<InfoPageProps> = ({ onNavigate }) => {
+const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
   const [config, setConfig] = useState<Config>(configService.defaultConfig);
 
   useEffect(() => {
@@ -230,19 +231,19 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate }) => {
       </InfoSection>
 
       <BottomNavigation>
-        <NavItem $active onClick={() => onNavigate?.('menu')}>
+        <NavItem $active={currentView === 'menu'} onClick={() => onNavigate?.('menu')}>
           <NavIcon>🏠</NavIcon>
           <NavLabel>Menu</NavLabel>
         </NavItem>
-        <NavItem $active>
+        <NavItem $active={currentView === 'info'} onClick={() => onNavigate?.('info')}>
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem onClick={() => onNavigate?.('contact')}>
+        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
           <NavIcon>✈️</NavIcon>
           <NavLabel>Canal</NavLabel>
         </NavItem>
-        <NavItem onClick={() => onNavigate?.('contact')}>
+        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
           <NavIcon>✉️</NavIcon>
           <NavLabel>Contact</NavLabel>
         </NavItem>

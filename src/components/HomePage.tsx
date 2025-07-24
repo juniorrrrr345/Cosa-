@@ -237,9 +237,10 @@ const NavLabel = styled.div`
 
 interface HomePageProps {
   onNavigate?: (view: string) => void;
+  currentView?: string;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
+const HomePage: React.FC<HomePageProps> = ({ onNavigate, currentView = 'menu' }) => {
   const [config, setConfig] = useState<Config>(configService.defaultConfig);
 
   useEffect(() => {
@@ -344,19 +345,19 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Navigation exacte comme dans l'image */}
       <BottomNavigation>
-        <NavItem $active>
+        <NavItem $active={currentView === 'menu'} onClick={() => onNavigate?.('menu')}>
           <NavIcon>🏠</NavIcon>
           <NavLabel>Menu</NavLabel>
         </NavItem>
-        <NavItem>
+        <NavItem $active={currentView === 'info'} onClick={() => onNavigate?.('info')}>
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem onClick={() => onNavigate?.('contact')}>
+        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
           <NavIcon>✈️</NavIcon>
           <NavLabel>Canal</NavLabel>
         </NavItem>
-        <NavItem onClick={() => onNavigate?.('contact')}>
+        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
           <NavIcon>✉️</NavIcon>
           <NavLabel>Contact</NavLabel>
         </NavItem>

@@ -960,6 +960,82 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     }
   };
 
+  // Fonction pour convertir les URLs Imgur automatiquement
+  const convertImgurUrl = (url: string): string => {
+    if (!url) return url;
+    
+    // Détection d'URL Imgur galerie
+    const imgurGalleryPattern = /https?:\/\/imgur\.com\/a\/([a-zA-Z0-9]+)(?:#[a-zA-Z0-9]+)?/;
+    const imgurSinglePattern = /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)(?:\.[a-zA-Z0-9]+)?$/;
+    
+    let match = url.match(imgurGalleryPattern);
+    if (match) {
+      // Conversion galerie vers image directe
+      const imageId = match[1];
+      return `https://i.imgur.com/${imageId}.jpg`;
+    }
+    
+    match = url.match(imgurSinglePattern);
+    if (match) {
+      // Conversion image simple vers directe
+      const imageId = match[1];
+      return `https://i.imgur.com/${imageId}.jpg`;
+    }
+    
+    return url;
+  };
+
+  // Fonction pour valider une URL d'image
+  const validateImageUrl = (url: string): { isValid: boolean; message?: string; convertedUrl?: string } => {
+    if (!url) return { isValid: true };
+    
+    try {
+      const parsedUrl = new URL(url);
+      
+      // Vérifier si c'est HTTPS
+      if (parsedUrl.protocol !== 'https:') {
+        return { 
+          isValid: false, 
+          message: '⚠️ Utilisez une URL HTTPS pour la sécurité' 
+        };
+      }
+      
+      // Convertir automatiquement les URLs Imgur si nécessaire
+      const convertedUrl = convertImgurUrl(url);
+      if (convertedUrl !== url) {
+        return {
+          isValid: true,
+          convertedUrl,
+          message: '🔄 URL Imgur convertie automatiquement'
+        };
+      }
+      
+      // Vérifier si l'URL se termine par une extension d'image
+      const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+      const hasImageExtension = imageExtensions.some(ext => 
+        parsedUrl.pathname.toLowerCase().includes(ext) || 
+        parsedUrl.search.includes('format') ||
+        parsedUrl.hostname.includes('unsplash') ||
+        parsedUrl.hostname.includes('cloudinary')
+      );
+      
+      if (!hasImageExtension && !parsedUrl.hostname.includes('unsplash') && !parsedUrl.hostname.includes('cloudinary')) {
+        return { 
+          isValid: false, 
+          message: '⚠️ L\'URL ne semble pas pointer vers une image directe' 
+        };
+      }
+      
+      return { isValid: true, message: '✅ URL d\'image valide' };
+      
+    } catch (error) {
+      return { 
+        isValid: false, 
+        message: '❌ URL invalide - Vérifiez le format' 
+      };
+    }
+  };
+
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':

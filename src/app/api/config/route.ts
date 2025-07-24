@@ -9,9 +9,9 @@ export async function GET(request: NextRequest) {
     console.error('Erreur API GET config:', error);
     // Fallback avec config par défaut
     const fallbackConfig = {
-      backgroundType: 'url',
+      backgroundType: 'gradient',
       backgroundImage: '',
-      backgroundUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundUrl: '',
       shopName: 'BIPCOSA06',
       description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
     };
@@ -30,9 +30,9 @@ export async function PUT(request: NextRequest) {
     console.error('Erreur API PUT config:', error);
     // Fallback : retourner les updates avec config par défaut
     const fallbackConfig = {
-      backgroundType: 'url',
+      backgroundType: 'gradient',
       backgroundImage: '',
-      backgroundUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundUrl: '',
       shopName: 'BIPCOSA06',
       description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon',
       ...updates // Appliquer les mises à jour

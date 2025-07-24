@@ -342,14 +342,10 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     console.log('🎨 HomePage - config.backgroundUrl:', config?.backgroundUrl);
     console.log('🎨 HomePage - config.backgroundImage:', config?.backgroundImage);
     
-    // FORCER L'IMAGE DE TEST si pas de config
     if (!config || !config.backgroundType) {
-      console.log('🎨 HomePage - FORCE image de test car pas de config');
+      console.log('🎨 HomePage - Pas de config/backgroundType, dégradé par défaut');
       return {
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
+        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
       };
     }
 

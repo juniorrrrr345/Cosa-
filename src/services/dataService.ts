@@ -112,6 +112,17 @@ class DataService {
     // Le constructeur ne fait plus d'initialisation synchrone
     this.refreshCache();
     this.loadContentFromStorage();
+    
+    // Force le rechargement des catégories et farms par défaut
+    this.resetCategoriesAndFarms();
+  }
+
+  private resetCategoriesAndFarms(): void {
+    console.log('🔄 Réinitialisation des catégories et farms par défaut');
+    this.categoriesCache = this.getStaticCategories();
+    this.farmsCache = this.getStaticFarms();
+    console.log('📂 Categories rechargées:', this.categoriesCache);
+    console.log('🏠 Farms rechargées:', this.farmsCache);
   }
 
   static getInstance(): DataService {
@@ -252,7 +263,7 @@ class DataService {
     if (stored.length > 0) return stored;
     
     return [
-      { value: 'all', label: 'Toutes fermes' },
+      { value: 'all', label: 'Toutes fermes', country: '' },
       { value: 'holland', label: 'Holland', country: '🇳🇱' },
       { value: 'espagne', label: 'Espagne', country: '🇪🇸' },
       { value: 'calispain', label: 'Calispain', country: '🇺🇸🇪🇸' },
@@ -367,11 +378,13 @@ class DataService {
   // Catégories
   async getCategories(): Promise<Category[]> {
     await this.refreshCache();
-    return [{ value: 'all', label: 'Toutes les catégories' }, ...this.categoriesCache];
+    console.log('📂 getCategories - categoriesCache:', this.categoriesCache);
+    return this.categoriesCache;
   }
 
   getCategoriesSync(): Category[] {
-    return [{ value: 'all', label: 'Toutes les catégories' }, ...this.categoriesCache];
+    console.log('📂 getCategoriesSync - categoriesCache:', this.categoriesCache);
+    return this.categoriesCache;
   }
 
   async addCategory(category: Category): Promise<Category> {
@@ -420,11 +433,13 @@ class DataService {
   // Farms
   async getFarms(): Promise<Farm[]> {
     await this.refreshCache();
-    return [{ value: 'all', label: 'Toutes les farms', country: '' }, ...this.farmsCache];
+    console.log('🏠 getFarms - farmsCache:', this.farmsCache);
+    return this.farmsCache;
   }
 
   getFarmsSync(): Farm[] {
-    return [{ value: 'all', label: 'Toutes les farms', country: '' }, ...this.farmsCache];
+    console.log('🏠 getFarmsSync - farmsCache:', this.farmsCache);
+    return this.farmsCache;
   }
 
   async addFarm(farm: Farm): Promise<Farm> {

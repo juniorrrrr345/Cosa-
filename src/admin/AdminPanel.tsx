@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
+import { SocialNetwork } from '@/models/SocialNetwork';
 
 // Types pour les sections admin
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'content-info' | 'content-contact' | 'config' | 'background';
+type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'social-networks' | 'content-info' | 'content-contact' | 'config' | 'background';
 
 interface AdminPanelProps {
   onBack?: () => void;
@@ -563,6 +564,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     telegramLink: 'https://t.me/bipcosa06',
     additionalInfo: '📍 Zones de livraison: Lyon et région (69, 71, 01, 42, 38)\n⏰ Horaires: 24h/24 - 7j/7\n💳 Paiements acceptés: Espèces, Crypto\n🚚 Livraison: Rapide et discrète'
   });
+
+  // État pour les réseaux sociaux
+  const [socialNetworks, setSocialNetworks] = useState<SocialNetwork[]>([]);
+  const [editingSocial, setEditingSocial] = useState<SocialNetwork | null>(null);
+  const [isAddingSocial, setIsAddingSocial] = useState(false);
+  const [socialFormData, setSocialFormData] = useState<Partial<SocialNetwork>>({});
   
   // État pour les formulaires
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -616,19 +623,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
   const refreshData = async () => {
     try {
-      const [productsData, categoriesData, farmsData, configData, infoData, contactData] = await Promise.all([
+      const [productsData, categoriesData, farmsData, configData, infoData, contactData, socialData] = await Promise.all([
         dataService.getProducts(),
         dataService.getCategories(),
         dataService.getFarms(),
         dataService.getConfig(),
         Promise.resolve(dataService.getInfoContents()),
-        Promise.resolve(dataService.getContactContents())
+        Promise.resolve(dataService.getContactContents()),
+        dataService.getSocialNetworks()
       ]);
       
       setProducts(productsData);
       setCategories(categoriesData);
       setFarms(farmsData);
       setConfig(configData);
+      setSocialNetworks(socialData);
       
       // Charger les contenus existants
       if (infoData.length > 0) {
@@ -695,6 +704,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
     { id: 'categories' as AdminSection, icon: '📂', label: 'Catégories' },
     { id: 'farms' as AdminSection, icon: '🏠', label: 'Farms' },
+    { id: 'social-networks' as AdminSection, icon: '🌐', label: 'Réseaux Sociaux' },
     { id: 'background' as AdminSection, icon: '🖼️', label: 'Background' },
     { id: 'content-info' as AdminSection, icon: 'ℹ️', label: 'Contenu Info' },
     { id: 'content-contact' as AdminSection, icon: '✉️', label: 'Contenu Contact' },

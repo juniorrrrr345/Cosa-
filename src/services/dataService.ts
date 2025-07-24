@@ -1,4 +1,6 @@
 // Service de gestion des données BIPCOSA06 avec APIs MongoDB et Cloudinary
+import { SocialNetwork, defaultSocialNetworks } from '@/models/SocialNetwork';
+
 export interface Product {
   _id?: string;
   id: number;
@@ -823,6 +825,126 @@ class DataService {
     
     console.log('✅ Ferme supprimée:', value);
     return true;
+  }
+
+  // === GESTION DES RÉSEAUX SOCIAUX ===
+  private socialNetworksCache: SocialNetwork[] = [];
+  private socialCacheTimestamp: number = 0;
+
+  private loadSocialNetworksFromStorage(): SocialNetwork[] {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('bipcosa06_socialNetworks');
+        return stored ? JSON.parse(stored) : [...defaultSocialNetworks];
+      } catch (error) {
+        console.error('❌ Erreur chargement réseaux sociaux:', error);
+        return [...defaultSocialNetworks];
+      }
+    }
+    return [...defaultSocialNetworks];
+  }
+
+  private saveSocialNetworksToStorage(socialNetworks: SocialNetwork[]): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('bipcosa06_socialNetworks', JSON.stringify(socialNetworks));
+        console.log('💾 Réseaux sociaux sauvegardés:', socialNetworks.length);
+      } catch (error) {
+        console.error('❌ Erreur sauvegarde réseaux sociaux:', error);
+      }
+    }
+  }
+
+  // Méthodes publiques pour les réseaux sociaux
+  getSocialNetworks(): Promise<SocialNetwork[]> {
+    return Promise.resolve(this.getSocialNetworksSync());
+  }
+
+  getSocialNetworksSync(): SocialNetwork[] {
+    const now = Date.now();
+    if (now - this.socialCacheTimestamp > this.CACHE_DURATION) {
+      this.socialNetworksCache = this.loadSocialNetworksFromStorage();
+      this.socialCacheTimestamp = now;
+    }
+    return [...this.socialNetworksCache];
+  }
+
+  addSocialNetwork(network: Omit<SocialNetwork, 'id' | 'createdAt' | 'updatedAt'>): SocialNetwork {
+    const currentNetworks = this.getSocialNetworksSync();
+    const maxOrder = Math.max(...currentNetworks.map(n => n.order), 0);
+    
+    const newNetwork: SocialNetwork = {
+      ...network,
+      id: Date.now().toString(),
+      order: maxOrder + 1,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    const updatedNetworks = [...currentNetworks, newNetwork];
+    this.socialNetworksCache = updatedNetworks;
+    this.saveSocialNetworksToStorage(updatedNetworks);
+    this.notifyDataUpdate();
+
+    console.log('✅ Réseau social ajouté:', newNetwork.name);
+    return newNetwork;
+  }
+
+  updateSocialNetwork(id: string, updates: Partial<SocialNetwork>): SocialNetwork | null {
+    const currentNetworks = this.getSocialNetworksSync();
+    const networkIndex = currentNetworks.findIndex(n => n.id === id);
+    
+    if (networkIndex === -1) {
+      console.error('❌ Réseau social non trouvé:', id);
+      return null;
+    }
+
+    const updatedNetwork = {
+      ...currentNetworks[networkIndex],
+      ...updates,
+      updatedAt: new Date()
+    };
+
+    const updatedNetworks = [...currentNetworks];
+    updatedNetworks[networkIndex] = updatedNetwork;
+
+    this.socialNetworksCache = updatedNetworks;
+    this.saveSocialNetworksToStorage(updatedNetworks);
+    this.notifyDataUpdate();
+
+    console.log('✅ Réseau social mis à jour:', updatedNetwork.name);
+    return updatedNetwork;
+  }
+
+  deleteSocialNetwork(id: string): boolean {
+    const currentNetworks = this.getSocialNetworksSync();
+    const filteredNetworks = currentNetworks.filter(n => n.id !== id);
+    
+    if (filteredNetworks.length === currentNetworks.length) {
+      console.error('❌ Réseau social non trouvé pour suppression:', id);
+      return false;
+    }
+
+    this.socialNetworksCache = filteredNetworks;
+    this.saveSocialNetworksToStorage(filteredNetworks);
+    this.notifyDataUpdate();
+
+    console.log('✅ Réseau social supprimé:', id);
+    return true;
+  }
+
+  reorderSocialNetworks(orderedIds: string[]): void {
+    const currentNetworks = this.getSocialNetworksSync();
+    const reorderedNetworks = orderedIds.map((id, index) => {
+      const network = currentNetworks.find(n => n.id === id);
+      return network ? { ...network, order: index + 1 } : null;
+    }).filter(Boolean) as SocialNetwork[];
+
+    this.socialNetworksCache = reorderedNetworks;
+    this.saveSocialNetworksToStorage(reorderedNetworks);
+    this.notifyDataUpdate();
+
+    console.log('✅ Réseaux sociaux réordonnés');
   }
 }
 

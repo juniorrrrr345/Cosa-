@@ -256,23 +256,40 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     };
   }, []);
 
-  const loadData = () => {
-    const newProducts = dataService.getProducts();
-    const newCategories = dataService.getCategories();
-    const newFarms = dataService.getFarms();
-    const newConfig = dataService.getConfig();
-    
-    console.log('🛍️ Boutique: Chargement des données:', {
-      products: newProducts.length,
-      categories: newCategories.length,
-      farms: newFarms.length
-    });
-    
-    setProducts(newProducts);
-    setCategories(newCategories);
-    setFarms(newFarms);
-    setConfig(newConfig);
-    setLastSyncTime(new Date());
+  const loadData = async () => {
+    try {
+      const [newProducts, newCategories, newFarms, newConfig] = await Promise.all([
+        dataService.getProducts(),
+        dataService.getCategories(),
+        dataService.getFarms(),
+        dataService.getConfig()
+      ]);
+      
+      console.log('🛍️ Boutique: Chargement des données:', {
+        products: newProducts.length,
+        categories: newCategories.length,
+        farms: newFarms.length
+      });
+      
+      setProducts(newProducts);
+      setCategories(newCategories);
+      setFarms(newFarms);
+      setConfig(newConfig);
+      setLastSyncTime(new Date());
+    } catch (error) {
+      console.error('❌ Erreur lors du chargement des données:', error);
+      // En cas d'erreur, utiliser les données synchrones en fallback
+      const fallbackProducts = dataService.getProductsSync();
+      const fallbackCategories = dataService.getCategoriesSync();
+      const fallbackFarms = dataService.getFarmsSync();
+      const fallbackConfig = dataService.getConfigSync();
+      
+      setProducts(fallbackProducts);
+      setCategories(fallbackCategories);
+      setFarms(fallbackFarms);
+      setConfig(fallbackConfig);
+      setLastSyncTime(new Date());
+    }
   };
 
 

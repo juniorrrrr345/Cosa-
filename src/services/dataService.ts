@@ -488,13 +488,39 @@ class DataService {
     }
   }
 
-  // Info et Contact (statiques pour l'instant)
+  // Info et Contact avec mise à jour
   getInfoContents(): InfoContent[] {
     return [...this.infoContents];
   }
 
   getContactContents(): ContactContent[] {
     return [...this.contactContents];
+  }
+
+  updateInfoContent(content: Partial<InfoContent>): void {
+    const index = this.infoContents.findIndex(info => info.id === 'main-info');
+    if (index !== -1) {
+      this.infoContents[index] = { ...this.infoContents[index], ...content };
+    } else {
+      this.infoContents.push({ id: 'main-info', title: '', description: '', items: [], ...content });
+    }
+    
+    // Notifier la mise à jour
+    this.notifyDataUpdate();
+    console.log('📝 Info content mis à jour:', content);
+  }
+
+  updateContactContent(content: Partial<ContactContent>): void {
+    const index = this.contactContents.findIndex(contact => contact.id === 'main-contact');
+    if (index !== -1) {
+      this.contactContents[index] = { ...this.contactContents[index], ...content };
+    } else {
+      this.contactContents.push({ id: 'main-contact', title: '', description: '', ...content });
+    }
+    
+    // Notifier la mise à jour
+    this.notifyDataUpdate();
+    console.log('📧 Contact content mis à jour:', content);
   }
 
   // Méthodes de notification pour la synchronisation temps réel

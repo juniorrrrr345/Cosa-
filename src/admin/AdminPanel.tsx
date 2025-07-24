@@ -547,6 +547,23 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [farms, setFarms] = useState<Farm[]>([]);
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   
+  // État pour les contenus Info et Contact
+  const [infoContent, setInfoContent] = useState<InfoContent>({
+    id: 'main-info',
+    title: 'À propos de BIPCOSA06',
+    description: 'BIPCOSA06 est votre boutique de confiance pour les produits Cannabis de qualité supérieure dans la région lyonnaise.',
+    items: ['✅ Produits de qualité premium', '✅ Livraison rapide et discrète', '✅ Service client 24/7', '✅ Paiement sécurisé', '✅ Garantie satisfaction']
+  });
+  
+  const [contactContent, setContactContent] = useState<ContactContent>({
+    id: 'main-contact',
+    title: '✉️ Nous Contacter',
+    description: 'Contactez-nous directement via Telegram pour toutes vos commandes et questions. Notre équipe est disponible 24h/24 pour vous servir.',
+    telegramUsername: '@bipcosa06',
+    telegramLink: 'https://t.me/bipcosa06',
+    additionalInfo: '📍 Zones de livraison: Lyon et région (69, 71, 01, 42, 38)\n⏰ Horaires: 24h/24 - 7j/7\n💳 Paiements acceptés: Espèces, Crypto\n🚚 Livraison: Rapide et discrète'
+  });
+  
   // État pour les formulaires
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
@@ -562,11 +579,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
   const refreshData = async () => {
     try {
-      const [productsData, categoriesData, farmsData, configData] = await Promise.all([
+      const [productsData, categoriesData, farmsData, configData, infoData, contactData] = await Promise.all([
         dataService.getProducts(),
         dataService.getCategories(),
         dataService.getFarms(),
-        dataService.getConfig()
+        dataService.getConfig(),
+        Promise.resolve(dataService.getInfoContents()),
+        Promise.resolve(dataService.getContactContents())
       ]);
       
       setProducts(productsData);
@@ -574,10 +593,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       setFarms(farmsData);
       setConfig(configData);
       
+      // Charger les contenus existants
+      if (infoData.length > 0) {
+        setInfoContent(infoData[0]);
+      }
+      if (contactData.length > 0) {
+        setContactContent(contactData[0]);
+      }
+      
       console.log('🔄 Admin: Données actualisées', {
         products: productsData.length,
         categories: categoriesData.length,
-        farms: farmsData.length
+        farms: farmsData.length,
+        info: infoData.length,
+        contact: contactData.length
       });
     } catch (error) {
       console.error('❌ Erreur lors de l\'actualisation des données:', error);
@@ -586,6 +615,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       setCategories(dataService.getCategoriesSync());
       setFarms(dataService.getFarmsSync());
       setConfig(dataService.getConfigSync());
+    }
+  };
+
+  // Fonctions de sauvegarde pour Info et Contact
+  const handleSaveInfoContent = () => {
+    try {
+      dataService.updateInfoContent(infoContent);
+      alert('✅ Contenu Info sauvegardé avec succès !');
+    } catch (error) {
+      console.error('❌ Erreur lors de la sauvegarde Info:', error);
+      alert('❌ Erreur lors de la sauvegarde');
+    }
+  };
+
+  const handleSaveContactContent = () => {
+    try {
+      dataService.updateContactContent(contactContent);
+      alert('✅ Contenu Contact sauvegardé avec succès !');
+    } catch (error) {
+      console.error('❌ Erreur lors de la sauvegarde Contact:', error);
+      alert('❌ Erreur lors de la sauvegarde');
     }
   };
 
@@ -962,7 +1012,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   <Input 
                     type="text" 
                     placeholder="Ex: À propos de BIPCOSA06"
-                    defaultValue="À propos de BIPCOSA06"
+                    value={infoContent.title}
+                    onChange={(e) => setInfoContent({...infoContent, title: e.target.value})}
                   />
                 </FormGroup>
                 
@@ -970,7 +1021,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   <Label>Description principale</Label>
                   <TextArea 
                     placeholder="Description qui apparaît en haut de la page Info..."
-                    defaultValue="BIPCOSA06 est votre boutique de confiance pour les produits Cannabis de qualité supérieure dans la région lyonnaise."
+                    value={infoContent.description}
+                    onChange={(e) => setInfoContent({...infoContent, description: e.target.value})}
                     rows={4}
                   />
                 </FormGroup>
@@ -979,17 +1031,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   <Label>Éléments de la liste (un par ligne)</Label>
                   <TextArea 
                     placeholder="Saisissez chaque élément sur une ligne séparée..."
-                    defaultValue={`✅ Produits de qualité premium
-✅ Livraison rapide et discrète  
-✅ Service client 24/7
-✅ Paiement sécurisé
-✅ Garantie satisfaction`}
+                    value={infoContent.items?.join('\n') || ''}
+                    onChange={(e) => setInfoContent({...infoContent, items: e.target.value.split('\n').filter(item => item.trim())})}
                     rows={8}
                   />
                 </FormGroup>
                 
                 <div style={{ textAlign: 'center' }}>
-                  <Button>💾 Sauvegarder le contenu Info</Button>
+                  <Button onClick={handleSaveInfoContent}>💾 Sauvegarder le contenu Info</Button>
                 </div>
               </div>
             </ContentSection>
@@ -1009,7 +1058,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   <Input 
                     type="text" 
                     placeholder="Ex: @bipcosa06"
-                    defaultValue="@bipcosa06"
+                    value={contactContent.telegramUsername || ''}
+                    onChange={(e) => setContactContent({...contactContent, telegramUsername: e.target.value})}
                   />
                 </FormGroup>
                 
@@ -1018,7 +1068,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   <Input 
                     type="url" 
                     placeholder="Ex: https://t.me/bipcosa06"
-                    defaultValue="https://t.me/bipcosa06"
+                    value={contactContent.telegramLink || ''}
+                    onChange={(e) => setContactContent({...contactContent, telegramLink: e.target.value})}
                   />
                 </FormGroup>
                 
@@ -1026,7 +1077,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   <Label>Message d'accueil</Label>
                   <TextArea 
                     placeholder="Message qui s'affiche sur la page Contact..."
-                    defaultValue="Contactez-nous directement via Telegram pour toutes vos commandes et questions. Notre équipe est disponible 24h/24 pour vous servir."
+                    value={contactContent.description}
+                    onChange={(e) => setContactContent({...contactContent, description: e.target.value})}
                     rows={4}
                   />
                 </FormGroup>
@@ -1035,16 +1087,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   <Label>Informations supplémentaires</Label>
                   <TextArea 
                     placeholder="Informations additionnelles (horaires, zones de livraison, etc.)..."
-                    defaultValue={`📍 Zones de livraison: Lyon et région (69, 71, 01, 42, 38)
-⏰ Horaires: 24h/24 - 7j/7
-💳 Paiements acceptés: Espèces, Crypto
-🚚 Livraison: Rapide et discrète`}
+                    value={contactContent.additionalInfo || ''}
+                    onChange={(e) => setContactContent({...contactContent, additionalInfo: e.target.value})}
                     rows={6}
                   />
                 </FormGroup>
                 
                 <div style={{ textAlign: 'center' }}>
-                  <Button>💾 Sauvegarder le contenu Contact</Button>
+                  <Button onClick={handleSaveContactContent}>💾 Sauvegarder le contenu Contact</Button>
                 </div>
               </div>
             </ContentSection>

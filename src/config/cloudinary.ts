@@ -97,7 +97,18 @@ export const uploadToCloudinary = async (
     if (!response.ok) {
       console.error('❌ Erreur Cloudinary:', result);
       
-      throw new Error(result.error?.message || 'Erreur lors de l\'upload');
+      // Messages d'erreur spécifiques pour aider l'utilisateur
+      let errorMessage = result.error?.message || 'Erreur lors de l\'upload';
+      
+      if (errorMessage.includes('must be whitelisted')) {
+        errorMessage = '🚨 PRESET ERROR: Allez dans Cloudinary Console → Settings → Upload → Trouvez votre preset → Changez "Signing Mode" vers "Unsigned"';
+      } else if (errorMessage.includes('Upload preset must be specified')) {
+        errorMessage = '🚨 PRESET MISSING: Créez un preset "bipcosa06_preset" en mode Unsigned dans Cloudinary Console';
+      } else if (errorMessage.includes('Invalid upload preset')) {
+        errorMessage = '🚨 PRESET INVALID: Vérifiez que le preset "bipcosa06_preset" existe dans Cloudinary Console';
+      }
+      
+      throw new Error(errorMessage);
     }
 
     console.log('✅ Upload Cloudinary réussi:', result.public_id);

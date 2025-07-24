@@ -414,9 +414,14 @@ export class DataService {
 
   // === NOTIFICATIONS ===
   private notifyDataUpdate(): void {
+    console.log('🔔 DataService - Notification mise à jour données');
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('dataUpdated'));
-      window.dispatchEvent(new CustomEvent('bipcosa06DataChanged'));
+      // Délai court pour éviter les conflits de state
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('dataUpdated'));
+        window.dispatchEvent(new CustomEvent('bipcosa06DataChanged'));
+        console.log('📢 Événements dataUpdated envoyés');
+      }, 10);
     }
   }
 

@@ -279,59 +279,41 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   useEffect(() => {
     loadData();
     
-    // Écouter UNIQUEMENT les changements de configuration depuis le panel admin
+    // Écouter les changements de configuration
     const handleConfigChanged = (event: any) => {
-      console.log('🔄 HomePage - Config changée via panel admin:', event.detail);
+      console.log('🔄 HomePage - Config changée:', event.detail);
       setConfig(event.detail);
-      // FORCER le re-render immédiat
-      setTimeout(() => {
-        console.log('⚡ HomePage - Forçage du refresh UI');
-        setConfig({ ...event.detail }); // Force une nouvelle référence
-      }, 50);
+    };
+    
+    // Écouter les changements de données (produits, catégories, etc.)
+    const handleDataChanged = () => {
+      console.log('🔄 HomePage - Données changées, rechargement...');
+      loadData();
     };
     
     window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
     window.addEventListener('configUpdated', loadData);
-    window.addEventListener('dataUpdated', loadData);
+    window.addEventListener('dataUpdated', handleDataChanged);
+    window.addEventListener('bipcosa06DataChanged', handleDataChanged);
     
     return () => {
       window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
       window.removeEventListener('configUpdated', loadData);
-      window.removeEventListener('dataUpdated', loadData);
+      window.removeEventListener('dataUpdated', handleDataChanged);
+      window.removeEventListener('bipcosa06DataChanged', handleDataChanged);
     };
   }, []);
 
-  // Fonction pour charger les données avec priorité localStorage pour config
-  const loadData = async () => {
+  // Fonction pour charger les données - VERSION SYNCHRONE OPTIMISÉE
+  const loadData = () => {
     try {
       console.log('📥 HomePage - Chargement des données...');
       
-      // Charger config en priorité depuis localStorage (panel admin)
-      let configData;
-      if (typeof window !== 'undefined') {
-        const storedConfig = localStorage.getItem('bipcosa06_config');
-        if (storedConfig) {
-          try {
-            configData = JSON.parse(storedConfig);
-            console.log('📥 HomePage - Config depuis localStorage (panel admin):', configData);
-          } catch (e) {
-            console.error('❌ Erreur parsing config localStorage');
-          }
-        }
-      }
-      
-      // Si pas de config localStorage, utiliser l'API
-      if (!configData) {
-        configData = await dataService.getConfig();
-        console.log('📥 HomePage - Config depuis API:', configData);
-      }
-      
-      // Charger le reste des données avec gestion des "Toutes" options
-      const [productsData, categoriesRaw, farmsRaw] = await Promise.all([
-        dataService.getProducts(),
-        dataService.getCategories(),
-        dataService.getFarms()
-      ]);
+      // Utiliser les méthodes synchrones pour plus de fiabilité
+      const configData = dataService.getConfigSync();
+      const productsData = dataService.getProductsSync();
+      const categoriesRaw = dataService.getCategoriesSync();
+      const farmsRaw = dataService.getFarmsSync();
       
       // Ajouter les options "Toutes" au début
       const categoriesData = [
@@ -358,6 +340,12 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
       });
     } catch (error) {
       console.error('❌ HomePage - Erreur lors du chargement:', error);
+      
+      // Fallback de sécurité
+      setProducts([]);
+      setCategories([{ value: 'all', label: 'Toutes les catégories' }]);
+      setFarms([{ value: 'all', label: 'Toutes les fermes', country: '' }]);
+      setConfig({} as ShopConfig);
     }
   };
 

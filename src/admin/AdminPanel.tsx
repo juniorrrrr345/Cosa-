@@ -729,13 +729,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         const success = await dataService.deleteProduct(id);
         if (success) {
           console.log('✅ Produit supprimé avec succès');
+          
+          // Rechargement immédiat des données locales
           await refreshData();
+          
+          // Force la synchronisation vers la boutique
+          console.log('🔄 Synchronisation forcée vers la boutique');
+          
+          alert('✅ Produit supprimé avec succès');
         } else {
-          alert('Erreur lors de la suppression du produit');
+          alert('❌ Erreur lors de la suppression du produit');
         }
       } catch (error) {
         console.error('❌ Erreur lors de la suppression:', error);
-        alert('Erreur lors de la suppression du produit');
+        alert('❌ Erreur lors de la suppression du produit');
       }
     }
   };

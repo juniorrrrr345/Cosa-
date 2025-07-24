@@ -114,7 +114,7 @@ const BottomNavigation = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0,0,0,0.7);
   backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255,255,255,0.1);
   display: flex;

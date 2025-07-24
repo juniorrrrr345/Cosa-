@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { configService, Config } from '@/services/configService';
+import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -42,7 +42,7 @@ const FiltersSection = styled.div`
 
 const FilterDropdown = styled.div<{ $active?: boolean }>`
   flex: 1;
-  background: ${props => props.$active ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.8)'};
+  background: ${props => props.$active ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.6)'};
   backdrop-filter: blur(20px);
   border-radius: 15px;
   border: 1px solid ${props => props.$active ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'};
@@ -98,7 +98,7 @@ const ProductsGrid = styled.div`
 `;
 
 const ProductCard = styled.div`
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.5);
   backdrop-filter: blur(20px);
   border-radius: 20px;
   overflow: hidden;
@@ -108,7 +108,7 @@ const ProductCard = styled.div`
 
   &:hover {
     transform: translateY(-5px);
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.8);
     border-color: rgba(255,255,255,0.3);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
   }
@@ -163,7 +163,7 @@ const BottomNavigation = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0,0,0,0.7);
   backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-around;
@@ -206,109 +206,42 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, currentView = 'menu' }) => {
-  const [config, setConfig] = useState<Config>(configService.defaultConfig);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [farms, setFarms] = useState<Farm[]>([]);
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedFarm, setSelectedFarm] = useState<string>('all');
 
   useEffect(() => {
-    const loadedConfig = configService.getConfig();
-    setConfig(loadedConfig);
+    loadData();
+    
+    // Écouter les mises à jour depuis le panel admin
+    const handleDataUpdate = () => {
+      loadData();
+    };
+    
+    const handleConfigUpdate = () => {
+      loadData();
+    };
+
+    window.addEventListener('dataUpdated', handleDataUpdate);
+    window.addEventListener('configUpdated', handleConfigUpdate);
+
+    return () => {
+      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('configUpdated', handleConfigUpdate);
+    };
   }, []);
 
-  // Photos réelles de produits cannabis
-  const products = [
-    {
-      id: 1,
-      name: "ANIMAL COOKIES",
-      quality: "Qualité Top",
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
-      flagColor: "#333333",
-      flagText: "🇳🇱 HOLLAND",
-      category: "indica",
-      farm: "holland",
-      description: "Une variété indica premium avec des arômes sucrés et terreux. Parfaite pour la relaxation en soirée.",
-      prices: [
-        { weight: "1g", price: "12€" },
-        { weight: "3.5g", price: "40€" },
-        { weight: "7g", price: "75€" },
-        { weight: "14g", price: "140€" },
-        { weight: "28g", price: "260€" }
-      ],
-      video: "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-      id: 2,
-      name: "POWER HAZE",
-      quality: "Qualité mid",
-      image: "https://images.unsplash.com/photo-1574781330855-d0db2706b3d0?w=400&h=300&fit=crop&crop=center",
-      flagColor: "#333333",
-      flagText: "🇪🇸 ESPAGNOL",
-      category: "sativa",
-      farm: "espagne",
-      description: "Sativa énergisante avec des effets cérébraux puissants. Idéale pour la créativité et l'activité diurne.",
-      prices: [
-        { weight: "1g", price: "10€" },
-        { weight: "3.5g", price: "32€" },
-        { weight: "7g", price: "60€" },
-        { weight: "14g", price: "110€" },
-        { weight: "28g", price: "200€" }
-      ],
-      video: "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-      id: 3,
-      name: "NINE LIONS",
-      quality: "Qualité A+++",
-      image: "https://images.unsplash.com/photo-1574899420662-b4f36025552a?w=400&h=300&fit=crop&crop=center",
-      flagColor: "#333333",
-      flagText: "🇺🇸🇪🇸 CALISPAIN",
-      category: "hybrid",
-      farm: "calispain",
-      description: "Hybride équilibré de Californie et d'Espagne. Combinaison parfaite d'euphorie et de relaxation.",
-      prices: [
-        { weight: "1g", price: "15€" },
-        { weight: "3.5g", price: "50€" },
-        { weight: "7g", price: "95€" },
-        { weight: "14g", price: "180€" },
-        { weight: "28g", price: "340€" }
-      ],
-      video: "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-      id: 4,
-      name: "BUBBLEGUM GELATO",
-      quality: "Qualité Premium",
-      image: "https://images.unsplash.com/photo-1545139813-4e3e9ac2dbb2?w=400&h=300&fit=crop&crop=center",
-      flagColor: "#333333",
-      flagText: "PREMIUM",
-      category: "hybrid",
-      farm: "premium",
-      description: "Variété premium avec des saveurs de bubble-gum et gelato. Expérience gustative unique et effets équilibrés.",
-      prices: [
-        { weight: "1g", price: "18€" },
-        { weight: "3.5g", price: "60€" },
-        { weight: "7g", price: "110€" },
-        { weight: "14g", price: "200€" },
-        { weight: "28g", price: "380€" }
-      ],
-      video: "https://www.w3schools.com/html/mov_bbb.mp4"
-    }
-  ];
+  const loadData = () => {
+    setProducts(dataService.getProducts());
+    setCategories(dataService.getCategories());
+    setFarms(dataService.getFarms());
+    setConfig(dataService.getConfig());
+  };
 
-  const categories = [
-    { value: 'all', label: 'Toutes les catégories' },
-    { value: 'indica', label: 'Indica' },
-    { value: 'sativa', label: 'Sativa' },
-    { value: 'hybrid', label: 'Hybride' }
-  ];
 
-  const farms = [
-    { value: 'all', label: 'Toutes les farms' },
-    { value: 'holland', label: 'Holland' },
-    { value: 'espagne', label: 'Espagne' },
-    { value: 'calispain', label: 'Calispain' },
-    { value: 'premium', label: 'Premium' }
-  ];
 
   const filteredProducts = products.filter(product => {
     const categoryMatch = selectedCategory === 'all' || product.category === selectedCategory;

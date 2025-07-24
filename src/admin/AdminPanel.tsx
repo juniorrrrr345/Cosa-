@@ -21,47 +21,17 @@ const AdminContainer = styled.div`
 `;
 
 const Sidebar = styled.div<{ $isOpen: boolean }>`
-  width: ${props => props.$isOpen ? '280px' : '0'};
+  width: 280px;
   background: rgba(0,0,0,0.9);
   backdrop-filter: blur(20px);
   border-right: 1px solid rgba(255,255,255,0.1);
-  transition: all 0.3s ease;
-  overflow: hidden;
-  position: fixed;
+  position: relative;
   height: 100vh;
-  z-index: 1000;
-
-  @media (min-width: 768px) {
-    position: relative;
-    width: ${props => props.$isOpen ? '280px' : '60px'};
-  }
-
-  @media (min-width: 1024px) {
-    width: 280px;
-  }
+  overflow-y: auto;
 `;
 
 const SidebarToggle = styled.button`
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1001;
-  background: rgba(0,0,0,0.8);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: white;
-  border-radius: 10px;
-  padding: 12px;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255,255,255,0.1);
-  }
-
-  @media (min-width: 1024px) {
-    display: none;
-  }
+  display: none; /* Complètement supprimé */
 `;
 
 const SidebarHeader = styled.div`
@@ -490,6 +460,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   // État pour les formulaires
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [formData, setFormData] = useState<Partial<Product>>({});
 
   useEffect(() => {
     refreshData();
@@ -521,23 +492,68 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
       dataService.deleteProduct(id);
       refreshData();
+      // Forcer le rechargement de la boutique
+      window.dispatchEvent(new CustomEvent('dataUpdated'));
     }
   };
 
-  const handleSaveProduct = (productData: Omit<Product, 'id'>) => {
-    if (editingProduct) {
-      dataService.updateProduct(editingProduct.id, productData);
-    } else {
-      dataService.addProduct(productData);
+  const handleEditProduct = (product: Product) => {
+    setEditingProduct(product);
+    setFormData(product);
+  };
+
+  const handleAddProduct = () => {
+    setIsAddingProduct(true);
+    setFormData({
+      name: '',
+      quality: '',
+      image: '',
+      flagColor: '#333333',
+      flagText: '',
+      category: 'indica',
+      farm: 'holland',
+      description: '',
+      prices: [
+        { weight: '1g', price: '10€' },
+        { weight: '3.5g', price: '30€' },
+        { weight: '7g', price: '55€' }
+      ],
+      video: ''
+    });
+  };
+
+  const handleSaveProduct = () => {
+    if (!formData.name || !formData.description) {
+      alert('Veuillez remplir tous les champs obligatoires');
+      return;
     }
+
+    if (editingProduct) {
+      dataService.updateProduct(editingProduct.id, formData as Partial<Product>);
+    } else {
+      dataService.addProduct(formData as Omit<Product, 'id'>);
+    }
+    
     refreshData();
     setEditingProduct(null);
     setIsAddingProduct(false);
+    setFormData({});
+    
+    // Forcer le rechargement de la boutique
+    window.dispatchEvent(new CustomEvent('dataUpdated'));
+  };
+
+  const handleCloseModal = () => {
+    setEditingProduct(null);
+    setIsAddingProduct(false);
+    setFormData({});
   };
 
   const handleSaveConfig = (newConfig: Partial<ShopConfig>) => {
     dataService.updateConfig(newConfig);
     refreshData();
+    // Forcer le rechargement de la boutique avec nouveau background
+    window.dispatchEvent(new CustomEvent('configUpdated'));
   };
 
   const renderContent = () => {
@@ -576,7 +592,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
            <ContentSection>
              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                <SectionTitle>🌿 Gestion des Produits</SectionTitle>
-               <ActionButton $variant="add" onClick={() => setIsAddingProduct(true)}>
+               <ActionButton $variant="add" onClick={handleAddProduct}>
                  + Ajouter un produit
                </ActionButton>
              </div>
@@ -593,7 +609,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                      <ProductDetails>{product.description.substring(0, 60)}...</ProductDetails>
                    </ProductInfo>
                    <ActionButtons>
-                     <ActionButton $variant="edit" onClick={() => setEditingProduct(product)}>
+                     <ActionButton $variant="edit" onClick={() => handleEditProduct(product)}>
                        ✏️ Modifier
                      </ActionButton>
                      <ActionButton $variant="delete" onClick={() => handleDeleteProduct(product.id)}>
@@ -838,6 +854,110 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
         {renderContent()}
       </MainContent>
+
+      {/* Modal pour ajouter/modifier un produit */}
+      <Modal $isOpen={isAddingProduct || editingProduct !== null}>
+        <ModalContent>
+          <ModalHeader>
+            <ModalTitle>
+              {editingProduct ? '✏️ Modifier le produit' : '➕ Ajouter un produit'}
+            </ModalTitle>
+            <CloseButton onClick={handleCloseModal}>×</CloseButton>
+          </ModalHeader>
+
+          <FormGroup>
+            <Label>Nom du produit *</Label>
+            <Input 
+              type="text" 
+              value={formData.name || ''} 
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              placeholder="Ex: ANIMAL COOKIES" 
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Qualité</Label>
+            <Input 
+              type="text" 
+              value={formData.quality || ''} 
+              onChange={(e) => setFormData({...formData, quality: e.target.value})}
+              placeholder="Ex: Qualité Top" 
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Catégorie</Label>
+            <Select 
+              value={formData.category || 'indica'} 
+              onChange={(e) => setFormData({...formData, category: e.target.value})}
+            >
+              {categories.filter(c => c.value !== 'all').map(cat => (
+                <option key={cat.value} value={cat.value}>{cat.label}</option>
+              ))}
+            </Select>
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Farm d'origine</Label>
+            <Select 
+              value={formData.farm || 'holland'} 
+              onChange={(e) => setFormData({...formData, farm: e.target.value})}
+            >
+              {farms.filter(f => f.value !== 'all').map(farm => (
+                <option key={farm.value} value={farm.value}>{farm.label}</option>
+              ))}
+            </Select>
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Description *</Label>
+            <TextArea 
+              value={formData.description || ''} 
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              placeholder="Description détaillée du produit..." 
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>URL de l'image</Label>
+            <Input 
+              type="url" 
+              value={formData.image || ''} 
+              onChange={(e) => setFormData({...formData, image: e.target.value})}
+              placeholder="https://images.unsplash.com/..." 
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Texte du flag</Label>
+            <Input 
+              type="text" 
+              value={formData.flagText || ''} 
+              onChange={(e) => setFormData({...formData, flagText: e.target.value})}
+              placeholder="Ex: 🇳🇱 HOLLAND" 
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>URL vidéo (optionnel)</Label>
+            <Input 
+              type="url" 
+              value={formData.video || ''} 
+              onChange={(e) => setFormData({...formData, video: e.target.value})}
+              placeholder="https://..." 
+            />
+          </FormGroup>
+
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '30px' }}>
+            <ActionButton $variant="add" onClick={handleSaveProduct}>
+              💾 Sauvegarder
+            </ActionButton>
+            <ActionButton onClick={handleCloseModal}>
+              ❌ Annuler
+            </ActionButton>
+          </div>
+        </ModalContent>
+      </Modal>
     </AdminContainer>
   );
 };

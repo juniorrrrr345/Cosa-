@@ -202,15 +202,10 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
   useEffect(() => {
     loadData();
     
-    // Écouter UNIQUEMENT les changements de configuration depuis le panel admin
+    // Écouter les changements de configuration
     const handleConfigChanged = (event: any) => {
-      console.log('🔄 ContactPage - Config changée via panel admin:', event.detail);
+      console.log('🔄 ContactPage - Config changée:', event.detail);
       setConfig(event.detail);
-      // FORCER le re-render immédiat
-      setTimeout(() => {
-        console.log('⚡ ContactPage - Forçage du refresh UI');
-        setConfig({ ...event.detail }); // Force une nouvelle référence
-      }, 50);
     };
     
     window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);

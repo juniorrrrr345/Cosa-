@@ -48,10 +48,10 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
     backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
     width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: '20px'
+    color: 'white',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    position: 'relative',
+    paddingBottom: '80px'
   };
 };
 
@@ -59,6 +59,11 @@ const ContentWrapper = styled.div`
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 80px);
 `;
 
 const Header = styled.div`

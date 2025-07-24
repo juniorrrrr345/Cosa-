@@ -4,20 +4,54 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div<{ $backgroundImage?: string }>`
-  min-height: 100vh;
-  background: ${props => props.$backgroundImage 
-    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
-    : 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+// Fonction pour obtenir le style de background directement
+const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
+  console.log('🎨 ProductDetailPage getBackgroundStyle - Config reçue:', config);
+  
+  if (!config) {
+    console.log('🎨 ProductDetailPage - Pas de config, background transparent');
+    return {
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
+      minHeight: '100vh',
+      color: 'white',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      position: 'relative',
+      paddingBottom: '80px'
+    };
+  }
+  
+  let backgroundValue = 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+  
+  // URL externe (Imgur, etc.) - PRIORITÉ 1
+  if (config.backgroundType === 'url' && config.backgroundUrl && config.backgroundUrl.trim()) {
+    const safeUrl = config.backgroundUrl.replace(/['"]/g, '');
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
+    console.log('🎨 ProductDetailPage - Background URL externe:', safeUrl);
+  }
+  // Image Cloudinary - PRIORITÉ 2
+  else if (config.backgroundType === 'image' && config.backgroundImage && config.backgroundImage.trim()) {
+    const safeUrl = config.backgroundImage.replace(/['"]/g, '');
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
+    console.log('🎨 ProductDetailPage - Background Image Cloudinary:', safeUrl);
+  }
+  // Dégradé - PRIORITÉ 3
+  else if (config.backgroundType === 'gradient') {
+    backgroundValue = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
+    console.log('🎨 ProductDetailPage - Background dégradé');
+  }
+  
+  return {
+    background: backgroundValue,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    minHeight: '100vh',
+    color: 'white',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    position: 'relative',
+    paddingBottom: '80px'
   };
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  position: relative;
-  padding-bottom: 80px;
-`;
+};
 
 const Header = styled.div`
   display: flex;
@@ -346,7 +380,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   };
 
   return (
-    <PageContainer $backgroundImage={config.backgroundImage}>
+    <div style={getBackgroundStyle(config)}>
       <Header>
         <BackButton onClick={onBack}>
           ← Retour
@@ -418,7 +452,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           <NavLabel>Contact</NavLabel>
         </NavItem>
       </BottomNavigation>
-    </PageContainer>
+    </div>
   );
 };
 

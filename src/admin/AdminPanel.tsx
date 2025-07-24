@@ -552,6 +552,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [formData, setFormData] = useState<Partial<Product>>({});
   
+  // État pour les catégories
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [categoryFormData, setCategoryFormData] = useState<Partial<Category>>({});
+  
+  // État pour les farms
+  const [editingFarm, setEditingFarm] = useState<Farm | null>(null);
+  const [isAddingFarm, setIsAddingFarm] = useState(false);
+  const [farmFormData, setFarmFormData] = useState<Partial<Farm>>({});
+  
   // État pour les uploads
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
@@ -690,6 +700,137 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       console.error('❌ Erreur lors de la mise à jour de la config:', error);
       alert('Erreur lors de la mise à jour de la configuration');
     }
+  };
+
+  // Fonctions pour gérer les catégories
+  const handleAddCategory = () => {
+    setIsAddingCategory(true);
+    setCategoryFormData({
+      value: '',
+      label: ''
+    });
+  };
+
+  const handleEditCategory = (category: Category) => {
+    setEditingCategory(category);
+    setCategoryFormData(category);
+  };
+
+  const handleSaveCategory = async () => {
+    if (!categoryFormData.value || !categoryFormData.label) {
+      alert('Veuillez remplir tous les champs');
+      return;
+    }
+
+    try {
+      if (editingCategory) {
+        console.log('✏️ Admin: Modification de la catégorie', editingCategory.value);
+        await dataService.updateCategory(editingCategory.value, categoryFormData as Category);
+        console.log('✅ Catégorie modifiée avec succès');
+      } else {
+        console.log('➕ Admin: Ajout d\'une nouvelle catégorie');
+        await dataService.addCategory(categoryFormData as Category);
+        console.log('✅ Catégorie ajoutée avec succès');
+      }
+      
+      await refreshData();
+      setEditingCategory(null);
+      setIsAddingCategory(false);
+      setCategoryFormData({});
+    } catch (error) {
+      console.error('❌ Erreur lors de la sauvegarde:', error);
+      alert('Erreur lors de la sauvegarde de la catégorie');
+    }
+  };
+
+  const handleDeleteCategory = async (value: string) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
+      try {
+        console.log('🗑️ Admin: Suppression de la catégorie', value);
+        const success = await dataService.deleteCategory(value);
+        if (success) {
+          console.log('✅ Catégorie supprimée avec succès');
+          await refreshData();
+        } else {
+          alert('Erreur lors de la suppression de la catégorie');
+        }
+      } catch (error) {
+        console.error('❌ Erreur lors de la suppression:', error);
+        alert('Erreur lors de la suppression de la catégorie');
+      }
+    }
+  };
+
+  const handleCloseCategoryModal = () => {
+    setEditingCategory(null);
+    setIsAddingCategory(false);
+    setCategoryFormData({});
+  };
+
+  // Fonctions pour gérer les farms
+  const handleAddFarm = () => {
+    setIsAddingFarm(true);
+    setFarmFormData({
+      value: '',
+      label: '',
+      country: ''
+    });
+  };
+
+  const handleEditFarm = (farm: Farm) => {
+    setEditingFarm(farm);
+    setFarmFormData(farm);
+  };
+
+  const handleSaveFarm = async () => {
+    if (!farmFormData.value || !farmFormData.label || !farmFormData.country) {
+      alert('Veuillez remplir tous les champs');
+      return;
+    }
+
+    try {
+      if (editingFarm) {
+        console.log('✏️ Admin: Modification de la farm', editingFarm.value);
+        await dataService.updateFarm(editingFarm.value, farmFormData as Farm);
+        console.log('✅ Farm modifiée avec succès');
+      } else {
+        console.log('➕ Admin: Ajout d\'une nouvelle farm');
+        await dataService.addFarm(farmFormData as Farm);
+        console.log('✅ Farm ajoutée avec succès');
+      }
+      
+      await refreshData();
+      setEditingFarm(null);
+      setIsAddingFarm(false);
+      setFarmFormData({});
+    } catch (error) {
+      console.error('❌ Erreur lors de la sauvegarde:', error);
+      alert('Erreur lors de la sauvegarde de la farm');
+    }
+  };
+
+  const handleDeleteFarm = async (value: string) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette farm ?')) {
+      try {
+        console.log('🗑️ Admin: Suppression de la farm', value);
+        const success = await dataService.deleteFarm(value);
+        if (success) {
+          console.log('✅ Farm supprimée avec succès');
+          await refreshData();
+        } else {
+          alert('Erreur lors de la suppression de la farm');
+        }
+      } catch (error) {
+        console.error('❌ Erreur lors de la suppression:', error);
+        alert('Erreur lors de la suppression de la farm');
+      }
+    }
+  };
+
+  const handleCloseFarmModal = () => {
+    setEditingFarm(null);
+    setIsAddingFarm(false);
+    setFarmFormData({});
   };
 
   // Fonctions d'upload avec Cloudinary

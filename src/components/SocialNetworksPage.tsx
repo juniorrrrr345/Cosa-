@@ -4,24 +4,54 @@ import { SocialNetwork } from '@/models/SocialNetwork';
 import { ShopConfig } from '@/services/dataService';
 import dataService from '@/services/dataService';
 
-const SocialContainer = styled.div<{ $bgType?: string; $bgImage?: string; $bgUrl?: string }>`
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+// Fonction pour obtenir le style de background directement
+const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
+  console.log('🎨 SocialNetworksPage getBackgroundStyle - Config reçue:', config);
   
-  ${({ $bgType, $bgImage, $bgUrl }) => {
-    if ($bgType === 'url' && $bgUrl) {
-      return `background: url('${$bgUrl}') center/cover;`;
-    }
-    if ($bgType === 'image' && $bgImage) {
-      return `background: url('${$bgImage}') center/cover;`;
-    }
-    return `background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);`;
-  }}
-`;
+  if (!config) {
+    console.log('🎨 SocialNetworksPage - Pas de config, background transparent');
+    return {
+      background: 'transparent',
+      minHeight: '100vh',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '20px'
+    };
+  }
+  
+  let backgroundValue = 'transparent';
+  
+  // URL externe (Imgur, etc.) - PRIORITÉ 1
+  if (config.backgroundType === 'url' && config.backgroundUrl) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
+    console.log('🎨 SocialNetworksPage - Background URL externe:', config.backgroundUrl);
+  }
+  // Image Cloudinary - PRIORITÉ 2
+  else if (config.backgroundType === 'image' && config.backgroundImage) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
+    console.log('🎨 SocialNetworksPage - Background Image Cloudinary:', config.backgroundImage);
+  }
+  // Dégradé - PRIORITÉ 3
+  else if (config.backgroundType === 'gradient') {
+    backgroundValue = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
+    console.log('🎨 SocialNetworksPage - Background dégradé');
+  }
+  
+  return {
+    background: backgroundValue,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    minHeight: '100vh',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px'
+  };
+};
 
 const ContentWrapper = styled.div`
   max-width: 600px;
@@ -165,22 +195,64 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
 
   useEffect(() => {
     loadData();
+
+    // Écouter UNIQUEMENT les changements de configuration depuis le panel admin
+    const handleConfigChanged = (event: any) => {
+      console.log('🔄 SocialNetworksPage - Config changée via panel admin:', event.detail);
+      setConfig(event.detail);
+      // FORCER le re-render immédiat
+      setTimeout(() => {
+        console.log('⚡ SocialNetworksPage - Forçage du refresh UI');
+        setConfig({ ...event.detail }); // Force une nouvelle référence
+      }, 50);
+    };
+    
+    window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
+    window.addEventListener('dataUpdated', loadData);
+    
+    return () => {
+      window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
+      window.removeEventListener('dataUpdated', loadData);
+    };
   }, []);
 
+  // Fonction pour charger les données avec priorité localStorage pour config
   const loadData = async () => {
     try {
-      const [networksData, configData] = await Promise.all([
-        dataService.getSocialNetworks(),
-        dataService.getConfig()
-      ]);
+      console.log('📥 SocialNetworksPage - Chargement des données...');
       
-      setSocialNetworks(networksData);
+      // Charger config en priorité depuis localStorage (panel admin)
+      let configData;
+      if (typeof window !== 'undefined') {
+        const storedConfig = localStorage.getItem('bipcosa06_config');
+        if (storedConfig) {
+          try {
+            configData = JSON.parse(storedConfig);
+            console.log('📥 SocialNetworksPage - Config depuis localStorage (panel admin):', configData);
+          } catch (e) {
+            console.error('❌ Erreur parsing config localStorage');
+          }
+        }
+      }
+      
+      // Si pas de config localStorage, utiliser l'API
+      if (!configData) {
+        configData = await dataService.getConfig();
+        console.log('📥 SocialNetworksPage - Config depuis API:', configData);
+      }
+      
+      const socialData = dataService.getSocialNetworksSync();
+      
       setConfig(configData);
+      setSocialNetworks(socialData);
+      
+      console.log('✅ SocialNetworksPage - Données chargées:', {
+        config: configData,
+        socialNetworks: socialData.length
+      });
     } catch (error) {
-      console.error('❌ Erreur chargement réseaux sociaux:', error);
-      // Fallback sur les données par défaut
-      setSocialNetworks(dataService.getSocialNetworksSync());
-      setConfig(dataService.getConfigSync());
+      console.error('❌ SocialNetworksPage - Erreur lors du chargement:', error);
+      setSocialNetworks([]);
     }
   };
 
@@ -240,13 +312,7 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
   };
 
   return (
-    <SocialContainer 
-      style={getBackgroundStyle()}
-      $bgType={config.backgroundType}
-
-      $bgImage={config.backgroundImage}
-      $bgUrl={config.backgroundUrl}
-    >
+    <div style={getBackgroundStyle(config)}>
       <ContentWrapper>
         <BackButton onClick={onBack}>
           ← Retour à la boutique
@@ -293,12 +359,12 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
                   </SocialLink>
                 </SocialInfo>
               </SocialCard>
-            ))}
-          </SocialGrid>
-        )}
-      </ContentWrapper>
-    </SocialContainer>
-  );
+                    ))}
+      </SocialGrid>
+    )}
+    </ContentWrapper>
+  </div>
+);
 };
 
 export default SocialNetworksPage;

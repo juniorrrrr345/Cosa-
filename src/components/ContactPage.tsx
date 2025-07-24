@@ -9,41 +9,52 @@ interface ContactPageProps {
   currentView?: string;
 }
 
-// Styles pour la page Contact
-const PageContainer = styled.div<{ $config?: any }>`
-  min-height: 100vh;
-  background: ${props => {
-    const config = props.$config;
-    console.log('🎨 ContactPage PageContainer - Config reçue:', config);
-    
-    if (!config) {
-      console.log('🎨 ContactPage - Pas de config, fallback dégradé');
-      return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
-    }
-    
-    // URL externe (Imgur, etc.)
-    if (config.backgroundType === 'url' && config.backgroundUrl) {
-      console.log('🎨 ContactPage - Background URL externe:', config.backgroundUrl);
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
-    }
-    
-    // Image Cloudinary
-    if (config.backgroundType === 'image' && config.backgroundImage) {
-      console.log('🎨 ContactPage - Background Image Cloudinary:', config.backgroundImage);
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
-    }
-    
-    console.log('🎨 ContactPage - Background dégradé par défaut, type:', config.backgroundType);
-    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
-  }};
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  position: relative;
-  padding-bottom: 80px;
-`;
+// Fonction pour obtenir le style de background directement
+const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
+  console.log('🎨 ContactPage getBackgroundStyle - Config reçue:', config);
+  
+  if (!config) {
+    console.log('🎨 ContactPage - Pas de config, background transparent');
+    return {
+      background: 'transparent',
+      minHeight: '100vh',
+      color: 'white',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      position: 'relative',
+      paddingBottom: '80px'
+    };
+  }
+  
+  let backgroundValue = 'transparent';
+  
+  // URL externe (Imgur, etc.) - PRIORITÉ 1
+  if (config.backgroundType === 'url' && config.backgroundUrl) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
+    console.log('🎨 ContactPage - Background URL externe:', config.backgroundUrl);
+  }
+  // Image Cloudinary - PRIORITÉ 2
+  else if (config.backgroundType === 'image' && config.backgroundImage) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
+    console.log('🎨 ContactPage - Background Image Cloudinary:', config.backgroundImage);
+  }
+  // Dégradé - PRIORITÉ 3
+  else if (config.backgroundType === 'gradient') {
+    backgroundValue = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
+    console.log('🎨 ContactPage - Background dégradé');
+  }
+  
+  return {
+    background: backgroundValue,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    minHeight: '100vh',
+    color: 'white',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    position: 'relative',
+    paddingBottom: '80px'
+  };
+};
 
 const Header = styled.div`
   display: flex;
@@ -99,45 +110,44 @@ const ContactInfo = styled.div`
   font-size: 14px;
   line-height: 1.6;
   color: rgba(255,255,255,0.9);
-  margin-bottom: 15px;
-`;
-
-const ContactLink = styled.a`
-  color: #4facfe;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-
-  &:hover {
-    color: #7db8ff;
-    text-decoration: underline;
-  }
+  margin: 0 0 15px 0;
 `;
 
 const TelegramButton = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.3);
+  background: linear-gradient(135deg, #0088cc, #005fa3);
   color: white;
   text-decoration: none;
-  padding: 15px 25px;
-  border-radius: 15px;
-  font-size: 16px;
+  padding: 12px 24px;
+  border-radius: 25px;
   font-weight: 600;
+  font-size: 16px;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-  margin-top: 10px;
+  border: 2px solid transparent;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-    background: rgba(255,255,255,0.25);
-    border-color: rgba(255,255,255,0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,136,204,0.4);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 `;
 
+const ContactDetails = styled.div`
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+`;
+
+// Navigation en bas améliorée
 const BottomNavigation = styled.div`
   position: fixed;
   bottom: 0;
@@ -184,121 +194,100 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
   const [contactContents, setContactContents] = useState<ContactContent[]>([]);
 
   useEffect(() => {
-    const loadData = () => {
-      setConfig(dataService.getConfigSync());
-      setContactContents(dataService.getContactContents());
-      console.log('📞 ContactPage: Données chargées');
-    };
-
     loadData();
     
-    // Forcer la synchronisation des contenus au montage
-    dataService.forceSyncContent();
-    
-    // Écouter les mises à jour de configuration et de données
-    const handleConfigUpdate = () => {
-      console.log('📞 ContactPage: Config mise à jour');
-      loadData();
+    // Écouter UNIQUEMENT les changements de configuration depuis le panel admin
+    const handleConfigChanged = (event: any) => {
+      console.log('🔄 ContactPage - Config changée via panel admin:', event.detail);
+      setConfig(event.detail);
+      // FORCER le re-render immédiat
+      setTimeout(() => {
+        console.log('⚡ ContactPage - Forçage du refresh UI');
+        setConfig({ ...event.detail }); // Force une nouvelle référence
+      }, 50);
     };
     
-    const handleDataUpdate = () => {
-      console.log('📞 ContactPage: Données mises à jour');
-      setTimeout(loadData, 100); // Petit délai pour s'assurer que les données sont à jour
-    };
-
-    window.addEventListener('configUpdated', handleConfigUpdate);
-    window.addEventListener('dataUpdated', handleDataUpdate);
-
+    window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
+    
     return () => {
-      window.removeEventListener('configUpdated', handleConfigUpdate);
-      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
     };
   }, []);
 
-  // Style de background dynamique (inline pour forcer l'application)
-  const getBackgroundStyle = () => {
-    console.log('🎨 ContactPage - Config complète:', config);
-    
-    if (!config || !config.backgroundType) {
-      console.log('🎨 ContactPage - Pas de config/backgroundType, dégradé par défaut');
-      return {
-        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-      };
+  // Fonction pour charger les données avec priorité localStorage pour config
+  const loadData = async () => {
+    try {
+      console.log('📥 ContactPage - Chargement des données...');
+      
+      // Charger config en priorité depuis localStorage (panel admin)
+      let configData;
+      if (typeof window !== 'undefined') {
+        const storedConfig = localStorage.getItem('bipcosa06_config');
+        if (storedConfig) {
+          try {
+            configData = JSON.parse(storedConfig);
+            console.log('📥 ContactPage - Config depuis localStorage (panel admin):', configData);
+          } catch (e) {
+            console.error('❌ Erreur parsing config localStorage');
+          }
+        }
+      }
+      
+      // Si pas de config localStorage, utiliser l'API
+      if (!configData) {
+        configData = await dataService.getConfig();
+        console.log('📥 ContactPage - Config depuis API:', configData);
+      }
+      
+      const contactData = dataService.getContactContents();
+      
+      setConfig(configData);
+      setContactContents(contactData);
+      
+      console.log('✅ ContactPage - Données chargées:', {
+        config: configData,
+        contactContents: contactData.length
+      });
+    } catch (error) {
+      console.error('❌ ContactPage - Erreur lors du chargement:', error);
     }
-
-    if (config.backgroundType === 'url' && config.backgroundUrl) {
-      console.log('🎨 ContactPage - Applique URL externe:', config.backgroundUrl);
-      return {
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      };
-    }
-
-    if (config.backgroundType === 'image' && config.backgroundImage) {
-      console.log('🎨 ContactPage - Applique Image Cloudinary:', config.backgroundImage);
-      return {
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      };
-    }
-
-    console.log('🎨 ContactPage - Dégradé par défaut, type:', config.backgroundType);
-    return {
-      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-    };
   };
 
   return (
-    <div 
-      style={{
-        minHeight: '100vh',
-        color: 'white',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        ...getBackgroundStyle()
-      }}
-    >
+    <div style={getBackgroundStyle(config)}>
+      {/* Header avec nom de la boutique */}
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>
       </Header>
 
+      {/* Contenu principal */}
       <Content>
-        {contactContents.length > 0 ? (
-          contactContents.map((contact) => (
-            <ContactCard key={contact.id}>
-              <ContactTitle>{contact.title}</ContactTitle>
-              <ContactInfo>
-                {contact.description}
-              </ContactInfo>
-              
-              {contact.telegramUsername && contact.telegramLink && (
-                <TelegramButton href={contact.telegramLink} target="_blank" rel="noopener noreferrer">
-                  ✈️ Contacter {contact.telegramUsername}
-                </TelegramButton>
-              )}
-              
-              {contact.additionalInfo && (
-                <ContactInfo style={{ marginTop: '20px', fontSize: '13px', lineHeight: '1.8' }}>
-                  {contact.additionalInfo.split('\n').map((line, index) => (
-                    <div key={index}>{line}</div>
-                  ))}
-                </ContactInfo>
-              )}
-            </ContactCard>
-          ))
-        ) : (
-          <ContactCard>
-            <ContactTitle>✉️ Page Contact</ContactTitle>
-            <ContactInfo>
-              Configuration en cours... Utilisez le panel administrateur pour ajouter le contenu.
-            </ContactInfo>
+        {contactContents.map((contact) => (
+          <ContactCard key={contact.id}>
+            <ContactTitle>{contact.title}</ContactTitle>
+            <ContactInfo>{contact.description}</ContactInfo>
+            
+            {contact.telegramLink && (
+              <TelegramButton 
+                href={contact.telegramLink} 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <span>📱</span>
+                Contacter sur Telegram
+              </TelegramButton>
+            )}
+            
+            {contact.additionalInfo && (
+              <ContactDetails>
+                {contact.additionalInfo}
+              </ContactDetails>
+            )}
           </ContactCard>
-        )}
+        ))}
       </Content>
 
+      {/* Navigation en bas */}
       <BottomNavigation>
         <NavItem $active={currentView === 'menu'} onClick={() => onNavigate?.('menu')}>
           <NavIcon>🏠</NavIcon>

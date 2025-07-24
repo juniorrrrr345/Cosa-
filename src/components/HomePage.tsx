@@ -4,40 +4,52 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div<{ $config?: any }>`
-  min-height: 100vh;
-  background: ${props => {
-    const config = props.$config;
-    console.log('🎨 HomePage PageContainer - Config reçue:', config);
-    
-    if (!config) {
-      console.log('🎨 HomePage - Pas de config, fallback dégradé');
-      return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
-    }
-    
-    // URL externe (Imgur, etc.)
-    if (config.backgroundType === 'url' && config.backgroundUrl) {
-      console.log('🎨 HomePage - Background URL externe:', config.backgroundUrl);
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
-    }
-    
-    // Image Cloudinary
-    if (config.backgroundType === 'image' && config.backgroundImage) {
-      console.log('🎨 HomePage - Background Image Cloudinary:', config.backgroundImage);
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
-    }
-    
-    console.log('🎨 HomePage - Background dégradé par défaut, type:', config.backgroundType);
-    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
-  }};
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  position: relative;
-  padding-bottom: 80px;
-`;
+// Fonction pour obtenir le style de background directement
+const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
+  console.log('🎨 HomePage getBackgroundStyle - Config reçue:', config);
+  
+  if (!config) {
+    console.log('🎨 HomePage - Pas de config, background transparent');
+    return {
+      background: 'transparent',
+      minHeight: '100vh',
+      color: 'white',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      position: 'relative',
+      paddingBottom: '80px'
+    };
+  }
+  
+  let backgroundValue = 'transparent';
+  
+  // URL externe (Imgur, etc.) - PRIORITÉ 1
+  if (config.backgroundType === 'url' && config.backgroundUrl) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
+    console.log('🎨 HomePage - Background URL externe:', config.backgroundUrl);
+  }
+  // Image Cloudinary - PRIORITÉ 2
+  else if (config.backgroundType === 'image' && config.backgroundImage) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
+    console.log('🎨 HomePage - Background Image Cloudinary:', config.backgroundImage);
+  }
+  // Dégradé - PRIORITÉ 3
+  else if (config.backgroundType === 'gradient') {
+    backgroundValue = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
+    console.log('🎨 HomePage - Background dégradé');
+  }
+  
+  return {
+    background: backgroundValue,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    minHeight: '100vh',
+    color: 'white',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    position: 'relative',
+    paddingBottom: '80px'
+  };
+};
 
 // Header simplifié avec juste BIPCOSA06
 const Header = styled.div`
@@ -102,41 +114,43 @@ const FilterDropdown = styled.div<{ $active?: boolean }>`
   }
 `;
 
-const DropdownIcon = styled.span`
+const DropdownArrow = styled.span`
   position: absolute;
-  right: 20px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(255,255,255,0.7);
-  font-size: 12px;
+  color: white;
+  font-size: 18px;
   pointer-events: none;
 `;
 
-// Section produits avec design noir/blanc amélioré
+// Section produits avec grille responsive
 const ProductsSection = styled.div`
-  padding: 0 20px;
+  padding: 20px;
 `;
 
 const ProductsGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
+// Card produit avec design moderne
 const ProductCard = styled.div`
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.8);
   backdrop-filter: blur(20px);
   border-radius: 20px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.4s ease;
   cursor: pointer;
 
   &:hover {
-    transform: translateY(-5px);
-    background: rgba(0,0,0,0.8);
+    transform: translateY(-8px);
     border-color: rgba(255,255,255,0.3);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   }
 `;
 
@@ -243,83 +257,85 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   useEffect(() => {
     loadData();
     
-    // Écouter les mises à jour depuis le panel admin
-    const handleDataUpdate = (event: any) => {
-      console.log('🔄 HomePage: Données mises à jour depuis le panel admin', event.detail);
-      setTimeout(() => { loadData(); }, 100);
-    };
-    
-    const handleConfigUpdate = (event: any) => {
-      console.log('🔄 HomePage: Configuration mise à jour depuis le panel admin', event.detail);
-      setTimeout(() => { loadData(); }, 100);
-    };
-    
-    const handleBipcosaConfigChange = (event: any) => {
-      console.log('🔄 HomePage: Config globale changée', event.detail);
+    // Écouter UNIQUEMENT les changements de configuration depuis le panel admin
+    const handleConfigChanged = (event: any) => {
+      console.log('🔄 HomePage - Config changée via panel admin:', event.detail);
       setConfig(event.detail);
-      setTimeout(() => { loadData(); }, 50);
+      // FORCER le re-render immédiat
+      setTimeout(() => {
+        console.log('⚡ HomePage - Forçage du refresh UI');
+        setConfig({ ...event.detail }); // Force une nouvelle référence
+      }, 50);
     };
-
-    // Écouter tous les événements de mise à jour
-    window.addEventListener('dataUpdated', handleDataUpdate);
-    window.addEventListener('configUpdated', handleConfigUpdate);
-    window.addEventListener('bipcosa06ConfigChanged', handleBipcosaConfigChange);
-
-    // Synchronisation périodique réduite
-    const interval = setInterval(() => {
-      const newConfig = dataService.getConfigSync();
-      if (JSON.stringify(newConfig) !== JSON.stringify(config)) {
-        console.log('🔄 HomePage: Sync périodique config détectée');
-        setConfig(newConfig);
-      }
-    }, 3000); // Toutes les 3 secondes
-
+    
+    window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
+    window.addEventListener('configUpdated', loadData);
+    window.addEventListener('dataUpdated', loadData);
+    
     return () => {
-      window.removeEventListener('dataUpdated', handleDataUpdate);
-      window.removeEventListener('configUpdated', handleConfigUpdate);
-      window.removeEventListener('bipcosa06ConfigChanged', handleBipcosaConfigChange);
-      clearInterval(interval);
+      window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
+      window.removeEventListener('configUpdated', loadData);
+      window.removeEventListener('dataUpdated', loadData);
     };
-  }, [config]); // Dépendance sur config pour la comparaison
+  }, []);
 
+  // Fonction pour charger les données avec priorité localStorage pour config
   const loadData = async () => {
     try {
-      console.log('🔄 HomePage loadData - Début chargement...');
+      console.log('📥 HomePage - Chargement des données...');
       
-      const [newProducts, newCategories, newFarms, newConfig] = await Promise.all([
+      // Charger config en priorité depuis localStorage (panel admin)
+      let configData;
+      if (typeof window !== 'undefined') {
+        const storedConfig = localStorage.getItem('bipcosa06_config');
+        if (storedConfig) {
+          try {
+            configData = JSON.parse(storedConfig);
+            console.log('📥 HomePage - Config depuis localStorage (panel admin):', configData);
+          } catch (e) {
+            console.error('❌ Erreur parsing config localStorage');
+          }
+        }
+      }
+      
+      // Si pas de config localStorage, utiliser l'API
+      if (!configData) {
+        configData = await dataService.getConfig();
+        console.log('📥 HomePage - Config depuis API:', configData);
+      }
+      
+      // Charger le reste des données avec gestion des "Toutes" options
+      const [productsData, categoriesRaw, farmsRaw] = await Promise.all([
         dataService.getProducts(),
         dataService.getCategories(),
-        dataService.getFarms(),
-        dataService.getConfig()
+        dataService.getFarms()
       ]);
       
-      console.log('🔄 HomePage loadData - Config reçue de dataService:', newConfig);
+      // Ajouter les options "Toutes" au début
+      const categoriesData = [
+        { value: 'all', label: 'Toutes les catégories' },
+        ...categoriesRaw
+      ];
       
-      console.log('🛍️ Boutique: Chargement des données:', {
-        products: newProducts.length,
-        categories: newCategories.length,
-        farms: newFarms.length,
-        config: newConfig
+      const farmsData = [
+        { value: 'all', label: 'Toutes les fermes', country: '' },
+        ...farmsRaw
+      ];
+      
+      setProducts(productsData);
+      setCategories(categoriesData);
+      setFarms(farmsData);
+      setConfig(configData);
+      setLastSyncTime(new Date());
+      
+      console.log('✅ HomePage - Données chargées:', {
+        products: productsData.length,
+        categories: categoriesData.length,
+        farms: farmsData.length,
+        config: configData
       });
-      
-      setProducts(newProducts);
-      setCategories(newCategories);
-      setFarms(newFarms);
-      setConfig(newConfig);
-      setLastSyncTime(new Date());
     } catch (error) {
-      console.error('❌ Erreur lors du chargement des données:', error);
-      // En cas d'erreur, utiliser les données synchrones en fallback
-      const fallbackProducts = dataService.getProductsSync();
-      const fallbackCategories = dataService.getCategoriesSync();
-      const fallbackFarms = dataService.getFarmsSync();
-      const fallbackConfig = dataService.getConfigSync();
-      
-      setProducts(fallbackProducts);
-      setCategories(fallbackCategories);
-      setFarms(fallbackFarms);
-      setConfig(fallbackConfig);
-      setLastSyncTime(new Date());
+      console.error('❌ HomePage - Erreur lors du chargement:', error);
     }
   };
 
@@ -335,54 +351,9 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     onProductClick?.(product);
   };
 
-  // Style de background dynamique (inline pour forcer l'application)
-  const getBackgroundStyle = () => {
-    console.log('🎨 HomePage - Config complète:', config);
-    console.log('🎨 HomePage - config.backgroundType:', config?.backgroundType);
-    console.log('🎨 HomePage - config.backgroundUrl:', config?.backgroundUrl);
-    console.log('🎨 HomePage - config.backgroundImage:', config?.backgroundImage);
-    
-    if (!config || !config.backgroundType) {
-      console.log('🎨 HomePage - Pas de config/backgroundType, dégradé par défaut');
-      return {
-        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-      };
-    }
-
-    if (config.backgroundType === 'url' && config.backgroundUrl) {
-      console.log('🎨 HomePage - Applique URL externe:', config.backgroundUrl);
-      return {
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      };
-    }
-
-    if (config.backgroundType === 'image' && config.backgroundImage) {
-      console.log('🎨 HomePage - Applique Image Cloudinary:', config.backgroundImage);
-      return {
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      };
-    }
-
-    console.log('🎨 HomePage - Dégradé par défaut, type:', config.backgroundType);
-    return {
-      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-    };
-  };
-
   return (
     <div 
-      style={{
-        minHeight: '100vh',
-        color: 'white',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        ...getBackgroundStyle()
-      }}
+      style={getBackgroundStyle(config)}
     >
       {/* Header simplifié avec juste BIPCOSA06 */}
       <Header>
@@ -402,7 +373,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
               </option>
             ))}
           </select>
-          <DropdownIcon>⌄</DropdownIcon>
+          <DropdownArrow>⌄</DropdownArrow>
         </FilterDropdown>
         <FilterDropdown $active={selectedFarm !== 'all'}>
           <select 
@@ -415,7 +386,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
               </option>
             ))}
           </select>
-          <DropdownIcon>⌄</DropdownIcon>
+          <DropdownArrow>⌄</DropdownArrow>
         </FilterDropdown>
       </FiltersSection>
 

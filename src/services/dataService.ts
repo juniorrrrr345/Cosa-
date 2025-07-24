@@ -66,13 +66,13 @@ export interface ShopConfig {
 class DataService {
   private static instance: DataService;
   
-  // Cache pour optimiser les performances côté client
+  // Cache simplifié - SEUL le panel admin contrôle
   private productsCache: Product[] = [];
   private categoriesCache: Category[] = [];
   private farmsCache: Farm[] = [];
   private configCache: ShopConfig | null = null;
   private cacheTimestamp = 0;
-  private readonly CACHE_DURATION = 5000; // 5 secondes pour une sync plus rapide
+  private readonly CACHE_DURATION = 1000; // 1 seconde pour une sync ultra rapide
   
   // Cache pour les contenus Info et Contact
   private infoCacheTimestamp = 0;
@@ -100,29 +100,34 @@ class DataService {
   private contactContents: ContactContent[] = [
     {
       id: 'main-contact',
-      title: '✉️ Nous Contacter',
-      description: 'Pour passer commande ou obtenir des informations, contactez-nous directement via Telegram.',
+      title: '📱 Contact BIPCOSA06',
+      description: 'Contactez-nous facilement via Telegram pour vos commandes',
       telegramUsername: '@bipcosa06',
       telegramLink: 'https://t.me/bipcosa06',
-      additionalInfo: '📍 Zone de livraison : Lyon et alentours (69, 71, 01, 42, 38)\n🕒 Réponse rapide 24h/7j'
+      additionalInfo: 'Réponse rapide garantie - Service 7j/7 de 10h à 22h'
     }
   ];
 
-  private constructor() {
-    // Le constructeur ne fait plus d'initialisation synchrone
-    this.refreshCache();
+  // Social Networks Cache
+  private socialNetworksCache: SocialNetwork[] = [];
+  private socialNetworksCacheTimestamp = 0;
+
+  constructor() {
+    console.log('🚀 DataService initialisé');
+    
+    // NETTOYAGE COMPLET du cache au démarrage
+    this.clearAllCache();
+    
+    // Charger les contenus depuis localStorage
     this.loadContentFromStorage();
     
-    // Force le rechargement des catégories et farms par défaut
-    this.resetCategoriesAndFarms();
-  }
-
-  private resetCategoriesAndFarms(): void {
-    console.log('🔄 Réinitialisation des catégories et farms par défaut');
-    this.categoriesCache = this.getStaticCategories();
-    this.farmsCache = this.getStaticFarms();
-    console.log('📂 Categories rechargées:', this.categoriesCache);
-    console.log('🏠 Farms rechargées:', this.farmsCache);
+    // Charger les catégories et fermes depuis localStorage ou utiliser les défauts
+    this.loadCategoriesFromStorage();
+    this.loadFarmsFromStorage();
+    this.loadSocialNetworksFromStorage();
+    
+    // Initialiser avec les données de base
+    this.initializeDefaultData();
   }
 
   static getInstance(): DataService {
@@ -132,35 +137,84 @@ class DataService {
     return DataService.instance;
   }
 
-  // Méthode pour rafraîchir le cache
-  private async refreshCache(): Promise<void> {
-    try {
-      const now = Date.now();
-      if (now - this.cacheTimestamp < this.CACHE_DURATION && this.productsCache.length > 0) {
-        return; // Cache encore valide
-      }
-
-      console.log('🔄 Actualisation du cache des données...');
+  // NETTOYAGE COMPLET du cache
+  private clearAllCache(): void {
+    console.log('🧹 NETTOYAGE COMPLET du cache...');
+    
+    if (typeof window !== 'undefined') {
+      // Supprimer TOUS les anciens caches localStorage
+      const keysToRemove = [
+        'bipcosa06_config',
+        'bipcosa06_products',
+        'bipcosa06_categories', 
+        'bipcosa06_farms',
+        'bipcosa06_social_networks'
+      ];
       
-      // Récupérer les données depuis les APIs
-      const [productsData, categoriesData, farmsData, configData] = await Promise.all([
+      keysToRemove.forEach(key => {
+        localStorage.removeItem(key);
+        console.log(`🗑️ Supprimé: ${key}`);
+      });
+    }
+    
+    // Reset des caches mémoire
+    this.configCache = null;
+    this.productsCache = [];
+    this.cacheTimestamp = 0;
+    this.infoCacheTimestamp = 0;
+    this.contactCacheTimestamp = 0;
+    this.socialNetworksCacheTimestamp = 0;
+    
+    console.log('✅ Cache complètement nettoyé');
+  }
+
+  private initializeDefaultData(): void {
+    // Initialiser avec des données de base si rien en localStorage
+    if (this.categoriesCache.length === 0) {
+      this.categoriesCache = this.getStaticCategories();
+      this.saveCategoriesFromStorage();
+    }
+    
+    if (this.farmsCache.length === 0) {
+      this.farmsCache = this.getStaticFarms();
+      this.saveFarmsFromStorage();
+    }
+    
+    if (this.socialNetworksCache.length === 0) {
+      this.socialNetworksCache = [...defaultSocialNetworks];
+      this.saveSocialNetworksToStorage();
+    }
+  }
+
+  // Cache simplifié - actualisation uniquement si nécessaire
+  private async refreshCache(): Promise<void> {
+    const now = Date.now();
+    
+    // Vérifier si le cache est encore valide
+    if (now - this.cacheTimestamp < this.CACHE_DURATION && this.configCache) {
+      return; // Cache encore valide
+    }
+    
+    console.log('🔄 Actualisation du cache...');
+    
+    try {
+      // Charger UNIQUEMENT depuis l'API
+      const [productsData, configData] = await Promise.all([
         this.fetchProducts(),
-        this.fetchCategories(), 
-        this.fetchFarms(),
         this.fetchConfig()
       ]);
       
       this.productsCache = productsData;
-      this.categoriesCache = categoriesData;
-      this.farmsCache = farmsData;
       this.configCache = configData;
       
       this.cacheTimestamp = now;
-      console.log('✅ Cache actualisé');
+      console.log('✅ Cache actualisé avec config:', configData);
     } catch (error) {
       console.error('❌ Erreur lors de l\'actualisation du cache:', error);
-      // En cas d'erreur, utiliser les données de fallback
-      this.useFallbackData();
+      // En cas d'erreur, utiliser UNIQUEMENT le configCache existant
+      if (!this.configCache) {
+        this.configCache = this.getMinimalFallbackConfig();
+      }
     }
   }
 
@@ -177,26 +231,52 @@ class DataService {
   }
 
   private async fetchCategories(): Promise<Category[]> {
-    // TOUJOURS utiliser les données statiques (pas de MongoDB)
-    console.log('📂 Utilisation des catégories statiques (sans MongoDB)');
-    return this.getStaticCategories();
+    // TOUJOURS utiliser les données du cache local
+    return this.categoriesCache;
   }
 
   private async fetchFarms(): Promise<Farm[]> {
-    // TOUJOURS utiliser les données statiques (pas de MongoDB)
-    console.log('🏭 Utilisation des fermes statiques (sans MongoDB)');
-    return this.getStaticFarms();
+    // TOUJOURS utiliser les données du cache local
+    return this.farmsCache;
   }
 
   private async fetchConfig(): Promise<ShopConfig> {
     try {
       const response = await fetch('/api/config');
       if (!response.ok) throw new Error('Erreur API config');
-      return await response.json();
+      const config = await response.json();
+      
+      // Sauvegarder immédiatement en localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('bipcosa06_config', JSON.stringify(config));
+      }
+      
+      return config;
     } catch (error) {
       console.error('Erreur fetch config:', error);
-      return this.getFallbackConfig();
+      
+      // Essayer de récupérer depuis localStorage
+      if (typeof window !== 'undefined') {
+        const stored = localStorage.getItem('bipcosa06_config');
+        if (stored) {
+          console.log('📥 Config récupérée depuis localStorage');
+          return JSON.parse(stored);
+        }
+      }
+      
+      return this.getMinimalFallbackConfig();
     }
+  }
+
+  // Configuration de fallback MINIMALE (pas de background par défaut)
+  private getMinimalFallbackConfig(): ShopConfig {
+    return {
+      backgroundType: 'gradient',
+      backgroundImage: '',
+      backgroundUrl: '',
+      shopName: 'BIPCOSA06',
+      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
+    };
   }
 
   // Données de fallback si les APIs ne sont pas disponibles
@@ -245,11 +325,7 @@ class DataService {
 
   // Méthodes pour données statiques (catégories et fermes) - maintenant modifiables
   private getStaticCategories(): Category[] {
-    const stored = this.loadCategoriesFromStorage();
-    if (stored.length > 0) return stored;
-    
     return [
-      { value: 'all', label: 'Toutes catégories' },
       { value: 'indica', label: 'Indica' },
       { value: 'sativa', label: 'Sativa' },
       { value: 'hybrid', label: 'Hybride' },
@@ -259,34 +335,12 @@ class DataService {
   }
 
   private getStaticFarms(): Farm[] {
-    const stored = this.loadFarmsFromStorage();
-    if (stored.length > 0) return stored;
-    
     return [
-      { value: 'all', label: 'Toutes fermes', country: '' },
       { value: 'holland', label: 'Holland', country: '🇳🇱' },
       { value: 'espagne', label: 'Espagne', country: '🇪🇸' },
-      { value: 'calispain', label: 'Calispain', country: '🇺🇸🇪🇸' },
+      { value: 'calispain', label: 'Calispain', country: '🏴‍☠️' },
       { value: 'premium', label: 'Premium', country: '⭐' }
     ];
-  }
-
-  private getFallbackConfig(): ShopConfig {
-    return {
-      backgroundType: 'gradient',
-      backgroundImage: '', // Image Cloudinary
-      backgroundUrl: '', // URL d'image externe (Imgur, etc.)
-      shopName: 'BIPCOSA06',
-      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
-    };
-  }
-
-  private useFallbackData() {
-    console.log('⚠️ Utilisation des données de fallback');
-    this.productsCache = this.getFallbackProducts();
-    this.categoriesCache = this.getStaticCategories(); // Corrigé
-    this.farmsCache = this.getStaticFarms(); // Corrigé
-    this.configCache = this.getFallbackConfig();
   }
 
   // === MÉTHODES PUBLIQUES ===
@@ -485,95 +539,104 @@ class DataService {
     }
   }
 
-  // Configuration
+  // Configuration - SEUL CONTROLE DEPUIS LE PANEL ADMIN
   async getConfig(): Promise<ShopConfig> {
     console.log('🔍 getConfig() appelée');
+    
+    // TOUJOURS essayer localStorage en premier (cache du panel admin)
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('bipcosa06_config');
+      if (stored) {
+        try {
+          const config = JSON.parse(stored);
+          this.configCache = config;
+          console.log('⚙️ Config depuis localStorage (panel admin):', config);
+          return config;
+        } catch (e) {
+          console.error('❌ Erreur parsing config localStorage');
+        }
+      }
+    }
+    
+    // Sinon, essayer l'API
     await this.refreshCache();
-    const config = this.configCache || this.getFallbackConfig();
+    const config = this.configCache || this.getMinimalFallbackConfig();
     console.log('⚙️ Config retournée:', config);
     return config;
   }
 
   getConfigSync(): ShopConfig {
     console.log('🔍 getConfigSync() appelée');
-    const config = this.configCache || this.getFallbackConfig();
+    
+    // TOUJOURS essayer localStorage en premier
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('bipcosa06_config');
+      if (stored) {
+        try {
+          const config = JSON.parse(stored);
+          this.configCache = config;
+          console.log('⚙️ ConfigSync depuis localStorage:', config);
+          return config;
+        } catch (e) {
+          console.error('❌ Erreur parsing config localStorage');
+        }
+      }
+    }
+    
+    const config = this.configCache || this.getMinimalFallbackConfig();
     console.log('⚙️ ConfigSync retournée:', config);
     return config;
   }
 
   async updateConfig(updates: Partial<ShopConfig>): Promise<ShopConfig> {
     try {
-      // Essayer l'API d'abord
+      console.log('📤 updateConfig appelée avec:', updates);
+      
+      // Récupérer la config actuelle
+      const currentConfig = this.configCache || this.getMinimalFallbackConfig();
+      const updatedConfig = { ...currentConfig, ...updates };
+      
+      // FORCER la mise à jour du cache immédiatement
+      this.configCache = updatedConfig;
+      
+      // FORCER la sauvegarde dans localStorage IMMÉDIATEMENT
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
+        console.log('💾 Config FORCÉE dans localStorage:', updatedConfig);
+      }
+      
+      // Essayer de sauvegarder via API (sans attendre)
       try {
         const response = await fetch('/api/config', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updates)
         });
-
+        
         if (response.ok) {
-          const updatedConfig = await response.json();
-          
-          // Forcer la mise à jour du cache immédiatement
-          this.configCache = updatedConfig;
-          
-          // Sauvegarder aussi dans localStorage
-          if (typeof window !== 'undefined') {
-            localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
-          }
-          
-          // Rafraîchir le cache et notifier
-          await this.refreshCache();
-          this.notifyConfigUpdate();
-          this.notifyDataUpdate();
-          
-          // Événement global pour forcer la synchro
-          if (typeof window !== 'undefined') {
-            window.dispatchEvent(new CustomEvent('bipcosa06ConfigChanged', { 
-              detail: updatedConfig 
-            }));
-          }
-          
-          console.log('🎯 Config API mise à jour et cache forcé:', updatedConfig);
-          return updatedConfig;
+          console.log('✅ Config sauvegardée aussi via API');
         }
       } catch (apiError) {
-        console.log('⚠️ API config non disponible, utilisation cache local');
+        console.log('⚠️ API config non disponible, localStorage utilisé');
       }
-
-      // Fallback : mise à jour du cache local
-      const currentConfig = this.configCache || this.getFallbackConfig();
-      const updatedConfig = { ...currentConfig, ...updates };
       
-      // Mettre à jour le cache
-      this.configCache = updatedConfig;
-      
-      // Sauvegarder dans localStorage pour persistance
-      if (typeof window !== 'undefined') {
-        try {
-          localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
-          console.log('💾 Configuration sauvegardée dans localStorage');
-        } catch (storageError) {
-          console.error('❌ Erreur localStorage:', storageError);
-        }
-      }
-
-      // Notifier TOUS les composants et pages
-      this.notifyConfigUpdate();
-      this.notifyDataUpdate(); // Aussi notifier data update pour sync complète
-      
-      // Dispatcher un événement global pour les pages de la boutique
+      // FORCER la notification globale
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('bipcosa06ConfigChanged', { 
           detail: updatedConfig 
         }));
+        
+        // Événement de backup pour forcer le reload
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('configUpdated'));
+          window.dispatchEvent(new CustomEvent('dataUpdated'));
+        }, 100);
       }
       
-      console.log('✅ Configuration mise à jour et synchronisée:', updates);
-      
+      console.log('🎯 Config FORCÉE et événements envoyés:', updatedConfig);
       return updatedConfig;
     } catch (error) {
-      console.error('❌ Erreur lors de la mise à jour de la config:', error);
+      console.error('❌ Erreur lors de la mise à jour de la configuration:', error);
       throw error;
     }
   }
@@ -716,7 +779,7 @@ class DataService {
     return [];
   }
 
-  private saveCategoriestoStorage(categories: Category[]): void {
+  private saveCategoriesFromStorage(categories: Category[]): void {
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('bipcosa06_categories', JSON.stringify(categories));
@@ -736,7 +799,7 @@ class DataService {
     const categories = this.getStaticCategories();
     categories.push(newCategory);
     this.categoriesCache = categories;
-    this.saveCategoriestoStorage(categories);
+    this.saveCategoriesFromStorage(categories);
     this.notifyDataUpdate();
     
     console.log('✅ Catégorie ajoutée:', newCategory);
@@ -751,7 +814,7 @@ class DataService {
     
     categories[index] = { ...categories[index], ...updates };
     this.categoriesCache = categories;
-    this.saveCategoriestoStorage(categories);
+    this.saveCategoriesFromStorage(categories);
     this.notifyDataUpdate();
     
     console.log('✅ Catégorie modifiée:', categories[index]);
@@ -767,7 +830,7 @@ class DataService {
     if (filteredCategories.length === categories.length) return false;
     
     this.categoriesCache = filteredCategories;
-    this.saveCategoriestoStorage(filteredCategories);
+    this.saveCategoriesFromStorage(filteredCategories);
     this.notifyDataUpdate();
     
     console.log('✅ Catégorie supprimée:', value);
@@ -788,7 +851,7 @@ class DataService {
     return [];
   }
 
-  private saveFarmsToStorage(farms: Farm[]): void {
+  private saveFarmsFromStorage(farms: Farm[]): void {
     if (typeof window !== 'undefined') {
       try {
         localStorage.setItem('bipcosa06_farms', JSON.stringify(farms));
@@ -808,7 +871,7 @@ class DataService {
     const farms = this.getStaticFarms();
     farms.push(newFarm);
     this.farmsCache = farms;
-    this.saveFarmsToStorage(farms);
+    this.saveFarmsFromStorage(farms);
     this.notifyDataUpdate();
     
     console.log('✅ Ferme ajoutée:', newFarm);
@@ -823,7 +886,7 @@ class DataService {
     
     farms[index] = { ...farms[index], ...updates };
     this.farmsCache = farms;
-    this.saveFarmsToStorage(farms);
+    this.saveFarmsFromStorage(farms);
     this.notifyDataUpdate();
     
     console.log('✅ Ferme modifiée:', farms[index]);
@@ -839,7 +902,7 @@ class DataService {
     if (filteredFarms.length === farms.length) return false;
     
     this.farmsCache = filteredFarms;
-    this.saveFarmsToStorage(filteredFarms);
+    this.saveFarmsFromStorage(filteredFarms);
     this.notifyDataUpdate();
     
     console.log('✅ Ferme supprimée:', value);
@@ -847,9 +910,6 @@ class DataService {
   }
 
   // === GESTION DES RÉSEAUX SOCIAUX ===
-  private socialNetworksCache: SocialNetwork[] = [];
-  private socialCacheTimestamp: number = 0;
-
   private loadSocialNetworksFromStorage(): SocialNetwork[] {
     if (typeof window !== 'undefined') {
       try {
@@ -881,9 +941,9 @@ class DataService {
 
   getSocialNetworksSync(): SocialNetwork[] {
     const now = Date.now();
-    if (now - this.socialCacheTimestamp > this.CACHE_DURATION) {
+    if (now - this.socialNetworksCacheTimestamp > this.CACHE_DURATION) {
       this.socialNetworksCache = this.loadSocialNetworksFromStorage();
-      this.socialCacheTimestamp = now;
+      this.socialNetworksCacheTimestamp = now;
     }
     return [...this.socialNetworksCache];
   }

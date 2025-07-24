@@ -4,40 +4,52 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, ShopConfig, InfoContent } from '@/services/dataService';
 
-const PageContainer = styled.div<{ $config?: any }>`
-  min-height: 100vh;
-  background: ${props => {
-    const config = props.$config;
-    console.log('🎨 InfoPage PageContainer - Config reçue:', config);
-    
-    if (!config) {
-      console.log('🎨 InfoPage - Pas de config, fallback dégradé');
-      return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
-    }
-    
-    // URL externe (Imgur, etc.)
-    if (config.backgroundType === 'url' && config.backgroundUrl) {
-      console.log('🎨 InfoPage - Background URL externe:', config.backgroundUrl);
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
-    }
-    
-    // Image Cloudinary
-    if (config.backgroundType === 'image' && config.backgroundImage) {
-      console.log('🎨 InfoPage - Background Image Cloudinary:', config.backgroundImage);
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
-    }
-    
-    console.log('🎨 InfoPage - Background dégradé par défaut, type:', config.backgroundType);
-    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
-  }};
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: white;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  position: relative;
-  padding-bottom: 80px;
-`;
+// Fonction pour obtenir le style de background directement
+const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
+  console.log('🎨 InfoPage getBackgroundStyle - Config reçue:', config);
+  
+  if (!config) {
+    console.log('🎨 InfoPage - Pas de config, background transparent');
+    return {
+      background: 'transparent',
+      minHeight: '100vh',
+      color: 'white',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+      position: 'relative',
+      paddingBottom: '80px'
+    };
+  }
+  
+  let backgroundValue = 'transparent';
+  
+  // URL externe (Imgur, etc.) - PRIORITÉ 1
+  if (config.backgroundType === 'url' && config.backgroundUrl) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
+    console.log('🎨 InfoPage - Background URL externe:', config.backgroundUrl);
+  }
+  // Image Cloudinary - PRIORITÉ 2
+  else if (config.backgroundType === 'image' && config.backgroundImage) {
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
+    console.log('🎨 InfoPage - Background Image Cloudinary:', config.backgroundImage);
+  }
+  // Dégradé - PRIORITÉ 3
+  else if (config.backgroundType === 'gradient') {
+    backgroundValue = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
+    console.log('🎨 InfoPage - Background dégradé');
+  }
+  
+  return {
+    background: backgroundValue,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    minHeight: '100vh',
+    color: 'white',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    position: 'relative',
+    paddingBottom: '80px'
+  };
+};
 
 const Header = styled.div`
   display: flex;
@@ -107,49 +119,28 @@ const InfoList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 `;
 
 const InfoItem = styled.li`
+  font-size: 15px;
+  color: rgba(255,255,255,0.85);
   padding: 12px 20px;
-  margin: 8px 0;
   background: rgba(255,255,255,0.05);
   border-radius: 12px;
-  border-left: 3px solid rgba(255,255,255,0.3);
-  font-size: 15px;
-  color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.1);
   transition: all 0.3s ease;
 
   &:hover {
     background: rgba(255,255,255,0.1);
-    border-left-color: rgba(255,255,255,0.5);
+    border-color: rgba(255,255,255,0.2);
     transform: translateX(5px);
   }
 `;
 
-const EmptyState = styled.div`
-  text-align: center;
-  padding: 60px 20px;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.2);
-`;
-
-const EmptyTitle = styled.h2`
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  color: white;
-  text-shadow: 0 0 15px rgba(255,255,255,0.3);
-`;
-
-const EmptyDescription = styled.p`
-  font-size: 16px;
-  color: rgba(255,255,255,0.8);
-  line-height: 1.6;
-  margin: 0;
-`;
-
+// Navigation en bas améliorée
 const BottomNavigation = styled.div`
   position: fixed;
   bottom: 0;
@@ -201,121 +192,90 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
   const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
 
   useEffect(() => {
-    const loadData = () => {
-      setConfig(dataService.getConfigSync());
-      setInfoContents(dataService.getInfoContents());
-      console.log('📄 InfoPage: Données chargées');
-    };
-
     loadData();
     
-    // Forcer la synchronisation des contenus au montage
-    dataService.forceSyncContent();
-    
-    // Écouter les mises à jour de configuration et de données
-    const handleConfigUpdate = () => {
-      console.log('📄 InfoPage: Config mise à jour');
-      loadData();
-    };
-
-    const handleDataUpdate = () => {
-      console.log('📄 InfoPage: Données mises à jour');
-      setTimeout(loadData, 100); // Petit délai pour s'assurer que les données sont à jour
-    };
-
-    // Écouter l'événement spécifique de changement de config (background)
+    // Écouter UNIQUEMENT les changements de configuration depuis le panel admin
     const handleConfigChanged = (event: any) => {
-      console.log('🎯 InfoPage: Config changée (background):', event.detail);
+      console.log('🔄 InfoPage - Config changée via panel admin:', event.detail);
       setConfig(event.detail);
+      // FORCER le re-render immédiat
+      setTimeout(() => {
+        console.log('⚡ InfoPage - Forçage du refresh UI');
+        setConfig({ ...event.detail }); // Force une nouvelle référence
+      }, 50);
     };
-
-    window.addEventListener('configUpdated', handleConfigUpdate);
-    window.addEventListener('dataUpdated', handleDataUpdate);
+    
     window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
-
+    
     return () => {
-      window.removeEventListener('configUpdated', handleConfigUpdate);
-      window.removeEventListener('dataUpdated', handleDataUpdate);
+      window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
     };
   }, []);
 
-  // Style de background dynamique (inline pour forcer l'application)
-  const getBackgroundStyle = () => {
-    console.log('🎨 InfoPage - Config complète:', config);
-    
-    if (!config || !config.backgroundType) {
-      console.log('🎨 InfoPage - Pas de config/backgroundType, dégradé par défaut');
-      return {
-        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-      };
+  // Fonction pour charger les données avec priorité localStorage pour config
+  const loadData = async () => {
+    try {
+      console.log('📥 InfoPage - Chargement des données...');
+      
+      // Charger config en priorité depuis localStorage (panel admin)
+      let configData;
+      if (typeof window !== 'undefined') {
+        const storedConfig = localStorage.getItem('bipcosa06_config');
+        if (storedConfig) {
+          try {
+            configData = JSON.parse(storedConfig);
+            console.log('📥 InfoPage - Config depuis localStorage (panel admin):', configData);
+          } catch (e) {
+            console.error('❌ Erreur parsing config localStorage');
+          }
+        }
+      }
+      
+      // Si pas de config localStorage, utiliser l'API
+      if (!configData) {
+        configData = await dataService.getConfig();
+        console.log('📥 InfoPage - Config depuis API:', configData);
+      }
+      
+      const infoData = dataService.getInfoContents();
+      
+      setConfig(configData);
+      setInfoContents(infoData);
+      
+      console.log('✅ InfoPage - Données chargées:', {
+        config: configData,
+        infoContents: infoData.length
+      });
+    } catch (error) {
+      console.error('❌ InfoPage - Erreur lors du chargement:', error);
     }
-
-    if (config.backgroundType === 'url' && config.backgroundUrl) {
-      console.log('🎨 InfoPage - Applique URL externe:', config.backgroundUrl);
-      return {
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      };
-    }
-
-    if (config.backgroundType === 'image' && config.backgroundImage) {
-      console.log('🎨 InfoPage - Applique Image Cloudinary:', config.backgroundImage);
-      return {
-        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      };
-    }
-
-    console.log('🎨 InfoPage - Dégradé par défaut, type:', config.backgroundType);
-    return {
-      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-    };
   };
 
   return (
-    <div 
-      style={{
-        minHeight: '100vh',
-        color: 'white',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-        ...getBackgroundStyle()
-      }}
-    >
+    <div style={getBackgroundStyle(config)}>
+      {/* Header avec nom de la boutique */}
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>
       </Header>
 
+      {/* Contenu principal */}
       <Content>
-        {infoContents.length > 0 ? (
-          infoContents.map((info) => (
-            <InfoSection key={info.id}>
-              <InfoTitle>{info.title}</InfoTitle>
-              <InfoDescription>{info.description}</InfoDescription>
-              {info.items && info.items.length > 0 && (
-                <InfoList>
-                  {info.items.map((item, index) => (
-                    <InfoItem key={index}>{item}</InfoItem>
-                  ))}
-                </InfoList>
-              )}
-            </InfoSection>
-          ))
-        ) : (
-          <EmptyState>
-            <EmptyTitle>📋 Page Info</EmptyTitle>
-            <EmptyDescription>
-              Cette page sera configurée depuis le panel administrateur.
-              <br />
-              Utilisez l'interface d'administration pour ajouter le contenu.
-            </EmptyDescription>
-          </EmptyState>
-        )}
+        {infoContents.map((info) => (
+          <InfoSection key={info.id}>
+            <InfoTitle>{info.title}</InfoTitle>
+            <InfoDescription>{info.description}</InfoDescription>
+            {info.items && info.items.length > 0 && (
+              <InfoList>
+                {info.items.map((item, index) => (
+                  <InfoItem key={index}>{item}</InfoItem>
+                ))}
+              </InfoList>
+            )}
+          </InfoSection>
+        ))}
       </Content>
 
+      {/* Navigation en bas */}
       <BottomNavigation>
         <NavItem $active={currentView === 'menu'} onClick={() => onNavigate?.('menu')}>
           <NavIcon>🏠</NavIcon>

@@ -1851,9 +1851,20 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             {menuItems.find(item => item.id === activeSection)?.label || 'Admin'}
           </ContentTitle>
           {onBack && (
-            <BackButton onClick={onBack}>
-              ← Retour à la boutique
-            </BackButton>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <BackButton onClick={() => {
+                // Déconnexion sécurisée
+                localStorage.removeItem('adminAuthenticated');
+                localStorage.removeItem('adminSessionTime');
+                localStorage.removeItem('adminMode');
+                window.location.href = '/panel';
+              }}>
+                🔐 Déconnexion
+              </BackButton>
+              <BackButton onClick={onBack}>
+                ← Retour à la boutique
+              </BackButton>
+            </div>
           )}
         </ContentHeader>
 

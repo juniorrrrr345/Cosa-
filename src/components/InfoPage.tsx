@@ -18,23 +18,22 @@ const PageContainer = styled.div<{ $backgroundImage?: string | null; $background
 `;
 
 const Header = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  text-align: center;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
 `;
 
-const ShopTitle = styled.h1`
+const HeaderTitle = styled.h1`
   font-size: 24px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  margin-bottom: 5px;
-`;
-
-const ShopSubtitle = styled.p`
-  font-size: 14px;
-  opacity: 0.8;
-  font-weight: 300;
+  font-weight: 700;
+  letter-spacing: 3px;
+  margin: 0;
+  color: white;
+  text-shadow: 0 0 20px rgba(255,255,255,0.3);
 `;
 
 const LogoContainer = styled.div`
@@ -163,8 +162,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
       $backgroundColor={config.backgroundColor}
     >
       <Header>
-        <ShopTitle>{config.shopName}</ShopTitle>
-        <ShopSubtitle>{config.shopDescription}</ShopSubtitle>
+        <HeaderTitle>BIPCOSA06</HeaderTitle>
       </Header>
 
       <LogoContainer>

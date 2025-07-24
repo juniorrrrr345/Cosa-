@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import HomePage from '@/components/HomePage';
 import InfoPage from '@/components/InfoPage';
+import ContactPage from '@/components/ContactPage';
 import AdminPanel from '@/admin/AdminPanel';
 
 export default function MainPage() {
@@ -46,8 +47,7 @@ export default function MainPage() {
   }
 
   if (currentView === 'contact') {
-    // Pour l'instant, on redirige vers menu, mais on peut créer une page contact plus tard
-    return <HomePage onNavigate={handleNavigation} currentView={currentView} />;
+    return <ContactPage onNavigate={handleNavigation} currentView={currentView} />;
   }
 
   // Vue Menu par défaut (la boutique avec les produits)

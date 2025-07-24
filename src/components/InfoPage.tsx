@@ -6,12 +6,14 @@ import { dataService, ShopConfig } from '@/services/dataService';
 
 const PageContainer = styled.div<{ $backgroundImage?: string; $backgroundType?: string }>`
   min-height: 100vh;
-  background: ${props => {
+  ${props => {
     if (props.$backgroundType === 'image' && props.$backgroundImage) {
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`;
+      return `background-image: url(${props.$backgroundImage});`;
+    } else if (props.$backgroundType === 'color' && props.$backgroundImage) {
+      return `background: ${props.$backgroundImage};`;
     }
-    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
-  }};
+    return 'background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);';
+  }}
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -41,76 +43,39 @@ const HeaderTitle = styled.h1`
 `;
 
 const Content = styled.div`
-  padding: 30px 20px;
-  max-width: 500px;
+  padding: 40px 20px;
+  max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  min-height: calc(100vh - 200px);
+  justify-content: center;
+  align-items: center;
 `;
 
-const InfoCard = styled.div`
-  background: rgba(0,0,0,0.7);
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(0,0,0,0.5);
   backdrop-filter: blur(20px);
   border-radius: 20px;
-  padding: 25px;
   border: 1px solid rgba(255,255,255,0.2);
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    background: rgba(0,0,0,0.9);
-    border-color: rgba(255,255,255,0.3);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
 `;
 
-const InfoTitle = styled.h2`
-  font-size: 20px;
+const EmptyTitle = styled.h2`
+  font-size: 28px;
   font-weight: 600;
-  margin: 0 0 15px 0;
+  margin-bottom: 20px;
   color: white;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  text-shadow: 0 0 15px rgba(255,255,255,0.3);
 `;
 
-const InfoDescription = styled.p`
+const EmptyDescription = styled.p`
   font-size: 16px;
   color: rgba(255,255,255,0.8);
-  margin: 0 0 15px 0;
   line-height: 1.6;
-`;
-
-const InfoList = styled.ul`
-  list-style: none;
-  padding: 0;
   margin: 0;
-`;
-
-const InfoItem = styled.li`
-  padding: 8px 0;
-  color: rgba(255,255,255,0.9);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  &:before {
-    content: "✓";
-    color: #4CAF50;
-    font-weight: bold;
-  }
-`;
-
-const ContactLink = styled.a`
-  color: #0088cc;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-
-  &:hover {
-    color: #0099dd;
-    text-shadow: 0 0 10px rgba(0,136,204,0.3);
-  }
 `;
 
 const BottomNavigation = styled.div`
@@ -191,59 +156,14 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
       </Header>
 
       <Content>
-        <InfoCard>
-          <InfoTitle>🏪 À propos de BIPCOSA06</InfoTitle>
-          <InfoDescription>
-            BIPCOSA06 est votre boutique de confiance spécialisée dans les produits Cannabis de haute qualité. 
-            Nous offrons une sélection premium avec un service professionnel et discret.
-          </InfoDescription>
-        </InfoCard>
-
-        <InfoCard>
-          <InfoTitle>🌿 Notre Sélection</InfoTitle>
-          <InfoDescription>Nous proposons uniquement des produits de qualité supérieure :</InfoDescription>
-          <InfoList>
-            <InfoItem>Variétés Indica, Sativa et Hybrides</InfoItem>
-            <InfoItem>Produits certifiés et testés</InfoItem>
-            <InfoItem>Origine traçable (Holland, Espagne, Californie)</InfoItem>
-            <InfoItem>Différents formats disponibles (1g à 28g)</InfoItem>
-          </InfoList>
-        </InfoCard>
-
-        <InfoCard>
-          <InfoTitle>🚚 Livraison</InfoTitle>
-          <InfoDescription>Service de livraison rapide et discret :</InfoDescription>
-          <InfoList>
-            <InfoItem>Lyon et région Rhône-Alpes (69, 71, 01, 42, 38)</InfoItem>
-            <InfoItem>Livraison en 24-48h</InfoItem>
-            <InfoItem>Emballage discret et sécurisé</InfoItem>
-            <InfoItem>Envoi postal dans toute l'Europe</InfoItem>
-          </InfoList>
-        </InfoCard>
-
-        <InfoCard>
-          <InfoTitle>💳 Paiement & Commandes</InfoTitle>
-          <InfoDescription>Processus simple et sécurisé :</InfoDescription>
-          <InfoList>
-            <InfoItem>Commande via Telegram : <ContactLink href="https://t.me/bipcosa06">@bipcosa06</ContactLink></InfoItem>
-            <InfoItem>Paiement cash à la livraison</InfoItem>
-            <InfoItem>Virement bancaire accepté</InfoItem>
-            <InfoItem>Service client réactif 7j/7</InfoItem>
-          </InfoList>
-        </InfoCard>
-
-        <InfoCard>
-          <InfoTitle>🔒 Confidentialité</InfoTitle>
-          <InfoDescription>Votre discrétion est notre priorité :</InfoDescription>
-          <InfoList>
-            <InfoItem>Données clients protégées</InfoItem>
-            <InfoItem>Livraison anonyme</InfoItem>
-            <InfoItem>Communication cryptée via Telegram</InfoItem>
-            <InfoItem>Aucune trace de commande</InfoItem>
-          </InfoList>
-        </InfoCard>
-
-
+        <EmptyState>
+          <EmptyTitle>📋 Page Info</EmptyTitle>
+          <EmptyDescription>
+            Cette page sera configurée depuis le panel administrateur.
+            <br />
+            Utilisez l'interface d'administration pour ajouter le contenu.
+          </EmptyDescription>
+        </EmptyState>
       </Content>
 
       <BottomNavigation>

@@ -1214,7 +1214,31 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                              width: '100%'
                            }}
                          />
+                         {config.backgroundImage && config.backgroundImage.startsWith('data:') && (
+                           <ActionButton 
+                             $variant="delete" 
+                             onClick={() => handleSaveConfig({ backgroundImage: '' })}
+                             style={{ padding: '8px 12px', fontSize: '12px' }}
+                           >
+                             🗑️
+                           </ActionButton>
+                         )}
                        </div>
+                       {config.backgroundImage && config.backgroundImage.startsWith('data:') && (
+                         <div style={{ marginTop: '10px' }}>
+                           <img 
+                             src={config.backgroundImage} 
+                             alt="Preview" 
+                             style={{ 
+                               maxWidth: '200px', 
+                               maxHeight: '100px', 
+                               borderRadius: '8px',
+                               objectFit: 'cover',
+                               border: '1px solid rgba(255,255,255,0.2)'
+                             }} 
+                           />
+                         </div>
+                       )}
                      </FormGroup>
                      
                      <FormGroup>

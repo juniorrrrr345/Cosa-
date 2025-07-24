@@ -671,37 +671,45 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   };
 
   // Fonctions de sauvegarde pour Info et Contact
-  const handleSaveInfoContent = () => {
+  const handleSaveInfoContent = async () => {
     try {
-      dataService.updateInfoContent(infoContent);
+      console.log('💾 Sauvegarde contenu info:', infoContent);
+      await dataService.updateInfoContent(infoContent.id, {
+        title: infoContent.title,
+        description: infoContent.description,
+        additionalInfo: infoContent.additionalInfo
+      });
       
-      // Forcer la synchronisation immédiate
-      setTimeout(() => {
-        dataService.forceSyncContent();
-      }, 200);
+      // Recharger les données pour synchroniser
+      await refreshData();
       
       alert('✅ Contenu Info sauvegardé et synchronisé !');
       console.log('💾 Admin: Info sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Info:', error);
-      alert('❌ Erreur lors de la sauvegarde');
+      alert('❌ Erreur lors de la sauvegarde: ' + error.message);
     }
   };
 
-  const handleSaveContactContent = () => {
+  const handleSaveContactContent = async () => {
     try {
-      dataService.updateContactContent(contactContent);
+      console.log('💾 Sauvegarde contenu contact:', contactContent);
+      await dataService.updateContactContent(contactContent.id, {
+        title: contactContent.title,
+        description: contactContent.description,
+        telegramUsername: contactContent.telegramUsername,
+        telegramLink: contactContent.telegramLink,
+        additionalInfo: contactContent.additionalInfo
+      });
       
-      // Forcer la synchronisation immédiate
-      setTimeout(() => {
-        dataService.forceSyncContent();
-      }, 200);
+      // Recharger les données pour synchroniser
+      await refreshData();
       
       alert('✅ Contenu Contact sauvegardé et synchronisé !');
       console.log('💾 Admin: Contact sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Contact:', error);
-      alert('❌ Erreur lors de la sauvegarde');
+      alert('❌ Erreur lors de la sauvegarde: ' + error.message);
     }
   };
 

@@ -115,6 +115,8 @@ export class DataService {
   private readonly CATEGORIES_KEY = 'bipcosa06_categories';
   private readonly FARMS_KEY = 'bipcosa06_farms';
   private readonly CONFIG_KEY = 'bipcosa06_config';
+  private readonly INFO_CONTENTS_KEY = 'bipcosa06_info_contents';
+  private readonly CONTACT_CONTENTS_KEY = 'bipcosa06_contact_contents';
   
   constructor() {
     console.log('🚀 DataService DYNAMIQUE initialisé');
@@ -142,6 +144,32 @@ export class DataService {
       if (!localStorage.getItem(this.FARMS_KEY)) {
         localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
         console.log('🏠 Fermes par défaut initialisées');
+      }
+
+      // Initialiser le contenu info
+      const defaultInfoContents = [{
+        id: 'main-info',
+        title: '🌟 BIPCOSA06 - Votre Boutique de Confiance',
+        description: 'Découvrez notre sélection premium de produits de qualité. Livraison rapide et service client exceptionnel.',
+        additionalInfo: 'Qualité garantie - Satisfaction 100%'
+      }];
+      if (!localStorage.getItem(this.INFO_CONTENTS_KEY)) {
+        localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify(defaultInfoContents));
+        console.log('ℹ️ Contenu info par défaut initialisé');
+      }
+
+      // Initialiser le contenu contact
+      const defaultContactContents = [{
+        id: 'main-contact',
+        title: '📱 Contact BIPCOSA06',
+        description: 'Contactez-nous facilement via Telegram pour vos commandes',
+        telegramUsername: '@bipcosa06',
+        telegramLink: 'https://t.me/bipcosa06',
+        additionalInfo: 'Réponse rapide garantie - Service 7j/7'
+      }];
+      if (!localStorage.getItem(this.CONTACT_CONTENTS_KEY)) {
+        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(defaultContactContents));
+        console.log('📞 Contenu contact par défaut initialisé');
       }
 
       console.log('✅ DataService - Données par défaut initialisées');
@@ -521,74 +549,116 @@ export class DataService {
     return false;
   }
 
-  // === CONTENU INFO ===
-  getInfoContents(): Promise<InfoContent[]> {
-    return Promise.resolve([
-      {
-        id: 'main-info',
-        title: '🌟 BIPCOSA06 - Votre Boutique de Confiance',
-        description: 'Découvrez notre sélection premium de produits de qualité. Livraison rapide et service client exceptionnel.',
-        additionalInfo: 'Qualité garantie - Satisfaction 100%'
-      }
-    ]);
+  // === CONTENU INFO - SYSTÈME DYNAMIQUE ===
+  async getInfoContents(): Promise<InfoContent[]> {
+    return this.getInfoContentsSync();
   }
 
   getInfoContentsSync(): InfoContent[] {
-    return [
-      {
-        id: 'main-info',
-        title: '🌟 BIPCOSA06 - Votre Boutique de Confiance',
-        description: 'Découvrez notre sélection premium de produits de qualité. Livraison rapide et service client exceptionnel.',
-        additionalInfo: 'Qualité garantie - Satisfaction 100%'
+    try {
+      if (typeof window === 'undefined') return [];
+      
+      const stored = localStorage.getItem(this.INFO_CONTENTS_KEY);
+      if (stored) {
+        const contents = JSON.parse(stored);
+        console.log('ℹ️ getInfoContentsSync - Contenus depuis localStorage:', contents.length);
+        return contents;
       }
-    ];
+      
+      console.log('ℹ️ getInfoContentsSync - Aucun contenu trouvé');
+      return [];
+    } catch (error) {
+      console.error('❌ Erreur lecture contenu info:', error);
+      return [];
+    }
   }
 
-  updateInfoContent(id: string, updates: Partial<InfoContent>): InfoContent {
-    return {
-      id,
-      title: updates.title || '🌟 BIPCOSA06 - Votre Boutique de Confiance',
-      description: updates.description || 'Découvrez notre sélection premium.',
-      additionalInfo: updates.additionalInfo || 'Qualité garantie'
-    };
+  async updateInfoContent(id: string, updates: Partial<InfoContent>): Promise<InfoContent | null> {
+    try {
+      const contents = this.getInfoContentsSync();
+      const index = contents.findIndex(c => c.id === id);
+      
+      if (index !== -1) {
+        contents[index] = { ...contents[index], ...updates };
+        localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify(contents));
+        console.log('✅ Contenu info mis à jour:', id);
+        this.notifyDataUpdate();
+        return contents[index];
+      } else {
+        // Si le contenu n'existe pas, le créer
+        const newContent: InfoContent = {
+          id,
+          title: updates.title || '🌟 BIPCOSA06 - Votre Boutique de Confiance',
+          description: updates.description || 'Découvrez notre sélection premium.',
+          additionalInfo: updates.additionalInfo || 'Qualité garantie'
+        };
+        contents.push(newContent);
+        localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify(contents));
+        console.log('✅ Contenu info créé:', id);
+        this.notifyDataUpdate();
+        return newContent;
+      }
+    } catch (error) {
+      console.error('❌ Erreur mise à jour contenu info:', error);
+      throw error;
+    }
   }
 
-  // === CONTENU CONTACT ===
-  getContactContents(): Promise<ContactContent[]> {
-    return Promise.resolve([
-      {
-        id: 'main-contact',
-        title: '📱 Contact BIPCOSA06',
-        description: 'Contactez-nous facilement via Telegram pour vos commandes',
-        telegramUsername: '@bipcosa06',
-        telegramLink: 'https://t.me/bipcosa06',
-        additionalInfo: 'Réponse rapide garantie - Service 7j/7'
-      }
-    ]);
+  // === CONTENU CONTACT - SYSTÈME DYNAMIQUE ===
+  async getContactContents(): Promise<ContactContent[]> {
+    return this.getContactContentsSync();
   }
 
   getContactContentsSync(): ContactContent[] {
-    return [
-      {
-        id: 'main-contact',
-        title: '📱 Contact BIPCOSA06',
-        description: 'Contactez-nous facilement via Telegram pour vos commandes',
-        telegramUsername: '@bipcosa06',
-        telegramLink: 'https://t.me/bipcosa06',
-        additionalInfo: 'Réponse rapide garantie - Service 7j/7'
+    try {
+      if (typeof window === 'undefined') return [];
+      
+      const stored = localStorage.getItem(this.CONTACT_CONTENTS_KEY);
+      if (stored) {
+        const contents = JSON.parse(stored);
+        console.log('📞 getContactContentsSync - Contenus depuis localStorage:', contents.length);
+        return contents;
       }
-    ];
+      
+      console.log('📞 getContactContentsSync - Aucun contenu trouvé');
+      return [];
+    } catch (error) {
+      console.error('❌ Erreur lecture contenu contact:', error);
+      return [];
+    }
   }
 
-  updateContactContent(id: string, updates: Partial<ContactContent>): ContactContent {
-    return {
-      id,
-      title: updates.title || '📱 Contact BIPCOSA06',
-      description: updates.description || 'Contactez-nous via Telegram',
-      telegramUsername: updates.telegramUsername || '@bipcosa06',
-      telegramLink: updates.telegramLink || 'https://t.me/bipcosa06',
-      additionalInfo: updates.additionalInfo || 'Service 7j/7'
-    };
+  async updateContactContent(id: string, updates: Partial<ContactContent>): Promise<ContactContent | null> {
+    try {
+      const contents = this.getContactContentsSync();
+      const index = contents.findIndex(c => c.id === id);
+      
+      if (index !== -1) {
+        contents[index] = { ...contents[index], ...updates };
+        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(contents));
+        console.log('✅ Contenu contact mis à jour:', id);
+        this.notifyDataUpdate();
+        return contents[index];
+      } else {
+        // Si le contenu n'existe pas, le créer
+        const newContent: ContactContent = {
+          id,
+          title: updates.title || '📱 Contact BIPCOSA06',
+          description: updates.description || 'Contactez-nous via Telegram',
+          telegramUsername: updates.telegramUsername || '@bipcosa06',
+          telegramLink: updates.telegramLink || 'https://t.me/bipcosa06',
+          additionalInfo: updates.additionalInfo || 'Service 7j/7'
+        };
+        contents.push(newContent);
+        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(contents));
+        console.log('✅ Contenu contact créé:', id);
+        this.notifyDataUpdate();
+        return newContent;
+      }
+    } catch (error) {
+      console.error('❌ Erreur mise à jour contenu contact:', error);
+      throw error;
+    }
   }
 
   // === NOTIFICATIONS ===

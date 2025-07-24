@@ -37,6 +37,7 @@ class DataService {
   private products: Product[] = [];
   private categories: Category[] = [];
   private farms: Farm[] = [];
+  private lastUpdate: number = 0;
   private config: ShopConfig = {
     backgroundType: 'gradient',
     backgroundColor: '#000000',
@@ -155,20 +156,40 @@ class DataService {
     ];
   }
 
-  // Getters
+  // Getters with intelligent refresh
   getProducts(): Product[] {
+    // Only reload if data seems stale (more than 1 second old)
+    const lastUpdate = this.getLastUpdateTime();
+    if (Date.now() - lastUpdate > 1000) {
+      this.loadFromLocalStorage();
+    }
     return [...this.products];
   }
 
   getCategories(): Category[] {
+    // Only reload if data seems stale
+    const lastUpdate = this.getLastUpdateTime();
+    if (Date.now() - lastUpdate > 1000) {
+      this.loadFromLocalStorage();
+    }
     return [...this.categories];
   }
 
   getFarms(): Farm[] {
+    // Only reload if data seems stale
+    const lastUpdate = this.getLastUpdateTime();
+    if (Date.now() - lastUpdate > 1000) {
+      this.loadFromLocalStorage();
+    }
     return [...this.farms];
   }
 
   getConfig(): ShopConfig {
+    // Only reload if data seems stale
+    const lastUpdate = this.getLastUpdateTime();
+    if (Date.now() - lastUpdate > 1000) {
+      this.loadFromLocalStorage();
+    }
     return { ...this.config };
   }
 
@@ -261,34 +282,68 @@ class DataService {
     this.notifyConfigUpdate();
   }
 
+  // Force global sync
+  forceSync(): void {
+    this.loadFromLocalStorage();
+    this.notifyDataUpdate();
+    this.notifyConfigUpdate();
+  }
+
+  // Get last update timestamp
+  private getLastUpdateTime(): number {
+    return this.lastUpdate;
+  }
+
+  // Update timestamp
+  private updateTimestamp(): void {
+    this.lastUpdate = Date.now();
+  }
+
   // Notification system for real-time sync
   private notifyDataUpdate(): void {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('dataUpdated', { 
-        detail: { timestamp: Date.now() }
-      }));
+      // Force immediate sync with small delay to ensure all operations complete
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('dataUpdated', { 
+          detail: { 
+            timestamp: Date.now(),
+            products: this.products.length,
+            source: 'dataService'
+          }
+        }));
+        console.log('🔄 Data update notification sent:', this.products.length, 'products');
+      }, 100);
     }
   }
 
   private notifyConfigUpdate(): void {
     if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('configUpdated', { 
-        detail: { config: this.config, timestamp: Date.now() }
-      }));
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('configUpdated', { 
+          detail: { 
+            config: this.config, 
+            timestamp: Date.now(),
+            source: 'dataService'
+          }
+        }));
+        console.log('🔄 Config update notification sent');
+      }, 100);
     }
   }
 
   // Persistance localStorage
   private saveToLocalStorage(): void {
     if (typeof window !== 'undefined') {
+      this.updateTimestamp();
       const data = {
         products: this.products,
         categories: this.categories,
         farms: this.farms,
         config: this.config,
-        timestamp: Date.now()
+        timestamp: this.lastUpdate
       };
       localStorage.setItem('bipcosa06-data', JSON.stringify(data));
+      console.log('💾 Données sauvegardées dans localStorage:', data.products.length, 'produits');
     }
   }
 
@@ -298,10 +353,14 @@ class DataService {
       if (saved) {
         try {
           const data = JSON.parse(saved);
-          if (data.products) this.products = data.products;
+          if (data.products) {
+            this.products = data.products;
+            console.log('📦 Products loaded from localStorage:', this.products.length);
+          }
           if (data.categories) this.categories = data.categories;
           if (data.farms) this.farms = data.farms;
           if (data.config) this.config = data.config;
+          if (data.timestamp) this.lastUpdate = data.timestamp;
         } catch (error) {
           console.warn('Erreur chargement données localStorage:', error);
         }

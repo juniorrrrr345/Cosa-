@@ -580,10 +580,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
   const handleDeleteProduct = (id: number) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+      console.log('🗑️ Admin: Suppression du produit', id);
       dataService.deleteProduct(id);
-      refreshData();
-      // Forcer le rechargement de la boutique
-      window.dispatchEvent(new CustomEvent('dataUpdated'));
+      setTimeout(() => {
+        refreshData();
+      }, 200);
     }
   };
 
@@ -619,18 +620,19 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     }
 
     if (editingProduct) {
+      console.log('✏️ Admin: Modification du produit', editingProduct.id);
       dataService.updateProduct(editingProduct.id, formData as Partial<Product>);
     } else {
+      console.log('➕ Admin: Ajout d\'un nouveau produit');
       dataService.addProduct(formData as Omit<Product, 'id'>);
     }
     
-    refreshData();
-    setEditingProduct(null);
-    setIsAddingProduct(false);
-    setFormData({});
-    
-    // Forcer le rechargement de la boutique
-    window.dispatchEvent(new CustomEvent('dataUpdated'));
+    setTimeout(() => {
+      refreshData();
+      setEditingProduct(null);
+      setIsAddingProduct(false);
+      setFormData({});
+    }, 200);
   };
 
   const handleCloseModal = () => {
@@ -640,10 +642,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   };
 
   const handleSaveConfig = (newConfig: Partial<ShopConfig>) => {
+    console.log('⚙️ Admin: Mise à jour de la configuration');
     dataService.updateConfig(newConfig);
-    refreshData();
-    // Forcer le rechargement de la boutique avec nouveau background
-    window.dispatchEvent(new CustomEvent('configUpdated'));
+    setTimeout(() => {
+      refreshData();
+    }, 200);
   };
 
   const renderContent = () => {

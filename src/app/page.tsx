@@ -57,6 +57,25 @@ export default function MainPage() {
     // Exposer la fonction globalement
     (window as any).toggleAdmin = toggleAdmin;
     
+    // Exposer des fonctions de debug pour tester la synchronisation
+    (window as any).debugSync = () => {
+      console.log('🔍 Debug sync - Forcing data refresh...');
+      import('@/services/dataService').then(({ dataService }) => {
+        dataService.forceSync();
+      });
+    };
+    
+    (window as any).debugData = () => {
+      import('@/services/dataService').then(({ dataService }) => {
+        console.log('📊 Current data state:', {
+          products: dataService.getProducts(),
+          categories: dataService.getCategories(),
+          farms: dataService.getFarms(),
+          config: dataService.getConfig()
+        });
+      });
+    };
+    
     // Vérifier les paramètres URL au chargement SEULEMENT
     const urlParams = new URLSearchParams(window.location.search);
     const currentPath = window.location.pathname;

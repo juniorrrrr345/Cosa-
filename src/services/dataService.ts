@@ -125,6 +125,7 @@ class DataService {
     this.loadCategoriesFromStorage();
     this.loadFarmsFromStorage();
     this.loadSocialNetworksFromStorage();
+    this.loadProductsFromStorage();
     
     // Initialiser avec les données de base
     this.initializeDefaultData();
@@ -142,30 +143,34 @@ class DataService {
     console.log('🧹 NETTOYAGE COMPLET du cache...');
     
     if (typeof window !== 'undefined') {
-      // Supprimer TOUS les anciens caches localStorage
-      const keysToRemove = [
+      // NE PAS supprimer les données persistantes importantes
+      const keysToKeep = [
         'bipcosa06_config',
         'bipcosa06_products',
         'bipcosa06_categories', 
         'bipcosa06_farms',
-        'bipcosa06_social_networks'
+        'bipcosa06_social_networks',
+        'bipcosa06_info_content',
+        'bipcosa06_contact_content'
       ];
       
-      keysToRemove.forEach(key => {
-        localStorage.removeItem(key);
-        console.log(`🗑️ Supprimé: ${key}`);
+      // Supprimer uniquement les caches temporaires
+      const allKeys = Object.keys(localStorage);
+      allKeys.forEach(key => {
+        if (key.startsWith('bipcosa06_cache_') || key.startsWith('bipcosa06_temp_')) {
+          localStorage.removeItem(key);
+          console.log(`🗑️ Supprimé cache temporaire: ${key}`);
+        }
       });
     }
     
     // Reset des caches mémoire
-    this.configCache = null;
-    this.productsCache = [];
     this.cacheTimestamp = 0;
     this.infoCacheTimestamp = 0;
     this.contactCacheTimestamp = 0;
     this.socialNetworksCacheTimestamp = 0;
     
-    console.log('✅ Cache complètement nettoyé');
+    console.log('✅ Cache temporaire nettoyé');
   }
 
   private initializeDefaultData(): void {
@@ -184,6 +189,40 @@ class DataService {
       this.socialNetworksCache = [...defaultSocialNetworks];
       this.saveSocialNetworksToStorage();
     }
+
+    if (this.productsCache.length === 0) {
+      this.productsCache = this.getFallbackProducts();
+      this.saveProductsToStorage();
+    }
+  }
+
+  // === GESTION LOCALE DES PRODUITS ===
+  private loadProductsFromStorage(): Product[] {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('bipcosa06_products');
+        if (stored) {
+          const products = JSON.parse(stored);
+          this.productsCache = products;
+          console.log('📦 Produits chargés depuis localStorage:', products.length);
+          return products;
+        }
+      } catch (error) {
+        console.error('❌ Erreur lors du chargement des produits depuis localStorage:', error);
+      }
+    }
+    return [];
+  }
+
+  private saveProductsToStorage(): void {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('bipcosa06_products', JSON.stringify(this.productsCache));
+        console.log('💾 Produits sauvegardés dans localStorage:', this.productsCache.length);
+      } catch (error) {
+        console.error('❌ Erreur lors de la sauvegarde des produits:', error);
+      }
+    }
   }
 
   // Cache simplifié - actualisation uniquement si nécessaire
@@ -198,16 +237,12 @@ class DataService {
     console.log('🔄 Actualisation du cache...');
     
     try {
-      // Charger UNIQUEMENT depuis l'API
-      const [productsData, configData] = await Promise.all([
-        this.fetchProducts(),
-        this.fetchConfig()
-      ]);
+      // Charger UNIQUEMENT depuis l'API pour la config, le reste depuis localStorage
+      const configData = await this.fetchConfig();
       
-      this.productsCache = productsData;
       this.configCache = configData;
-      
       this.cacheTimestamp = now;
+      
       console.log('✅ Cache actualisé avec config:', configData);
     } catch (error) {
       console.error('❌ Erreur lors de l\'actualisation du cache:', error);
@@ -220,14 +255,8 @@ class DataService {
 
   // Méthodes d'appel aux APIs
   private async fetchProducts(): Promise<Product[]> {
-    try {
-      const response = await fetch('/api/products');
-      if (!response.ok) throw new Error('Erreur API products');
-      return await response.json();
-    } catch (error) {
-      console.error('Erreur fetch products:', error);
-      return this.getFallbackProducts();
-    }
+    // TOUJOURS utiliser localStorage pour les produits
+    return this.productsCache;
   }
 
   private async fetchCategories(): Promise<Category[]> {
@@ -345,9 +374,10 @@ class DataService {
 
   // === MÉTHODES PUBLIQUES ===
 
-  // Produits
+  // Produits - GESTION LOCALE COMPLETE
   async getProducts(): Promise<Product[]> {
-    await this.refreshCache();
+    // Toujours depuis localStorage
+    this.loadProductsFromStorage();
     return [...this.productsCache];
   }
 
@@ -355,83 +385,96 @@ class DataService {
     return [...this.productsCache];
   }
 
-  async addProduct(productData: Omit<Product, '_id' | 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+  async addProduct(productData: any): Promise<Product> {
     try {
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(productData)
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de l\'ajout');
-      }
-
-      const createdProduct = await response.json();
+      console.log('➕ Ajout produit LOCAL:', productData);
       
-      // Actualiser le cache
-      await this.refreshCache();
+      // Générer un nouvel ID
+      const newId = Math.max(...this.productsCache.map(p => p.id), 0) + 1;
+      
+      const newProduct: Product = {
+        ...productData,
+        id: newId,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      // Ajouter au cache
+      this.productsCache.push(newProduct);
+      
+      // Sauvegarder dans localStorage
+      this.saveProductsToStorage();
+      
+      // Notifier la mise à jour
       this.notifyDataUpdate();
       
-      return createdProduct;
+      console.log('✅ Produit ajouté avec succès:', newProduct);
+      return newProduct;
     } catch (error) {
-      console.error('Erreur lors de l\'ajout du produit:', error);
+      console.error('❌ Erreur lors de l\'ajout du produit:', error);
       throw error;
     }
   }
 
   async updateProduct(id: string | number, updates: Partial<Product>): Promise<Product | null> {
     try {
-      const response = await fetch(`/api/products/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates)
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de la mise à jour');
-      }
-
-      const updatedProduct = await response.json();
+      console.log('✏️ Modification produit LOCAL:', id, updates);
       
-      // Actualiser le cache
-      await this.refreshCache();
+      const index = this.productsCache.findIndex(p => p.id === Number(id));
+      if (index === -1) {
+        throw new Error(`Produit avec l'ID ${id} non trouvé`);
+      }
+      
+      // Mettre à jour le produit
+      this.productsCache[index] = {
+        ...this.productsCache[index],
+        ...updates,
+        updatedAt: new Date()
+      };
+      
+      // Sauvegarder dans localStorage
+      this.saveProductsToStorage();
+      
+      // Notifier la mise à jour
       this.notifyDataUpdate();
       
-      return updatedProduct;
+      console.log('✅ Produit modifié avec succès:', this.productsCache[index]);
+      return this.productsCache[index];
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du produit:', error);
+      console.error('❌ Erreur lors de la modification du produit:', error);
       throw error;
     }
   }
 
   async deleteProduct(id: string | number): Promise<boolean> {
     try {
-      const response = await fetch(`/api/products/${id}`, {
-        method: 'DELETE'
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de la suppression');
+      console.log('🗑️ Suppression produit LOCAL:', id);
+      
+      const index = this.productsCache.findIndex(p => p.id === Number(id));
+      if (index === -1) {
+        throw new Error(`Produit avec l'ID ${id} non trouvé`);
       }
-
-      // Actualiser le cache
-      await this.refreshCache();
+      
+      // Supprimer le produit
+      this.productsCache.splice(index, 1);
+      
+      // Sauvegarder dans localStorage
+      this.saveProductsToStorage();
+      
+      // Notifier la mise à jour
       this.notifyDataUpdate();
       
+      console.log('✅ Produit supprimé avec succès');
       return true;
     } catch (error) {
-      console.error('Erreur lors de la suppression du produit:', error);
+      console.error('❌ Erreur lors de la suppression du produit:', error);
       throw error;
     }
   }
 
-  // Catégories
+  // Catégories - GESTION LOCALE
   async getCategories(): Promise<Category[]> {
-    await this.refreshCache();
+    this.loadCategoriesFromStorage();
     console.log('📂 getCategories - categoriesCache:', this.categoriesCache);
     return this.categoriesCache;
   }
@@ -443,50 +486,80 @@ class DataService {
 
   async addCategory(category: Category): Promise<Category> {
     try {
-      const response = await fetch('/api/categories', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(category)
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de l\'ajout');
+      console.log('➕ Ajout catégorie LOCAL:', category);
+      
+      // Vérifier si la catégorie existe déjà
+      const existingIndex = this.categoriesCache.findIndex(c => c.value === category.value);
+      if (existingIndex !== -1) {
+        throw new Error('Cette catégorie existe déjà');
       }
-
-      const createdCategory = await response.json();
-      await this.refreshCache();
+      
+      // Ajouter la catégorie
+      this.categoriesCache.push(category);
+      
+      // Sauvegarder
+      this.saveCategoriesFromStorage();
       this.notifyDataUpdate();
-      return createdCategory;
+      
+      console.log('✅ Catégorie ajoutée avec succès:', category);
+      return category;
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de la catégorie:', error);
+      console.error('❌ Erreur lors de l\'ajout de la catégorie:', error);
+      throw error;
+    }
+  }
+
+  async updateCategory(value: string, updates: Partial<Category>): Promise<Category | null> {
+    try {
+      console.log('✏️ Modification catégorie LOCAL:', value, updates);
+      
+      const index = this.categoriesCache.findIndex(c => c.value === value);
+      if (index === -1) {
+        throw new Error(`Catégorie avec la valeur ${value} non trouvée`);
+      }
+      
+      // Mettre à jour la catégorie
+      this.categoriesCache[index] = { ...this.categoriesCache[index], ...updates };
+      
+      // Sauvegarder
+      this.saveCategoriesFromStorage();
+      this.notifyDataUpdate();
+      
+      console.log('✅ Catégorie modifiée avec succès:', this.categoriesCache[index]);
+      return this.categoriesCache[index];
+    } catch (error) {
+      console.error('❌ Erreur lors de la modification de la catégorie:', error);
       throw error;
     }
   }
 
   async deleteCategory(value: string): Promise<boolean> {
     try {
-      const response = await fetch(`/api/categories/${value}`, {
-        method: 'DELETE'
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de la suppression');
+      console.log('🗑️ Suppression catégorie LOCAL:', value);
+      
+      const index = this.categoriesCache.findIndex(c => c.value === value);
+      if (index === -1) {
+        throw new Error(`Catégorie avec la valeur ${value} non trouvée`);
       }
-
-      await this.refreshCache();
+      
+      // Supprimer la catégorie
+      this.categoriesCache.splice(index, 1);
+      
+      // Sauvegarder
+      this.saveCategoriesFromStorage();
       this.notifyDataUpdate();
+      
+      console.log('✅ Catégorie supprimée avec succès');
       return true;
     } catch (error) {
-      console.error('Erreur lors de la suppression de la catégorie:', error);
+      console.error('❌ Erreur lors de la suppression de la catégorie:', error);
       throw error;
     }
   }
 
-  // Farms
+  // Farms - GESTION LOCALE
   async getFarms(): Promise<Farm[]> {
-    await this.refreshCache();
+    this.loadFarmsFromStorage();
     console.log('🏠 getFarms - farmsCache:', this.farmsCache);
     return this.farmsCache;
   }
@@ -498,43 +571,73 @@ class DataService {
 
   async addFarm(farm: Farm): Promise<Farm> {
     try {
-      const response = await fetch('/api/farms', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(farm)
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de l\'ajout');
+      console.log('➕ Ajout farm LOCAL:', farm);
+      
+      // Vérifier si la farm existe déjà
+      const existingIndex = this.farmsCache.findIndex(f => f.value === farm.value);
+      if (existingIndex !== -1) {
+        throw new Error('Cette farm existe déjà');
       }
-
-      const createdFarm = await response.json();
-      await this.refreshCache();
+      
+      // Ajouter la farm
+      this.farmsCache.push(farm);
+      
+      // Sauvegarder
+      this.saveFarmsFromStorage();
       this.notifyDataUpdate();
-      return createdFarm;
+      
+      console.log('✅ Farm ajoutée avec succès:', farm);
+      return farm;
     } catch (error) {
-      console.error('Erreur lors de l\'ajout de la farm:', error);
+      console.error('❌ Erreur lors de l\'ajout de la farm:', error);
+      throw error;
+    }
+  }
+
+  async updateFarm(value: string, updates: Partial<Farm>): Promise<Farm | null> {
+    try {
+      console.log('✏️ Modification farm LOCAL:', value, updates);
+      
+      const index = this.farmsCache.findIndex(f => f.value === value);
+      if (index === -1) {
+        throw new Error(`Farm avec la valeur ${value} non trouvée`);
+      }
+      
+      // Mettre à jour la farm
+      this.farmsCache[index] = { ...this.farmsCache[index], ...updates };
+      
+      // Sauvegarder
+      this.saveFarmsFromStorage();
+      this.notifyDataUpdate();
+      
+      console.log('✅ Farm modifiée avec succès:', this.farmsCache[index]);
+      return this.farmsCache[index];
+    } catch (error) {
+      console.error('❌ Erreur lors de la modification de la farm:', error);
       throw error;
     }
   }
 
   async deleteFarm(value: string): Promise<boolean> {
     try {
-      const response = await fetch(`/api/farms/${value}`, {
-        method: 'DELETE'
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de la suppression');
+      console.log('🗑️ Suppression farm LOCAL:', value);
+      
+      const index = this.farmsCache.findIndex(f => f.value === value);
+      if (index === -1) {
+        throw new Error(`Farm avec la valeur ${value} non trouvée`);
       }
-
-      await this.refreshCache();
+      
+      // Supprimer la farm
+      this.farmsCache.splice(index, 1);
+      
+      // Sauvegarder
+      this.saveFarmsFromStorage();
       this.notifyDataUpdate();
+      
+      console.log('✅ Farm supprimée avec succès');
       return true;
     } catch (error) {
-      console.error('Erreur lors de la suppression de la farm:', error);
+      console.error('❌ Erreur lors de la suppression de la farm:', error);
       throw error;
     }
   }
@@ -765,148 +868,62 @@ class DataService {
     console.log('🔄 Synchronisation forcée des contenus Info/Contact');
   }
 
-  // === GESTION DES CATÉGORIES ===
+  // === GESTION DES CATÉGORIES - LOCALSTORAGE ===
   private loadCategoriesFromStorage(): Category[] {
     if (typeof window !== 'undefined') {
       try {
         const stored = localStorage.getItem('bipcosa06_categories');
-        return stored ? JSON.parse(stored) : [];
+        if (stored) {
+          const categories = JSON.parse(stored);
+          this.categoriesCache = categories;
+          console.log('📂 Catégories chargées depuis localStorage:', categories.length);
+          return categories;
+        }
       } catch (error) {
         console.error('❌ Erreur chargement catégories:', error);
-        return [];
       }
     }
     return [];
   }
 
-  private saveCategoriesFromStorage(categories: Category[]): void {
+  private saveCategoriesFromStorage(): void {
     if (typeof window !== 'undefined') {
       try {
-        localStorage.setItem('bipcosa06_categories', JSON.stringify(categories));
-        console.log('💾 Catégories sauvegardées');
+        localStorage.setItem('bipcosa06_categories', JSON.stringify(this.categoriesCache));
+        console.log('💾 Catégories sauvegardées dans localStorage:', this.categoriesCache.length);
       } catch (error) {
         console.error('❌ Erreur sauvegarde catégories:', error);
       }
     }
   }
 
-  addCategory(category: Omit<Category, 'value'>): Category {
-    const newCategory: Category = {
-      value: category.label.toLowerCase().replace(/\s+/g, '_'),
-      ...category
-    };
-
-    const categories = this.getStaticCategories();
-    categories.push(newCategory);
-    this.categoriesCache = categories;
-    this.saveCategoriesFromStorage(categories);
-    this.notifyDataUpdate();
-    
-    console.log('✅ Catégorie ajoutée:', newCategory);
-    return newCategory;
-  }
-
-  updateCategory(value: string, updates: Partial<Category>): Category | null {
-    const categories = this.getStaticCategories();
-    const index = categories.findIndex(cat => cat.value === value);
-    
-    if (index === -1) return null;
-    
-    categories[index] = { ...categories[index], ...updates };
-    this.categoriesCache = categories;
-    this.saveCategoriesFromStorage(categories);
-    this.notifyDataUpdate();
-    
-    console.log('✅ Catégorie modifiée:', categories[index]);
-    return categories[index];
-  }
-
-  deleteCategory(value: string): boolean {
-    if (value === 'all') return false; // Ne pas supprimer "Toutes catégories"
-    
-    const categories = this.getStaticCategories();
-    const filteredCategories = categories.filter(cat => cat.value !== value);
-    
-    if (filteredCategories.length === categories.length) return false;
-    
-    this.categoriesCache = filteredCategories;
-    this.saveCategoriesFromStorage(filteredCategories);
-    this.notifyDataUpdate();
-    
-    console.log('✅ Catégorie supprimée:', value);
-    return true;
-  }
-
-  // === GESTION DES FERMES ===
+  // === GESTION DES FERMES - LOCALSTORAGE ===
   private loadFarmsFromStorage(): Farm[] {
     if (typeof window !== 'undefined') {
       try {
         const stored = localStorage.getItem('bipcosa06_farms');
-        return stored ? JSON.parse(stored) : [];
+        if (stored) {
+          const farms = JSON.parse(stored);
+          this.farmsCache = farms;
+          console.log('🏠 Fermes chargées depuis localStorage:', farms.length);
+          return farms;
+        }
       } catch (error) {
         console.error('❌ Erreur chargement fermes:', error);
-        return [];
       }
     }
     return [];
   }
 
-  private saveFarmsFromStorage(farms: Farm[]): void {
+  private saveFarmsFromStorage(): void {
     if (typeof window !== 'undefined') {
       try {
-        localStorage.setItem('bipcosa06_farms', JSON.stringify(farms));
-        console.log('💾 Fermes sauvegardées');
+        localStorage.setItem('bipcosa06_farms', JSON.stringify(this.farmsCache));
+        console.log('💾 Fermes sauvegardées dans localStorage:', this.farmsCache.length);
       } catch (error) {
         console.error('❌ Erreur sauvegarde fermes:', error);
       }
     }
-  }
-
-  addFarm(farm: Omit<Farm, 'value'>): Farm {
-    const newFarm: Farm = {
-      value: farm.label.toLowerCase().replace(/\s+/g, '_'),
-      ...farm
-    };
-
-    const farms = this.getStaticFarms();
-    farms.push(newFarm);
-    this.farmsCache = farms;
-    this.saveFarmsFromStorage(farms);
-    this.notifyDataUpdate();
-    
-    console.log('✅ Ferme ajoutée:', newFarm);
-    return newFarm;
-  }
-
-  updateFarm(value: string, updates: Partial<Farm>): Farm | null {
-    const farms = this.getStaticFarms();
-    const index = farms.findIndex(farm => farm.value === value);
-    
-    if (index === -1) return null;
-    
-    farms[index] = { ...farms[index], ...updates };
-    this.farmsCache = farms;
-    this.saveFarmsFromStorage(farms);
-    this.notifyDataUpdate();
-    
-    console.log('✅ Ferme modifiée:', farms[index]);
-    return farms[index];
-  }
-
-  deleteFarm(value: string): boolean {
-    if (value === 'all') return false; // Ne pas supprimer "Toutes fermes"
-    
-    const farms = this.getStaticFarms();
-    const filteredFarms = farms.filter(farm => farm.value !== value);
-    
-    if (filteredFarms.length === farms.length) return false;
-    
-    this.farmsCache = filteredFarms;
-    this.saveFarmsFromStorage(filteredFarms);
-    this.notifyDataUpdate();
-    
-    console.log('✅ Ferme supprimée:', value);
-    return true;
   }
 
   // === GESTION DES RÉSEAUX SOCIAUX ===

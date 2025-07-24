@@ -622,9 +622,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     try {
       console.log('🔄 AdminPanel refreshData - Début...');
       
-      // Forcer le refresh cache avant de récupérer les données
-      dataService.forceRefresh();
-      
       const [productsData, categoriesData, farmsData, configData, infoData, contactData, socialData] = await Promise.all([
         dataService.getProducts(),
         dataService.getCategories(),
@@ -656,7 +653,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         setContactContent(contactData[0]);
       }
       
-      console.log('🔄 Admin: Données actualisées', {
+      console.log('✅ AdminPanel: Données actualisées avec succès', {
         products: productsData.length,
         categories: categoriesData.length,
         farms: farmsData.length,

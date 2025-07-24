@@ -194,12 +194,69 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
 
       <Content>
         <ContactCard>
-          <ContactTitle>✉️ Page Contact</ContactTitle>
+          <ContactTitle>✉️ Nous Contacter</ContactTitle>
           <ContactInfo>
-            Cette page sera configurée depuis le panel administrateur.
-            <br />
-            Utilisez l'interface d'administration pour ajouter le contenu de contact.
+            Pour passer commande ou obtenir des informations, contactez-nous directement via nos canaux officiels.
           </ContactInfo>
+          
+          {/* Canal Telegram principal */}
+          <ContactCard>
+            <ContactTitle>📢 {config.telegramDescription || 'Canal officiel BIPCOSA06'}</ContactTitle>
+            <ContactInfo>
+              Rejoignez notre canal Telegram pour toutes les informations et nouveautés.
+            </ContactInfo>
+            <TelegramButton 
+              href={config.telegramChannelUrl || 'https://t.me/bipcosa06'} 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              ✈️ {config.telegramChannel || 'bipcosa06'}
+            </TelegramButton>
+          </ContactCard>
+
+          {/* Bot de commande */}
+          <ContactCard>
+            <ContactTitle>🛒 Commandes</ContactTitle>
+            <ContactInfo>
+              Utilisez notre bot de commande pour passer vos commandes directement via Telegram.
+            </ContactInfo>
+            <TelegramButton 
+              href={`https://t.me/${(config.telegramBot || '@bipcosa06_bot').replace('@', '')}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              🤖 {config.telegramBot || '@bipcosa06_bot'}
+            </TelegramButton>
+          </ContactCard>
+
+          {/* WhatsApp si configuré */}
+          {config.whatsappNumber && (
+            <ContactCard>
+              <ContactTitle>📱 WhatsApp</ContactTitle>
+              <ContactInfo>
+                Contactez-nous également via WhatsApp pour un service personnalisé.
+              </ContactInfo>
+              <TelegramButton 
+                href={`https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{ background: 'rgba(37, 211, 102, 0.2)', borderColor: 'rgba(37, 211, 102, 0.5)' }}
+              >
+                📱 {config.whatsappNumber}
+              </TelegramButton>
+            </ContactCard>
+          )}
+
+          {/* Informations supplémentaires */}
+          <ContactCard>
+            <ContactTitle>📍 Zone de livraison</ContactTitle>
+            <ContactInfo>
+              🚗 Lyon et alentours (69, 71, 01, 42, 38)<br/>
+              🕒 Livraison rapide (30-60 min)<br/>
+              🔒 Service discret et professionnel<br/>
+              ⚡ Réponse rapide 24h/7j
+            </ContactInfo>
+          </ContactCard>
         </ContactCard>
       </Content>
 
@@ -212,7 +269,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem $active={false} onClick={() => window.open('https://t.me/bipcosa06', '_blank')}>
+        <NavItem $active={false} onClick={() => window.open(config.telegramChannelUrl || 'https://t.me/bipcosa06', '_blank')}>
           <NavIcon>✈️</NavIcon>
           <NavLabel>Canal</NavLabel>
         </NavItem>

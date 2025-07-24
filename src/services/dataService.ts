@@ -53,6 +53,28 @@ export interface ShopConfig {
   backgroundImagePublicId?: string; // ID Cloudinary pour l'image de fond
   shopName: string;
   description: string;
+  
+  // Configuration Telegram
+  telegramChannel?: string;
+  telegramChannelUrl?: string;
+  telegramDescription?: string;
+  telegramBot?: string;
+  defaultOrderMessage?: string;
+  whatsappNumber?: string;
+  
+  // Configuration SEO & Meta
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
+  ogTitle?: string;
+  ogDescription?: string;
+  ogImage?: string;
+  siteUrl?: string;
+  language?: string;
+  region?: string;
+  googleAnalyticsId?: string;
+  googleSiteVerification?: string;
+  
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -251,7 +273,28 @@ class DataService {
       backgroundType: 'gradient',
       backgroundColor: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       shopName: 'BIPCOSA06',
-      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
+      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon',
+      
+      // Configuration Telegram par défaut
+      telegramChannel: 'bipcosa06',
+      telegramChannelUrl: 'https://t.me/bipcosa06',
+      telegramDescription: 'Canal officiel BIPCOSA06 - Commandes et informations',
+      telegramBot: '@bipcosa06_bot',
+      defaultOrderMessage: 'Bonjour, je souhaite commander le produit suivant :\n\n{productName}\nQuantité : {quantity}\n\nMerci !',
+      whatsappNumber: '',
+      
+      // Configuration SEO & Meta par défaut
+      seoTitle: 'BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon',
+      seoDescription: 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel.',
+      seoKeywords: 'BIPCOSA06, CANAGOOD, Lyon, boutique, livraison, 69, cannabis, CBD',
+      ogTitle: 'BIPCOSA06 - CANAGOOD 69 APP',
+      ogDescription: 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon',
+      ogImage: '',
+      siteUrl: 'https://juniorrrrr345.github.io/Cosa-',
+      language: 'fr',
+      region: 'FR',
+      googleAnalyticsId: '',
+      googleSiteVerification: ''
     };
   }
 

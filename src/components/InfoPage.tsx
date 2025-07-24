@@ -255,7 +255,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem $active={false} onClick={() => window.open('https://t.me/bipcosa06', '_blank')}>
+        <NavItem $active={false} onClick={() => window.open(config.telegramChannelUrl || 'https://t.me/bipcosa06', '_blank')}>
           <NavIcon>✈️</NavIcon>
           <NavLabel>Canal</NavLabel>
         </NavItem>

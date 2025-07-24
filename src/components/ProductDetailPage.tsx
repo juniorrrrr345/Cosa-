@@ -336,8 +336,19 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
   }, []);
 
   const handleTelegramOrder = (productName: string) => {
-    const message = `Bonjour, je souhaite commander ${productName} de BIPCOSA06. Pouvez-vous me donner plus d'informations ?`;
-    const telegramUrl = `https://t.me/bipcosa06?text=${encodeURIComponent(message)}`;
+    // Utiliser le message configuré depuis le panel admin
+    const defaultMessage = config.defaultOrderMessage || 'Bonjour, je souhaite commander le produit suivant :\n\n{productName}\nQuantité : {quantity}\n\nMerci !';
+    const message = defaultMessage
+      .replace('{productName}', productName)
+      .replace('{quantity}', '1g') // Quantité par défaut
+      .replace('{price}', product.prices[0]?.price || '');
+    
+    // Utiliser le bot configuré ou le canal par défaut
+    const telegramTarget = config.telegramBot 
+      ? config.telegramBot.replace('@', '')
+      : (config.telegramChannel || 'bipcosa06');
+    
+    const telegramUrl = `https://t.me/${telegramTarget}?text=${encodeURIComponent(message)}`;
     window.open(telegramUrl, '_blank');
   };
 
@@ -405,7 +416,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem $active={false} onClick={() => window.open('https://t.me/bipcosa06', '_blank')}>
+        <NavItem $active={false} onClick={() => window.open(config.telegramChannelUrl || 'https://t.me/bipcosa06', '_blank')}>
           <NavIcon>✈️</NavIcon>
           <NavLabel>Canal</NavLabel>
         </NavItem>

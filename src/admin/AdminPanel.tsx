@@ -1216,6 +1216,313 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
            </ContentSection>
          );
 
+      case 'telegram':
+        return (
+          <ContentSection>
+            <SectionTitle>✈️ Configuration Telegram</SectionTitle>
+            
+            <div style={{ display: 'grid', gap: '25px' }}>
+              {/* Configuration du canal principal */}
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                  📢 Canal Principal
+                </h4>
+                
+                <FormGroup>
+                  <Label>Nom d'utilisateur du canal (sans @)</Label>
+                  <Input 
+                    type="text" 
+                    value={config.telegramChannel || 'bipcosa06'} 
+                    onChange={(e) => handleSaveConfig({ telegramChannel: e.target.value })}
+                    placeholder="bipcosa06"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Lien complet du canal</Label>
+                  <Input 
+                    type="url" 
+                    value={config.telegramChannelUrl || 'https://t.me/bipcosa06'} 
+                    onChange={(e) => handleSaveConfig({ telegramChannelUrl: e.target.value })}
+                    placeholder="https://t.me/bipcosa06"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Description du canal</Label>
+                  <TextArea 
+                    value={config.telegramDescription || 'Canal officiel BIPCOSA06 - Commandes et informations'} 
+                    onChange={(e) => handleSaveConfig({ telegramDescription: e.target.value })}
+                    placeholder="Description du canal Telegram..."
+                  />
+                </FormGroup>
+              </div>
+
+              {/* Configuration des commandes */}
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                  🛒 Configuration des Commandes
+                </h4>
+                
+                <FormGroup>
+                  <Label>Bot de commande Telegram</Label>
+                  <Input 
+                    type="text" 
+                    value={config.telegramBot || '@bipcosa06_bot'} 
+                    onChange={(e) => handleSaveConfig({ telegramBot: e.target.value })}
+                    placeholder="@bipcosa06_bot"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Message de commande par défaut</Label>
+                  <TextArea 
+                    value={config.defaultOrderMessage || 'Bonjour, je souhaite commander le produit suivant :\n\n{productName}\nQuantité : {quantity}\n\nMerci !'} 
+                    onChange={(e) => handleSaveConfig({ defaultOrderMessage: e.target.value })}
+                    placeholder="Message qui sera pré-rempli lors d'une commande..."
+                  />
+                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
+                    Variables disponibles : {'{productName}'}, {'{quantity}'}, {'{price}'}
+                  </small>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Numéro de téléphone pour WhatsApp (optionnel)</Label>
+                  <Input 
+                    type="tel" 
+                    value={config.whatsappNumber || ''} 
+                    onChange={(e) => handleSaveConfig({ whatsappNumber: e.target.value })}
+                    placeholder="+33123456789"
+                  />
+                </FormGroup>
+              </div>
+
+              {/* Aperçu des liens */}
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                  🔗 Aperçu des Liens
+                </h4>
+                
+                <div style={{ display: 'grid', gap: '15px' }}>
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '15px', borderRadius: '10px' }}>
+                    <strong>Canal Telegram :</strong><br/>
+                    <a href={config.telegramChannelUrl || 'https://t.me/bipcosa06'} 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       style={{ color: '#4facfe', textDecoration: 'none' }}>
+                      {config.telegramChannelUrl || 'https://t.me/bipcosa06'}
+                    </a>
+                  </div>
+                  
+                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '15px', borderRadius: '10px' }}>
+                    <strong>Bot de commande :</strong><br/>
+                    <span style={{ color: '#4facfe' }}>
+                      {config.telegramBot || '@bipcosa06_bot'}
+                    </span>
+                  </div>
+                  
+                  {config.whatsappNumber && (
+                    <div style={{ background: 'rgba(0,0,0,0.3)', padding: '15px', borderRadius: '10px' }}>
+                      <strong>WhatsApp :</strong><br/>
+                      <a href={`https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}`} 
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         style={{ color: '#25D366', textDecoration: 'none' }}>
+                        {config.whatsappNumber}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            <div style={{ marginTop: '30px', textAlign: 'center' }}>
+              <ActionButton $variant="add" onClick={() => alert('Configuration Telegram sauvegardée automatiquement !')}>
+                💾 Configuration sauvegardée
+              </ActionButton>
+            </div>
+          </ContentSection>
+        );
+
+      case 'seo':
+        return (
+          <ContentSection>
+            <SectionTitle>🔍 SEO & Référencement</SectionTitle>
+            
+            <div style={{ display: 'grid', gap: '25px' }}>
+              {/* Métadonnées de base */}
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                  📝 Métadonnées de Base
+                </h4>
+                
+                <FormGroup>
+                  <Label>Titre de la page (balise title)</Label>
+                  <Input 
+                    type="text" 
+                    value={config.seoTitle || 'BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon'} 
+                    onChange={(e) => handleSaveConfig({ seoTitle: e.target.value })}
+                    placeholder="Titre qui apparaît dans l'onglet du navigateur"
+                  />
+                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
+                    Recommandé : 50-60 caractères
+                  </small>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Description (meta description)</Label>
+                  <TextArea 
+                    value={config.seoDescription || 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel.'} 
+                    onChange={(e) => handleSaveConfig({ seoDescription: e.target.value })}
+                    placeholder="Description qui apparaît dans les résultats de recherche Google"
+                  />
+                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
+                    Recommandé : 150-160 caractères
+                  </small>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Mots-clés (keywords)</Label>
+                  <Input 
+                    type="text" 
+                    value={config.seoKeywords || 'BIPCOSA06, CANAGOOD, Lyon, boutique, livraison, 69, cannabis, CBD'} 
+                    onChange={(e) => handleSaveConfig({ seoKeywords: e.target.value })}
+                    placeholder="Mots-clés séparés par des virgules"
+                  />
+                </FormGroup>
+              </div>
+
+              {/* Open Graph / Réseaux sociaux */}
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                  📱 Réseaux Sociaux (Open Graph)
+                </h4>
+                
+                <FormGroup>
+                  <Label>Titre pour les réseaux sociaux</Label>
+                  <Input 
+                    type="text" 
+                    value={config.ogTitle || 'BIPCOSA06 - CANAGOOD 69 APP'} 
+                    onChange={(e) => handleSaveConfig({ ogTitle: e.target.value })}
+                    placeholder="Titre affiché quand le lien est partagé"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Description pour les réseaux sociaux</Label>
+                  <TextArea 
+                    value={config.ogDescription || 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon'} 
+                    onChange={(e) => handleSaveConfig({ ogDescription: e.target.value })}
+                    placeholder="Description affichée quand le lien est partagé"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Image de partage (URL)</Label>
+                  <Input 
+                    type="url" 
+                    value={config.ogImage || ''} 
+                    onChange={(e) => handleSaveConfig({ ogImage: e.target.value })}
+                    placeholder="https://exemple.com/image-partage.jpg"
+                  />
+                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
+                    Recommandé : 1200x630 pixels
+                  </small>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>URL du site</Label>
+                  <Input 
+                    type="url" 
+                    value={config.siteUrl || 'https://juniorrrrr345.github.io/Cosa-'} 
+                    onChange={(e) => handleSaveConfig({ siteUrl: e.target.value })}
+                    placeholder="https://monsite.com"
+                  />
+                </FormGroup>
+              </div>
+
+              {/* Configuration technique */}
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                  ⚙️ Configuration Technique
+                </h4>
+                
+                <FormGroup>
+                  <Label>Langue du site</Label>
+                  <Select 
+                    value={config.language || 'fr'} 
+                    onChange={(e) => handleSaveConfig({ language: e.target.value })}
+                  >
+                    <option value="fr">Français (fr)</option>
+                    <option value="en">English (en)</option>
+                    <option value="es">Español (es)</option>
+                    <option value="de">Deutsch (de)</option>
+                  </Select>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Région/Pays</Label>
+                  <Select 
+                    value={config.region || 'FR'} 
+                    onChange={(e) => handleSaveConfig({ region: e.target.value })}
+                  >
+                    <option value="FR">France (FR)</option>
+                    <option value="BE">Belgique (BE)</option>
+                    <option value="CH">Suisse (CH)</option>
+                    <option value="CA">Canada (CA)</option>
+                    <option value="US">États-Unis (US)</option>
+                  </Select>
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Google Analytics ID (optionnel)</Label>
+                  <Input 
+                    type="text" 
+                    value={config.googleAnalyticsId || ''} 
+                    onChange={(e) => handleSaveConfig({ googleAnalyticsId: e.target.value })}
+                    placeholder="G-XXXXXXXXXX ou UA-XXXXXXXXX-X"
+                  />
+                </FormGroup>
+                
+                <FormGroup>
+                  <Label>Google Search Console (optionnel)</Label>
+                  <Input 
+                    type="text" 
+                    value={config.googleSiteVerification || ''} 
+                    onChange={(e) => handleSaveConfig({ googleSiteVerification: e.target.value })}
+                    placeholder="Code de vérification Google"
+                  />
+                </FormGroup>
+              </div>
+
+              {/* Aperçu SEO */}
+              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                  👀 Aperçu Google
+                </h4>
+                
+                <div style={{ background: 'white', padding: '15px', borderRadius: '8px', color: 'black' }}>
+                  <div style={{ color: '#1a0dab', fontSize: '18px', lineHeight: '1.2', marginBottom: '5px' }}>
+                    {config.seoTitle || 'BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon'}
+                  </div>
+                  <div style={{ color: '#006621', fontSize: '14px', marginBottom: '5px' }}>
+                    {config.siteUrl || 'https://juniorrrrr345.github.io/Cosa-'}
+                  </div>
+                  <div style={{ color: '#545454', fontSize: '13px', lineHeight: '1.4' }}>
+                    {config.seoDescription || 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel.'}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div style={{ marginTop: '30px', textAlign: 'center' }}>
+              <ActionButton $variant="add" onClick={() => alert('Configuration SEO sauvegardée automatiquement !')}>
+                💾 Configuration sauvegardée
+              </ActionButton>
+            </div>
+          </ContentSection>
+        );
+
       default:
         return <ContentSection><SectionTitle>Section en cours de développement</SectionTitle></ContentSection>;
     }

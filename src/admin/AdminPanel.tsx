@@ -1580,7 +1580,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             <Input 
               type="text" 
               value={formData.name || ''} 
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={(e) => {
+                // Mise à jour locale uniquement
+                setFormData({...formData, name: e.target.value});
+              }}
               placeholder="Ex: ANIMAL COOKIES" 
             />
           </FormGroup>
@@ -1623,7 +1626,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             <Label>Description *</Label>
             <TextArea 
               value={formData.description || ''} 
-              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              onChange={(e) => {
+                // Mise à jour locale uniquement
+                setFormData({...formData, description: e.target.value});
+              }}
               placeholder="Description détaillée du produit..." 
             />
           </FormGroup>
@@ -1633,9 +1639,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             <Input 
               type="url" 
               value={formData.image || ''} 
-              onChange={(e) => setFormData({...formData, image: e.target.value})}
+              onChange={(e) => {
+                // Mise à jour locale uniquement, pas de sauvegarde automatique
+                setFormData({...formData, image: e.target.value});
+              }}
               placeholder="https://images.unsplash.com/... ou upload via Cloudinary" 
             />
+            <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+              💡 Collez l'URL de votre image ou utilisez l'upload ci-dessous
+            </small>
             
             {/* Upload Cloudinary pour images */}
             <div style={{ 
@@ -1697,9 +1709,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             <Input 
               type="url" 
               value={formData.video || ''} 
-              onChange={(e) => setFormData({...formData, video: e.target.value})}
+              onChange={(e) => {
+                // Mise à jour locale uniquement, pas de sauvegarde automatique
+                setFormData({...formData, video: e.target.value});
+              }}
               placeholder="https://... ou upload via Cloudinary" 
             />
+            <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+              💡 Collez l'URL de votre vidéo ou utilisez l'upload ci-dessous
+            </small>
             
             {/* Upload Cloudinary pour vidéos */}
             <div style={{ 

@@ -284,12 +284,16 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
 
   const loadData = async () => {
     try {
+      console.log('🔄 HomePage loadData - Début chargement...');
+      
       const [newProducts, newCategories, newFarms, newConfig] = await Promise.all([
         dataService.getProducts(),
         dataService.getCategories(),
         dataService.getFarms(),
         dataService.getConfig()
       ]);
+      
+      console.log('🔄 HomePage loadData - Config reçue de dataService:', newConfig);
       
       console.log('🛍️ Boutique: Chargement des données:', {
         products: newProducts.length,
@@ -334,11 +338,18 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   // Style de background dynamique (inline pour forcer l'application)
   const getBackgroundStyle = () => {
     console.log('🎨 HomePage - Config complète:', config);
+    console.log('🎨 HomePage - config.backgroundType:', config?.backgroundType);
+    console.log('🎨 HomePage - config.backgroundUrl:', config?.backgroundUrl);
+    console.log('🎨 HomePage - config.backgroundImage:', config?.backgroundImage);
     
+    // FORCER L'IMAGE DE TEST si pas de config
     if (!config || !config.backgroundType) {
-      console.log('🎨 HomePage - Pas de config/backgroundType, dégradé par défaut');
+      console.log('🎨 HomePage - FORCE image de test car pas de config');
       return {
-        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
       };
     }
 

@@ -238,34 +238,42 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     
     // Écouter les mises à jour depuis le panel admin
     const handleDataUpdate = (event: any) => {
-      console.log('🔄 Boutique: Données mises à jour depuis le panel admin', event.detail);
-      // Force reload with delay to ensure localStorage is updated
-      setTimeout(() => {
-        loadData();
-      }, 150);
+      console.log('🔄 HomePage: Données mises à jour depuis le panel admin', event.detail);
+      setTimeout(() => { loadData(); }, 100);
     };
     
     const handleConfigUpdate = (event: any) => {
-      console.log('🔄 Boutique: Configuration mise à jour depuis le panel admin', event.detail);
-      setTimeout(() => {
-        loadData();
-      }, 150);
+      console.log('🔄 HomePage: Configuration mise à jour depuis le panel admin', event.detail);
+      setTimeout(() => { loadData(); }, 100);
+    };
+    
+    const handleBipcosaConfigChange = (event: any) => {
+      console.log('🔄 HomePage: Config globale changée', event.detail);
+      setConfig(event.detail);
+      setTimeout(() => { loadData(); }, 50);
     };
 
+    // Écouter tous les événements de mise à jour
     window.addEventListener('dataUpdated', handleDataUpdate);
     window.addEventListener('configUpdated', handleConfigUpdate);
+    window.addEventListener('bipcosa06ConfigChanged', handleBipcosaConfigChange);
 
-    // Check for updates every 5 seconds as fallback (reduced frequency)
+    // Synchronisation périodique réduite
     const interval = setInterval(() => {
-      loadData();
-    }, 5000);
+      const newConfig = dataService.getConfigSync();
+      if (JSON.stringify(newConfig) !== JSON.stringify(config)) {
+        console.log('🔄 HomePage: Sync périodique config détectée');
+        setConfig(newConfig);
+      }
+    }, 3000); // Toutes les 3 secondes
 
     return () => {
       window.removeEventListener('dataUpdated', handleDataUpdate);
       window.removeEventListener('configUpdated', handleConfigUpdate);
+      window.removeEventListener('bipcosa06ConfigChanged', handleBipcosaConfigChange);
       clearInterval(interval);
     };
-  }, []);
+  }, [config]); // Dépendance sur config pour la comparaison
 
   const loadData = async () => {
     try {

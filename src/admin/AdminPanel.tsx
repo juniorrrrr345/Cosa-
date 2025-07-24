@@ -815,22 +815,32 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       // Mise à jour via dataService
       const updatedConfig = await dataService.updateConfig(newConfig);
       
-      // Mettre à jour l'état local
-      setConfig(updatedConfig);
+      // Mettre à jour l'état local (sans écraser les changements récents)
+      setConfig(prevConfig => ({
+        ...prevConfig,
+        ...updatedConfig
+      }));
       
       console.log('✅ Configuration mise à jour avec succès');
       
-      // Rafraîchir les données
-      await refreshData();
+      // Forcer la synchronisation du cache
+      dataService.forceRefresh();
       
-      // Notification de succès
+      // Notifier toutes les pages de la boutique
+      window.dispatchEvent(new CustomEvent('configUpdated', { 
+        detail: updatedConfig 
+      }));
+      
+      // Forcer le rechargement des données sans attendre
       setTimeout(() => {
-        console.log('🔄 Synchronisation config terminée');
+        refreshData();
+        console.log('🔄 Cache synchronisé avec les pages boutique');
       }, 100);
       
     } catch (error) {
       console.error('❌ Erreur lors de la mise à jour de la config:', error);
-      alert(`❌ Erreur lors de la mise à jour de la configuration: ${error.message || error}`);
+      // Ne pas afficher d'alert pour les erreurs de sauvegarde automatique
+      console.warn('⚠️ Sauvegarde échouée, changement conservé localement');
     }
   };
 
@@ -1496,8 +1506,21 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                      value={config.shopName || ''} 
                      onChange={(e) => {
                        const newShopName = e.target.value;
-                       setConfig({...config, shopName: newShopName});
-                       handleSaveConfig({ shopName: newShopName });
+                       console.log('🔄 Changement nom boutique:', newShopName);
+                       
+                       // Mise à jour immédiate de l'état local (dynamique)
+                       setConfig(prevConfig => ({
+                         ...prevConfig, 
+                         shopName: newShopName
+                       }));
+                       
+                       // Sauvegarde différée pour éviter les appels multiples
+                       clearTimeout(window.shopNameTimeout);
+                       window.shopNameTimeout = setTimeout(() => {
+                         handleSaveConfig({ shopName: newShopName }).catch(error => {
+                           console.error('Erreur sauvegarde nom boutique:', error);
+                         });
+                       }, 500); // Attendre 500ms après la dernière frappe
                      }}
                      placeholder="BIPCOSA06"
                    />

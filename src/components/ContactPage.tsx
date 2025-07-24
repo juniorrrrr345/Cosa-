@@ -169,17 +169,23 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
     const loadData = () => {
       setConfig(dataService.getConfigSync());
       setContactContents(dataService.getContactContents());
+      console.log('📞 ContactPage: Données chargées');
     };
 
     loadData();
     
+    // Forcer la synchronisation des contenus au montage
+    dataService.forceSyncContent();
+    
     // Écouter les mises à jour de configuration et de données
     const handleConfigUpdate = () => {
+      console.log('📞 ContactPage: Config mise à jour');
       loadData();
     };
     
     const handleDataUpdate = () => {
-      loadData();
+      console.log('📞 ContactPage: Données mises à jour');
+      setTimeout(loadData, 100); // Petit délai pour s'assurer que les données sont à jour
     };
 
     window.addEventListener('configUpdated', handleConfigUpdate);

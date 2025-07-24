@@ -622,7 +622,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const handleSaveInfoContent = () => {
     try {
       dataService.updateInfoContent(infoContent);
-      alert('✅ Contenu Info sauvegardé avec succès !');
+      
+      // Forcer la synchronisation immédiate
+      setTimeout(() => {
+        dataService.forceSyncContent();
+      }, 200);
+      
+      alert('✅ Contenu Info sauvegardé et synchronisé !');
+      console.log('💾 Admin: Info sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Info:', error);
       alert('❌ Erreur lors de la sauvegarde');
@@ -632,7 +639,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const handleSaveContactContent = () => {
     try {
       dataService.updateContactContent(contactContent);
-      alert('✅ Contenu Contact sauvegardé avec succès !');
+      
+      // Forcer la synchronisation immédiate
+      setTimeout(() => {
+        dataService.forceSyncContent();
+      }, 200);
+      
+      alert('✅ Contenu Contact sauvegardé et synchronisé !');
+      console.log('💾 Admin: Contact sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Contact:', error);
       alert('❌ Erreur lors de la sauvegarde');

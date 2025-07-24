@@ -186,19 +186,25 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
 
   useEffect(() => {
     const loadData = () => {
-      setConfig(dataService.getConfig());
+      setConfig(dataService.getConfigSync());
       setInfoContents(dataService.getInfoContents());
+      console.log('📄 InfoPage: Données chargées');
     };
 
     loadData();
     
+    // Forcer la synchronisation des contenus au montage
+    dataService.forceSyncContent();
+    
     // Écouter les mises à jour de configuration et de données
     const handleConfigUpdate = () => {
+      console.log('📄 InfoPage: Config mise à jour');
       loadData();
     };
 
     const handleDataUpdate = () => {
-      loadData();
+      console.log('📄 InfoPage: Données mises à jour');
+      setTimeout(loadData, 100); // Petit délai pour s'assurer que les données sont à jour
     };
 
     window.addEventListener('configUpdated', handleConfigUpdate);

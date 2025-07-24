@@ -5,12 +5,22 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   distDir: 'out',
   images: {
-    unoptimized: true
+    unoptimized: true,
+    domains: ['images.unsplash.com', 'unsplash.com']
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/Cosa-' : '',
-  basePath: process.env.NODE_ENV === 'production' ? '/Cosa-' : '',
+  // Optimisations pour Vercel (sans optimizeCss qui cause des problèmes)
   compiler: {
-    styledComponents: true
+    styledComponents: true,
+    removeConsole: process.env.NODE_ENV === 'production'
+  },
+  // Variables d'environnement avec valeurs par défaut
+  env: {
+    VERCEL_URL: process.env.VERCEL_URL || '',
+    NEXT_PUBLIC_VERCEL_URL: process.env.VERCEL_URL || ''
+  },
+  // Désactiver les headers pour l'export statique
+  experimental: {
+    esmExternals: false
   }
 }
 

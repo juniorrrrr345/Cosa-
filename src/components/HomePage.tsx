@@ -218,19 +218,27 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     
     // Écouter les mises à jour depuis le panel admin
     const handleDataUpdate = () => {
+      console.log('Données mises à jour depuis le panel admin');
       loadData();
     };
     
     const handleConfigUpdate = () => {
+      console.log('Configuration mise à jour depuis le panel admin');
       loadData();
     };
 
     window.addEventListener('dataUpdated', handleDataUpdate);
     window.addEventListener('configUpdated', handleConfigUpdate);
 
+    // Vérifier les mises à jour périodiquement (fallback)
+    const interval = setInterval(() => {
+      loadData();
+    }, 5000);
+
     return () => {
       window.removeEventListener('dataUpdated', handleDataUpdate);
       window.removeEventListener('configUpdated', handleConfigUpdate);
+      clearInterval(interval);
     };
   }, []);
 

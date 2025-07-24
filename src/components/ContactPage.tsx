@@ -116,11 +116,10 @@ const BottomNavigation = styled.div`
   right: 0;
   background: rgba(0,0,0,0.7);
   backdrop-filter: blur(20px);
-  border-top: 1px solid rgba(255,255,255,0.1);
   display: flex;
   justify-content: space-around;
-  padding: 15px 20px;
-  z-index: 100;
+  padding: 15px 0 25px 0;
+  border-top: 1px solid rgba(255,255,255,0.2);
 `;
 
 const NavItem = styled.div<{ $active: boolean }>`

@@ -18,16 +18,27 @@ const AdminContainer = styled.div`
   color: white;
   display: flex;
   position: relative;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
 `;
 
 const Sidebar = styled.div<{ $isOpen: boolean }>`
-  width: 280px;
-  background: rgba(0,0,0,0.9);
+  width: 100%;
+  background: rgba(0,0,0,0.95);
   backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   position: relative;
-  height: 100vh;
   overflow-y: auto;
+
+  @media (min-width: 768px) {
+    width: 280px;
+    height: 100vh;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    border-bottom: none;
+  }
 `;
 
 const SidebarToggle = styled.button`
@@ -35,9 +46,13 @@ const SidebarToggle = styled.button`
 `;
 
 const SidebarHeader = styled.div`
-  padding: 20px;
+  padding: 15px 20px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   text-align: center;
+
+  @media (min-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const SidebarTitle = styled.h2`
@@ -49,18 +64,44 @@ const SidebarTitle = styled.h2`
 `;
 
 const SidebarMenu = styled.div`
-  padding: 20px 0;
+  display: flex;
+  padding: 10px;
+  overflow-x: auto;
+  gap: 10px;
+
+  @media (min-width: 768px) {
+    flex-direction: column;
+    padding: 20px 0;
+    overflow-x: visible;
+    gap: 0;
+  }
 `;
 
 const MenuItem = styled.div<{ $active: boolean }>`
-  padding: 15px 20px;
+  padding: 12px 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
-  border-left: ${props => props.$active ? '3px solid #fff' : '3px solid transparent'};
+  background: ${props => props.$active ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.3)'};
+  border: 1px solid ${props => props.$active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'};
+  border-radius: 12px;
+  white-space: nowrap;
+  min-width: fit-content;
+  text-align: center;
   
   &:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  @media (min-width: 768px) {
+    padding: 15px 20px;
+    border-radius: 0;
+    border: none;
+    border-left: ${props => props.$active ? '3px solid #fff' : '3px solid transparent'};
+    background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
+    text-align: left;
+    min-width: auto;
+    white-space: normal;
   }
 `;
 
@@ -76,12 +117,11 @@ const MenuLabel = styled.span`
 
 const MainContent = styled.div<{ $sidebarOpen: boolean }>`
   flex: 1;
-  padding: 20px;
-  margin-left: ${props => props.$sidebarOpen ? '0' : '0'};
-  transition: all 0.3s ease;
+  padding: 15px;
+  overflow-y: auto;
 
   @media (min-width: 768px) {
-    margin-left: 0;
+    padding: 20px;
   }
 `;
 
@@ -89,22 +129,25 @@ const ContentHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding: 0 20px;
+  margin-bottom: 20px;
+  padding: 0;
+  flex-wrap: wrap;
+  gap: 10px;
 
-  @media (max-width: 768px) {
-    padding: 0 60px 0 0;
+  @media (min-width: 768px) {
+    margin-bottom: 30px;
+    flex-wrap: nowrap;
   }
 `;
 
 const ContentTitle = styled.h1`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0;
   color: white;
 
-  @media (max-width: 768px) {
-    font-size: 20px;
+  @media (min-width: 768px) {
+    font-size: 24px;
   }
 `;
 
@@ -264,16 +307,27 @@ const DataItem = styled.div`
 
 const ProductCard = styled(DataItem)`
   display: grid;
-  grid-template-columns: 80px 1fr auto;
-  gap: 15px;
+  grid-template-columns: 60px 1fr auto;
+  gap: 10px;
   align-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 80px 1fr auto;
+    gap: 15px;
+  }
 `;
 
 const ProductImage = styled.img`
-  width: 80px;
-  height: 60px;
+  width: 60px;
+  height: 45px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 6px;
+
+  @media (min-width: 768px) {
+    width: 80px;
+    height: 60px;
+    border-radius: 8px;
+  }
 `;
 
 const ProductInfo = styled.div`
@@ -284,9 +338,13 @@ const ProductInfo = styled.div`
 
 const ProductName = styled.h4`
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: white;
+
+  @media (min-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const ProductDetails = styled.div`
@@ -296,17 +354,29 @@ const ProductDetails = styled.div`
 
 const ActionButtons = styled.div`
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 5px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 8px;
+  }
 `;
 
 const ActionButton = styled.button<{ $variant?: 'edit' | 'delete' | 'add' }>`
-  padding: 8px 12px;
+  padding: 6px 10px;
   border: none;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
+
+  @media (min-width: 768px) {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
   
   ${props => {
     switch (props.$variant) {
@@ -354,14 +424,21 @@ const Modal = styled.div<{ $isOpen: boolean }>`
 `;
 
 const ModalContent = styled.div`
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.95);
   border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 20px;
-  padding: 30px;
+  border-radius: 15px;
+  padding: 20px;
   max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
+  width: 95%;
+  max-height: 90vh;
   overflow-y: auto;
+
+  @media (min-width: 768px) {
+    border-radius: 20px;
+    padding: 30px;
+    width: 100%;
+    max-height: 80vh;
+  }
 `;
 
 const ModalHeader = styled.div`
@@ -816,13 +893,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     }
   };
 
-  return (
-    <AdminContainer>
-      <SidebarToggle onClick={() => setSidebarOpen(!sidebarOpen)}>
-        ☰
-      </SidebarToggle>
-
-      <Sidebar $isOpen={sidebarOpen}>
+      return (
+      <AdminContainer>
+        <Sidebar $isOpen={true}>
         <SidebarHeader>
           <SidebarTitle>ADMIN BIPCOSA06</SidebarTitle>
         </SidebarHeader>
@@ -840,7 +913,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         </SidebarMenu>
       </Sidebar>
 
-      <MainContent $sidebarOpen={sidebarOpen}>
+              <MainContent $sidebarOpen={true}>
         <ContentHeader>
           <ContentTitle>
             {menuItems.find(item => item.id === activeSection)?.label || 'Admin'}

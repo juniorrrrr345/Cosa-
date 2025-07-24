@@ -1,15 +1,9 @@
 {
+  "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": "out",
-  "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "regions": ["cdg1"],
-  "functions": {
-    "app/**": {
-      "runtime": "nodejs18.x"
-    }
-  },
+  "regions": ["iad1"],
   "rewrites": [
     {
       "source": "/(.*)",
@@ -34,5 +28,6 @@
         }
       ]
     }
-  ]
+  ],
+  "trailingSlash": true
 }

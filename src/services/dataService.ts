@@ -472,12 +472,43 @@ class DataService {
 
   // Configuration
   async getConfig(): Promise<ShopConfig> {
-    await this.refreshCache();
-    return this.configCache || this.getFallbackConfig();
+    console.log('🔍 getConfig() appelée');
+    
+    // FORCER la config de test pour le moment
+    const testConfig: ShopConfig = {
+      backgroundType: 'url',
+      backgroundUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: '',
+      shopName: 'BIPCOSA06',
+      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
+    };
+    
+    console.log('🧪 Config de test forcée:', testConfig);
+    this.configCache = testConfig;
+    return testConfig;
+    
+    // Code original commenté temporairement
+    // await this.refreshCache();
+    // return this.configCache || this.getFallbackConfig();
   }
 
   getConfigSync(): ShopConfig {
-    return this.configCache || this.getFallbackConfig();
+    console.log('🔍 getConfigSync() appelée');
+    
+    // FORCER la même config de test
+    const testConfig: ShopConfig = {
+      backgroundType: 'url',
+      backgroundUrl: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: '',
+      shopName: 'BIPCOSA06',
+      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
+    };
+    
+    console.log('🧪 ConfigSync de test forcée:', testConfig);
+    return testConfig;
+    
+    // Code original commenté temporairement
+    // return this.configCache || this.getFallbackConfig();
   }
 
   async updateConfig(updates: Partial<ShopConfig>): Promise<ShopConfig> {

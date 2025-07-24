@@ -1,12 +1,14 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { configService } from '../services/configService';
+import { configService, Config } from '@/services/configService';
 
-const PageContainer = styled.div`
+const PageContainer = styled.div<{ $backgroundImage?: string | null; $backgroundColor?: string }>`
   min-height: 100vh;
-  background: ${props => props.backgroundImage 
-    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.backgroundImage})`
-    : props.backgroundColor || '#1a1a1a'};
+  background: ${props => props.$backgroundImage 
+    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
+    : props.$backgroundColor || '#1a1a1a'};
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -118,14 +120,14 @@ const BottomNavigation = styled.div`
   border-top: 1px solid rgba(255,255,255,0.1);
 `;
 
-const NavItem = styled.div`
+const NavItem = styled.div<{ $active?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 5px;
   cursor: pointer;
   padding: 5px;
-  color: ${props => props.active ? '#4facfe' : 'rgba(255,255,255,0.7)'};
+  color: ${props => props.$active ? '#4facfe' : 'rgba(255,255,255,0.7)'};
   transition: color 0.3s ease;
 
   &:hover {
@@ -142,8 +144,12 @@ const NavLabel = styled.div`
   font-weight: 500;
 `;
 
-const InfoPage = ({ onNavigate }) => {
-  const [config, setConfig] = useState(configService.defaultConfig);
+interface InfoPageProps {
+  onNavigate?: (view: string) => void;
+}
+
+const InfoPage: React.FC<InfoPageProps> = ({ onNavigate }) => {
+  const [config, setConfig] = useState<Config>(configService.defaultConfig);
 
   useEffect(() => {
     const loadedConfig = configService.getConfig();
@@ -152,8 +158,8 @@ const InfoPage = ({ onNavigate }) => {
 
   return (
     <PageContainer 
-      backgroundImage={config.backgroundImage}
-      backgroundColor={config.backgroundColor}
+      $backgroundImage={config.backgroundImage}
+      $backgroundColor={config.backgroundColor}
     >
       <Header>
         <ShopTitle>{config.shopName}</ShopTitle>
@@ -211,7 +217,7 @@ const InfoPage = ({ onNavigate }) => {
             <Icon>📦</Icon>
             ENVOIE POSTAL
           </InfoLabel>
-          <InfoValue>Toute l'Europe via mondial relais</InfoValue>
+          <InfoValue>Toute l&apos;Europe via mondial relais</InfoValue>
         </InfoItem>
 
         <InfoItem>
@@ -224,19 +230,19 @@ const InfoPage = ({ onNavigate }) => {
       </InfoSection>
 
       <BottomNavigation>
-        <NavItem active onClick={() => onNavigate('menu')}>
+        <NavItem $active onClick={() => onNavigate?.('menu')}>
           <NavIcon>🏠</NavIcon>
           <NavLabel>Menu</NavLabel>
         </NavItem>
-        <NavItem active>
+        <NavItem $active>
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem onClick={() => onNavigate('contact')}>
+        <NavItem onClick={() => onNavigate?.('contact')}>
           <NavIcon>✈️</NavIcon>
           <NavLabel>Canal</NavLabel>
         </NavItem>
-        <NavItem onClick={() => onNavigate('contact')}>
+        <NavItem onClick={() => onNavigate?.('contact')}>
           <NavIcon>✉️</NavIcon>
           <NavLabel>Contact</NavLabel>
         </NavItem>

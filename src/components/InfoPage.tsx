@@ -4,12 +4,14 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div<{ $backgroundImage?: string }>`
+const PageContainer = styled.div<{ $backgroundImage?: string; $backgroundType?: string }>`
   min-height: 100vh;
-  background: ${props => props.$backgroundImage 
-    ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`
-    : 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
-  };
+  background: ${props => {
+    if (props.$backgroundType === 'image' && props.$backgroundImage) {
+      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`;
+    }
+    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+  }};
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -180,7 +182,10 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
   }, []);
 
   return (
-    <PageContainer $backgroundImage={config.backgroundImage}>
+    <PageContainer 
+      $backgroundImage={config.backgroundImage}
+      $backgroundType={config.backgroundType}
+    >
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>
       </Header>

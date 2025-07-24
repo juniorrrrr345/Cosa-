@@ -1,14 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import AdminPanel from '@/admin/AdminPanel';
 
 export default function PanelPage() {
-  const router = useRouter();
-
   const handleBack = () => {
-    router.push('/');
+    // Redirection vers la boutique (pas vers l'admin)
+    window.location.href = '/';
   };
 
   useEffect(() => {

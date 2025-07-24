@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100">
+  <!-- Logo moderne et minimaliste -->
+  <defs>
+    <linearGradient id="modernGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00FF88;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#00D4FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF00F7;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Forme géométrique moderne -->
+  <path d="M 50 30 L 80 15 L 110 30 L 110 70 L 80 85 L 50 70 Z" 
+        fill="none" stroke="url(#modernGradient)" stroke-width="3" filter="url(#glow)"/>
+  
+  <!-- Éléments centraux -->
+  <circle cx="80" cy="50" r="8" fill="url(#modernGradient)" opacity="0.8"/>
+  <circle cx="65" cy="40" r="4" fill="#00FF88" opacity="0.6"/>
+  <circle cx="95" cy="60" r="4" fill="#FF00F7" opacity="0.6"/>
+  
+  <!-- Texte moderne -->
+  <text x="200" y="45" font-family="Arial, sans-serif" font-size="28" 
+        font-weight="300" text-anchor="middle" fill="white">
+    CANNABIS
+  </text>
+  <text x="200" y="70" font-family="Arial, sans-serif" font-size="16" 
+        font-weight="500" text-anchor="middle" fill="url(#modernGradient)">
+    PREMIUM SHOP
+  </text>
+  
+  <!-- Accent décoratif droite -->
+  <path d="M 320 30 L 350 15 L 380 30 L 380 70 L 350 85 L 320 70 Z" 
+        fill="none" stroke="url(#modernGradient)" stroke-width="2" opacity="0.7"/>
+  
+  <circle cx="350" cy="50" r="6" fill="url(#modernGradient)" opacity="0.6"/>
+</svg>

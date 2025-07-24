@@ -45,13 +45,17 @@ const BackButton = styled.button`
   }
 `;
 
-const HeaderTitle = styled.h1`
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  margin: 0;
-  color: white;
-  text-shadow: 0 0 20px rgba(255,255,255,0.3);
+const LogoImage = styled.img`
+  height: 50px;
+  max-width: 250px;
+  width: auto;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+  transition: transform 0.3s ease, filter 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));
+  }
 `;
 
 const Content = styled.div`
@@ -347,7 +351,7 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         <BackButton onClick={onBack}>
           ← Retour
         </BackButton>
-        <HeaderTitle>BIPCOSA06</HeaderTitle>
+        <LogoImage src="/logo.svg" alt="Logo" />
         <div style={{ width: '60px' }}></div>
       </Header>
 

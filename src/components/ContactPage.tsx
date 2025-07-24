@@ -66,13 +66,17 @@ const Header = styled.div`
   border-bottom: 1px solid rgba(255,255,255,0.1);
 `;
 
-const HeaderTitle = styled.h1`
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  margin: 0;
-  color: white;
-  text-shadow: 0 0 20px rgba(255,255,255,0.3);
+const LogoImage = styled.img`
+  height: 60px;
+  max-width: 300px;
+  width: auto;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+  transition: transform 0.3s ease, filter 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+  }
 `;
 
 const Content = styled.div`
@@ -257,7 +261,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
     <div style={getBackgroundStyle(config)}>
       {/* Header avec nom de la boutique */}
       <Header>
-        <HeaderTitle>BIPCOSA06</HeaderTitle>
+        <LogoImage src="/logo.svg" alt="Logo" />
       </Header>
 
       {/* Contenu principal */}

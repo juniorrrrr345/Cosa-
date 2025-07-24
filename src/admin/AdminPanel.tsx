@@ -1115,14 +1115,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             <ContentSection>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <SectionTitle>📂 Gestion des Catégories</SectionTitle>
-                <ActionButton $variant="add" onClick={() => {
+                <ActionButton $variant="add" onClick={async () => {
                   const label = prompt('📂 Nom de la nouvelle catégorie:');
                   if (label && label.trim()) {
                     try {
-                      dataService.addCategory({ label: label.trim() });
-                      refreshData();
+                      console.log('📂 Ajout catégorie:', label.trim());
+                      
+                      // Générer un value basé sur le label
+                      const value = label.trim().toLowerCase()
+                        .replace(/[^a-z0-9]/g, '-')
+                        .replace(/-+/g, '-')
+                        .replace(/^-|-$/g, '');
+                      
+                      await dataService.addCategory({ 
+                        value, 
+                        label: label.trim() 
+                      });
+                      
+                      await refreshData();
                       alert('✅ Catégorie ajoutée avec succès !');
                     } catch (error) {
+                      console.error('❌ Erreur ajout catégorie:', error);
                       alert('❌ Erreur lors de l\'ajout');
                     }
                   }
@@ -1140,29 +1153,33 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                         <ProductDetails>Code: {category.value}</ProductDetails>
                       </div>
                       <ActionButtons>
-                        <ActionButton $variant="edit" onClick={() => {
+                        <ActionButton $variant="edit" onClick={async () => {
                           const newLabel = prompt('✏️ Nouveau nom:', category.label);
                           if (newLabel && newLabel.trim() !== category.label) {
                             try {
-                              dataService.updateCategory(category.value, { label: newLabel.trim() });
-                              refreshData();
+                              console.log('✏️ Modification catégorie:', category.value, newLabel.trim());
+                              await dataService.updateCategory(category.value, { label: newLabel.trim() });
+                              await refreshData();
                               alert('✅ Catégorie modifiée !');
                             } catch (error) {
+                              console.error('❌ Erreur modification catégorie:', error);
                               alert('❌ Erreur lors de la modification');
                             }
                           }
                         }}>✏️ Modifier</ActionButton>
-                        <ActionButton $variant="delete" onClick={() => {
+                        <ActionButton $variant="delete" onClick={async () => {
                           if (confirm(`🗑️ Supprimer la catégorie "${category.label}" ?`)) {
                             try {
-                              const success = dataService.deleteCategory(category.value);
+                              console.log('🗑️ Suppression catégorie:', category.value);
+                              const success = await dataService.deleteCategory(category.value);
                               if (success) {
-                                refreshData();
+                                await refreshData();
                                 alert('✅ Catégorie supprimée !');
                               } else {
                                 alert('❌ Impossible de supprimer cette catégorie');
                               }
                             } catch (error) {
+                              console.error('❌ Erreur suppression catégorie:', error);
                               alert('❌ Erreur lors de la suppression');
                             }
                           }
@@ -1180,15 +1197,29 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             <ContentSection>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                 <SectionTitle>🏠 Gestion des Farms</SectionTitle>
-                <ActionButton $variant="add" onClick={() => {
+                <ActionButton $variant="add" onClick={async () => {
                   const label = prompt('🏠 Nom de la nouvelle ferme:');
                   if (label && label.trim()) {
                     const country = prompt('🌍 Emoji du pays (ex: 🇫🇷):', '🌍') || '🌍';
                     try {
-                      dataService.addFarm({ label: label.trim(), country });
-                      refreshData();
+                      console.log('🏠 Ajout ferme:', label.trim(), country);
+                      
+                      // Générer un value basé sur le label
+                      const value = label.trim().toLowerCase()
+                        .replace(/[^a-z0-9]/g, '-')
+                        .replace(/-+/g, '-')
+                        .replace(/^-|-$/g, '');
+                      
+                      await dataService.addFarm({ 
+                        value,
+                        label: label.trim(), 
+                        country 
+                      });
+                      
+                      await refreshData();
                       alert('✅ Ferme ajoutée avec succès !');
                     } catch (error) {
+                      console.error('❌ Erreur ajout ferme:', error);
                       alert('❌ Erreur lors de l\'ajout');
                     }
                   }
@@ -1206,7 +1237,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                         <ProductDetails>Code: {farm.value}</ProductDetails>
                       </div>
                       <ActionButtons>
-                        <ActionButton $variant="edit" onClick={() => {
+                        <ActionButton $variant="edit" onClick={async () => {
                           const newLabel = prompt('✏️ Nouveau nom:', farm.label);
                           const newCountry = prompt('🌍 Nouveau pays:', farm.country);
                           if ((newLabel && newLabel.trim() !== farm.label) || (newCountry && newCountry !== farm.country)) {
@@ -1214,25 +1245,30 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                               const updates: any = {};
                               if (newLabel && newLabel.trim() !== farm.label) updates.label = newLabel.trim();
                               if (newCountry && newCountry !== farm.country) updates.country = newCountry;
-                              dataService.updateFarm(farm.value, updates);
-                              refreshData();
+                              
+                              console.log('✏️ Modification ferme:', farm.value, updates);
+                              await dataService.updateFarm(farm.value, updates);
+                              await refreshData();
                               alert('✅ Ferme modifiée !');
                             } catch (error) {
+                              console.error('❌ Erreur modification ferme:', error);
                               alert('❌ Erreur lors de la modification');
                             }
                           }
                         }}>✏️ Modifier</ActionButton>
-                        <ActionButton $variant="delete" onClick={() => {
+                        <ActionButton $variant="delete" onClick={async () => {
                           if (confirm(`🗑️ Supprimer la ferme "${farm.label}" ?`)) {
                             try {
-                              const success = dataService.deleteFarm(farm.value);
+                              console.log('🗑️ Suppression ferme:', farm.value);
+                              const success = await dataService.deleteFarm(farm.value);
                               if (success) {
-                                refreshData();
+                                await refreshData();
                                 alert('✅ Ferme supprimée !');
                               } else {
                                 alert('❌ Impossible de supprimer cette ferme');
                               }
                             } catch (error) {
+                              console.error('❌ Erreur suppression ferme:', error);
                               alert('❌ Erreur lors de la suppression');
                             }
                           }

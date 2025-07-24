@@ -492,8 +492,28 @@ class DataService {
 
         if (response.ok) {
           const updatedConfig = await response.json();
+          
+          // Forcer la mise à jour du cache immédiatement
+          this.configCache = updatedConfig;
+          
+          // Sauvegarder aussi dans localStorage
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
+          }
+          
+          // Rafraîchir le cache et notifier
           await this.refreshCache();
           this.notifyConfigUpdate();
+          this.notifyDataUpdate();
+          
+          // Événement global pour forcer la synchro
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('bipcosa06ConfigChanged', { 
+              detail: updatedConfig 
+            }));
+          }
+          
+          console.log('🎯 Config API mise à jour et cache forcé:', updatedConfig);
           return updatedConfig;
         }
       } catch (apiError) {

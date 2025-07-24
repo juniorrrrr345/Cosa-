@@ -1576,13 +1576,26 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                          shopName: newShopName
                        }));
                      }}
-                     onBlur={(e) => {
+                     onBlur={async (e) => {
                        // Sauvegarde seulement quand l'utilisateur sort du champ
                        const newShopName = e.target.value;
                        console.log('💾 Sauvegarde nom boutique:', newShopName);
-                       handleSaveConfig({ shopName: newShopName }).catch(error => {
+                       
+                       try {
+                         await handleSaveConfig({ shopName: newShopName });
+                         
+                         // Force la synchronisation immédiate
+                         dataService.forceRefresh();
+                         
+                         // Recharger la configuration pour être sûr
+                         const updatedConfig = await dataService.getConfig();
+                         setConfig(updatedConfig);
+                         
+                         console.log('✅ Nom boutique sauvegardé et synchronisé:', newShopName);
+                         
+                       } catch (error) {
                          console.error('Erreur sauvegarde nom boutique:', error);
-                       });
+                       }
                      }}
                      placeholder="BIPCOSA06"
                    />

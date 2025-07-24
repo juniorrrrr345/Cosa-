@@ -1890,32 +1890,43 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               padding: '15px', 
               border: '1px dashed rgba(255,255,255,0.3)', 
               borderRadius: '8px',
-              textAlign: 'center' 
+              textAlign: 'center',
+              opacity: imageUploading ? 0.5 : 1
             }}>
               <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginBottom: '8px' }}>
-                📷 Upload IMAGE depuis iPhone/mobile
+                {imageUploading ? '📤 Upload image vers Cloudinary...' : '📷 Upload IMAGE depuis iPhone/mobile'}
               </div>
+              {imageUploading && (
+                <div style={{ 
+                  color: '#4ecdc4', 
+                  fontSize: '12px', 
+                  marginTop: '8px',
+                  fontWeight: 'bold'
+                }}>
+                  ⏳ Traitement de votre image...
+                </div>
+              )}
               <Input 
                 type="file" 
                 accept="image/*"
                 style={{ fontSize: '12px' }}
+                disabled={imageUploading}
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
-                  if (file) {
+                  if (file && !imageUploading) {
+                    setImageUploading(true);
+                    
                     try {
-                      const { uploadToCloudinary } = await import('@/config/cloudinary');
+                      console.log('📷 Upload image vers Cloudinary...', file.name, `${Math.round(file.size / 1024 / 1024)}MB`);
                       
-                      // Loading state
-                      const uploadArea = e.target.parentElement;
-                      if (uploadArea) {
-                        uploadArea.style.opacity = '0.5';
-                        uploadArea.innerHTML += '<div style="color: #4ecdc4;">📤 Upload image...</div>';
-                      }
+                      const { uploadToCloudinary } = await import('@/config/cloudinary');
                       
                       const result = await uploadToCloudinary(file, 'products');
                       
+                      console.log('✅ Image uploadée:', result.secure_url);
+                      
                       // Mettre à jour le champ image avec l'URL Cloudinary
-                      setFormData({...formData, image: result.secure_url});
+                      setFormData(prevData => ({...prevData, image: result.secure_url}));
                       
                       alert('✅ Image uploadée vers Cloudinary !');
                       
@@ -1923,15 +1934,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                       console.error('❌ Erreur upload image:', error);
                       alert(`❌ Erreur upload image: ${error.message}`);
                     } finally {
-                      // Restaurer
-                      const uploadArea = e.target.parentElement;
-                      if (uploadArea) {
-                        uploadArea.style.opacity = '1';
-                        const loadingDiv = uploadArea.querySelector('div:last-child');
-                        if (loadingDiv && loadingDiv.textContent.includes('📤')) {
-                          loadingDiv.remove();
-                        }
-                      }
+                      setImageUploading(false);
+                      // Reset le input file pour permettre de re-sélectionner
+                      e.target.value = '';
                     }
                   }
                 }}

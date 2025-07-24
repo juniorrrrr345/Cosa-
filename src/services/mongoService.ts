@@ -5,9 +5,10 @@ class MongoService {
   private client: MongoClient | null = null;
   private db: Db | null = null;
   private isConnected = false;
+  private connectionPromise: Promise<void> | null = null;
 
   constructor() {
-    this.connect();
+    this.connectionPromise = this.connect();
   }
 
   private async connect() {
@@ -28,6 +29,19 @@ class MongoService {
     } catch (error) {
       console.error('❌ Erreur de connexion MongoDB:', error);
       this.isConnected = false;
+    }
+  }
+
+  // Nouvelle méthode pour s'assurer que la connexion est établie
+  private async ensureConnection(): Promise<void> {
+    if (this.connectionPromise) {
+      await this.connectionPromise;
+      this.connectionPromise = null;
+    }
+    
+    if (!this.isConnected) {
+      // Tentative de reconnexion
+      await this.connect();
     }
   }
 
@@ -163,6 +177,7 @@ class MongoService {
 
   // Méthodes pour les produits
   async getProducts(): Promise<Product[]> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) return [];
     
     try {
@@ -175,6 +190,7 @@ class MongoService {
   }
 
   async getProductById(id: string): Promise<Product | null> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) return null;
     
     try {
@@ -190,6 +206,7 @@ class MongoService {
   }
 
   async addProduct(product: Omit<Product, '_id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
@@ -208,6 +225,7 @@ class MongoService {
   }
 
   async updateProduct(id: string, updates: Partial<Product>): Promise<Product | null> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
@@ -230,6 +248,7 @@ class MongoService {
   }
 
   async deleteProduct(id: string): Promise<boolean> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
@@ -246,6 +265,7 @@ class MongoService {
 
   // Méthodes pour les catégories
   async getCategories(): Promise<Category[]> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) return [];
     
     try {
@@ -257,6 +277,7 @@ class MongoService {
   }
 
   async addCategory(category: Category): Promise<Category> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
@@ -269,6 +290,7 @@ class MongoService {
   }
 
   async deleteCategory(value: string): Promise<boolean> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
@@ -282,6 +304,7 @@ class MongoService {
 
   // Méthodes pour les farms
   async getFarms(): Promise<Farm[]> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) return [];
     
     try {
@@ -293,6 +316,7 @@ class MongoService {
   }
 
   async addFarm(farm: Farm): Promise<Farm> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
@@ -305,6 +329,7 @@ class MongoService {
   }
 
   async deleteFarm(value: string): Promise<boolean> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
@@ -318,6 +343,7 @@ class MongoService {
 
   // Méthodes pour la configuration
   async getConfig(): Promise<ShopConfig> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) {
       return {
         backgroundType: 'gradient',
@@ -347,6 +373,7 @@ class MongoService {
   }
 
   async updateConfig(config: Partial<ShopConfig>): Promise<ShopConfig> {
+    await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {

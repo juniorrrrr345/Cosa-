@@ -24,6 +24,22 @@ export interface Farm {
   country: string;
 }
 
+export interface InfoContent {
+  id: string;
+  title: string;
+  description: string;
+  items?: string[];
+}
+
+export interface ContactContent {
+  id: string;
+  title: string;
+  description: string;
+  telegramUsername?: string;
+  telegramLink?: string;
+  additionalInfo?: string;
+}
+
 export interface ShopConfig {
   backgroundType: 'gradient' | 'image';
   backgroundColor: string;
@@ -37,6 +53,8 @@ class DataService {
   private products: Product[] = [];
   private categories: Category[] = [];
   private farms: Farm[] = [];
+  private infoContents: InfoContent[] = [];
+  private contactContents: ContactContent[] = [];
   private lastUpdate: number = 0;
   private config: ShopConfig = {
     backgroundType: 'gradient',

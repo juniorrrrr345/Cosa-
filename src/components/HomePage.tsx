@@ -8,19 +8,26 @@ const PageContainer = styled.div<{ $config?: any }>`
   min-height: 100vh;
   background: ${props => {
     const config = props.$config;
-    if (!config) return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+    console.log('🎨 HomePage PageContainer - Config reçue:', config);
+    
+    if (!config) {
+      console.log('🎨 HomePage - Pas de config, fallback dégradé');
+      return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+    }
     
     // URL externe (Imgur, etc.)
     if (config.backgroundType === 'url' && config.backgroundUrl) {
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${config.backgroundUrl})`;
+      console.log('🎨 HomePage - Background URL externe:', config.backgroundUrl);
+      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
     }
     
     // Image Cloudinary
     if (config.backgroundType === 'image' && config.backgroundImage) {
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${config.backgroundImage})`;
+      console.log('🎨 HomePage - Background Image Cloudinary:', config.backgroundImage);
+      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
     }
     
-    // Dégradé par défaut
+    console.log('🎨 HomePage - Background dégradé par défaut, type:', config.backgroundType);
     return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   }};
   background-size: cover;
@@ -287,7 +294,8 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
       console.log('🛍️ Boutique: Chargement des données:', {
         products: newProducts.length,
         categories: newCategories.length,
-        farms: newFarms.length
+        farms: newFarms.length,
+        config: newConfig
       });
       
       setProducts(newProducts);

@@ -214,12 +214,26 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
 
   // Déterminer le style de fond
   const getBackgroundStyle = () => {
+    console.log('🎨 SocialNetworksPage getBackgroundStyle - Config:', config);
+    
     if (config.backgroundType === 'url' && config.backgroundUrl) {
-      return { backgroundImage: `url('${config.backgroundUrl}')` };
+      console.log('🎨 SocialNetworksPage - Background URL externe:', config.backgroundUrl);
+      return { 
+        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      };
     }
     if (config.backgroundType === 'image' && config.backgroundImage) {
-      return { backgroundImage: `url('${config.backgroundImage}')` };
+      console.log('🎨 SocialNetworksPage - Background Image Cloudinary:', config.backgroundImage);
+      return { 
+        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      };
     }
+    
+    console.log('🎨 SocialNetworksPage - Background dégradé par défaut, type:', config.backgroundType);
     return { 
       background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)' 
     };

@@ -815,27 +815,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       // Mise à jour via dataService
       const updatedConfig = await dataService.updateConfig(newConfig);
       
-      // Mettre à jour l'état local (sans écraser les changements récents)
-      setConfig(prevConfig => ({
-        ...prevConfig,
-        ...updatedConfig
-      }));
+      // NE PAS mettre à jour l'état local pour éviter d'écraser les changements en cours
+      // setConfig est géré uniquement par les événements onChange
       
       console.log('✅ Configuration mise à jour avec succès');
-      
-      // Forcer la synchronisation du cache
-      dataService.forceRefresh();
       
       // Notifier toutes les pages de la boutique
       window.dispatchEvent(new CustomEvent('configUpdated', { 
         detail: updatedConfig 
       }));
-      
-      // Forcer le rechargement des données sans attendre
-      setTimeout(() => {
-        refreshData();
-        console.log('🔄 Cache synchronisé avec les pages boutique');
-      }, 100);
       
     } catch (error) {
       console.error('❌ Erreur lors de la mise à jour de la config:', error);
@@ -1307,18 +1295,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                         const newType = e.target.value as 'gradient' | 'image' | 'url';
                         console.log('🔄 Changement type background:', newType);
                         
-                        // Mise à jour immédiate de l'état local
+                        // Mise à jour UNIQUEMENT de l'état local
                         setConfig(prevConfig => ({
                           ...prevConfig, 
                           backgroundType: newType
                         }));
                         
-                        // Sauvegarde en arrière-plan (sans attendre)
-                        setTimeout(() => {
-                          handleSaveConfig({ backgroundType: newType }).catch(error => {
-                            console.error('Erreur sauvegarde background type:', error);
-                          });
-                        }, 100);
+                        // Sauvegarde immédiate sans timeout
+                        handleSaveConfig({ backgroundType: newType }).catch(error => {
+                          console.error('Erreur sauvegarde background type:', error);
+                        });
                       }}
                     >
                       <option value="gradient">🌈 Dégradé (par défaut)</option>
@@ -1508,22 +1494,25 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                        const newShopName = e.target.value;
                        console.log('🔄 Changement nom boutique:', newShopName);
                        
-                       // Mise à jour immédiate de l'état local (dynamique)
+                       // Mise à jour UNIQUEMENT de l'état local sans sauvegarde automatique
                        setConfig(prevConfig => ({
                          ...prevConfig, 
                          shopName: newShopName
                        }));
-                       
-                       // Sauvegarde différée pour éviter les appels multiples
-                       clearTimeout(window.shopNameTimeout);
-                       window.shopNameTimeout = setTimeout(() => {
-                         handleSaveConfig({ shopName: newShopName }).catch(error => {
-                           console.error('Erreur sauvegarde nom boutique:', error);
-                         });
-                       }, 500); // Attendre 500ms après la dernière frappe
+                     }}
+                     onBlur={(e) => {
+                       // Sauvegarde seulement quand l'utilisateur sort du champ
+                       const newShopName = e.target.value;
+                       console.log('💾 Sauvegarde nom boutique:', newShopName);
+                       handleSaveConfig({ shopName: newShopName }).catch(error => {
+                         console.error('Erreur sauvegarde nom boutique:', error);
+                       });
                      }}
                      placeholder="BIPCOSA06"
                    />
+                   <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+                     💡 Tapez le nouveau nom puis cliquez ailleurs pour sauvegarder
+                   </small>
                  </FormGroup>
                </div>
              </div>

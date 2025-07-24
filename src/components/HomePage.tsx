@@ -4,13 +4,24 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
-const PageContainer = styled.div<{ $backgroundImage?: string; $backgroundType?: string }>`
+const PageContainer = styled.div<{ $config?: any }>`
   min-height: 100vh;
   background: ${props => {
-    if (props.$backgroundType === 'image' && props.$backgroundImage) {
-      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${props.$backgroundImage})`;
+    const config = props.$config;
+    if (!config) return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+    
+    // URL externe (Imgur, etc.)
+    if (config.backgroundType === 'url' && config.backgroundUrl) {
+      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${config.backgroundUrl})`;
     }
-    return 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
+    
+    // Image Cloudinary
+    if (config.backgroundType === 'image' && config.backgroundImage) {
+      return `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${config.backgroundImage})`;
+    }
+    
+    // Dégradé personnalisé ou par défaut
+    return config.backgroundColor || 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   }};
   background-size: cover;
   background-position: center;
@@ -306,8 +317,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
 
   return (
     <PageContainer 
-      $backgroundImage={config.backgroundImage} 
-      $backgroundType={config.backgroundType}
+      $config={config}
     >
       {/* Header simplifié avec juste BIPCOSA06 */}
       <Header>

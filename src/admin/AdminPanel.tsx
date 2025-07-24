@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
 // Types pour les sections admin
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'content-info' | 'content-contact' | 'config';
+type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'content-info' | 'content-contact' | 'config' | 'background';
 
 interface AdminPanelProps {
   onBack?: () => void;
@@ -658,6 +658,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
     { id: 'categories' as AdminSection, icon: '📂', label: 'Catégories' },
     { id: 'farms' as AdminSection, icon: '🏠', label: 'Farms' },
+    { id: 'background' as AdminSection, icon: '🖼️', label: 'Background' },
     { id: 'content-info' as AdminSection, icon: 'ℹ️', label: 'Contenu Info' },
     { id: 'content-contact' as AdminSection, icon: '✉️', label: 'Contenu Contact' },
     { id: 'config' as AdminSection, icon: '⚙️', label: 'Configuration' },
@@ -1114,6 +1115,175 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             </ContentSection>
           );
 
+        case 'background':
+          return (
+            <ContentSection>
+              <SectionTitle>🖼️ Configuration du Background</SectionTitle>
+              <p style={{ textAlign: 'center', marginBottom: '30px', color: 'rgba(255,255,255,0.8)' }}>
+                Configurez l'arrière-plan de votre boutique avec des gradients, images Cloudinary ou URLs externes (Imgur, etc.)
+              </p>
+              
+              <div style={{ display: 'grid', gap: '30px' }}>
+                {/* Type de Background */}
+                <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                  <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                    🎨 Type de Background
+                  </h4>
+                  
+                  <FormGroup>
+                    <Label>Choisir le type</Label>
+                    <select 
+                      style={{ 
+                        width: '100%', 
+                        background: 'rgba(255,255,255,0.1)', 
+                        border: '1px solid rgba(255,255,255,0.2)', 
+                        color: 'white', 
+                        padding: '12px 15px', 
+                        borderRadius: '10px',
+                        fontSize: '14px'
+                      }}
+                      value={config.backgroundType} 
+                      onChange={(e) => handleSaveConfig({ backgroundType: e.target.value as 'gradient' | 'image' | 'url' })}
+                    >
+                      <option value="gradient">🌈 Dégradé (par défaut)</option>
+                      <option value="image">📁 Image Cloudinary</option>
+                      <option value="url">🔗 URL d'image externe</option>
+                    </select>
+                  </FormGroup>
+
+                  {config.backgroundType === 'gradient' && (
+                    <FormGroup>
+                      <Label>Couleur du dégradé</Label>
+                      <Input 
+                        type="color" 
+                        value={config.backgroundColor?.includes('linear-gradient') ? '#000000' : config.backgroundColor} 
+                        onChange={(e) => handleSaveConfig({ 
+                          backgroundColor: `linear-gradient(135deg, ${e.target.value} 0%, #1a1a1a 50%, ${e.target.value} 100%)` 
+                        })}
+                      />
+                    </FormGroup>
+                  )}
+
+                  {config.backgroundType === 'url' && (
+                    <FormGroup>
+                      <Label>URL de l'image (Imgur, etc.)</Label>
+                      <Input 
+                        type="url" 
+                        placeholder="https://imgur.com/votre-image.jpg"
+                        value={config.backgroundUrl || ''} 
+                        onChange={(e) => handleSaveConfig({ backgroundUrl: e.target.value })}
+                      />
+                      <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '5px' }}>
+                        Formats supportés: JPG, PNG, WebP. Recommandé: 1920x1080px
+                      </div>
+                    </FormGroup>
+                  )}
+
+                  {config.backgroundType === 'image' && (
+                    <div>
+                      <Label>Upload depuis iPhone via Cloudinary</Label>
+                      <div style={{ 
+                        border: '2px dashed rgba(255,255,255,0.3)', 
+                        borderRadius: '10px', 
+                        padding: '20px', 
+                        textAlign: 'center',
+                        marginTop: '10px'
+                      }}>
+                        <div style={{ fontSize: '48px', marginBottom: '10px' }}>📱</div>
+                        <div style={{ color: 'rgba(255,255,255,0.8)' }}>
+                          Upload depuis iPhone/mobile via Cloudinary
+                        </div>
+                        <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '5px' }}>
+                          Glissez-déposez ou cliquez pour sélectionner
+                        </div>
+                        <Input 
+                          type="file" 
+                          accept="image/*,video/*"
+                          style={{ marginTop: '15px', opacity: 0.7 }}
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              try {
+                                // Import Cloudinary dynamiquement
+                                const { uploadToCloudinary } = await import('@/config/cloudinary');
+                                
+                                // Afficher le loading
+                                const uploadBtn = e.target.parentElement;
+                                if (uploadBtn) {
+                                  uploadBtn.style.opacity = '0.5';
+                                  uploadBtn.innerHTML += '<div>📤 Upload en cours...</div>';
+                                }
+                                
+                                // Upload vers Cloudinary
+                                const result = await uploadToCloudinary(file, 'backgrounds');
+                                
+                                // Mettre à jour la config avec l'URL Cloudinary
+                                await handleSaveConfig({ 
+                                  backgroundType: 'image',
+                                  backgroundImage: result.secure_url 
+                                });
+                                
+                                alert('✅ Image uploadée avec succès vers Cloudinary !');
+                                console.log('📤 Background uploadé:', result.secure_url);
+                                
+                              } catch (error) {
+                                console.error('❌ Erreur upload:', error);
+                                alert(`❌ Erreur: ${error.message}`);
+                              } finally {
+                                // Restaurer l'affichage
+                                const uploadBtn = e.target.parentElement;
+                                if (uploadBtn) {
+                                  uploadBtn.style.opacity = '1';
+                                  const loadingDiv = uploadBtn.querySelector('div');
+                                  if (loadingDiv) loadingDiv.remove();
+                                }
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Prévisualisation */}
+                <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
+                  <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
+                    👁️ Aperçu du Background
+                  </h4>
+                  
+                  <div style={{
+                    height: '200px',
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    background: config.backgroundType === 'url' && config.backgroundUrl 
+                      ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${config.backgroundUrl})`
+                      : config.backgroundType === 'image' && config.backgroundImage
+                      ? `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url(${config.backgroundImage})`
+                      : config.backgroundColor || 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontSize: '24px',
+                    fontWeight: 'bold'
+                  }}>
+                    {config.shopName || 'BIPCOSA06'}
+                  </div>
+                  
+                  <div style={{ textAlign: 'center', marginTop: '15px' }}>
+                    <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>
+                      ✨ Ce background s'appliquera sur toutes les pages de la boutique
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ContentSection>
+          );
+
              case 'config':
          return (
            <ContentSection>
@@ -1285,13 +1455,67 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
           </FormGroup>
 
           <FormGroup>
-            <Label>URL de l'image</Label>
+            <Label>Image du produit</Label>
             <Input 
               type="url" 
               value={formData.image || ''} 
               onChange={(e) => setFormData({...formData, image: e.target.value})}
-              placeholder="https://images.unsplash.com/..." 
+              placeholder="https://images.unsplash.com/... ou upload via Cloudinary" 
             />
+            
+            {/* Upload Cloudinary pour produits */}
+            <div style={{ 
+              marginTop: '10px', 
+              padding: '15px', 
+              border: '1px dashed rgba(255,255,255,0.3)', 
+              borderRadius: '8px',
+              textAlign: 'center' 
+            }}>
+              <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.7)', marginBottom: '8px' }}>
+                📱 Ou upload depuis iPhone/mobile
+              </div>
+              <Input 
+                type="file" 
+                accept="image/*,video/*"
+                style={{ fontSize: '12px' }}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    try {
+                      const { uploadToCloudinary } = await import('@/config/cloudinary');
+                      
+                      // Loading state
+                      const uploadArea = e.target.parentElement;
+                      if (uploadArea) {
+                        uploadArea.style.opacity = '0.5';
+                        uploadArea.innerHTML += '<div style="color: #4ecdc4;">📤 Upload...</div>';
+                      }
+                      
+                      const result = await uploadToCloudinary(file, 'products');
+                      
+                      // Mettre à jour le champ image avec l'URL Cloudinary
+                      setFormData({...formData, image: result.secure_url});
+                      
+                      alert('✅ Image uploadée vers Cloudinary !');
+                      
+                    } catch (error) {
+                      console.error('❌ Erreur upload produit:', error);
+                      alert(`❌ Erreur: ${error.message}`);
+                    } finally {
+                      // Restaurer
+                      const uploadArea = e.target.parentElement;
+                      if (uploadArea) {
+                        uploadArea.style.opacity = '1';
+                        const loadingDiv = uploadArea.querySelector('div:last-child');
+                        if (loadingDiv && loadingDiv.textContent.includes('📤')) {
+                          loadingDiv.remove();
+                        }
+                      }
+                    }
+                  }
+                }}
+              />
+            </div>
           </FormGroup>
 
           <FormGroup>

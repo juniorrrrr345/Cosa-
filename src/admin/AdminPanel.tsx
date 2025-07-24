@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
 
-// Types pour les sections admin
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'config' | 'seo' | 'telegram';
+// Types pour les sections admin - SIMPLIFIÉ
+type AdminSection = 'products' | 'categories' | 'farms' | 'pages' | 'config';
 
 interface AdminPanelProps {
   onBack?: () => void;
@@ -41,124 +41,47 @@ const Sidebar = styled.div<{ $isOpen: boolean }>`
   }
 `;
 
-const SidebarToggle = styled.button`
-  display: none; /* Complètement supprimé */
-`;
-
 const SidebarHeader = styled.div`
   padding: 15px 20px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
   text-align: center;
-
-  @media (min-width: 768px) {
-    padding: 20px;
-  }
 `;
 
 const SidebarTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 700;
   margin: 0;
+  font-size: 18px;
+  font-weight: 600;
   color: white;
-  letter-spacing: 1px;
 `;
 
-const SidebarMenu = styled.div`
-  display: flex;
-  padding: 10px;
-  overflow-x: auto;
-  gap: 10px;
-
-  @media (min-width: 768px) {
-    flex-direction: column;
-    padding: 20px 0;
-    overflow-x: visible;
-    gap: 0;
-  }
+const SidebarNav = styled.nav`
+  padding: 20px 0;
 `;
 
-const MenuItem = styled.div<{ $active: boolean }>`
-  padding: 12px 16px;
+const NavItem = styled.div<{ $active: boolean }>`
+  padding: 15px 20px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: ${props => props.$active ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.3)'};
-  border: 1px solid ${props => props.$active ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'};
-  border-radius: 12px;
-  white-space: nowrap;
-  min-width: fit-content;
-  text-align: center;
-  
+  background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
+  border-left: ${props => props.$active ? '3px solid white' : '3px solid transparent'};
+  color: ${props => props.$active ? 'white' : 'rgba(255,255,255,0.7)'};
+  font-weight: ${props => props.$active ? '600' : '400'};
+
   &:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
-  }
-
-  @media (min-width: 768px) {
-    padding: 15px 20px;
-    border-radius: 0;
-    border: none;
-    border-left: ${props => props.$active ? '3px solid #fff' : '3px solid transparent'};
-    background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
-    text-align: left;
-    min-width: auto;
-    white-space: normal;
-  }
-`;
-
-const MenuIcon = styled.span`
-  margin-right: 12px;
-  font-size: 16px;
-`;
-
-const MenuLabel = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-`;
-
-const MainContent = styled.div<{ $sidebarOpen: boolean }>`
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-
-  @media (min-width: 768px) {
-    padding: 20px;
-  }
-`;
-
-const ContentHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding: 0;
-  flex-wrap: wrap;
-  gap: 10px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 30px;
-    flex-wrap: nowrap;
-  }
-`;
-
-const ContentTitle = styled.h1`
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
-  color: white;
-
-  @media (min-width: 768px) {
-    font-size: 24px;
+    background: rgba(255,255,255,0.05);
+    color: white;
   }
 `;
 
 const BackButton = styled.button`
+  padding: 10px 20px;
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.2);
   color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  margin: 15px 20px;
   transition: all 0.3s ease;
 
   &:hover {
@@ -166,19 +89,27 @@ const BackButton = styled.button`
   }
 `;
 
-const ContentSection = styled.div`
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 30px;
-  border: 1px solid rgba(255,255,255,0.1);
-  margin-bottom: 20px;
+const Content = styled.div`
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  max-height: 100vh;
+
+  @media (max-width: 767px) {
+    max-height: calc(100vh - 200px);
+  }
 `;
 
-const SectionTitle = styled.h3`
-  font-size: 18px;
+const ContentSection = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+`;
+
+const SectionTitle = styled.h2`
+  margin: 0 0 30px 0;
+  font-size: 24px;
   font-weight: 600;
-  margin: 0 0 20px 0;
+  text-align: center;
   color: white;
 `;
 
@@ -188,24 +119,23 @@ const FormGroup = styled.div`
 
 const Label = styled.label`
   display: block;
-  font-size: 14px;
+  margin-bottom: 8px;
   font-weight: 500;
   color: rgba(255,255,255,0.9);
-  margin-bottom: 8px;
 `;
 
 const Input = styled.input`
   width: 100%;
+  padding: 12px 15px;
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
   color: white;
-  padding: 12px 15px;
-  border-radius: 10px;
   font-size: 14px;
-  outline: none;
   transition: all 0.3s ease;
 
   &:focus {
+    outline: none;
     border-color: rgba(255,255,255,0.4);
     background: rgba(255,255,255,0.15);
   }
@@ -217,18 +147,18 @@ const Input = styled.input`
 
 const TextArea = styled.textarea`
   width: 100%;
+  padding: 12px 15px;
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
   color: white;
-  padding: 12px 15px;
-  border-radius: 10px;
   font-size: 14px;
-  outline: none;
-  resize: vertical;
   min-height: 100px;
+  resize: vertical;
   transition: all 0.3s ease;
 
   &:focus {
+    outline: none;
     border-color: rgba(255,255,255,0.4);
     background: rgba(255,255,255,0.15);
   }
@@ -238,61 +168,90 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Button = styled.button`
-  background: linear-gradient(135deg, #333, #555);
+const Select = styled.select`
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
   color: white;
-  padding: 12px 24px;
-  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.15);
+  }
+
+  option {
+    background: #1a1a1a;
+    color: white;
+    padding: 10px;
+  }
+`;
+
+const ActionButton = styled.button<{ $variant?: 'add' | 'edit' | 'delete' | 'save' | 'cancel' }>`
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
   transition: all 0.3s ease;
+  margin-right: 10px;
 
-  &:hover {
-    background: linear-gradient(135deg, #444, #666);
-    transform: translateY(-2px);
-  }
+  ${props => {
+    switch (props.$variant) {
+      case 'add':
+        return `
+          background: rgba(76, 175, 80, 0.8);
+          color: white;
+          &:hover { background: rgba(76, 175, 80, 1); }
+        `;
+      case 'edit':
+        return `
+          background: rgba(33, 150, 243, 0.8);
+          color: white;
+          &:hover { background: rgba(33, 150, 243, 1); }
+        `;
+      case 'delete':
+        return `
+          background: rgba(244, 67, 54, 0.8);
+          color: white;
+          &:hover { background: rgba(244, 67, 54, 1); }
+        `;
+      case 'save':
+        return `
+          background: rgba(76, 175, 80, 0.8);
+          color: white;
+          &:hover { background: rgba(76, 175, 80, 1); }
+        `;
+      case 'cancel':
+        return `
+          background: rgba(158, 158, 158, 0.8);
+          color: white;
+          &:hover { background: rgba(158, 158, 158, 1); }
+        `;
+      default:
+        return `
+          background: rgba(255,255,255,0.1);
+          color: white;
+          border: 1px solid rgba(255,255,255,0.2);
+          &:hover { background: rgba(255,255,255,0.2); }
+        `;
+    }
+  }}
 `;
 
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-`;
-
-const StatCard = styled.div`
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(20px);
-  border-radius: 15px;
-  padding: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-  text-align: center;
-`;
-
-const StatValue = styled.div`
-  font-size: 24px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 5px;
-`;
-
-const StatLabel = styled.div`
-  font-size: 12px;
-  color: rgba(255,255,255,0.7);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-`;
-
-// Styles pour les listes de données
-const DataGrid = styled.div`
+const ItemList = styled.div`
   display: grid;
   gap: 15px;
   margin-top: 20px;
 `;
 
-const DataItem = styled.div`
+const ItemCard = styled.div`
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
@@ -305,267 +264,34 @@ const DataItem = styled.div`
   }
 `;
 
-const ProductCard = styled(DataItem)`
+const PriceList = styled.div`
   display: grid;
-  grid-template-columns: 60px 1fr auto;
+  gap: 10px;
+  margin-top: 15px;
+`;
+
+const PriceItem = styled.div`
+  display: flex;
   gap: 10px;
   align-items: center;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 80px 1fr auto;
-    gap: 15px;
-  }
-`;
-
-const ProductImage = styled.img`
-  width: 60px;
-  height: 45px;
-  object-fit: cover;
-  border-radius: 6px;
-
-  @media (min-width: 768px) {
-    width: 80px;
-    height: 60px;
-    border-radius: 8px;
-  }
-`;
-
-const ProductInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const ProductName = styled.h4`
-  margin: 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: white;
-
-  @media (min-width: 768px) {
-    font-size: 16px;
-  }
-`;
-
-const ProductDetails = styled.div`
-  font-size: 12px;
-  color: rgba(255,255,255,0.7);
-`;
-
-const ActionButtons = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    gap: 8px;
-  }
-`;
-
-const ActionButton = styled.button<{ $variant?: 'edit' | 'delete' | 'add' }>`
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-
-  @media (min-width: 768px) {
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  
-  ${props => {
-    switch (props.$variant) {
-      case 'edit':
-        return `
-          background: rgba(255,255,255,0.15);
-          border: 1px solid rgba(255,255,255,0.3);
-          color: white;
-          &:hover { 
-            background: rgba(255,255,255,0.25);
-            transform: translateY(-2px); 
-          }
-        `;
-      case 'delete':
-        return `
-          background: rgba(0,0,0,0.7);
-          border: 1px solid rgba(255,255,255,0.2);
-          color: white;
-          &:hover { 
-            background: rgba(0,0,0,0.9);
-            transform: translateY(-2px); 
-          }
-        `;
-      case 'add':
-        return `
-          background: rgba(255,255,255,0.2);
-          border: 1px solid rgba(255,255,255,0.4);
-          color: white;
-          &:hover { 
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-2px); 
-          }
-        `;
-      default:
-        return `
-          background: rgba(255,255,255,0.1);
-          border: 1px solid rgba(255,255,255,0.2);
-          color: white;
-          &:hover { background: rgba(255,255,255,0.2); }
-        `;
-    }
-  }}
-`;
-
-const Modal = styled.div<{ $isOpen: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.8);
-  backdrop-filter: blur(10px);
-  display: ${props => props.$isOpen ? 'flex' : 'none'};
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  padding: 20px;
-`;
-
-const ModalContent = styled.div`
-  background: rgba(0,0,0,0.95);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 15px;
-  padding: 20px;
-  max-width: 600px;
-  width: 95%;
-  max-height: 90vh;
-  overflow-y: auto;
-
-  @media (min-width: 768px) {
-    border-radius: 20px;
-    padding: 30px;
-    width: 100%;
-    max-height: 80vh;
-  }
-`;
-
-const ModalHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-
-const ModalTitle = styled.h3`
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: white;
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.7);
-  font-size: 24px;
-  cursor: pointer;
-  
-  &:hover {
-    color: white;
-  }
-`;
-
-const Select = styled.select`
-  width: 100%;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: white;
-  padding: 12px 15px;
-  border-radius: 10px;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
-
-  &:focus {
-    border-color: rgba(255,255,255,0.4);
-    background: rgba(255,255,255,0.15);
-  }
-
-  option {
-    background: #1a1a1a;
-    color: white;
-  }
-`;
-
-const ColorPicker = styled.input`
-  width: 100%;
-  height: 50px;
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 10px;
-  cursor: pointer;
-  
-  &:focus {
-    border-color: rgba(255,255,255,0.4);
-  }
-`;
-
-const ConfigPreview = styled.div<{ $bgType: string; $bgColor: string; $bgImage?: string }>`
-  width: 100%;
-  height: 200px;
-  border-radius: 15px;
-  background: ${props => {
-    if (props.$bgType === 'image' && props.$bgImage) {
-      return `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${props.$bgImage})`;
-    }
-    return `linear-gradient(135deg, ${props.$bgColor} 0%, #1a1a1a 50%, ${props.$bgColor} 100%)`;
-  }};
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 24px;
-  font-weight: 700;
-  margin-top: 15px;
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  padding: 10px;
+  border-radius: 8px;
 `;
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
-  const [activeSection, setActiveSection] = useState<AdminSection>('dashboard');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  
-  // État pour les données
+  const [currentSection, setCurrentSection] = useState<AdminSection>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [farms, setFarms] = useState<Farm[]>([]);
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
-  
-  // État pour les formulaires
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [isAddingProduct, setIsAddingProduct] = useState(false);
-  const [formData, setFormData] = useState<Partial<Product>>({});
-  
-  // État pour les catégories
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [isAddingCategory, setIsAddingCategory] = useState(false);
-  const [categoryFormData, setCategoryFormData] = useState<Partial<Category>>({});
-  
-  // État pour les farms
-  const [editingFarm, setEditingFarm] = useState<Farm | null>(null);
-  const [isAddingFarm, setIsAddingFarm] = useState(false);
-  const [farmFormData, setFarmFormData] = useState<Partial<Farm>>({});
-  
-  // État pour les uploads
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<{ [key: string]: number }>({});
 
+  // États pour les formulaires
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [formData, setFormData] = useState<any>({});
+
+  // Charger les données
   useEffect(() => {
     refreshData();
   }, []);
@@ -583,137 +309,178 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       setCategories(categoriesData);
       setFarms(farmsData);
       setConfig(configData);
-      
-      console.log('🔄 Admin: Données actualisées', {
-        products: productsData.length,
-        categories: categoriesData.length,
-        farms: farmsData.length
-      });
     } catch (error) {
-      console.error('❌ Erreur lors de l\'actualisation des données:', error);
-      // Fallback sur les données synchrones
-      setProducts(dataService.getProductsSync());
-      setCategories(dataService.getCategoriesSync());
-      setFarms(dataService.getFarmsSync());
-      setConfig(dataService.getConfigSync());
+      console.error('Erreur lors du chargement des données:', error);
     }
   };
 
-  const menuItems = [
-    { id: 'dashboard' as AdminSection, icon: '📊', label: 'Tableau de bord' },
-    { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
-    { id: 'categories' as AdminSection, icon: '📂', label: 'Catégories' },
-    { id: 'farms' as AdminSection, icon: '🏠', label: 'Farms' },
-    { id: 'telegram' as AdminSection, icon: '✈️', label: 'Telegram' },
-    { id: 'seo' as AdminSection, icon: '🔍', label: 'SEO & Meta' },
-    { id: 'config' as AdminSection, icon: '⚙️', label: 'Configuration' },
-  ];
-
-  const handleMenuClick = (section: AdminSection) => {
-    setActiveSection(section);
-    setSidebarOpen(false); // Fermer la sidebar sur mobile après clic
-  };
-
-  const handleDeleteProduct = async (id: number) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
-      try {
-        console.log('🗑️ Admin: Suppression du produit', id);
-        const success = await dataService.deleteProduct(id);
-        if (success) {
-          console.log('✅ Produit supprimé avec succès');
-          await refreshData();
-        } else {
-          alert('Erreur lors de la suppression du produit');
-        }
-      } catch (error) {
-        console.error('❌ Erreur lors de la suppression:', error);
-        alert('Erreur lors de la suppression du produit');
-      }
-    }
-  };
-
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct(product);
-    setFormData(product);
-  };
-
+  // Fonctions pour les produits
   const handleAddProduct = () => {
-    setIsAddingProduct(true);
+    setIsAdding(true);
     setFormData({
       name: '',
       quality: '',
       image: '',
+      video: '',
       flagColor: '#333333',
       flagText: '',
-      category: 'indica',
-      farm: 'holland',
+      category: '',
+      farm: '',
       description: '',
-      prices: [
-        { weight: '1g', price: '10€' },
-        { weight: '3.5g', price: '30€' },
-        { weight: '7g', price: '55€' }
-      ],
-      video: ''
+      prices: [{ weight: '1g', price: '10€' }]
     });
   };
 
-  const handleSaveProduct = async () => {
-    if (!formData.name || !formData.description) {
-      alert('Veuillez remplir tous les champs obligatoires');
-      return;
-    }
+  const handleEditProduct = (product: Product) => {
+    setEditingId(product.id);
+    setFormData({ ...product });
+  };
 
+  const handleSaveProduct = async () => {
     try {
-      if (editingProduct) {
-        console.log('✏️ Admin: Modification du produit', editingProduct.id);
-        await dataService.updateProduct(editingProduct.id, formData as Partial<Product>);
-        console.log('✅ Produit modifié avec succès');
-      } else {
-        console.log('➕ Admin: Ajout d\'un nouveau produit');
-        await dataService.addProduct(formData as Omit<Product, '_id' | 'id' | 'createdAt' | 'updatedAt'>);
-        console.log('✅ Produit ajouté avec succès');
+      if (isAdding) {
+        const newProduct = {
+          ...formData,
+          id: Date.now().toString()
+        };
+        await dataService.addProduct(newProduct);
+      } else if (editingId) {
+        await dataService.updateProduct(editingId, formData);
       }
       
-      await refreshData();
-      setEditingProduct(null);
-      setIsAddingProduct(false);
+      setIsAdding(false);
+      setEditingId(null);
       setFormData({});
+      await refreshData();
     } catch (error) {
-      console.error('❌ Erreur lors de la sauvegarde:', error);
-      alert('Erreur lors de la sauvegarde du produit');
+      console.error('Erreur lors de la sauvegarde:', error);
+      alert('Erreur lors de la sauvegarde');
     }
   };
 
-  const handleCloseModal = () => {
-    setEditingProduct(null);
-    setIsAddingProduct(false);
+  const handleDeleteProduct = async (id: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+      try {
+        await dataService.deleteProduct(id);
+        await refreshData();
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+      }
+    }
+  };
+
+  const handleCancelProduct = () => {
+    setIsAdding(false);
+    setEditingId(null);
     setFormData({});
   };
 
-  const handleSaveConfig = async (newConfig: Partial<ShopConfig>) => {
+  // Fonctions pour les prix
+  const addPrice = () => {
+    const prices = formData.prices || [];
+    setFormData({
+      ...formData,
+      prices: [...prices, { weight: '', price: '' }]
+    });
+  };
+
+  const updatePrice = (index: number, field: 'weight' | 'price', value: string) => {
+    const prices = [...(formData.prices || [])];
+    prices[index] = { ...prices[index], [field]: value };
+    setFormData({ ...formData, prices });
+  };
+
+  const removePrice = (index: number) => {
+    const prices = [...(formData.prices || [])];
+    prices.splice(index, 1);
+    setFormData({ ...formData, prices });
+  };
+
+  // Fonctions pour les catégories
+  const handleAddCategory = () => {
+    setIsAdding(true);
+    setFormData({ value: '', label: '' });
+  };
+
+  const handleSaveCategory = async () => {
     try {
-      console.log('⚙️ Admin: Mise à jour de la configuration');
-      await dataService.updateConfig(newConfig);
-      console.log('✅ Configuration mise à jour avec succès');
+      const newCategory = {
+        ...formData,
+        id: Date.now().toString()
+      };
+      await dataService.addCategory(newCategory);
+      setIsAdding(false);
+      setFormData({});
       await refreshData();
     } catch (error) {
-      console.error('❌ Erreur lors de la mise à jour de la config:', error);
+      console.error('Erreur lors de la sauvegarde:', error);
+    }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
+      try {
+        await dataService.deleteCategory(id);
+        await refreshData();
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+      }
+    }
+  };
+
+  // Fonctions pour les farms
+  const handleAddFarm = () => {
+    setIsAdding(true);
+    setFormData({ value: '', label: '' });
+  };
+
+  const handleSaveFarm = async () => {
+    try {
+      const newFarm = {
+        ...formData,
+        id: Date.now().toString()
+      };
+      await dataService.addFarm(newFarm);
+      setIsAdding(false);
+      setFormData({});
+      await refreshData();
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error);
+    }
+  };
+
+  const handleDeleteFarm = async (id: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette farm ?')) {
+      try {
+        await dataService.deleteFarm(id);
+        await refreshData();
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+      }
+    }
+  };
+
+  // Fonction pour la configuration
+  const handleSaveConfig = async (newConfig: Partial<ShopConfig>) => {
+    try {
+      await dataService.updateConfig(newConfig);
+      await refreshData();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour de la config:', error);
       alert('Erreur lors de la mise à jour de la configuration');
     }
   };
 
-  // Fonction pour gérer l'upload d'images
+  // Upload d'image
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Vérifier la taille du fichier (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert('L\'image est trop volumineuse. Veuillez choisir une image de moins de 5MB.');
       return;
     }
 
-    // Vérifier le type de fichier
     if (!file.type.startsWith('image/')) {
       alert('Veuillez sélectionner un fichier image valide.');
       return;
@@ -723,1029 +490,477 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     reader.onload = (e) => {
       const base64String = e.target?.result as string;
       if (base64String) {
-        handleSaveConfig({ backgroundImage: base64String });
-        console.log('✅ Image uploadée et convertie en base64');
+        if (currentSection === 'config') {
+          handleSaveConfig({ backgroundImage: base64String });
+        } else {
+          setFormData({ ...formData, image: base64String });
+        }
       }
     };
-
-    reader.onerror = () => {
-      alert('Erreur lors de la lecture du fichier image.');
-    };
-
     reader.readAsDataURL(file);
   };
 
-  // Fonctions pour gérer les catégories
-  const handleAddCategory = () => {
-    setIsAddingCategory(true);
-    setCategoryFormData({
-      value: '',
-      label: ''
-    });
-  };
-
-  const handleEditCategory = (category: Category) => {
-    setEditingCategory(category);
-    setCategoryFormData(category);
-  };
-
-  const handleSaveCategory = async () => {
-    if (!categoryFormData.value || !categoryFormData.label) {
-      alert('Veuillez remplir tous les champs');
-      return;
-    }
-
-    try {
-      if (editingCategory) {
-        console.log('✏️ Admin: Modification de la catégorie', editingCategory.value);
-        await dataService.updateCategory(editingCategory.value, categoryFormData as Category);
-        console.log('✅ Catégorie modifiée avec succès');
-      } else {
-        console.log('➕ Admin: Ajout d\'une nouvelle catégorie');
-        await dataService.addCategory(categoryFormData as Category);
-        console.log('✅ Catégorie ajoutée avec succès');
-      }
+  const renderProducts = () => (
+    <ContentSection>
+      <SectionTitle>📦 Gestion des Produits</SectionTitle>
       
-      await refreshData();
-      setEditingCategory(null);
-      setIsAddingCategory(false);
-      setCategoryFormData({});
-    } catch (error) {
-      console.error('❌ Erreur lors de la sauvegarde:', error);
-      alert('Erreur lors de la sauvegarde de la catégorie');
-    }
-  };
+      <ActionButton $variant="add" onClick={handleAddProduct}>
+        ➕ Ajouter un produit
+      </ActionButton>
 
-  const handleDeleteCategory = async (value: string) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?')) {
-      try {
-        console.log('🗑️ Admin: Suppression de la catégorie', value);
-        const success = await dataService.deleteCategory(value);
-        if (success) {
-          console.log('✅ Catégorie supprimée avec succès');
-          await refreshData();
-        } else {
-          alert('Erreur lors de la suppression de la catégorie');
-        }
-      } catch (error) {
-        console.error('❌ Erreur lors de la suppression:', error);
-        alert('Erreur lors de la suppression de la catégorie');
-      }
-    }
-  };
-
-  const handleCloseCategoryModal = () => {
-    setEditingCategory(null);
-    setIsAddingCategory(false);
-    setCategoryFormData({});
-  };
-
-  // Fonctions pour gérer les farms
-  const handleAddFarm = () => {
-    setIsAddingFarm(true);
-    setFarmFormData({
-      value: '',
-      label: '',
-      country: ''
-    });
-  };
-
-  const handleEditFarm = (farm: Farm) => {
-    setEditingFarm(farm);
-    setFarmFormData(farm);
-  };
-
-  const handleSaveFarm = async () => {
-    if (!farmFormData.value || !farmFormData.label || !farmFormData.country) {
-      alert('Veuillez remplir tous les champs');
-      return;
-    }
-
-    try {
-      if (editingFarm) {
-        console.log('✏️ Admin: Modification de la farm', editingFarm.value);
-        await dataService.updateFarm(editingFarm.value, farmFormData as Farm);
-        console.log('✅ Farm modifiée avec succès');
-      } else {
-        console.log('➕ Admin: Ajout d\'une nouvelle farm');
-        await dataService.addFarm(farmFormData as Farm);
-        console.log('✅ Farm ajoutée avec succès');
-      }
-      
-      await refreshData();
-      setEditingFarm(null);
-      setIsAddingFarm(false);
-      setFarmFormData({});
-    } catch (error) {
-      console.error('❌ Erreur lors de la sauvegarde:', error);
-      alert('Erreur lors de la sauvegarde de la farm');
-    }
-  };
-
-  const handleDeleteFarm = async (value: string) => {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette farm ?')) {
-      try {
-        console.log('🗑️ Admin: Suppression de la farm', value);
-        const success = await dataService.deleteFarm(value);
-        if (success) {
-          console.log('✅ Farm supprimée avec succès');
-          await refreshData();
-        } else {
-          alert('Erreur lors de la suppression de la farm');
-        }
-      } catch (error) {
-        console.error('❌ Erreur lors de la suppression:', error);
-        alert('Erreur lors de la suppression de la farm');
-      }
-    }
-  };
-
-  const handleCloseFarmModal = () => {
-    setEditingFarm(null);
-    setIsAddingFarm(false);
-    setFarmFormData({});
-  };
-
-  // Fonctions d'upload avec Cloudinary
-  const handleImageUpload = async (file: File, type: 'product' | 'background' = 'product') => {
-    if (!file) return null;
-
-    setUploading(true);
-    setUploadProgress({ [file.name]: 0 });
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('folder', type === 'product' ? 'bipcosa06/products' : 'bipcosa06/backgrounds');
-      
-      if (type === 'product' && editingProduct) {
-        formData.append('publicId', `product_${editingProduct.id}`);
-      }
-
-      const response = await fetch('/api/upload/image', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de l\'upload');
-      }
-
-      const result = await response.json();
-      setUploadProgress({ [file.name]: 100 });
-      
-      console.log('✅ Image uploadée:', result.data.url);
-      return result.data;
-
-    } catch (error) {
-      console.error('❌ Erreur upload image:', error);
-      alert(`Erreur lors de l'upload: ${error.message}`);
-      return null;
-    } finally {
-      setUploading(false);
-      setTimeout(() => setUploadProgress({}), 2000);
-    }
-  };
-
-  const handleVideoUpload = async (file: File) => {
-    if (!file) return null;
-
-    setUploading(true);
-    setUploadProgress({ [file.name]: 0 });
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('folder', 'bipcosa06/videos');
-      
-      if (editingProduct) {
-        formData.append('publicId', `video_${editingProduct.id}`);
-      }
-
-      const response = await fetch('/api/upload/video', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de l\'upload');
-      }
-
-      const result = await response.json();
-      setUploadProgress({ [file.name]: 100 });
-      
-      console.log('✅ Vidéo uploadée:', result.data.url);
-      return result.data;
-
-    } catch (error) {
-      console.error('❌ Erreur upload vidéo:', error);
-      alert(`Erreur lors de l'upload: ${error.message}`);
-      return null;
-    } finally {
-      setUploading(false);
-      setTimeout(() => setUploadProgress({}), 2000);
-    }
-  };
-
-  // Gestion des uploads dans les formulaires
-  const handleProductImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const result = await handleImageUpload(file, 'product');
-    if (result) {
-      setFormData(prev => ({
-        ...prev,
-        image: result.url,
-        imagePublicId: result.publicId
-      }));
-    }
-  };
-
-  const handleProductVideoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const result = await handleVideoUpload(file);
-    if (result) {
-      setFormData(prev => ({
-        ...prev,
-        video: result.url,
-        videoPublicId: result.publicId
-      }));
-    }
-  };
-
-  const handleBackgroundImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const result = await handleImageUpload(file, 'background');
-    if (result) {
-      const newConfig = {
-        ...config,
-        backgroundType: 'image' as const,
-        backgroundImage: result.url,
-        backgroundImagePublicId: result.publicId
-      };
-      await handleSaveConfig(newConfig);
-    }
-  };
-
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'dashboard':
-        return (
-          <>
-                                      <StatsGrid>
-               <StatCard>
-                 <StatValue>{products.length}</StatValue>
-                 <StatLabel>Produits</StatLabel>
-               </StatCard>
-             </StatsGrid>
-             <ContentSection>
-               <SectionTitle>🌿 Vue d'ensemble BIPCOSA06</SectionTitle>
-               <p style={{ textAlign: 'center', fontSize: '16px', lineHeight: '1.6' }}>
-                 Bienvenue dans le panel d'administration de votre boutique Cannabis.<br/>
-                 Gérez tous les aspects de BIPCOSA06 depuis cette interface centralisée.
-               </p>
-               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px', marginTop: '20px' }}>
-                 <div style={{ background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '10px', textAlign: 'center' }}>
-                   <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>Catégories</div>
-                   <div style={{ fontSize: '20px', fontWeight: '600' }}>{categories.filter(c => c.value !== 'all').length}</div>
-                 </div>
-                 <div style={{ background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '10px', textAlign: 'center' }}>
-                   <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>Farms</div>
-                   <div style={{ fontSize: '20px', fontWeight: '600' }}>{farms.filter(f => f.value !== 'all').length}</div>
-                 </div>
-               </div>
-             </ContentSection>
-          </>
-        );
-
-             case 'products':
-         return (
-           <ContentSection>
-             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-               <SectionTitle>🌿 Gestion des Produits</SectionTitle>
-               <ActionButton $variant="add" onClick={handleAddProduct}>
-                 + Ajouter un produit
-               </ActionButton>
-             </div>
-             
-             <DataGrid>
-               {products.map((product) => (
-                 <ProductCard key={product.id}>
-                   <ProductImage src={product.image} alt={product.name} />
-                   <ProductInfo>
-                     <ProductName>{product.name}</ProductName>
-                     <ProductDetails>
-                       {product.quality} • {categories.find(c => c.value === product.category)?.label} • {farms.find(f => f.value === product.farm)?.label}
-                     </ProductDetails>
-                     <ProductDetails>{product.description.substring(0, 60)}...</ProductDetails>
-                   </ProductInfo>
-                   <ActionButtons>
-                     <ActionButton $variant="edit" onClick={() => handleEditProduct(product)}>
-                       ✏️ Modifier
-                     </ActionButton>
-                     <ActionButton $variant="delete" onClick={() => handleDeleteProduct(product.id)}>
-                       🗑️ Supprimer
-                     </ActionButton>
-                   </ActionButtons>
-                 </ProductCard>
-               ))}
-             </DataGrid>
-           </ContentSection>
-                   );
-
-        case 'categories':
-          return (
-            <ContentSection>
-              <SectionTitle>📂 Gestion des Catégories</SectionTitle>
-              <p style={{ textAlign: 'center', marginBottom: '20px', color: 'rgba(255,255,255,0.8)' }}>
-                Gérez les catégories de produits Cannabis (Indica, Sativa, Hybride)
-              </p>
-              
-              <DataGrid>
-                {categories.filter(c => c.value !== 'all').map((category) => (
-                  <DataItem key={category.value}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <ProductName>{category.label}</ProductName>
-                        <ProductDetails>Code: {category.value}</ProductDetails>
-                      </div>
-                      <ActionButtons>
-                        <ActionButton $variant="edit">✏️ Modifier</ActionButton>
-                        <ActionButton $variant="delete">🗑️ Supprimer</ActionButton>
-                      </ActionButtons>
-                    </div>
-                  </DataItem>
-                ))}
-              </DataGrid>
-              
-              <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <ActionButton $variant="add">+ Ajouter une catégorie</ActionButton>
-              </div>
-            </ContentSection>
-          );
-
-        case 'farms':
-          return (
-            <ContentSection>
-              <SectionTitle>🏠 Gestion des Farms</SectionTitle>
-              <p style={{ textAlign: 'center', marginBottom: '20px', color: 'rgba(255,255,255,0.8)' }}>
-                Gérez les fermes et origines des produits Cannabis
-              </p>
-              
-              <DataGrid>
-                {farms.filter(f => f.value !== 'all').map((farm) => (
-                  <DataItem key={farm.value}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <ProductName>{farm.country} {farm.label}</ProductName>
-                        <ProductDetails>Code: {farm.value}</ProductDetails>
-                      </div>
-                      <ActionButtons>
-                        <ActionButton $variant="edit">✏️ Modifier</ActionButton>
-                        <ActionButton $variant="delete">🗑️ Supprimer</ActionButton>
-                      </ActionButtons>
-                    </div>
-                  </DataItem>
-                ))}
-              </DataGrid>
-              
-              <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <ActionButton $variant="add">+ Ajouter une farm</ActionButton>
-              </div>
-            </ContentSection>
-          );
-
-        case 'telegram':
-        return (
-          <ContentSection>
-            <SectionTitle>Configuration Telegram</SectionTitle>
-            <FormGroup>
-              <Label>Nom d'utilisateur Telegram</Label>
-              <Input type="text" defaultValue="bipcosa06" />
-            </FormGroup>
-            <FormGroup>
-              <Label>Message de bienvenue</Label>
-              <TextArea defaultValue="Bonjour ! Bienvenue chez BIPCOSA06, votre boutique Cannabis de confiance." />
-            </FormGroup>
-            <FormGroup>
-              <Label>Template commande</Label>
-              <TextArea defaultValue="Bonjour, je souhaite commander {produit} de BIPCOSA06. Pouvez-vous me donner plus d'informations ?" />
-            </FormGroup>
-            <Button>Sauvegarder</Button>
-          </ContentSection>
-        );
-
-      case 'seo':
-        return (
-          <ContentSection>
-            <SectionTitle>SEO & Métadonnées</SectionTitle>
-            <FormGroup>
-              <Label>Titre du site</Label>
-              <Input type="text" defaultValue="BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon" />
-            </FormGroup>
-            <FormGroup>
-              <Label>Description</Label>
-              <TextArea defaultValue="BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel." />
-            </FormGroup>
-            <FormGroup>
-              <Label>Mots-clés</Label>
-              <Input type="text" defaultValue="BIPCOSA06, CANAGOOD, Lyon, boutique, livraison, 69, cannabis, CBD" />
-            </FormGroup>
-            <Button>Mettre à jour</Button>
-          </ContentSection>
-        );
-
-             case 'config':
-         return (
-           <ContentSection>
-             <SectionTitle>⚙️ Configuration de la Boutique</SectionTitle>
-             <p style={{ textAlign: 'center', marginBottom: '30px', color: 'rgba(255,255,255,0.8)' }}>
-               Personnalisez l'apparence et les paramètres de votre boutique BIPCOSA06
-             </p>
-             
-             <div style={{ display: 'grid', gap: '30px' }}>
-               {/* Configuration Background */}
-               <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                 <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                   🎨 Configuration du Background
-                 </h4>
-                 
-                 <FormGroup>
-                   <Label>Type de background</Label>
-                   <Select value={config.backgroundType} onChange={(e) => handleSaveConfig({ backgroundType: e.target.value as 'gradient' | 'image' })}>
-                     <option value="gradient">Dégradé de couleurs</option>
-                     <option value="image">Image personnalisée</option>
-                   </Select>
-                 </FormGroup>
-
-                 <FormGroup>
-                   <Label>Couleur principale</Label>
-                   <ColorPicker 
-                     type="color" 
-                     value={config.backgroundColor} 
-                     onChange={(e) => handleSaveConfig({ backgroundColor: e.target.value })}
-                   />
-                 </FormGroup>
-
-                 {config.backgroundType === 'image' && (
-                   <div>
-                     <FormGroup>
-                       <Label>Upload d'image personnalisée</Label>
-                       <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                         <input
-                           type="file"
-                           accept="image/*"
-                           onChange={handleImageUpload}
-                           style={{
-                             color: 'white',
-                             background: 'rgba(255,255,255,0.1)',
-                             border: '1px solid rgba(255,255,255,0.2)',
-                             borderRadius: '8px',
-                             padding: '10px',
-                             fontSize: '14px',
-                             cursor: 'pointer',
-                             width: '100%'
-                           }}
-                         />
-                         {config.backgroundImage && config.backgroundImage.startsWith('data:') && (
-                           <ActionButton 
-                             $variant="delete" 
-                             onClick={() => handleSaveConfig({ backgroundImage: '' })}
-                             style={{ padding: '8px 12px', fontSize: '12px' }}
-                           >
-                             🗑️
-                           </ActionButton>
-                         )}
-                       </div>
-                       {config.backgroundImage && config.backgroundImage.startsWith('data:') && (
-                         <div style={{ marginTop: '10px' }}>
-                           <img 
-                             src={config.backgroundImage} 
-                             alt="Preview" 
-                             style={{ 
-                               maxWidth: '200px', 
-                               maxHeight: '100px', 
-                               borderRadius: '8px',
-                               objectFit: 'cover',
-                               border: '1px solid rgba(255,255,255,0.2)'
-                             }} 
-                           />
-                         </div>
-                       )}
-                     </FormGroup>
-                     
-                     <FormGroup>
-                       <Label>Ou URL de l'image de fond</Label>
-                       <Input 
-                         type="url" 
-                         value={config.backgroundImage || ''} 
-                         onChange={(e) => handleSaveConfig({ backgroundImage: e.target.value })}
-                         placeholder="https://images.unsplash.com/..." 
-                       />
-                     </FormGroup>
-                   </div>
-                 )}
-
-                 <ConfigPreview 
-                   $bgType={config.backgroundType} 
-                   $bgColor={config.backgroundColor}
-                   $bgImage={config.backgroundImage}
-                 >
-                   {config.shopName}
-                 </ConfigPreview>
-               </div>
-
-               {/* Configuration Générale */}
-               <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                 <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                   🏪 Informations Générales
-                 </h4>
-                 
-                 <FormGroup>
-                   <Label>Nom de la boutique</Label>
-                   <Input 
-                     type="text" 
-                     value={config.shopName} 
-                     onChange={(e) => handleSaveConfig({ shopName: e.target.value })}
-                   />
-                 </FormGroup>
-                 
-                 <FormGroup>
-                   <Label>Description</Label>
-                   <Input 
-                     type="text" 
-                     value={config.description} 
-                     onChange={(e) => handleSaveConfig({ description: e.target.value })}
-                   />
-                 </FormGroup>
-               </div>
-             </div>
-             
-             <div style={{ marginTop: '30px', textAlign: 'center' }}>
-               <ActionButton $variant="add" onClick={() => alert('Configuration sauvegardée automatiquement !')}>
-                 💾 Configuration sauvegardée
-               </ActionButton>
-             </div>
-           </ContentSection>
-         );
-
-      case 'telegram':
-        return (
-          <ContentSection>
-            <SectionTitle>✈️ Configuration Telegram</SectionTitle>
-            
-            <div style={{ display: 'grid', gap: '25px' }}>
-              {/* Configuration du canal principal */}
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                  📢 Canal Principal
-                </h4>
-                
-                <FormGroup>
-                  <Label>Nom d'utilisateur du canal (sans @)</Label>
-                  <Input 
-                    type="text" 
-                    value={config.telegramChannel || 'bipcosa06'} 
-                    onChange={(e) => handleSaveConfig({ telegramChannel: e.target.value })}
-                    placeholder="bipcosa06"
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Lien complet du canal</Label>
-                  <Input 
-                    type="url" 
-                    value={config.telegramChannelUrl || 'https://t.me/bipcosa06'} 
-                    onChange={(e) => handleSaveConfig({ telegramChannelUrl: e.target.value })}
-                    placeholder="https://t.me/bipcosa06"
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Description du canal</Label>
-                  <TextArea 
-                    value={config.telegramDescription || 'Canal officiel BIPCOSA06 - Commandes et informations'} 
-                    onChange={(e) => handleSaveConfig({ telegramDescription: e.target.value })}
-                    placeholder="Description du canal Telegram..."
-                  />
-                </FormGroup>
-              </div>
-
-              {/* Configuration des commandes */}
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                  🛒 Configuration des Commandes
-                </h4>
-                
-                <FormGroup>
-                  <Label>Bot de commande Telegram</Label>
-                  <Input 
-                    type="text" 
-                    value={config.telegramBot || '@bipcosa06_bot'} 
-                    onChange={(e) => handleSaveConfig({ telegramBot: e.target.value })}
-                    placeholder="@bipcosa06_bot"
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Message de commande par défaut</Label>
-                  <TextArea 
-                    value={config.defaultOrderMessage || 'Bonjour, je souhaite commander le produit suivant :\n\n{productName}\nQuantité : {quantity}\n\nMerci !'} 
-                    onChange={(e) => handleSaveConfig({ defaultOrderMessage: e.target.value })}
-                    placeholder="Message qui sera pré-rempli lors d'une commande..."
-                  />
-                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
-                    Variables disponibles : {'{productName}'}, {'{quantity}'}, {'{price}'}
-                  </small>
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Numéro de téléphone pour WhatsApp (optionnel)</Label>
-                  <Input 
-                    type="tel" 
-                    value={config.whatsappNumber || ''} 
-                    onChange={(e) => handleSaveConfig({ whatsappNumber: e.target.value })}
-                    placeholder="+33123456789"
-                  />
-                </FormGroup>
-              </div>
-
-              {/* Aperçu des liens */}
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                  🔗 Aperçu des Liens
-                </h4>
-                
-                <div style={{ display: 'grid', gap: '15px' }}>
-                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '15px', borderRadius: '10px' }}>
-                    <strong>Canal Telegram :</strong><br/>
-                    <a href={config.telegramChannelUrl || 'https://t.me/bipcosa06'} 
-                       target="_blank" 
-                       rel="noopener noreferrer"
-                       style={{ color: '#4facfe', textDecoration: 'none' }}>
-                      {config.telegramChannelUrl || 'https://t.me/bipcosa06'}
-                    </a>
-                  </div>
-                  
-                  <div style={{ background: 'rgba(0,0,0,0.3)', padding: '15px', borderRadius: '10px' }}>
-                    <strong>Bot de commande :</strong><br/>
-                    <span style={{ color: '#4facfe' }}>
-                      {config.telegramBot || '@bipcosa06_bot'}
-                    </span>
-                  </div>
-                  
-                  {config.whatsappNumber && (
-                    <div style={{ background: 'rgba(0,0,0,0.3)', padding: '15px', borderRadius: '10px' }}>
-                      <strong>WhatsApp :</strong><br/>
-                      <a href={`https://wa.me/${config.whatsappNumber.replace(/[^0-9]/g, '')}`} 
-                         target="_blank" 
-                         rel="noopener noreferrer"
-                         style={{ color: '#25D366', textDecoration: 'none' }}>
-                        {config.whatsappNumber}
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            <div style={{ marginTop: '30px', textAlign: 'center' }}>
-              <ActionButton $variant="add" onClick={() => alert('Configuration Telegram sauvegardée automatiquement !')}>
-                💾 Configuration sauvegardée
-              </ActionButton>
-            </div>
-          </ContentSection>
-        );
-
-      case 'seo':
-        return (
-          <ContentSection>
-            <SectionTitle>🔍 SEO & Référencement</SectionTitle>
-            
-            <div style={{ display: 'grid', gap: '25px' }}>
-              {/* Métadonnées de base */}
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                  📝 Métadonnées de Base
-                </h4>
-                
-                <FormGroup>
-                  <Label>Titre de la page (balise title)</Label>
-                  <Input 
-                    type="text" 
-                    value={config.seoTitle || 'BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon'} 
-                    onChange={(e) => handleSaveConfig({ seoTitle: e.target.value })}
-                    placeholder="Titre qui apparaît dans l'onglet du navigateur"
-                  />
-                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
-                    Recommandé : 50-60 caractères
-                  </small>
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Description (meta description)</Label>
-                  <TextArea 
-                    value={config.seoDescription || 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel.'} 
-                    onChange={(e) => handleSaveConfig({ seoDescription: e.target.value })}
-                    placeholder="Description qui apparaît dans les résultats de recherche Google"
-                  />
-                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
-                    Recommandé : 150-160 caractères
-                  </small>
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Mots-clés (keywords)</Label>
-                  <Input 
-                    type="text" 
-                    value={config.seoKeywords || 'BIPCOSA06, CANAGOOD, Lyon, boutique, livraison, 69, cannabis, CBD'} 
-                    onChange={(e) => handleSaveConfig({ seoKeywords: e.target.value })}
-                    placeholder="Mots-clés séparés par des virgules"
-                  />
-                </FormGroup>
-              </div>
-
-              {/* Open Graph / Réseaux sociaux */}
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                  📱 Réseaux Sociaux (Open Graph)
-                </h4>
-                
-                <FormGroup>
-                  <Label>Titre pour les réseaux sociaux</Label>
-                  <Input 
-                    type="text" 
-                    value={config.ogTitle || 'BIPCOSA06 - CANAGOOD 69 APP'} 
-                    onChange={(e) => handleSaveConfig({ ogTitle: e.target.value })}
-                    placeholder="Titre affiché quand le lien est partagé"
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Description pour les réseaux sociaux</Label>
-                  <TextArea 
-                    value={config.ogDescription || 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon'} 
-                    onChange={(e) => handleSaveConfig({ ogDescription: e.target.value })}
-                    placeholder="Description affichée quand le lien est partagé"
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Image de partage (URL)</Label>
-                  <Input 
-                    type="url" 
-                    value={config.ogImage || ''} 
-                    onChange={(e) => handleSaveConfig({ ogImage: e.target.value })}
-                    placeholder="https://exemple.com/image-partage.jpg"
-                  />
-                  <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>
-                    Recommandé : 1200x630 pixels
-                  </small>
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>URL du site</Label>
-                  <Input 
-                    type="url" 
-                    value={config.siteUrl || 'https://juniorrrrr345.github.io/Cosa-'} 
-                    onChange={(e) => handleSaveConfig({ siteUrl: e.target.value })}
-                    placeholder="https://monsite.com"
-                  />
-                </FormGroup>
-              </div>
-
-              {/* Configuration technique */}
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                  ⚙️ Configuration Technique
-                </h4>
-                
-                <FormGroup>
-                  <Label>Langue du site</Label>
-                  <Select 
-                    value={config.language || 'fr'} 
-                    onChange={(e) => handleSaveConfig({ language: e.target.value })}
-                  >
-                    <option value="fr">Français (fr)</option>
-                    <option value="en">English (en)</option>
-                    <option value="es">Español (es)</option>
-                    <option value="de">Deutsch (de)</option>
-                  </Select>
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Région/Pays</Label>
-                  <Select 
-                    value={config.region || 'FR'} 
-                    onChange={(e) => handleSaveConfig({ region: e.target.value })}
-                  >
-                    <option value="FR">France (FR)</option>
-                    <option value="BE">Belgique (BE)</option>
-                    <option value="CH">Suisse (CH)</option>
-                    <option value="CA">Canada (CA)</option>
-                    <option value="US">États-Unis (US)</option>
-                  </Select>
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Google Analytics ID (optionnel)</Label>
-                  <Input 
-                    type="text" 
-                    value={config.googleAnalyticsId || ''} 
-                    onChange={(e) => handleSaveConfig({ googleAnalyticsId: e.target.value })}
-                    placeholder="G-XXXXXXXXXX ou UA-XXXXXXXXX-X"
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Google Search Console (optionnel)</Label>
-                  <Input 
-                    type="text" 
-                    value={config.googleSiteVerification || ''} 
-                    onChange={(e) => handleSaveConfig({ googleSiteVerification: e.target.value })}
-                    placeholder="Code de vérification Google"
-                  />
-                </FormGroup>
-              </div>
-
-              {/* Aperçu SEO */}
-              <div style={{ background: 'rgba(255,255,255,0.05)', padding: '25px', borderRadius: '15px' }}>
-                <h4 style={{ margin: '0 0 20px 0', color: 'white', fontSize: '18px', textAlign: 'center' }}>
-                  👀 Aperçu Google
-                </h4>
-                
-                <div style={{ background: 'white', padding: '15px', borderRadius: '8px', color: 'black' }}>
-                  <div style={{ color: '#1a0dab', fontSize: '18px', lineHeight: '1.2', marginBottom: '5px' }}>
-                    {config.seoTitle || 'BIPCOSA06 - CANAGOOD 69 APP | Boutique Cannabis Lyon'}
-                  </div>
-                  <div style={{ color: '#006621', fontSize: '14px', marginBottom: '5px' }}>
-                    {config.siteUrl || 'https://juniorrrrr345.github.io/Cosa-'}
-                  </div>
-                  <div style={{ color: '#545454', fontSize: '13px', lineHeight: '1.4' }}>
-                    {config.seoDescription || 'BIPCOSA06 - Boutique CANAGOOD 69 - Numéro 1 Lyon. Livraison (69) (71) (01) (42) (38). Service professionnel.'}
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div style={{ marginTop: '30px', textAlign: 'center' }}>
-              <ActionButton $variant="add" onClick={() => alert('Configuration SEO sauvegardée automatiquement !')}>
-                💾 Configuration sauvegardée
-              </ActionButton>
-            </div>
-          </ContentSection>
-        );
-
-      default:
-        return <ContentSection><SectionTitle>Section en cours de développement</SectionTitle></ContentSection>;
-    }
-  };
-
-      return (
-      <AdminContainer>
-        <Sidebar $isOpen={true}>
-        <SidebarHeader>
-          <SidebarTitle>ADMIN BIPCOSA06</SidebarTitle>
-        </SidebarHeader>
-        <SidebarMenu>
-          {menuItems.map(item => (
-            <MenuItem
-              key={item.id}
-              $active={activeSection === item.id}
-              onClick={() => handleMenuClick(item.id)}
-            >
-              <MenuIcon>{item.icon}</MenuIcon>
-              <MenuLabel>{item.label}</MenuLabel>
-            </MenuItem>
-          ))}
-        </SidebarMenu>
-      </Sidebar>
-
-              <MainContent $sidebarOpen={true}>
-        <ContentHeader>
-          <ContentTitle>
-            {menuItems.find(item => item.id === activeSection)?.label || 'Admin'}
-          </ContentTitle>
-          {onBack && (
-            <BackButton onClick={onBack}>
-              ← Retour à la boutique
-            </BackButton>
-          )}
-        </ContentHeader>
-
-        {renderContent()}
-      </MainContent>
-
-      {/* Modal pour ajouter/modifier un produit */}
-      <Modal $isOpen={isAddingProduct || editingProduct !== null}>
-        <ModalContent>
-          <ModalHeader>
-            <ModalTitle>
-              {editingProduct ? '✏️ Modifier le produit' : '➕ Ajouter un produit'}
-            </ModalTitle>
-            <CloseButton onClick={handleCloseModal}>×</CloseButton>
-          </ModalHeader>
-
+      {(isAdding || editingId) && (
+        <ItemCard style={{ marginTop: '20px', border: '2px solid rgba(76, 175, 80, 0.5)' }}>
+          <h3>{isAdding ? 'Nouveau Produit' : 'Modifier le Produit'}</h3>
+          
           <FormGroup>
-            <Label>Nom du produit *</Label>
-            <Input 
-              type="text" 
-              value={formData.name || ''} 
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              placeholder="Ex: ANIMAL COOKIES" 
+            <Label>Nom du produit</Label>
+            <Input
+              value={formData.name || ''}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              placeholder="Nom du produit"
             />
           </FormGroup>
 
           <FormGroup>
             <Label>Qualité</Label>
-            <Input 
-              type="text" 
-              value={formData.quality || ''} 
-              onChange={(e) => setFormData({...formData, quality: e.target.value})}
-              placeholder="Ex: Qualité Top" 
+            <Input
+              value={formData.quality || ''}
+              onChange={(e) => setFormData({ ...formData, quality: e.target.value })}
+              placeholder="Qualité du produit"
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Image du produit</Label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{
+                color: 'white',
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: '8px',
+                padding: '10px',
+                width: '100%'
+              }}
             />
           </FormGroup>
 
           <FormGroup>
             <Label>Catégorie</Label>
-            <Select 
-              value={formData.category || 'indica'} 
-              onChange={(e) => setFormData({...formData, category: e.target.value})}
+            <Select
+              value={formData.category || ''}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
             >
-              {categories.filter(c => c.value !== 'all').map(cat => (
-                <option key={cat.value} value={cat.value}>{cat.label}</option>
+              <option value="">Sélectionner une catégorie</option>
+              {categories.map(cat => (
+                <option key={cat.id} value={cat.value}>{cat.label}</option>
               ))}
             </Select>
           </FormGroup>
 
           <FormGroup>
-            <Label>Farm d'origine</Label>
-            <Select 
-              value={formData.farm || 'holland'} 
-              onChange={(e) => setFormData({...formData, farm: e.target.value})}
+            <Label>Farm</Label>
+            <Select
+              value={formData.farm || ''}
+              onChange={(e) => setFormData({ ...formData, farm: e.target.value })}
             >
-              {farms.filter(f => f.value !== 'all').map(farm => (
-                <option key={farm.value} value={farm.value}>{farm.label}</option>
+              <option value="">Sélectionner une farm</option>
+              {farms.map(farm => (
+                <option key={farm.id} value={farm.value}>{farm.label}</option>
               ))}
             </Select>
           </FormGroup>
 
           <FormGroup>
-            <Label>Description *</Label>
-            <TextArea 
-              value={formData.description || ''} 
-              onChange={(e) => setFormData({...formData, description: e.target.value})}
-              placeholder="Description détaillée du produit..." 
+            <Label>Drapeau/Origine</Label>
+            <Input
+              value={formData.flagText || ''}
+              onChange={(e) => setFormData({ ...formData, flagText: e.target.value })}
+              placeholder="🇳🇱 HOLLAND"
             />
           </FormGroup>
 
           <FormGroup>
-            <Label>URL de l'image</Label>
-            <Input 
-              type="url" 
-              value={formData.image || ''} 
-              onChange={(e) => setFormData({...formData, image: e.target.value})}
-              placeholder="https://images.unsplash.com/..." 
+            <Label>Description</Label>
+            <TextArea
+              value={formData.description || ''}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Description du produit"
             />
           </FormGroup>
 
           <FormGroup>
-            <Label>Texte du flag</Label>
-            <Input 
-              type="text" 
-              value={formData.flagText || ''} 
-              onChange={(e) => setFormData({...formData, flagText: e.target.value})}
-              placeholder="Ex: 🇳🇱 HOLLAND" 
-            />
+            <Label>Prix et quantités</Label>
+            <PriceList>
+              {(formData.prices || []).map((price: any, index: number) => (
+                <PriceItem key={index}>
+                  <Input
+                    placeholder="Quantité (1g, 3.5g...)"
+                    value={price.weight}
+                    onChange={(e) => updatePrice(index, 'weight', e.target.value)}
+                    style={{ flex: 1 }}
+                  />
+                  <Input
+                    placeholder="Prix (10€, 35€...)"
+                    value={price.price}
+                    onChange={(e) => updatePrice(index, 'price', e.target.value)}
+                    style={{ flex: 1 }}
+                  />
+                  <ActionButton $variant="delete" onClick={() => removePrice(index)}>
+                    🗑️
+                  </ActionButton>
+                </PriceItem>
+              ))}
+              <ActionButton onClick={addPrice}>
+                ➕ Ajouter un prix
+              </ActionButton>
+            </PriceList>
           </FormGroup>
 
-          <FormGroup>
-            <Label>URL vidéo (optionnel)</Label>
-            <Input 
-              type="url" 
-              value={formData.video || ''} 
-              onChange={(e) => setFormData({...formData, video: e.target.value})}
-              placeholder="https://..." 
-            />
-          </FormGroup>
-
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '30px' }}>
-            <ActionButton $variant="add" onClick={handleSaveProduct}>
+          <div style={{ marginTop: '20px' }}>
+            <ActionButton $variant="save" onClick={handleSaveProduct}>
               💾 Sauvegarder
             </ActionButton>
-            <ActionButton onClick={handleCloseModal}>
+            <ActionButton $variant="cancel" onClick={handleCancelProduct}>
               ❌ Annuler
             </ActionButton>
           </div>
-        </ModalContent>
-      </Modal>
+        </ItemCard>
+      )}
+
+      <ItemList>
+        {products.map(product => (
+          <ItemCard key={product.id}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div style={{ flex: 1 }}>
+                <h3>{product.name}</h3>
+                <p style={{ color: 'rgba(255,255,255,0.7)', margin: '5px 0' }}>{product.quality}</p>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>{product.flagText}</p>
+                <div style={{ marginTop: '10px' }}>
+                  {product.prices?.map((price, idx) => (
+                    <span key={idx} style={{ 
+                      background: 'rgba(255,255,255,0.1)', 
+                      padding: '4px 8px', 
+                      borderRadius: '4px', 
+                      fontSize: '12px', 
+                      marginRight: '5px',
+                      display: 'inline-block',
+                      marginBottom: '5px'
+                    }}>
+                      {price.weight}: {price.price}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <ActionButton $variant="edit" onClick={() => handleEditProduct(product)}>
+                  ✏️
+                </ActionButton>
+                <ActionButton $variant="delete" onClick={() => handleDeleteProduct(product.id)}>
+                  🗑️
+                </ActionButton>
+              </div>
+            </div>
+          </ItemCard>
+        ))}
+      </ItemList>
+    </ContentSection>
+  );
+
+  const renderCategories = () => (
+    <ContentSection>
+      <SectionTitle>📂 Gestion des Catégories</SectionTitle>
+      
+      <ActionButton $variant="add" onClick={handleAddCategory}>
+        ➕ Ajouter une catégorie
+      </ActionButton>
+
+      {isAdding && (
+        <ItemCard style={{ marginTop: '20px', border: '2px solid rgba(76, 175, 80, 0.5)' }}>
+          <h3>Nouvelle Catégorie</h3>
+          
+          <FormGroup>
+            <Label>Nom de la catégorie</Label>
+            <Input
+              value={formData.label || ''}
+              onChange={(e) => setFormData({ ...formData, label: e.target.value, value: e.target.value.toLowerCase() })}
+              placeholder="Indica, Sativa, Hybride..."
+            />
+          </FormGroup>
+
+          <div style={{ marginTop: '20px' }}>
+            <ActionButton $variant="save" onClick={handleSaveCategory}>
+              💾 Sauvegarder
+            </ActionButton>
+            <ActionButton $variant="cancel" onClick={() => setIsAdding(false)}>
+              ❌ Annuler
+            </ActionButton>
+          </div>
+        </ItemCard>
+      )}
+
+      <ItemList>
+        {categories.map(category => (
+          <ItemCard key={category.id}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h3>{category.label}</h3>
+              </div>
+              <div>
+                <ActionButton $variant="delete" onClick={() => handleDeleteCategory(category.id)}>
+                  🗑️
+                </ActionButton>
+              </div>
+            </div>
+          </ItemCard>
+        ))}
+      </ItemList>
+    </ContentSection>
+  );
+
+  const renderFarms = () => (
+    <ContentSection>
+      <SectionTitle>🌱 Gestion des Farms</SectionTitle>
+      
+      <ActionButton $variant="add" onClick={handleAddFarm}>
+        ➕ Ajouter une farm
+      </ActionButton>
+
+      {isAdding && (
+        <ItemCard style={{ marginTop: '20px', border: '2px solid rgba(76, 175, 80, 0.5)' }}>
+          <h3>Nouvelle Farm</h3>
+          
+          <FormGroup>
+            <Label>Nom de la farm</Label>
+            <Input
+              value={formData.label || ''}
+              onChange={(e) => setFormData({ ...formData, label: e.target.value, value: e.target.value.toLowerCase() })}
+              placeholder="Holland, Espagne, Calispain..."
+            />
+          </FormGroup>
+
+          <div style={{ marginTop: '20px' }}>
+            <ActionButton $variant="save" onClick={handleSaveFarm}>
+              💾 Sauvegarder
+            </ActionButton>
+            <ActionButton $variant="cancel" onClick={() => setIsAdding(false)}>
+              ❌ Annuler
+            </ActionButton>
+          </div>
+        </ItemCard>
+      )}
+
+      <ItemList>
+        {farms.map(farm => (
+          <ItemCard key={farm.id}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h3>{farm.label}</h3>
+              </div>
+              <div>
+                <ActionButton $variant="delete" onClick={() => handleDeleteFarm(farm.id)}>
+                  🗑️
+                </ActionButton>
+              </div>
+            </div>
+          </ItemCard>
+        ))}
+      </ItemList>
+    </ContentSection>
+  );
+
+  const renderPages = () => (
+    <ContentSection>
+      <SectionTitle>📄 Contenu des Pages</SectionTitle>
+      
+      <div style={{ display: 'grid', gap: '30px' }}>
+        {/* Page Info */}
+        <ItemCard>
+          <h3>📋 Page Info</h3>
+          <FormGroup>
+            <Label>Contenu de la page Info</Label>
+            <TextArea
+              value={config.infoContent || ''}
+              onChange={(e) => handleSaveConfig({ infoContent: e.target.value })}
+              placeholder="Contenu de la page d'informations..."
+              style={{ minHeight: '120px' }}
+            />
+          </FormGroup>
+        </ItemCard>
+
+        {/* Page Contact */}
+        <ItemCard>
+          <h3>📞 Page Contact</h3>
+          <FormGroup>
+            <Label>Contenu de la page Contact</Label>
+            <TextArea
+              value={config.contactContent || ''}
+              onChange={(e) => handleSaveConfig({ contactContent: e.target.value })}
+              placeholder="Contenu de la page de contact..."
+              style={{ minHeight: '120px' }}
+            />
+          </FormGroup>
+        </ItemCard>
+
+        {/* Liens */}
+        <ItemCard>
+          <h3>🔗 Liens</h3>
+          <FormGroup>
+            <Label>Lien Canal Telegram</Label>
+            <Input
+              value={config.telegramLink || ''}
+              onChange={(e) => handleSaveConfig({ telegramLink: e.target.value })}
+              placeholder="https://t.me/bipcosa06"
+            />
+          </FormGroup>
+          
+          <FormGroup>
+            <Label>Message de commande Telegram</Label>
+            <Input
+              value={config.telegramOrderMessageTemplate || ''}
+              onChange={(e) => handleSaveConfig({ telegramOrderMessageTemplate: e.target.value })}
+              placeholder="Bonjour, je souhaite commander {productName} de BIPCOSA06"
+            />
+          </FormGroup>
+        </ItemCard>
+      </div>
+    </ContentSection>
+  );
+
+  const renderConfig = () => (
+    <ContentSection>
+      <SectionTitle>⚙️ Configuration</SectionTitle>
+      
+      <ItemCard>
+        <h3>🎨 Background de la boutique</h3>
+        
+        <FormGroup>
+          <Label>Type de background</Label>
+          <Select value={config.backgroundType || 'gradient'} onChange={(e) => handleSaveConfig({ backgroundType: e.target.value as 'gradient' | 'image' })}>
+            <option value="gradient">Dégradé noir</option>
+            <option value="image">Image personnalisée</option>
+          </Select>
+        </FormGroup>
+
+        {config.backgroundType === 'image' && (
+          <div>
+            <FormGroup>
+              <Label>Upload d'image de fond</Label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                style={{
+                  color: 'white',
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px',
+                  padding: '10px',
+                  width: '100%'
+                }}
+              />
+              {config.backgroundImage && config.backgroundImage.startsWith('data:') && (
+                <div style={{ marginTop: '10px', display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <img 
+                    src={config.backgroundImage} 
+                    alt="Preview" 
+                    style={{ 
+                      maxWidth: '200px', 
+                      maxHeight: '100px', 
+                      borderRadius: '8px',
+                      objectFit: 'cover',
+                      border: '1px solid rgba(255,255,255,0.2)'
+                    }} 
+                  />
+                  <ActionButton $variant="delete" onClick={() => handleSaveConfig({ backgroundImage: '' })}>
+                    🗑️ Supprimer
+                  </ActionButton>
+                </div>
+              )}
+            </FormGroup>
+            
+            <FormGroup>
+              <Label>Ou URL d'image</Label>
+              <Input 
+                type="url" 
+                value={config.backgroundImage || ''} 
+                onChange={(e) => handleSaveConfig({ backgroundImage: e.target.value })}
+                placeholder="https://images.unsplash.com/..." 
+              />
+            </FormGroup>
+          </div>
+        )}
+      </ItemCard>
+    </ContentSection>
+  );
+
+  const renderContent = () => {
+    switch (currentSection) {
+      case 'products':
+        return renderProducts();
+      case 'categories':
+        return renderCategories();
+      case 'farms':
+        return renderFarms();
+      case 'pages':
+        return renderPages();
+      case 'config':
+        return renderConfig();
+      default:
+        return renderProducts();
+    }
+  };
+
+  return (
+    <AdminContainer>
+      <Sidebar $isOpen={true}>
+        <SidebarHeader>
+          <SidebarTitle>BIPCOSA06 Admin</SidebarTitle>
+        </SidebarHeader>
+        
+        <BackButton onClick={onBack}>
+          ← Retour à la boutique
+        </BackButton>
+        
+        <SidebarNav>
+          <NavItem 
+            $active={currentSection === 'products'} 
+            onClick={() => setCurrentSection('products')}
+          >
+            📦 Produits
+          </NavItem>
+          <NavItem 
+            $active={currentSection === 'categories'} 
+            onClick={() => setCurrentSection('categories')}
+          >
+            📂 Catégories
+          </NavItem>
+          <NavItem 
+            $active={currentSection === 'farms'} 
+            onClick={() => setCurrentSection('farms')}
+          >
+            🌱 Farms
+          </NavItem>
+          <NavItem 
+            $active={currentSection === 'pages'} 
+            onClick={() => setCurrentSection('pages')}
+          >
+            📄 Pages Info/Contact
+          </NavItem>
+          <NavItem 
+            $active={currentSection === 'config'} 
+            onClick={() => setCurrentSection('config')}
+          >
+            ⚙️ Configuration
+          </NavItem>
+        </SidebarNav>
+      </Sidebar>
+
+      <Content>
+        {renderContent()}
+      </Content>
     </AdminContainer>
   );
 };

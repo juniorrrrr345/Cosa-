@@ -1,27 +1,15 @@
 {
   "version": 2,
   "name": "bipcosa06",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
   "framework": "nextjs",
   "installCommand": "npm install",
+  "buildCommand": "next build",
+  "outputDirectory": ".next",
   "devCommand": "npm run dev",
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "NODE_ENV": "production"
-    }
-  },
   "functions": {
     "src/app/api/**/*.ts": {
       "maxDuration": 30
     }
   },
-  "regions": ["cdg1"],
-  "github": {
-    "autoDeployment": true,
-    "autoJobCancelation": true
-  }
+  "regions": ["cdg1"]
 }

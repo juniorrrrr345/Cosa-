@@ -45,26 +45,45 @@ const FilterDropdown = styled.div<{ $active?: boolean }>`
   background: ${props => props.$active ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.8)'};
   backdrop-filter: blur(20px);
   border-radius: 15px;
-  padding: 15px 20px;
   border: 1px solid ${props => props.$active ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: white;
+  position: relative;
   transition: all 0.3s ease;
 
   &:hover {
     background: rgba(255,255,255,0.1);
     border-color: rgba(255,255,255,0.3);
   }
+
+  select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    padding: 15px 40px 15px 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    option {
+      background: #1a1a1a;
+      color: white;
+      padding: 10px;
+    }
+  }
 `;
 
 const DropdownIcon = styled.span`
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   color: rgba(255,255,255,0.7);
   font-size: 12px;
+  pointer-events: none;
 `;
 
 // Section produits avec design noir/blanc amélioré
@@ -314,19 +333,9 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
           <select 
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'white',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              outline: 'none',
-              width: '100%'
-            }}
           >
             {categories.map(cat => (
-              <option key={cat.value} value={cat.value} style={{ background: '#1a1a1a', color: 'white' }}>
+              <option key={cat.value} value={cat.value}>
                 {cat.label}
               </option>
             ))}
@@ -337,19 +346,9 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
           <select 
             value={selectedFarm}
             onChange={(e) => setSelectedFarm(e.target.value)}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'white',
-              fontSize: '14px',
-              fontWeight: '500',
-              cursor: 'pointer',
-              outline: 'none',
-              width: '100%'
-            }}
           >
             {farms.map(farm => (
-              <option key={farm.value} value={farm.value} style={{ background: '#1a1a1a', color: 'white' }}>
+              <option key={farm.value} value={farm.value}>
                 {farm.label}
               </option>
             ))}

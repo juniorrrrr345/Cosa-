@@ -47,7 +47,11 @@ export default function MainPage() {
     
     // Vérifier les paramètres URL au chargement
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('admin') === 'true') {
+    const currentPath = window.location.pathname;
+    
+    if (urlParams.get('admin') === 'true' || 
+        localStorage.getItem('adminMode') === 'true' || 
+        currentPath.includes('/panel')) {
       setCurrentView('admin');
     }
   }, []);

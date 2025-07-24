@@ -239,9 +239,51 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
     };
   }, []);
 
+  // Style de background dynamique (inline pour forcer l'application)
+  const getBackgroundStyle = () => {
+    console.log('🎨 InfoPage - Config complète:', config);
+    
+    if (!config || !config.backgroundType) {
+      console.log('🎨 InfoPage - Pas de config/backgroundType, dégradé par défaut');
+      return {
+        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+      };
+    }
+
+    if (config.backgroundType === 'url' && config.backgroundUrl) {
+      console.log('🎨 InfoPage - Applique URL externe:', config.backgroundUrl);
+      return {
+        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      };
+    }
+
+    if (config.backgroundType === 'image' && config.backgroundImage) {
+      console.log('🎨 InfoPage - Applique Image Cloudinary:', config.backgroundImage);
+      return {
+        background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'fixed'
+      };
+    }
+
+    console.log('🎨 InfoPage - Dégradé par défaut, type:', config.backgroundType);
+    return {
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)'
+    };
+  };
+
   return (
-    <PageContainer 
-      $config={config}
+    <div 
+      style={{
+        minHeight: '100vh',
+        color: 'white',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        ...getBackgroundStyle()
+      }}
     >
       <Header>
         <HeaderTitle>BIPCOSA06</HeaderTitle>
@@ -292,7 +334,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
           <NavLabel>Contact</NavLabel>
         </NavItem>
       </BottomNavigation>
-    </PageContainer>
+    </div>
   );
 };
 

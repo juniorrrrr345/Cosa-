@@ -49,12 +49,16 @@ const LogoImage = styled.img`
   height: 50px;
   max-width: 250px;
   width: auto;
-  filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
+  background: rgba(255,255,255,0.9);
+  border-radius: 8px;
+  padding: 6px;
+  filter: drop-shadow(0 0 12px rgba(0,0,0,0.3));
   transition: transform 0.3s ease, filter 0.3s ease;
   
   &:hover {
     transform: scale(1.05);
-    filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));
+    filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+    background: rgba(255,255,255,1);
   }
 `;
 

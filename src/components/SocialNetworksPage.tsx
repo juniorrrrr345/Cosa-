@@ -24,14 +24,16 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
   let backgroundValue = 'transparent';
   
   // URL externe (Imgur, etc.) - PRIORITÉ 1
-  if (config.backgroundType === 'url' && config.backgroundUrl) {
-    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
-    console.log('🎨 SocialNetworksPage - Background URL externe:', config.backgroundUrl);
+  if (config.backgroundType === 'url' && config.backgroundUrl && config.backgroundUrl.trim()) {
+    const safeUrl = config.backgroundUrl.replace(/['"]/g, '');
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
+    console.log('🎨 SocialNetworksPage - Background URL externe:', safeUrl);
   }
   // Image Cloudinary - PRIORITÉ 2
-  else if (config.backgroundType === 'image' && config.backgroundImage) {
-    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
-    console.log('🎨 SocialNetworksPage - Background Image Cloudinary:', config.backgroundImage);
+  else if (config.backgroundType === 'image' && config.backgroundImage && config.backgroundImage.trim()) {
+    const safeUrl = config.backgroundImage.replace(/['"]/g, '');
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
+    console.log('🎨 SocialNetworksPage - Background Image Cloudinary:', safeUrl);
   }
   // Dégradé - PRIORITÉ 3
   else if (config.backgroundType === 'gradient') {
@@ -43,7 +45,7 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
     background: backgroundValue,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundAttachment: 'fixed',
+    backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
     width: '100%',
     display: 'flex',

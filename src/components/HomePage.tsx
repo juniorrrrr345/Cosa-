@@ -23,14 +23,16 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
   let backgroundValue = 'transparent';
   
   // URL externe (Imgur, etc.) - PRIORITÉ 1
-  if (config.backgroundType === 'url' && config.backgroundUrl) {
-    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundUrl}")`;
-    console.log('🎨 HomePage - Background URL externe:', config.backgroundUrl);
+  if (config.backgroundType === 'url' && config.backgroundUrl && config.backgroundUrl.trim()) {
+    const safeUrl = config.backgroundUrl.replace(/['"]/g, '');
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
+    console.log('🎨 HomePage - Background URL externe:', safeUrl);
   }
   // Image Cloudinary - PRIORITÉ 2
-  else if (config.backgroundType === 'image' && config.backgroundImage) {
-    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${config.backgroundImage}")`;
-    console.log('🎨 HomePage - Background Image Cloudinary:', config.backgroundImage);
+  else if (config.backgroundType === 'image' && config.backgroundImage && config.backgroundImage.trim()) {
+    const safeUrl = config.backgroundImage.replace(/['"]/g, '');
+    backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
+    console.log('🎨 HomePage - Background Image Cloudinary:', safeUrl);
   }
   // Dégradé - PRIORITÉ 3
   else if (config.backgroundType === 'gradient') {
@@ -42,7 +44,7 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
     background: backgroundValue,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    backgroundAttachment: 'fixed',
+    backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
     color: 'white',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -66,12 +68,16 @@ const LogoImage = styled.img`
   height: 60px;
   max-width: 300px;
   width: auto;
-  filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+  background: rgba(255,255,255,0.9);
+  border-radius: 10px;
+  padding: 8px;
+  filter: drop-shadow(0 0 15px rgba(0,0,0,0.3));
   transition: transform 0.3s ease, filter 0.3s ease;
   
   &:hover {
     transform: scale(1.05);
-    filter: drop-shadow(0 0 20px rgba(255,255,255,0.5));
+    filter: drop-shadow(0 0 25px rgba(0,0,0,0.5));
+    background: rgba(255,255,255,1);
   }
 `;
 

@@ -6,7 +6,7 @@ export const CLOUDINARY_CONFIG = {
   apiSecret: process.env.CLOUDINARY_API_SECRET || 'TCJrWZuCJ6r_BLhO4i6afg3F6JU',
   folder: 'bipcosa06',
   formats: ['jpg', 'jpeg', 'png', 'webp', 'mp4', 'mov'],
-  maxSize: 10485760, // 10MB
+  maxSize: 104857600, // 100MB pour vidéos iPhone/mobile
 };
 
 export interface CloudinaryUploadResult {
@@ -56,9 +56,16 @@ export const uploadToCloudinary = async (
     throw new Error('❌ Type de fichier non supporté. Utilisez JPG, PNG, WebP, MP4 ou MOV');
   }
 
-  // Vérifier la taille
-  if (file.size > CLOUDINARY_CONFIG.maxSize) {
-    throw new Error('❌ Fichier trop volumineux. Taille max: 10MB');
+  // Vérifier la taille avec limites différentes pour images et vidéos
+  const maxSizeImage = 20 * 1024 * 1024; // 20MB pour images
+  const maxSizeVideo = 100 * 1024 * 1024; // 100MB pour vidéos
+  
+  if (isImage && file.size > maxSizeImage) {
+    throw new Error(`❌ Image trop volumineuse. Taille max: 20MB (actuelle: ${Math.round(file.size / 1024 / 1024)}MB)`);
+  }
+  
+  if (isVideo && file.size > maxSizeVideo) {
+    throw new Error(`❌ Vidéo trop volumineuse. Taille max: 100MB (actuelle: ${Math.round(file.size / 1024 / 1024)}MB)`);
   }
 
   const timestamp = Math.round(Date.now() / 1000);

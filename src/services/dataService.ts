@@ -45,6 +45,7 @@ class DataService {
   };
 
   private constructor() {
+    this.loadFromLocalStorage();
     this.initializeData();
   }
 
@@ -178,6 +179,7 @@ class DataService {
       id: Math.max(...this.products.map(p => p.id), 0) + 1
     };
     this.products.push(newProduct);
+    this.saveToLocalStorage();
     return newProduct;
   }
 
@@ -186,6 +188,7 @@ class DataService {
     if (index === -1) return null;
     
     this.products[index] = { ...this.products[index], ...updates };
+    this.saveToLocalStorage();
     return this.products[index];
   }
 
@@ -194,6 +197,7 @@ class DataService {
     if (index === -1) return false;
     
     this.products.splice(index, 1);
+    this.saveToLocalStorage();
     return true;
   }
 
@@ -250,6 +254,38 @@ class DataService {
   // Config management
   updateConfig(newConfig: Partial<ShopConfig>): void {
     this.config = { ...this.config, ...newConfig };
+    this.saveToLocalStorage();
+  }
+
+  // Persistance localStorage
+  private saveToLocalStorage(): void {
+    if (typeof window !== 'undefined') {
+      const data = {
+        products: this.products,
+        categories: this.categories,
+        farms: this.farms,
+        config: this.config,
+        timestamp: Date.now()
+      };
+      localStorage.setItem('bipcosa06-data', JSON.stringify(data));
+    }
+  }
+
+  private loadFromLocalStorage(): void {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('bipcosa06-data');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          if (data.products) this.products = data.products;
+          if (data.categories) this.categories = data.categories;
+          if (data.farms) this.farms = data.farms;
+          if (data.config) this.config = data.config;
+        } catch (error) {
+          console.warn('Erreur chargement données localStorage:', error);
+        }
+      }
+    }
   }
 }
 

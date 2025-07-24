@@ -391,9 +391,9 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
           <NavIcon>ℹ️</NavIcon>
           <NavLabel>Infos</NavLabel>
         </NavItem>
-        <NavItem $active={false} onClick={() => window.open('https://t.me/bipcosa06', '_blank')}>
-          <NavIcon>✈️</NavIcon>
-          <NavLabel>Canal</NavLabel>
+        <NavItem $active={currentView === 'social'} onClick={() => onNavigate?.('social')}>
+          <NavIcon>🌐</NavIcon>
+          <NavLabel>Réseaux</NavLabel>
         </NavItem>
         <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
           <NavIcon>✉️</NavIcon>

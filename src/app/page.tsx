@@ -4,11 +4,12 @@ import React, { useState, useEffect } from 'react';
 import HomePage from '@/components/HomePage';
 import InfoPage from '@/components/InfoPage';
 import ContactPage from '@/components/ContactPage';
+import SocialNetworksPage from '@/components/SocialNetworksPage';
 import ProductDetailPage from '@/components/ProductDetailPage';
 import AdminPanel from '@/admin/AdminPanel';
 
 export default function MainPage() {
-  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact' | 'product-detail'>('menu');
+  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact' | 'social' | 'product-detail'>('menu');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   const handleNavigation = (view: string) => {
@@ -24,6 +25,8 @@ export default function MainPage() {
       setCurrentView('info');
     } else if (view === 'contact') {
       setCurrentView('contact');
+    } else if (view === 'social') {
+      setCurrentView('social');
     } else {
       setCurrentView('menu');
     }
@@ -106,6 +109,10 @@ export default function MainPage() {
 
   if (currentView === 'contact') {
     return <ContactPage onNavigate={handleNavigation} currentView={currentView} />;
+  }
+
+  if (currentView === 'social') {
+    return <SocialNetworksPage onBack={() => handleNavigation('menu')} />;
   }
 
   if (currentView === 'product-detail' && selectedProduct) {

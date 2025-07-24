@@ -1637,6 +1637,133 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
            </ContentSection>
          );
 
+        case 'social-networks':
+          return (
+            <ContentSection>
+              <SectionTitle>🌐 Gestion des Réseaux Sociaux</SectionTitle>
+              <p style={{ textAlign: 'center', marginBottom: '30px', color: 'rgba(255,255,255,0.8)' }}>
+                Configurez les réseaux sociaux de votre boutique. Vos clients pourront y accéder depuis la page "Réseaux Sociaux".
+              </p>
+
+              {/* Bouton Ajouter */}
+              <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                <ActionButton 
+                  $variant="add" 
+                  onClick={() => {
+                    setIsAddingSocial(true);
+                    setSocialFormData({ 
+                      name: '', 
+                      emoji: '📱', 
+                      url: '', 
+                      isActive: true 
+                    });
+                  }}
+                >
+                  ➕ Ajouter un réseau social
+                </ActionButton>
+              </div>
+
+              {/* Liste des réseaux sociaux */}
+              <div style={{ display: 'grid', gap: '15px' }}>
+                {socialNetworks
+                  .sort((a, b) => a.order - b.order)
+                  .map((social) => (
+                    <div
+                      key={social.id}
+                      style={{
+                        background: 'rgba(255,255,255,0.05)',
+                        border: `2px solid ${social.isActive ? '#4ecdc4' : 'rgba(255,255,255,0.2)'}`,
+                        borderRadius: '15px',
+                        padding: '20px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '20px'
+                      }}
+                    >
+                      <div style={{ fontSize: '32px', minWidth: '50px', textAlign: 'center' }}>
+                        {social.emoji}
+                      </div>
+                      
+                      <div style={{ flex: 1 }}>
+                        <h4 style={{ margin: '0 0 5px 0', color: 'white', fontSize: '16px' }}>
+                          {social.name}
+                        </h4>
+                        <p style={{ margin: '0 0 5px 0', color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
+                          {social.url}
+                        </p>
+                        <div style={{ fontSize: '12px' }}>
+                          <span style={{ 
+                            color: social.isActive ? '#4ecdc4' : 'rgba(255,255,255,0.5)',
+                            fontWeight: 'bold'
+                          }}>
+                            {social.isActive ? '✅ Actif' : '⭕ Inactif'}
+                          </span>
+                          <span style={{ color: 'rgba(255,255,255,0.5)', marginLeft: '15px' }}>
+                            Ordre: {social.order}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <ActionButton
+                          onClick={() => {
+                            setEditingSocial(social);
+                            setSocialFormData(social);
+                          }}
+                          style={{ padding: '8px 15px', fontSize: '14px' }}
+                        >
+                          ✏️ Modifier
+                        </ActionButton>
+                        
+                        <ActionButton
+                          onClick={() => {
+                            const updatedSocial = { ...social, isActive: !social.isActive };
+                            dataService.updateSocialNetwork(social.id, updatedSocial);
+                            refreshData();
+                          }}
+                          style={{ 
+                            padding: '8px 15px', 
+                            fontSize: '14px',
+                            background: social.isActive ? 'rgba(255,165,0,0.2)' : 'rgba(78,205,196,0.2)'
+                          }}
+                        >
+                          {social.isActive ? '⭕ Désactiver' : '✅ Activer'}
+                        </ActionButton>
+
+                        <ActionButton
+                          $variant="danger"
+                          onClick={() => {
+                            if (confirm(`Supprimer le réseau "${social.name}" ?`)) {
+                              dataService.deleteSocialNetwork(social.id);
+                              refreshData();
+                            }
+                          }}
+                          style={{ padding: '8px 15px', fontSize: '14px' }}
+                        >
+                          🗑️ Supprimer
+                        </ActionButton>
+                      </div>
+                    </div>
+                  ))}
+
+                {socialNetworks.length === 0 && (
+                  <div style={{
+                    textAlign: 'center',
+                    padding: '40px',
+                    color: 'rgba(255,255,255,0.6)',
+                    background: 'rgba(255,255,255,0.05)',
+                    borderRadius: '15px',
+                    border: '2px dashed rgba(255,255,255,0.2)'
+                  }}>
+                    <div style={{ fontSize: '48px', marginBottom: '15px' }}>🌐</div>
+                    <p>Aucun réseau social configuré</p>
+                    <p style={{ fontSize: '14px' }}>Cliquez sur "Ajouter un réseau social" pour commencer</p>
+                  </div>
+                )}
+              </div>
+            </ContentSection>
+          );
+
       default:
         return <ContentSection><SectionTitle>Section en cours de développement</SectionTitle></ContentSection>;
     }
@@ -1971,6 +2098,126 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               💾 Sauvegarder
             </ActionButton>
             <ActionButton onClick={handleCloseModal}>
+              ❌ Annuler
+            </ActionButton>
+          </div>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal pour ajouter/modifier un réseau social */}
+      <Modal $isOpen={isAddingSocial || editingSocial !== null}>
+        <ModalContent>
+          <ModalHeader>
+            <ModalTitle>
+              {editingSocial ? '✏️ Modifier le réseau social' : '➕ Ajouter un réseau social'}
+            </ModalTitle>
+            <CloseButton onClick={() => {
+              setIsAddingSocial(false);
+              setEditingSocial(null);
+              setSocialFormData({});
+            }}>×</CloseButton>
+          </ModalHeader>
+
+          <FormGroup>
+            <Label>Nom du réseau social *</Label>
+            <Input 
+              type="text" 
+              value={socialFormData.name || ''} 
+              onChange={(e) => {
+                setSocialFormData({...socialFormData, name: e.target.value});
+              }}
+              placeholder="Ex: Telegram, Instagram, WhatsApp..." 
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label>Emoji *</Label>
+            <Input 
+              type="text" 
+              value={socialFormData.emoji || ''} 
+              onChange={(e) => {
+                setSocialFormData({...socialFormData, emoji: e.target.value});
+              }}
+              placeholder="📱 🎮 📷 💬 📞"
+              style={{ fontSize: '20px' }}
+            />
+            <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+              💡 Utilisez un seul emoji pour représenter ce réseau social
+            </small>
+          </FormGroup>
+
+          <FormGroup>
+            <Label>URL du réseau social *</Label>
+            <Input 
+              type="url" 
+              value={socialFormData.url || ''} 
+              onChange={(e) => {
+                setSocialFormData({...socialFormData, url: e.target.value});
+              }}
+              placeholder="https://t.me/bipcosa06" 
+            />
+            <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+              💡 URL complète avec https:// (ex: https://t.me/username, https://wa.me/33123456789)
+            </small>
+          </FormGroup>
+
+          <FormGroup>
+            <Label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <input
+                type="checkbox"
+                checked={socialFormData.isActive !== false}
+                onChange={(e) => {
+                  setSocialFormData({...socialFormData, isActive: e.target.checked});
+                }}
+                style={{ transform: 'scale(1.2)' }}
+              />
+              Activer ce réseau social
+            </Label>
+            <small style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+              💡 Seuls les réseaux actifs apparaîtront sur la page publique
+            </small>
+          </FormGroup>
+
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '30px' }}>
+            <ActionButton 
+              $variant="add" 
+              onClick={async () => {
+                if (!socialFormData.name || !socialFormData.emoji || !socialFormData.url) {
+                  alert('Veuillez remplir tous les champs obligatoires');
+                  return;
+                }
+
+                try {
+                  if (editingSocial) {
+                    // Modification
+                    await dataService.updateSocialNetwork(editingSocial.id, socialFormData);
+                    console.log('✅ Réseau social modifié avec succès');
+                  } else {
+                    // Ajout
+                    await dataService.addSocialNetwork(socialFormData);
+                    console.log('✅ Réseau social ajouté avec succès');
+                  }
+                  
+                  // Rafraîchir les données et fermer le modal
+                  await refreshData();
+                  setIsAddingSocial(false);
+                  setEditingSocial(null);
+                  setSocialFormData({});
+                  
+                  alert(editingSocial ? '✅ Réseau social modifié !' : '✅ Réseau social ajouté !');
+                } catch (error) {
+                  console.error('❌ Erreur:', error);
+                  alert(`❌ Erreur: ${error.message || error}`);
+                }
+              }}
+            >
+              💾 Sauvegarder
+            </ActionButton>
+            <ActionButton onClick={() => {
+              setIsAddingSocial(false);
+              setEditingSocial(null);
+              setSocialFormData({});
+            }}>
               ❌ Annuler
             </ActionButton>
           </div>

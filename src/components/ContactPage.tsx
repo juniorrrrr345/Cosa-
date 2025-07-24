@@ -72,16 +72,12 @@ const LogoImage = styled.img`
   height: 60px;
   max-width: 300px;
   width: auto;
-  background: rgba(255,255,255,0.9);
-  border-radius: 10px;
-  padding: 8px;
-  filter: drop-shadow(0 0 15px rgba(0,0,0,0.3));
+  filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
   transition: transform 0.3s ease, filter 0.3s ease;
   
   &:hover {
     transform: scale(1.05);
-    filter: drop-shadow(0 0 25px rgba(0,0,0,0.5));
-    background: rgba(255,255,255,1);
+    filter: drop-shadow(0 0 25px rgba(0,0,0,0.9));
   }
 `;
 

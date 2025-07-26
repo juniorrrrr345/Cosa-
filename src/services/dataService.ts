@@ -87,7 +87,7 @@ const defaultSocialNetworks: SocialNetwork[] = [
   {
     id: 'telegram',
     name: 'Telegram',
-    icon: '📱',
+    emoji: '📱',
     url: 'https://t.me/bipcosa06',
     isActive: true,
     order: 1,
@@ -97,7 +97,7 @@ const defaultSocialNetworks: SocialNetwork[] = [
   {
     id: 'instagram',
     name: 'Instagram',
-    icon: '📸',
+    emoji: '📸',
     url: 'https://instagram.com/bipcosa06',
     isActive: true,
     order: 2,
@@ -117,6 +117,7 @@ export class DataService {
   private readonly CONFIG_KEY = 'bipcosa06_config';
   private readonly INFO_CONTENTS_KEY = 'bipcosa06_info_contents';
   private readonly CONTACT_CONTENTS_KEY = 'bipcosa06_contact_contents';
+  private readonly SOCIAL_NETWORKS_KEY = 'bipcosa06_social_networks';
   
   constructor() {
     console.log('🚀 DataService DYNAMIQUE initialisé');
@@ -144,6 +145,12 @@ export class DataService {
       if (!localStorage.getItem(this.FARMS_KEY)) {
         localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
         console.log('🏠 Fermes par défaut initialisées');
+      }
+
+      // Initialiser les réseaux sociaux
+      if (!localStorage.getItem(this.SOCIAL_NETWORKS_KEY)) {
+        localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(defaultSocialNetworks));
+        console.log('🌐 Réseaux sociaux par défaut initialisés');
       }
 
       // Initialiser le contenu info
@@ -510,11 +517,26 @@ export class DataService {
 
   // === RÉSEAUX SOCIAUX ===
   getSocialNetworks(): Promise<SocialNetwork[]> {
-    return Promise.resolve([...defaultSocialNetworks]);
+    return Promise.resolve(this.getSocialNetworksSync());
   }
 
   getSocialNetworksSync(): SocialNetwork[] {
-    return [...defaultSocialNetworks];
+    try {
+      if (typeof window === 'undefined') return [...defaultSocialNetworks];
+      
+      const stored = localStorage.getItem(this.SOCIAL_NETWORKS_KEY);
+      if (stored) {
+        const networks = JSON.parse(stored);
+        console.log('🌐 getSocialNetworksSync - Réseaux depuis localStorage:', networks.length);
+        return networks;
+      }
+      
+      console.log('🌐 getSocialNetworksSync - Réseaux par défaut');
+      return [...defaultSocialNetworks];
+    } catch (error) {
+      console.error('❌ Erreur lecture réseaux sociaux:', error);
+      return [...defaultSocialNetworks];
+    }
   }
 
   addSocialNetwork(network: Omit<SocialNetwork, 'id' | 'createdAt' | 'updatedAt'>): SocialNetwork {
@@ -524,29 +546,64 @@ export class DataService {
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    defaultSocialNetworks.push(newNetwork);
+    
+    const networks = this.getSocialNetworksSync();
+    networks.push(newNetwork);
+    
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
+    }
+    
+    console.log('✅ Réseau social ajouté:', newNetwork.name);
     this.notifyDataUpdate();
     return newNetwork;
   }
 
   updateSocialNetwork(id: string, updates: Partial<SocialNetwork>): SocialNetwork | null {
-    const index = defaultSocialNetworks.findIndex(n => n.id === id);
+    const networks = this.getSocialNetworksSync();
+    const index = networks.findIndex(n => n.id === id);
+    
     if (index !== -1) {
-      defaultSocialNetworks[index] = { ...defaultSocialNetworks[index], ...updates, updatedAt: new Date() };
+      networks[index] = { ...networks[index], ...updates, updatedAt: new Date() };
+      
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
+      }
+      
+      console.log('✅ Réseau social mis à jour:', networks[index].name);
       this.notifyDataUpdate();
-      return defaultSocialNetworks[index];
+      return networks[index];
     }
     return null;
   }
 
   deleteSocialNetwork(id: string): boolean {
-    const index = defaultSocialNetworks.findIndex(n => n.id === id);
+    const networks = this.getSocialNetworksSync();
+    const index = networks.findIndex(n => n.id === id);
+    
     if (index !== -1) {
-      defaultSocialNetworks.splice(index, 1);
+      const deletedNetwork = networks[index];
+      networks.splice(index, 1);
+      
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
+      }
+      
+      console.log('✅ Réseau social supprimé:', deletedNetwork.name);
       this.notifyDataUpdate();
       return true;
     }
     return false;
+  }
+
+  // Méthode pour réinitialiser les réseaux sociaux (utile pour le debug)
+  resetSocialNetworks(): SocialNetwork[] {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(defaultSocialNetworks));
+    }
+    console.log('🔄 Réseaux sociaux réinitialisés aux valeurs par défaut');
+    this.notifyDataUpdate();
+    return [...defaultSocialNetworks];
   }
 
   // === CONTENU INFO - SYSTÈME DYNAMIQUE ===

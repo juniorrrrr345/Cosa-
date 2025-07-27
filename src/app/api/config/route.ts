@@ -1,42 +1,58 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mongoService from '@/services/mongoService';
 
+// Configuration statique de fallback
+const STATIC_CONFIG = {
+  name: "BiP Cosa",
+  description: "Votre boutique de qualité premium",
+  logo: "/logo.png",
+  primaryColor: "#4CAF50",
+  secondaryColor: "#2196F3",
+  backgroundImage: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1920&h=1080&fit=crop&crop=center",
+  themeMode: "dark"
+};
+
 export async function GET(request: NextRequest) {
   try {
-    const config = await mongoService.getConfig();
+    console.log('🔍 API GET /config appelée');
+    const config = await mongoService.getShopConfig();
+    
+    // Si MongoDB retourne vide ou échoue, utiliser la config statique
+    if (!config) {
+      console.log('📦 MongoDB vide/indisponible, utilisation config statique');
+      return NextResponse.json(STATIC_CONFIG);
+    }
+    
+    console.log('📦 Config depuis MongoDB:', config);
     return NextResponse.json(config);
   } catch (error) {
-    console.error('Erreur API GET config:', error);
-    // Fallback avec config par défaut
-    const fallbackConfig = {
-      backgroundType: 'gradient',
-      backgroundImage: '',
-      backgroundUrl: '',
-      shopName: 'BIPCOSA06',
-      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon'
-    };
-    return NextResponse.json(fallbackConfig);
+    console.error('❌ Erreur API GET config:', error);
+    console.log('📦 Fallback vers config statique');
+    return NextResponse.json(STATIC_CONFIG);
   }
 }
 
-export async function PUT(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const updates = await request.json();
+    console.log('🔍 API POST /config appelée');
+    const configData = await request.json();
     
-    const updatedConfig = await mongoService.updateConfig(updates);
+    if (!configData.name) {
+      return NextResponse.json(
+        { error: 'Le nom de la boutique est requis' },
+        { status: 400 }
+      );
+    }
+
+    const updatedConfig = await mongoService.updateShopConfig(configData);
+    console.log('✅ Config mise à jour:', updatedConfig);
     
     return NextResponse.json(updatedConfig);
   } catch (error) {
-    console.error('Erreur API PUT config:', error);
-    // Fallback : retourner les updates avec config par défaut
-    const fallbackConfig = {
-      backgroundType: 'gradient',
-      backgroundImage: '',
-      backgroundUrl: '',
-      shopName: 'BIPCOSA06',
-      description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon',
-      ...updates // Appliquer les mises à jour
-    };
-    return NextResponse.json(fallbackConfig);
+    console.error('❌ Erreur API POST config:', error);
+    
+    // Fallback: retourner la config telle qu'elle
+    console.log('📦 Fallback: config mise à jour sans persistance');
+    return NextResponse.json({ ...STATIC_CONFIG, ...configData });
   }
 }

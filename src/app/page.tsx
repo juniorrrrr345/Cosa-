@@ -15,15 +15,26 @@ export default function MainPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFirstVisit, setIsFirstVisit] = useState(true);
 
-  // Toujours afficher le loading screen au démarrage
+  // Gérer la première utilisation
   useEffect(() => {
-    // Afficher le loading screen à chaque visite
-    setIsFirstVisit(true);
-    setIsLoading(true);
+    // Vérifier si c'est la première utilisation de la boutique
+    const hasUsedBefore = localStorage.getItem('bipcosa06_hasUsedBefore');
+    
+    if (!hasUsedBefore) {
+      // Première utilisation, afficher le loading screen
+      setIsFirstVisit(true);
+      setIsLoading(true);
+    } else {
+      // Pas la première utilisation, pas de loading screen
+      setIsFirstVisit(false);
+      setIsLoading(false);
+    }
   }, []);
 
   // Fonction appelée quand le chargement est terminé
   const handleLoadingComplete = () => {
+    // Marquer que l'utilisateur a déjà utilisé la boutique
+    localStorage.setItem('bipcosa06_hasUsedBefore', 'true');
     setIsLoading(false);
   };
 

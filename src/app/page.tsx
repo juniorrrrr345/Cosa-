@@ -15,22 +15,11 @@ export default function MainPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFirstVisit, setIsFirstVisit] = useState(true);
 
-  // Gérer le chargement depuis le panel admin
+  // Toujours afficher le loading screen au démarrage
   useEffect(() => {
-    // Vérifier si on vient du panel admin
-    const comingFromAdmin = localStorage.getItem('showLoadingFromAdmin');
-    
-    if (comingFromAdmin) {
-      // Venir du panel admin, afficher le loading screen
-      setIsFirstVisit(true);
-      setIsLoading(true);
-      // Nettoyer le flag après utilisation
-      localStorage.removeItem('showLoadingFromAdmin');
-    } else {
-      // Accès normal, pas de loading screen
-      setIsFirstVisit(false);
-      setIsLoading(false);
-    }
+    // Afficher le loading screen à chaque visite
+    setIsFirstVisit(true);
+    setIsLoading(true);
   }, []);
 
   // Fonction appelée quand le chargement est terminé

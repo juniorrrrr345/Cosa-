@@ -124,6 +124,11 @@ const MainContent = styled.div<{ $sidebarOpen: boolean }>`
   @media (min-width: 768px) {
     padding: 20px;
   }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 10px;
+  }
 `;
 
 const ContentHeader = styled.div`
@@ -181,6 +186,12 @@ const SectionTitle = styled.h3`
   font-weight: 600;
   margin: 0 0 20px 0;
   color: white;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 16px;
+    margin: 0 0 15px 0;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -420,6 +431,117 @@ const ActionButton = styled.button<{ $variant?: 'edit' | 'delete' | 'add' }>`
         `;
     }
   }}
+`;
+
+// Composants styled pour les réseaux sociaux responsives
+const SocialNetworkCard = styled.div<{ $isActive: boolean }>`
+  background: rgba(255,255,255,0.05);
+  border: 2px solid ${props => props.$isActive ? '#4ecdc4' : 'rgba(255,255,255,0.2)'};
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    padding: 18px;
+    gap: 15px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 15px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+`;
+
+const SocialNetworkInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    flex: none;
+  }
+`;
+
+const SocialNetworkEmoji = styled.div`
+  font-size: 32px;
+  min-width: 50px;
+  text-align: center;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    font-size: 30px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 28px;
+    min-width: 40px;
+  }
+`;
+
+const SocialNetworkDetails = styled.div`
+  flex: 1;
+`;
+
+const SocialNetworkName = styled.h4`
+  margin: 0 0 5px 0;
+  color: white;
+  font-size: 16px;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 15px;
+  }
+`;
+
+const SocialNetworkUrl = styled.p`
+  margin: 0 0 5px 0;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  word-break: break-all;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
+`;
+
+const SocialNetworkStatus = styled.div`
+  font-size: 12px;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 11px;
+  }
+`;
+
+const SocialNetworkActions = styled.div`
+  display: flex;
+  gap: 10px;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+`;
+
+const ResponsiveActionButton = styled(ActionButton)`
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    flex: 1;
+  }
 `;
 
 const Modal = styled.div<{ $isOpen: boolean }>`
@@ -1724,44 +1846,38 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                 {socialNetworks
                   .sort((a, b) => a.order - b.order)
                   .map((social) => (
-                    <div
-                      key={social.id}
-                      style={{
-                        background: 'rgba(255,255,255,0.05)',
-                        border: `2px solid ${social.isActive ? '#4ecdc4' : 'rgba(255,255,255,0.2)'}`,
-                        borderRadius: '15px',
-                        padding: '20px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '20px'
-                      }}
-                    >
-                      <div style={{ fontSize: '32px', minWidth: '50px', textAlign: 'center' }}>
-                        {social.emoji}
-                      </div>
-                      
-                      <div style={{ flex: 1 }}>
-                        <h4 style={{ margin: '0 0 5px 0', color: 'white', fontSize: '16px' }}>
-                          {social.name}
-                        </h4>
-                        <p style={{ margin: '0 0 5px 0', color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
-                          {social.url}
-                        </p>
-                        <div style={{ fontSize: '12px' }}>
-                          <span style={{ 
-                            color: social.isActive ? '#4ecdc4' : 'rgba(255,255,255,0.5)',
-                            fontWeight: 'bold'
-                          }}>
-                            {social.isActive ? '✅ Actif' : '⭕ Inactif'}
-                          </span>
-                          <span style={{ color: 'rgba(255,255,255,0.5)', marginLeft: '15px' }}>
-                            Ordre: {social.order}
-                          </span>
-                        </div>
-                      </div>
+                    <SocialNetworkCard key={social.id} $isActive={social.isActive}>
+                      <SocialNetworkInfo>
+                        <SocialNetworkEmoji>
+                          {social.emoji}
+                        </SocialNetworkEmoji>
+                        
+                        <SocialNetworkDetails>
+                          <SocialNetworkName>
+                            {social.name}
+                          </SocialNetworkName>
+                          <SocialNetworkUrl>
+                            {social.url}
+                          </SocialNetworkUrl>
+                          <SocialNetworkStatus>
+                            <span style={{ 
+                              color: social.isActive ? '#4ecdc4' : 'rgba(255,255,255,0.5)',
+                              fontWeight: 'bold'
+                            }}>
+                              {social.isActive ? '✅ Actif' : '⭕ Inactif'}
+                            </span>
+                            <span style={{ 
+                              color: 'rgba(255,255,255,0.5)', 
+                              marginLeft: '15px' 
+                            }}>
+                              Ordre: {social.order}
+                            </span>
+                          </SocialNetworkStatus>
+                        </SocialNetworkDetails>
+                      </SocialNetworkInfo>
 
-                      <div style={{ display: 'flex', gap: '10px' }}>
-                        <ActionButton
+                      <SocialNetworkActions>
+                        <ResponsiveActionButton
                           onClick={() => {
                             setEditingSocial(social);
                             setSocialFormData(social);
@@ -1769,9 +1885,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                           style={{ padding: '8px 15px', fontSize: '14px' }}
                         >
                           ✏️ Modifier
-                        </ActionButton>
+                        </ResponsiveActionButton>
                         
-                        <ActionButton
+                        <ResponsiveActionButton
                           onClick={() => {
                             const updatedSocial = { ...social, isActive: !social.isActive };
                             dataService.updateSocialNetwork(social.id, updatedSocial);
@@ -1784,9 +1900,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                           }}
                         >
                           {social.isActive ? '⭕ Désactiver' : '✅ Activer'}
-                        </ActionButton>
+                        </ResponsiveActionButton>
 
-                        <ActionButton
+                        <ResponsiveActionButton
                           $variant="danger"
                           onClick={() => {
                             if (confirm(`Supprimer le réseau "${social.name}" ?`)) {
@@ -1797,9 +1913,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                           style={{ padding: '8px 15px', fontSize: '14px' }}
                         >
                           🗑️ Supprimer
-                        </ActionButton>
-                      </div>
-                    </div>
+                        </ResponsiveActionButton>
+                      </SocialNetworkActions>
+                    </SocialNetworkCard>
                   ))}
 
                 {socialNetworks.length === 0 && (

@@ -103,11 +103,33 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: calc(100vh - 160px);
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    padding: 15px;
+    max-width: 100%;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 10px;
+    min-height: calc(100vh - 120px);
+  }
 `;
 
 const Header = styled.div`
   text-align: center;
   margin-bottom: 40px;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    margin-bottom: 30px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Title = styled.h1`
@@ -117,8 +139,20 @@ const Title = styled.h1`
   margin: 0 0 10px 0;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 
+  /* Desktop */
   @media (min-width: 768px) {
     font-size: 32px;
+  }
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    font-size: 26px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 22px;
+    margin: 0 0 8px 0;
   }
 `;
 
@@ -127,15 +161,40 @@ const Subtitle = styled.p`
   color: rgba(255,255,255,0.8);
   margin: 0;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 0 10px;
+  }
 `;
 
 const SocialGrid = styled.div`
   display: grid;
   gap: 20px;
   grid-template-columns: 1fr;
+  width: 100%;
   
+  /* Desktop */
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    gap: 15px;
+    grid-template-columns: 1fr;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    gap: 12px;
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -162,12 +221,42 @@ const SocialCard = styled.a`
   &:active {
     transform: translateY(-2px);
   }
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    padding: 20px;
+    gap: 15px;
+    border-radius: 15px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 15px;
+    gap: 12px;
+    border-radius: 12px;
+    
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
 `;
 
 const SocialEmoji = styled.div`
   font-size: 40px;
   min-width: 60px;
   text-align: center;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    font-size: 36px;
+    min-width: 55px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 32px;
+    min-width: 50px;
+  }
 `;
 
 const SocialInfo = styled.div`
@@ -179,12 +268,29 @@ const SocialName = styled.h3`
   font-weight: 600;
   margin: 0 0 5px 0;
   color: white;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    font-size: 17px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 16px;
+    margin: 0 0 4px 0;
+  }
 `;
 
 const SocialDescription = styled.p`
   font-size: 14px;
   color: rgba(255,255,255,0.7);
   margin: 0;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 13px;
+    line-height: 1.4;
+  }
 `;
 
 const SocialLink = styled.div`
@@ -192,6 +298,12 @@ const SocialLink = styled.div`
   color: #4ecdc4;
   margin-top: 5px;
   word-break: break-all;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 11px;
+    margin-top: 4px;
+  }
 `;
 
 const BackButton = styled.button`
@@ -211,6 +323,21 @@ const BackButton = styled.button`
     border-color: rgba(255,255,255,0.5);
     transform: translateY(-2px);
   }
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    padding: 10px 20px;
+    margin-bottom: 25px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 8px 16px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    width: auto;
+    align-self: flex-start;
+  }
 `;
 
 const EmptyState = styled.div`
@@ -220,17 +347,41 @@ const EmptyState = styled.div`
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 20px;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    padding: 50px 15px;
+    border-radius: 15px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 40px 15px;
+    border-radius: 12px;
+  }
 `;
 
 const EmptyIcon = styled.div`
   font-size: 48px;
   margin-bottom: 20px;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 40px;
+    margin-bottom: 15px;
+  }
 `;
 
 const EmptyText = styled.p`
   color: rgba(255,255,255,0.8);
   font-size: 16px;
   margin: 0;
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    font-size: 14px;
+    line-height: 1.4;
+  }
 `;
 
 interface SocialNetworksPageProps {

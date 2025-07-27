@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
+import mongoService from '@/services/mongoService';
 
-// Données statiques de fallback
+// Données statiques de fallback SEULEMENT si MongoDB échoue complètement
 const STATIC_PRODUCTS = [
   {
     id: 1,
@@ -70,63 +69,29 @@ const STATIC_PRODUCTS = [
   }
 ];
 
-// Chemin vers le fichier de données
-const DATA_FILE = path.join(process.cwd(), 'data', 'products.json');
-
-// Assurer que le dossier data existe
-async function ensureDataDir() {
-  const dataDir = path.dirname(DATA_FILE);
-  try {
-    await fs.access(dataDir);
-  } catch {
-    await fs.mkdir(dataDir, { recursive: true });
-  }
-}
-
-// Lire les produits depuis le fichier
-async function readProducts() {
-  try {
-    await ensureDataDir();
-    const data = await fs.readFile(DATA_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    // Si le fichier n'existe pas, créer avec les données par défaut
-    console.log('📁 Fichier produits inexistant, création avec données par défaut');
-    await writeProducts(STATIC_PRODUCTS);
-    return STATIC_PRODUCTS;
-  }
-}
-
-// Écrire les produits dans le fichier
-async function writeProducts(products: any[]) {
-  try {
-    await ensureDataDir();
-    await fs.writeFile(DATA_FILE, JSON.stringify(products, null, 2));
-    console.log('💾 Produits sauvegardés:', products.length);
-  } catch (error) {
-    console.error('❌ Erreur sauvegarde:', error);
-  }
-}
-
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 API GET /products - SYSTÈME FICHIER JSON');
-    const products = await readProducts();
-    console.log(`📦 Retour ${products.length} produits depuis fichier JSON`);
-    return NextResponse.json(products);
+    console.log('🔍 API GET /products - MongoDB DIRECT');
+    
+    // Essayer MongoDB DIRECTEMENT sans timeout pour voir ce qui se passe
+    const products = await mongoService.getProducts();
+    console.log('📦 MongoDB résultat brut:', products ? products.length : 'null', products);
+    
+    // Retourner ce que MongoDB retourne EXACTEMENT (même si vide)
+    return NextResponse.json(products || []);
+    
   } catch (error) {
-    console.error('❌ Erreur API GET products:', error);
-    console.log('📦 Fallback vers données statiques');
+    console.error('❌ Erreur MongoDB:', error);
+    console.log('📦 Fallback vers données statiques à cause erreur');
     return NextResponse.json(STATIC_PRODUCTS);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🔍 API POST /products - SYSTÈME FICHIER JSON');
+    console.log('🔍 API POST /products - MongoDB DIRECT');
     const productData = await request.json();
     
-    // Validation des données requises
     if (!productData.name || !productData.description) {
       return NextResponse.json(
         { error: 'Le nom et la description sont requis' },
@@ -134,25 +99,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const products = await readProducts();
-    const newId = Math.max(...products.map((p: any) => p.id), 0) + 1;
-    const newProduct = { ...productData, id: newId };
+    const createdProduct = await mongoService.addProduct(productData);
+    console.log('✅ Produit créé MongoDB:', createdProduct);
     
-    products.push(newProduct);
-    await writeProducts(products);
-    
-    console.log('✅ Produit ajouté:', newProduct.name);
-    return NextResponse.json(newProduct, { status: 201 });
+    return NextResponse.json(createdProduct, { status: 201 });
   } catch (error) {
     console.error('❌ Erreur API POST products:', error);
-    
-    // Fallback: créer un ID et retourner le produit avec un ID temporaire
-    const fallbackProduct = {
-      ...productData,
-      id: Date.now() // ID temporaire basé sur timestamp
-    };
-    
-    console.log('📦 Fallback: produit créé avec ID temporaire');
-    return NextResponse.json(fallbackProduct, { status: 201 });
+    return NextResponse.json(
+      { error: 'Erreur lors de la création du produit' },
+      { status: 500 }
+    );
   }
 }

@@ -46,31 +46,49 @@ class MongoService {
   }
 
   private async initializeDefaultData() {
-    if (!this.db || !this.isConnected) return;
+    if (!this.db || !this.isConnected) {
+      console.log('⚠️ MongoDB non connecté pour initialisation');
+      return;
+    }
 
     try {
-      // Vérifier si des produits existent déjà
-      const productsCount = await this.db.collection('products').countDocuments();
+      console.log('🔄 Vérification/Initialisation des données MongoDB...');
       
-      if (productsCount === 0) {
-        console.log('🔄 Initialisation des données par défaut...');
-        
-        // Insérer les catégories par défaut
+      // TOUJOURS vérifier et initialiser si vide
+      const productsCount = await this.db.collection('products').countDocuments();
+      const categoriesCount = await this.db.collection('categories').countDocuments();
+      const farmsCount = await this.db.collection('farms').countDocuments();
+      
+      console.log(`📊 État actuel: ${productsCount} produits, ${categoriesCount} catégories, ${farmsCount} farms`);
+      
+      // Insérer les catégories si vides
+      if (categoriesCount === 0) {
+        console.log('📦 Initialisation catégories...');
         await this.db.collection('categories').insertMany([
           { value: 'indica', label: 'Indica' },
           { value: 'sativa', label: 'Sativa' },
-          { value: 'hybrid', label: 'Hybride' }
+          { value: 'hybrid', label: 'Hybride' },
+          { value: 'indoor', label: 'Indoor' },
+          { value: 'outdoor', label: 'Outdoor' }
         ]);
+        console.log('✅ Catégories initialisées');
+      }
 
-        // Insérer les farms par défaut
+      // Insérer les farms si vides
+      if (farmsCount === 0) {
+        console.log('📦 Initialisation farms...');
         await this.db.collection('farms').insertMany([
-          { value: 'holland', label: 'Holland', country: '🇳🇱 HOLLAND' },
-          { value: 'espagne', label: 'Espagne', country: '🇪🇸 ESPAGNOL' },
-          { value: 'calispain', label: 'Calispain', country: '🇺🇸🇪🇸 CALISPAIN' },
-          { value: 'premium', label: 'Premium', country: 'PREMIUM' }
+          { value: 'holland', label: 'Holland', country: '🇳🇱' },
+          { value: 'espagne', label: 'Espagne', country: '🇪🇸' },
+          { value: 'calispain', label: 'Calispain', country: '🏴‍☠️' },
+          { value: 'premium', label: 'Premium', country: '⭐' }
         ]);
+        console.log('✅ Farms initialisées');
+      }
 
-        // Insérer les produits par défaut
+      // Insérer les produits si vides
+      if (productsCount === 0) {
+        console.log('📦 Initialisation produits...');
         await this.db.collection('products').insertMany([
           {
             id: 1,
@@ -81,97 +99,84 @@ class MongoService {
             flagText: "🇳🇱 HOLLAND",
             category: "indica",
             farm: "holland",
-            description: "Une variété indica premium avec des arômes sucrés et terreux. Parfaite pour la relaxation en soirée.",
+            description: "Une variété indica premium avec des arômes sucrés et terreux.",
             prices: [
-              { weight: "1g", price: "12€" },
-              { weight: "3.5g", price: "40€" },
-              { weight: "7g", price: "75€" },
-              { weight: "14g", price: "140€" },
-              { weight: "28g", price: "260€" }
-            ],
-            video: "https://www.w3schools.com/html/mov_bbb.mp4",
-            createdAt: new Date(),
-            updatedAt: new Date()
+              { id: "1", weight: "1g", price: "12€" },
+              { id: "2", weight: "3.5g", price: "40€" },
+              { id: "3", weight: "7g", price: "75€" }
+            ]
           },
           {
             id: 2,
             name: "POWER HAZE",
-            quality: "Qualité mid",
+            quality: "Qualité Mid",
             image: "https://images.unsplash.com/photo-1574781330855-d0db2706b3d0?w=400&h=300&fit=crop&crop=center",
-            flagColor: "#333333",
-            flagText: "🇪🇸 ESPAGNOL",
+            flagColor: "#4CAF50",
+            flagText: "🇪🇸 ESPAGNE",
             category: "sativa",
             farm: "espagne",
-            description: "Sativa énergisante avec des effets cérébraux puissants. Idéale pour la créativité et l'activité diurne.",
+            description: "Sativa énergisante avec des effets cérébraux puissants.",
             prices: [
-              { weight: "1g", price: "10€" },
-              { weight: "3.5g", price: "32€" },
-              { weight: "7g", price: "60€" },
-              { weight: "14g", price: "110€" },
-              { weight: "28g", price: "200€" }
-            ],
-            video: "https://www.w3schools.com/html/mov_bbb.mp4",
-            createdAt: new Date(),
-            updatedAt: new Date()
+              { id: "1", weight: "1g", price: "10€" },
+              { id: "2", weight: "3.5g", price: "32€" },
+              { id: "3", weight: "7g", price: "60€" }
+            ]
           },
           {
             id: 3,
-            name: "NINE LIONS",
-            quality: "Qualité A+++",
-            image: "https://images.unsplash.com/photo-1574899420662-b4f36025552a?w=400&h=300&fit=crop&crop=center",
-            flagColor: "#333333",
-            flagText: "🇺🇸🇪🇸 CALISPAIN",
+            name: "AMNESIA",
+            quality: "Qualité Top",
+            image: "https://images.unsplash.com/photo-1583065173640-8ad0c93a1b5a?w=400&h=300&fit=crop&crop=center",
+            flagColor: "#FF9800",
+            flagText: "🏴‍☠️ CALISPAIN",
             category: "hybrid",
             farm: "calispain",
-            description: "Hybride équilibré de Californie et d'Espagne. Combinaison parfaite d'euphorie et de relaxation.",
+            description: "Hybride équilibré avec des effets puissants et durables.",
             prices: [
-              { weight: "1g", price: "15€" },
-              { weight: "3.5g", price: "50€" },
-              { weight: "7g", price: "95€" },
-              { weight: "14g", price: "180€" },
-              { weight: "28g", price: "340€" }
-            ],
-            video: "https://www.w3schools.com/html/mov_bbb.mp4",
-            createdAt: new Date(),
-            updatedAt: new Date()
+              { id: "1", weight: "1g", price: "15€" },
+              { id: "2", weight: "3.5g", price: "50€" },
+              { id: "3", weight: "7g", price: "90€" }
+            ]
           },
           {
             id: 4,
-            name: "BUBBLEGUM GELATO",
+            name: "BLUE DREAM",
             quality: "Qualité Premium",
-            image: "https://images.unsplash.com/photo-1545139813-4e3e9ac2dbb2?w=400&h=300&fit=crop&crop=center",
-            flagColor: "#333333",
-            flagText: "PREMIUM",
-            category: "hybrid",
+            image: "https://images.unsplash.com/photo-1582017719274-34a06d53caa3?w=400&h=300&fit=crop&crop=center",
+            flagColor: "#9C27B0",
+            flagText: "⭐ PREMIUM",
+            category: "sativa",
             farm: "premium",
-            description: "Variété premium avec des saveurs de bubble-gum et gelato. Expérience gustative unique et effets équilibrés.",
+            description: "Sativa premium avec des arômes de myrtille et des effets créatifs.",
             prices: [
-              { weight: "1g", price: "18€" },
-              { weight: "3.5g", price: "60€" },
-              { weight: "7g", price: "110€" },
-              { weight: "14g", price: "200€" },
-              { weight: "28g", price: "380€" }
-            ],
-            video: "https://www.w3schools.com/html/mov_bbb.mp4",
-            createdAt: new Date(),
-            updatedAt: new Date()
+              { id: "1", weight: "1g", price: "18€" },
+              { id: "2", weight: "3.5g", price: "60€" },
+              { id: "3", weight: "7g", price: "110€" }
+            ]
           }
         ]);
-
-        // Insérer la configuration par défaut
-        await this.db.collection('config').insertOne({
-          backgroundType: 'gradient',
-          backgroundColor: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
-          shopName: 'BIPCOSA06',
-          description: 'Boutique CANAGOOD 69 - Numéro 1 Lyon',
-          createdAt: new Date(),
-          updatedAt: new Date()
-        });
-
-        console.log('✅ Données par défaut initialisées');
+        console.log('✅ Produits initialisés');
       }
+
+      // Initialiser la config si elle n'existe pas
+      const configCount = await this.db.collection('config').countDocuments();
+      if (configCount === 0) {
+        console.log('📦 Initialisation config...');
+        await this.db.collection('config').insertOne({
+          name: "BiP Cosa",
+          description: "Votre boutique de qualité premium",
+          logo: "/logo.png",
+          primaryColor: "#4CAF50",
+          secondaryColor: "#2196F3",
+          backgroundImage: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1920&h=1080&fit=crop&crop=center",
+          themeMode: "dark"
+        });
+        console.log('✅ Config initialisée');
+      }
+
+      console.log('🚀 Initialisation MongoDB terminée avec succès');
     } catch (error) {
-      console.error('❌ Erreur lors de l\'initialisation des données:', error);
+      console.error('❌ Erreur initialisation MongoDB:', error);
     }
   }
 
@@ -393,6 +398,13 @@ class MongoService {
       console.error('Erreur lors de la mise à jour de la config:', error);
       throw error;
     }
+  }
+
+  // Méthode publique pour forcer la réinitialisation
+  async forceInitializeData(): Promise<void> {
+    console.log('🔄 Réinitialisation forcée des données MongoDB...');
+    await this.ensureConnection();
+    await this.initializeDefaultData();
   }
 
   // Méthode de fermeture de connexion

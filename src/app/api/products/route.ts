@@ -74,9 +74,20 @@ export async function GET(request: NextRequest) {
     console.log('🔍 API GET /products appelée');
     const products = await mongoService.getProducts();
     
-    // Si MongoDB retourne vide ou échoue, utiliser les données statiques
+    // Si MongoDB retourne vide, forcer l'initialisation et réessayer
     if (!products || products.length === 0) {
-      console.log('📦 MongoDB vide/indisponible, utilisation données statiques');
+      console.log('📦 MongoDB vide, tentative initialisation forcée...');
+      await mongoService.forceInitializeData();
+      
+      // Réessayer après initialisation
+      const productsAfterInit = await mongoService.getProducts();
+      if (productsAfterInit && productsAfterInit.length > 0) {
+        console.log(`✅ ${productsAfterInit.length} produits récupérés après initialisation`);
+        return NextResponse.json(productsAfterInit);
+      }
+      
+      // Si toujours vide, utiliser fallback
+      console.log('📦 Fallback vers données statiques');
       return NextResponse.json(STATIC_PRODUCTS);
     }
     

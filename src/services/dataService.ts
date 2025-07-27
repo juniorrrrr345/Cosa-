@@ -221,16 +221,11 @@ export class DataService {
       const productsResponse = await fetch('/api/products');
       if (productsResponse.ok) {
         const products = await productsResponse.json();
-        if (products && products.length > 0) {
-          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-          console.log('📦 Produits synchronisés depuis API:', products.length);
-        } else {
-          // Si l'API ne retourne pas de produits, initialiser avec les données par défaut
-          console.log('📦 API vide, initialisation produits par défaut');
-          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
-        }
+        // ACCEPTER les tableaux vides (suppression réussie)
+        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+        console.log('📦 Produits synchronisés depuis API:', products.length);
       } else {
-        // Si l'API échoue, utiliser les données par défaut
+        // Si l'API échoue complètement, utiliser les données par défaut
         console.log('📦 API indisponible, utilisation produits par défaut');
         localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
       }
@@ -239,13 +234,9 @@ export class DataService {
       const categoriesResponse = await fetch('/api/categories');
       if (categoriesResponse.ok) {
         const categories = await categoriesResponse.json();
-        if (categories && categories.length > 0) {
-          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-          console.log('📂 Catégories synchronisées depuis API:', categories.length);
-        } else {
-          console.log('📂 API vide, initialisation catégories par défaut');
-          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
-        }
+        // ACCEPTER les tableaux vides
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+        console.log('📂 Catégories synchronisées depuis API:', categories.length);
       } else {
         console.log('📂 API indisponible, utilisation catégories par défaut');
         localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
@@ -255,13 +246,9 @@ export class DataService {
       const farmsResponse = await fetch('/api/farms');
       if (farmsResponse.ok) {
         const farms = await farmsResponse.json();
-        if (farms && farms.length > 0) {
-          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
-          console.log('🏠 Fermes synchronisées depuis API:', farms.length);
-        } else {
-          console.log('🏠 API vide, initialisation fermes par défaut');
-          localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
-        }
+        // ACCEPTER les tableaux vides
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        console.log('🏠 Fermes synchronisées depuis API:', farms.length);
       } else {
         console.log('🏠 API indisponible, utilisation fermes par défaut');
         localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
@@ -444,6 +431,8 @@ export class DataService {
 
   async deleteProduct(id: number): Promise<boolean> {
     try {
+      console.log('🗑️ Suppression produit ID:', id);
+      
       // PRIORITÉ 1: Supprimer via API (synchronisation temps réel)
       try {
         const response = await fetch(`/api/products/${id}`, {
@@ -453,9 +442,14 @@ export class DataService {
         if (response.ok) {
           console.log('✅ Produit supprimé via API:', id);
           
-          // Synchroniser immédiatement tous les appareils
+          // FORCER nettoyage cache et synchronisation IMMÉDIATE
+          this.lastSyncTime = 0; // Reset cooldown pour forcer sync
           await this.performSync();
           
+          // Double sécurité: forcer notification
+          this.notifyDataUpdate();
+          
+          console.log('🔄 Cache synchronisé après suppression');
           return true;
         }
       } catch (apiError) {

@@ -58,8 +58,24 @@ const LoadingContainer = styled.div<{ $backgroundStyle: React.CSSProperties }>`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
   color: white;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  
+  /* Assurer que le background est visible sur tous les appareils */
+  @media (max-width: 768px) {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  @media (max-width: 480px) {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    min-height: 100dvh; /* Pour les navigateurs mobiles modernes */
+  }
 `;
 
 // Overlay pour assurer la lisibilité
@@ -71,6 +87,16 @@ const Overlay = styled.div`
   height: 100%;
   background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3));
   z-index: -1;
+  
+  /* Tablette - Overlay plus léger pour voir le fond */
+  @media (max-width: 768px) {
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2));
+  }
+  
+  /* Mobile - Overlay encore plus léger */
+  @media (max-width: 480px) {
+    background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15));
+  }
 `;
 
 // Content container
@@ -101,9 +127,15 @@ const Logo = styled.img`
   width: auto;
   filter: drop-shadow(0 0 30px rgba(0,0,0,0.9));
   
-  /* Mobile */
+  /* Tablette - Ombre plus prononcée pour contraster avec le fond visible */
+  @media (max-width: 768px) {
+    filter: drop-shadow(0 0 40px rgba(0,0,0,0.8)) drop-shadow(0 0 10px rgba(255,255,255,0.3));
+  }
+  
+  /* Mobile - Ombre encore plus prononcée */
   @media (max-width: 480px) {
     height: 100px;
+    filter: drop-shadow(0 0 50px rgba(0,0,0,0.9)) drop-shadow(0 0 15px rgba(255,255,255,0.4));
   }
 `;
 
@@ -115,9 +147,15 @@ const LoadingTitle = styled.h1`
   text-shadow: 0 0 20px rgba(255,255,255,0.3);
   animation: ${fadeIn} 1s ease-out;
   
-  /* Mobile */
+  /* Tablette - Ombre plus prononcée pour contraster avec le fond visible */
+  @media (max-width: 768px) {
+    text-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.5);
+  }
+  
+  /* Mobile - Ombre encore plus prononcée */
   @media (max-width: 480px) {
     font-size: 24px;
+    text-shadow: 0 0 40px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.6);
   }
 `;
 
@@ -128,9 +166,15 @@ const LoadingSubtitle = styled.p`
   color: rgba(255,255,255,0.9);
   animation: ${fadeIn} 1s ease-out 0.3s both;
   
-  /* Mobile */
+  /* Tablette - Ombre pour contraster avec le fond visible */
+  @media (max-width: 768px) {
+    text-shadow: 0 0 20px rgba(0,0,0,0.7), 0 0 5px rgba(255,255,255,0.3);
+  }
+  
+  /* Mobile - Ombre plus prononcée */
   @media (max-width: 480px) {
     font-size: 14px;
+    text-shadow: 0 0 30px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.4);
   }
 `;
 

@@ -5,19 +5,9 @@
     "NEXT_PUBLIC_APP_URL": "https://cosa-tau.vercel.app"
   },
   "functions": {
-    "src/app/api/**/*.ts": {
-      "maxDuration": 30
+    "app/api/**/*.js": {
+      "maxDuration": 10
     }
   },
-  "regions": ["fra1"],
-  "rewrites": [
-    {
-      "source": "/panel",
-      "destination": "/panel"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    }
-  ]
+  "regions": ["fra1"]
 }

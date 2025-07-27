@@ -138,13 +138,37 @@ export class DataService {
   private initializeDefaultData(): void {
     if (typeof window === 'undefined') return;
     
+    // TOUJOURS initialiser les données par défaut en premier pour éviter les pages vides
+    this.ensureDefaultDataExists();
+    
     if (this.USE_REAL_TIME_SYNC) {
       console.log('🔄 Mode synchronisation temps réel - MongoDB prioritaire');
-      // En mode temps réel, on lance directement la sync
+      // En mode temps réel, on lance la sync après avoir garanti les données par défaut
       setTimeout(() => this.performSync(), 100);
     } else {
       // Mode fallback - utiliser localStorage
       this.initializeDefaultDataFallback();
+    }
+  }
+  
+  // S'assurer que les données par défaut existent toujours
+  private ensureDefaultDataExists(): void {
+    // Vérifier et initialiser les produits si absent
+    if (!localStorage.getItem(this.PRODUCTS_KEY)) {
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+      console.log('📦 Produits par défaut garantis');
+    }
+    
+    // Vérifier et initialiser les catégories si absent
+    if (!localStorage.getItem(this.CATEGORIES_KEY)) {
+      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+      console.log('📂 Catégories par défaut garanties');
+    }
+    
+    // Vérifier et initialiser les fermes si absent
+    if (!localStorage.getItem(this.FARMS_KEY)) {
+      localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+      console.log('🏠 Fermes par défaut garanties');
     }
   }
 
@@ -200,7 +224,15 @@ export class DataService {
         if (products && products.length > 0) {
           localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
           console.log('📦 Produits synchronisés depuis API:', products.length);
+        } else {
+          // Si l'API ne retourne pas de produits, initialiser avec les données par défaut
+          console.log('📦 API vide, initialisation produits par défaut');
+          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
         }
+      } else {
+        // Si l'API échoue, utiliser les données par défaut
+        console.log('📦 API indisponible, utilisation produits par défaut');
+        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
       }
       
       // Synchroniser les catégories via API
@@ -210,7 +242,13 @@ export class DataService {
         if (categories && categories.length > 0) {
           localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
           console.log('📂 Catégories synchronisées depuis API:', categories.length);
+        } else {
+          console.log('📂 API vide, initialisation catégories par défaut');
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
         }
+      } else {
+        console.log('📂 API indisponible, utilisation catégories par défaut');
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
       }
       
       // Synchroniser les fermes via API
@@ -220,7 +258,13 @@ export class DataService {
         if (farms && farms.length > 0) {
           localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
           console.log('🏠 Fermes synchronisées depuis API:', farms.length);
+        } else {
+          console.log('🏠 API vide, initialisation fermes par défaut');
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
         }
+      } else {
+        console.log('🏠 API indisponible, utilisation fermes par défaut');
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
       }
       
       // Synchroniser la config via API

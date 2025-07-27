@@ -15,25 +15,26 @@ export default function MainPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFirstVisit, setIsFirstVisit] = useState(true);
 
-  // Gérer la première visite et le chargement
+  // Gérer le chargement depuis le panel admin
   useEffect(() => {
-    // Vérifier si c'est la première visite
-    const hasVisited = localStorage.getItem('hasVisitedBefore');
+    // Vérifier si on vient du panel admin
+    const comingFromAdmin = localStorage.getItem('showLoadingFromAdmin');
     
-    if (hasVisited) {
-      // Pas la première visite, chargement rapide
+    if (comingFromAdmin) {
+      // Venir du panel admin, afficher le loading screen
+      setIsFirstVisit(true);
+      setIsLoading(true);
+      // Nettoyer le flag après utilisation
+      localStorage.removeItem('showLoadingFromAdmin');
+    } else {
+      // Accès normal, pas de loading screen
       setIsFirstVisit(false);
       setIsLoading(false);
-    } else {
-      // Première visite, afficher le loading screen complet
-      setIsFirstVisit(true);
-      // Le loading sera géré par LoadingScreen
     }
   }, []);
 
   // Fonction appelée quand le chargement est terminé
   const handleLoadingComplete = () => {
-    localStorage.setItem('hasVisitedBefore', 'true');
     setIsLoading(false);
   };
 

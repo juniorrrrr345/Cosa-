@@ -14,10 +14,13 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
       background: 'transparent',
       minHeight: '100vh',
       width: '100%',
+      maxWidth: '100vw',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      padding: '20px'
+      padding: '20px',
+      overflowX: 'hidden',
+      boxSizing: 'border-box'
     };
   }
   
@@ -48,10 +51,13 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
     backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
     width: '100%',
+    maxWidth: '100vw',
     color: 'white',
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     position: 'relative',
-    paddingBottom: '80px'
+    paddingBottom: '80px',
+    overflowX: 'hidden',
+    boxSizing: 'border-box'
   };
 };
 
@@ -103,6 +109,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: calc(100vh - 160px);
+  box-sizing: border-box;
   
   /* Tablette */
   @media (max-width: 768px) {
@@ -114,6 +121,8 @@ const ContentWrapper = styled.div`
   @media (max-width: 480px) {
     padding: 10px;
     min-height: calc(100vh - 120px);
+    max-width: calc(100vw - 20px);
+    margin: 0 auto;
   }
 `;
 
@@ -179,6 +188,8 @@ const SocialGrid = styled.div`
   gap: 20px;
   grid-template-columns: 1fr;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   
   /* Desktop */
   @media (min-width: 768px) {
@@ -195,6 +206,8 @@ const SocialGrid = styled.div`
   @media (max-width: 480px) {
     gap: 12px;
     grid-template-columns: 1fr;
+    width: 100%;
+    margin: 0;
   }
 `;
 
@@ -211,6 +224,10 @@ const SocialCard = styled.a`
   gap: 20px;
   transition: all 0.3s ease;
   cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 
   &:hover {
     transform: translateY(-5px);
@@ -231,9 +248,11 @@ const SocialCard = styled.a`
   
   /* Mobile */
   @media (max-width: 480px) {
-    padding: 15px;
-    gap: 12px;
+    padding: 12px;
+    gap: 10px;
     border-radius: 12px;
+    width: 100%;
+    max-width: 100%;
     
     &:hover {
       transform: translateY(-3px);
@@ -245,6 +264,7 @@ const SocialEmoji = styled.div`
   font-size: 40px;
   min-width: 60px;
   text-align: center;
+  flex-shrink: 0;
   
   /* Tablette */
   @media (max-width: 768px) {
@@ -254,13 +274,16 @@ const SocialEmoji = styled.div`
   
   /* Mobile */
   @media (max-width: 480px) {
-    font-size: 32px;
-    min-width: 50px;
+    font-size: 28px;
+    min-width: 40px;
+    width: 40px;
   }
 `;
 
 const SocialInfo = styled.div`
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 `;
 
 const SocialName = styled.h3`
@@ -268,6 +291,9 @@ const SocialName = styled.h3`
   font-weight: 600;
   margin: 0 0 5px 0;
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   
   /* Tablette */
   @media (max-width: 768px) {
@@ -276,8 +302,8 @@ const SocialName = styled.h3`
   
   /* Mobile */
   @media (max-width: 480px) {
-    font-size: 16px;
-    margin: 0 0 4px 0;
+    font-size: 15px;
+    margin: 0 0 3px 0;
   }
 `;
 
@@ -285,11 +311,14 @@ const SocialDescription = styled.p`
   font-size: 14px;
   color: rgba(255,255,255,0.7);
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   
   /* Mobile */
   @media (max-width: 480px) {
-    font-size: 13px;
-    line-height: 1.4;
+    font-size: 12px;
+    line-height: 1.3;
   }
 `;
 
@@ -297,12 +326,15 @@ const SocialLink = styled.div`
   font-size: 12px;
   color: #4ecdc4;
   margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   word-break: break-all;
   
   /* Mobile */
   @media (max-width: 480px) {
-    font-size: 11px;
-    margin-top: 4px;
+    font-size: 10px;
+    margin-top: 3px;
   }
 `;
 

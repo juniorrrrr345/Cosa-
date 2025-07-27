@@ -100,40 +100,50 @@ const LogoImage = styled.img`
   }
 `;
 
-const ContentWrapper = styled.div`
-  max-width: 600px;
-  width: 100%;
+const Content = styled.div`
+  padding: 40px 20px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 30px;
+  min-height: calc(100vh - 200px);
+  justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 160px);
-  box-sizing: border-box;
   
-  /* Tablette */
-  @media (max-width: 768px) {
-    padding: 15px;
-    max-width: 100%;
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 20px 15px;
+    gap: 20px;
+  }
+`;
+
+const SocialSection = styled.div`
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 30px;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 600px;
+
+  &:hover {
+    background: rgba(0,0,0,0.8);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
   }
   
   /* Mobile */
   @media (max-width: 480px) {
-    padding: 10px;
-    min-height: calc(100vh - 120px);
-    max-width: calc(100vw - 20px);
-    margin: 0 auto;
+    padding: 20px;
+    margin: 0 10px;
   }
 `;
 
-const Header = styled.div`
+const SocialHeader = styled.div`
   text-align: center;
-  margin-bottom: 40px;
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    margin-bottom: 30px;
-  }
+  margin-bottom: 30px;
   
   /* Mobile */
   @media (max-width: 480px) {
@@ -141,184 +151,114 @@ const Header = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  font-size: 28px;
+const SocialTitle = styled.h2`
+  font-size: 24px;
   font-weight: 700;
+  margin: 0 0 20px 0;
   color: white;
-  margin: 0 0 10px 0;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-
-  /* Desktop */
-  @media (min-width: 768px) {
-    font-size: 32px;
-  }
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    font-size: 26px;
-  }
+  text-shadow: 0 0 20px rgba(255,255,255,0.3);
+  text-align: center;
   
   /* Mobile */
   @media (max-width: 480px) {
-    font-size: 22px;
-    margin: 0 0 8px 0;
+    font-size: 20px;
+    margin: 0 0 15px 0;
   }
 `;
 
-const Subtitle = styled.p`
+const SocialDescription = styled.p`
   font-size: 16px;
-  color: rgba(255,255,255,0.8);
-  margin: 0;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    font-size: 15px;
-  }
+  line-height: 1.6;
+  color: rgba(255,255,255,0.9);
+  margin: 0 0 20px 0;
+  text-align: center;
   
   /* Mobile */
   @media (max-width: 480px) {
     font-size: 14px;
-    padding: 0 10px;
+    margin: 0 0 15px 0;
   }
 `;
 
 const SocialGrid = styled.div`
-  display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  
-  /* Desktop */
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    gap: 15px;
-    grid-template-columns: 1fr;
-  }
   
   /* Mobile */
   @media (max-width: 480px) {
     gap: 12px;
-    grid-template-columns: 1fr;
-    width: 100%;
-    margin: 0;
   }
 `;
 
 const SocialCard = styled.a`
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  padding: 25px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 15px;
+  padding: 20px;
   text-decoration: none;
   color: white;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   transition: all 0.3s ease;
   cursor: pointer;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
 
   &:hover {
-    transform: translateY(-5px);
+    background: rgba(255,255,255,0.1);
     border-color: #4ecdc4;
-    box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
-  }
-
-  &:active {
     transform: translateY(-2px);
-  }
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    padding: 20px;
-    gap: 15px;
-    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(78, 205, 196, 0.2);
   }
   
   /* Mobile */
   @media (max-width: 480px) {
-    padding: 12px;
-    gap: 10px;
+    padding: 15px;
+    gap: 12px;
     border-radius: 12px;
-    width: 100%;
-    max-width: 100%;
-    
-    &:hover {
-      transform: translateY(-3px);
-    }
   }
 `;
 
 const SocialEmoji = styled.div`
-  font-size: 40px;
-  min-width: 60px;
+  font-size: 32px;
+  min-width: 50px;
   text-align: center;
   flex-shrink: 0;
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    font-size: 36px;
-    min-width: 55px;
-  }
   
   /* Mobile */
   @media (max-width: 480px) {
     font-size: 28px;
-    min-width: 40px;
-    width: 40px;
+    min-width: 45px;
   }
 `;
 
 const SocialInfo = styled.div`
   flex: 1;
-  min-width: 0;
-  overflow: hidden;
 `;
 
 const SocialName = styled.h3`
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   margin: 0 0 5px 0;
   color: white;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    font-size: 17px;
-  }
   
   /* Mobile */
   @media (max-width: 480px) {
     font-size: 15px;
-    margin: 0 0 3px 0;
+    margin: 0 0 4px 0;
   }
 `;
 
-const SocialDescription = styled.p`
+const SocialCardDescription = styled.p`
   font-size: 14px;
   color: rgba(255,255,255,0.7);
   margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   
   /* Mobile */
   @media (max-width: 480px) {
-    font-size: 12px;
-    line-height: 1.3;
+    font-size: 13px;
   }
 `;
 
@@ -326,15 +266,12 @@ const SocialLink = styled.div`
   font-size: 12px;
   color: #4ecdc4;
   margin-top: 5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
+  word-break: break-word;
   
   /* Mobile */
   @media (max-width: 480px) {
-    font-size: 10px;
-    margin-top: 3px;
+    font-size: 11px;
+    margin-top: 4px;
   }
 `;
 
@@ -374,21 +311,15 @@ const BackButton = styled.button`
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: 60px 20px;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px;
-  
-  /* Tablette */
-  @media (max-width: 768px) {
-    padding: 50px 15px;
-    border-radius: 15px;
-  }
+  padding: 40px 20px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 15px;
   
   /* Mobile */
   @media (max-width: 480px) {
-    padding: 40px 15px;
+    padding: 30px 15px;
     border-radius: 12px;
   }
 `;
@@ -549,58 +480,60 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
         <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
       </PageHeader>
       
-      <ContentWrapper>
+      <Content>
         <BackButton onClick={onBack}>
           ← Retour à la boutique
         </BackButton>
 
-        <Header>
-          <Title>🌐 Nos Réseaux Sociaux</Title>
-          <Subtitle>
-            Suivez-nous et restez connectés avec {config.shopName || 'BIPCOSA06'}
-          </Subtitle>
-        </Header>
+        <SocialSection>
+          <SocialHeader>
+            <SocialTitle>🌐 Nos Réseaux Sociaux</SocialTitle>
+            <SocialDescription>
+              Suivez-nous et restez connectés avec {config.shopName || 'BIPCOSA06'}
+            </SocialDescription>
+          </SocialHeader>
 
-        {activeSocialNetworks.length === 0 ? (
-          <EmptyState>
-            <EmptyIcon>📱</EmptyIcon>
-            <EmptyText>
-              Aucun réseau social configuré pour le moment.<br />
-              Revenez bientôt pour nous suivre !
-            </EmptyText>
-          </EmptyState>
-        ) : (
-          <SocialGrid>
-            {activeSocialNetworks.map((network) => (
-              <SocialCard
-                key={network.id}
-                onClick={() => handleSocialClick(network.url, network.name)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleSocialClick(network.url, network.name);
-                  }
-                }}
-              >
-                <SocialEmoji>{network.emoji}</SocialEmoji>
-                <SocialInfo>
-                  <SocialName>{network.name}</SocialName>
-                  <SocialDescription>
-                    {getSocialDescription(network.name)}
-                  </SocialDescription>
-                  <SocialLink>
-                    {network.url.replace(/^https?:\/\//, '')}
-                  </SocialLink>
-                </SocialInfo>
-              </SocialCard>
-                    ))}
-      </SocialGrid>
-    )}
-    </ContentWrapper>
-  </div>
-);
+          {activeSocialNetworks.length === 0 ? (
+            <EmptyState>
+              <EmptyIcon>📱</EmptyIcon>
+              <EmptyText>
+                Aucun réseau social configuré pour le moment.<br />
+                Revenez bientôt pour nous suivre !
+              </EmptyText>
+            </EmptyState>
+          ) : (
+            <SocialGrid>
+              {activeSocialNetworks.map((network) => (
+                <SocialCard
+                  key={network.id}
+                  onClick={() => handleSocialClick(network.url, network.name)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleSocialClick(network.url, network.name);
+                    }
+                  }}
+                >
+                  <SocialEmoji>{network.emoji}</SocialEmoji>
+                  <SocialInfo>
+                    <SocialName>{network.name}</SocialName>
+                    <SocialCardDescription>
+                      {getSocialDescription(network.name)}
+                    </SocialCardDescription>
+                    <SocialLink>
+                      {network.url.replace(/^https?:\/\//, '')}
+                    </SocialLink>
+                  </SocialInfo>
+                </SocialCard>
+              ))}
+            </SocialGrid>
+          )}
+        </SocialSection>
+      </Content>
+    </div>
+  );
 };
 
 export default SocialNetworksPage;

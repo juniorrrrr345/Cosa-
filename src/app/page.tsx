@@ -7,10 +7,35 @@ import ContactPage from '@/components/ContactPage';
 import SocialNetworksPage from '@/components/SocialNetworksPage';
 import ProductDetailPage from '@/components/ProductDetailPage';
 import AdminPanel from '@/admin/AdminPanel';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function MainPage() {
   const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact' | 'social' | 'product-detail'>('menu');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
+
+  // Gérer la première visite et le chargement
+  useEffect(() => {
+    // Vérifier si c'est la première visite
+    const hasVisited = localStorage.getItem('hasVisitedBefore');
+    
+    if (hasVisited) {
+      // Pas la première visite, chargement rapide
+      setIsFirstVisit(false);
+      setIsLoading(false);
+    } else {
+      // Première visite, afficher le loading screen complet
+      setIsFirstVisit(true);
+      // Le loading sera géré par LoadingScreen
+    }
+  }, []);
+
+  // Fonction appelée quand le chargement est terminé
+  const handleLoadingComplete = () => {
+    localStorage.setItem('hasVisitedBefore', 'true');
+    setIsLoading(false);
+  };
 
   const handleNavigation = (view: string) => {
     // Nettoyer le mode admin quand on navigue vers une autre vue
@@ -98,6 +123,11 @@ export default function MainPage() {
     localStorage.removeItem('adminMode');
     setCurrentView('menu');
   };
+
+  // Afficher le LoadingScreen pendant le chargement de la première visite
+  if (isLoading && isFirstVisit) {
+    return <LoadingScreen onLoadingComplete={handleLoadingComplete} />;
+  }
 
   if (currentView === 'admin') {
     return <AdminPanel onBack={handleAdminBack} />;

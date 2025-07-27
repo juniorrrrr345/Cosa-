@@ -118,6 +118,10 @@ export class DataService {
   private readonly INFO_CONTENTS_KEY = 'bipcosa06_info_contents';
   private readonly CONTACT_CONTENTS_KEY = 'bipcosa06_contact_contents';
   private readonly SOCIAL_NETWORKS_KEY = 'bipcosa06_social_networks';
+  private readonly DATA_VERSION_KEY = 'bipcosa06_data_version';
+  
+  // Version actuelle des données (à incrémenter quand on veut forcer la sync)
+  private readonly CURRENT_DATA_VERSION = '2024.01.15.001';
   
   constructor() {
     console.log('🚀 DataService DYNAMIQUE initialisé');
@@ -129,6 +133,23 @@ export class DataService {
     if (typeof window === 'undefined') return;
 
     try {
+      // Vérifier la version des données pour forcer la synchronisation
+      const currentVersion = localStorage.getItem(this.DATA_VERSION_KEY);
+      const forceUpdate = currentVersion !== this.CURRENT_DATA_VERSION;
+      
+      if (forceUpdate) {
+        console.log('🔄 SYNCHRONISATION FORCÉE - Mise à jour vers version:', this.CURRENT_DATA_VERSION);
+        // Effacer toutes les données pour forcer la resynchronisation
+        localStorage.removeItem(this.PRODUCTS_KEY);
+        localStorage.removeItem(this.CATEGORIES_KEY);
+        localStorage.removeItem(this.FARMS_KEY);
+        localStorage.removeItem(this.SOCIAL_NETWORKS_KEY);
+        localStorage.removeItem(this.INFO_CONTENTS_KEY);
+        localStorage.removeItem(this.CONTACT_CONTENTS_KEY);
+        // Marquer la nouvelle version
+        localStorage.setItem(this.DATA_VERSION_KEY, this.CURRENT_DATA_VERSION);
+      }
+
       // Initialiser les produits
       if (!localStorage.getItem(this.PRODUCTS_KEY)) {
         localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));

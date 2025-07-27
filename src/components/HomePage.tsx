@@ -153,10 +153,24 @@ const ProductsSection = styled.div`
 
 const ProductsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    gap: 15px;
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 0 5px;
+  }
 `;
 
 // Card produit avec design moderne
@@ -168,21 +182,50 @@ const ProductCard = styled.div`
   border: 1px solid rgba(255,255,255,0.1);
   transition: all 0.4s ease;
   cursor: pointer;
+  width: 100%;
 
   &:hover {
     transform: translateY(-8px);
     border-color: rgba(255,255,255,0.3);
     box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   }
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    border-radius: 15px;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    border-radius: 12px;
+    
+    &:hover {
+      transform: translateY(-3px);
+    }
+  }
 `;
 
 const ProductImage = styled.div<{ $image: string }>`
   width: 100%;
-  height: 140px;
+  height: 160px;
   background: ${props => `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url(${props.$image})`};
   background-size: cover;
   background-position: center;
   position: relative;
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    height: 140px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    height: 180px;
+  }
 `;
 
 const ProductFlag = styled.div<{ $color: string }>`
@@ -202,6 +245,16 @@ const ProductFlag = styled.div<{ $color: string }>`
 const ProductInfo = styled.div`
   padding: 20px;
   background: rgba(0,0,0,0.5);
+  
+  /* Tablette */
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 15px;
+  }
 `;
 
 const ProductName = styled.h3`

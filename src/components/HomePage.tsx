@@ -157,19 +157,22 @@ const ProductsGrid = styled.div`
   gap: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 10px;
   
-  /* Tablette */
+  /* MÊME LAYOUT POUR TOUS LES APPAREILS */
+  /* Mobile, tablette, PC : toujours 2 colonnes */
   @media (max-width: 768px) {
-    gap: 15px;
-    max-width: 100%;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
     padding: 0 10px;
   }
   
-  /* Mobile */
   @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 0 5px;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    padding: 0 10px;
   }
 `;
 
@@ -190,21 +193,28 @@ const ProductCard = styled.div`
     box-shadow: 0 20px 40px rgba(0,0,0,0.6);
   }
   
-  /* Tablette */
+  /* MÊME STYLE POUR TOUS LES APPAREILS */
   @media (max-width: 768px) {
-    border-radius: 15px;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
     
     &:hover {
-      transform: translateY(-5px);
+      transform: translateY(-8px);
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
   }
   
-  /* Mobile */
   @media (max-width: 480px) {
-    border-radius: 12px;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
     
     &:hover {
-      transform: translateY(-3px);
+      transform: translateY(-8px);
+      border-color: rgba(255,255,255,0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
   }
 `;
@@ -217,14 +227,19 @@ const ProductImage = styled.div<{ $image: string }>`
   background-position: center;
   position: relative;
   
-  /* Tablette */
+  /* MÊME HAUTEUR POUR TOUS LES APPAREILS */
   @media (max-width: 768px) {
-    height: 140px;
+    width: 100%;
+    height: 160px;
+    background-size: cover;
+    background-position: center;
   }
   
-  /* Mobile */
   @media (max-width: 480px) {
-    height: 180px;
+    width: 100%;
+    height: 160px;
+    background-size: cover;
+    background-position: center;
   }
 `;
 
@@ -246,14 +261,15 @@ const ProductInfo = styled.div`
   padding: 20px;
   background: rgba(0,0,0,0.5);
   
-  /* Tablette */
+  /* MÊME PADDING POUR TOUS LES APPAREILS */
   @media (max-width: 768px) {
-    padding: 15px;
+    padding: 20px;
+    background: rgba(0,0,0,0.5);
   }
   
-  /* Mobile */
   @media (max-width: 480px) {
-    padding: 15px;
+    padding: 20px;
+    background: rgba(0,0,0,0.5);
   }
 `;
 

@@ -1,6 +1,5 @@
 // Service de gestion des données BIPCOSA06 avec APIs MongoDB et Cloudinary
 import { Product, Category, Farm, ShopConfig, SocialNetwork, InfoContent, ContactContent } from '../types';
-import { mongoService } from './mongoService';
 
 // Données statiques qui fonctionnent TOUJOURS
 const STATIC_CATEGORIES: Category[] = [
@@ -109,8 +108,14 @@ const defaultSocialNetworks: SocialNetwork[] = [
 export class DataService {
   private static instance: DataService;
   private configCache: ShopConfig | null = null;
+  private syncInterval: NodeJS.Timeout | null = null;
+  private lastSyncTime: number = 0;
 
-  // Clés localStorage
+  // Configuration pour la synchronisation temps réel
+  private readonly SYNC_INTERVAL_MS = 5000; // Sync toutes les 5 secondes
+  private readonly USE_REAL_TIME_SYNC = true; // Activer la sync temps réel
+  
+  // Clés localStorage (fallback uniquement)
   private readonly PRODUCTS_KEY = 'bipcosa06_products';
   private readonly CATEGORIES_KEY = 'bipcosa06_categories';
   private readonly FARMS_KEY = 'bipcosa06_farms';
@@ -120,40 +125,130 @@ export class DataService {
   private readonly SOCIAL_NETWORKS_KEY = 'bipcosa06_social_networks';
   private readonly DATA_VERSION_KEY = 'bipcosa06_data_version';
   
-  // Version actuelle des données (à incrémenter quand on veut forcer la sync)
-  private readonly CURRENT_DATA_VERSION = '2024.01.15.001';
-  
   constructor() {
-    console.log('🚀 DataService DYNAMIQUE initialisé');
+    console.log('🚀 DataService avec SYNCHRONISATION TEMPS RÉEL initialisé');
     this.initializeDefaultData();
+    
+    if (this.USE_REAL_TIME_SYNC && typeof window !== 'undefined') {
+      this.startRealTimeSync();
+    }
+  }
+  
+  // Initialisation des données
+  private initializeDefaultData(): void {
+    if (typeof window === 'undefined') return;
+    
+    if (this.USE_REAL_TIME_SYNC) {
+      console.log('🔄 Mode synchronisation temps réel - MongoDB prioritaire');
+      // En mode temps réel, on lance directement la sync
+      setTimeout(() => this.performSync(), 100);
+    } else {
+      // Mode fallback - utiliser localStorage
+      this.initializeDefaultDataFallback();
+    }
   }
 
-  // Initialiser les données par défaut si localStorage est vide
-  private initializeDefaultData(): void {
+  // === SYNCHRONISATION TEMPS RÉEL ===
+  private startRealTimeSync(): void {
+    console.log('🔄 Démarrage synchronisation temps réel...');
+    
+    // Sync initiale
+    this.performSync();
+    
+    // Sync périodique
+    this.syncInterval = setInterval(() => {
+      this.performSync();
+    }, this.SYNC_INTERVAL_MS);
+    
+    // Sync sur événements navigateur
+    window.addEventListener('focus', () => this.performSync());
+    window.addEventListener('online', () => this.performSync());
+    
+    console.log('✅ Synchronisation temps réel active');
+  }
+
+  private async performSync(): Promise<void> {
+    try {
+      const now = Date.now();
+      
+      // Éviter les sync trop fréquentes
+      if (now - this.lastSyncTime < 2000) return;
+      
+      console.log('🔄 Synchronisation en cours...');
+      
+      // Synchroniser depuis MongoDB
+      await this.syncFromDatabase();
+      
+      this.lastSyncTime = now;
+      
+      // Notifier les composants React
+      this.notifyDataUpdate();
+      
+    } catch (error) {
+      console.error('❌ Erreur synchronisation:', error);
+      // Fallback vers localStorage en cas d'erreur
+      this.initializeDefaultDataFallback();
+    }
+  }
+
+  private async syncFromDatabase(): Promise<void> {
+    try {
+      // Synchroniser les produits via API
+      const productsResponse = await fetch('/api/products');
+      if (productsResponse.ok) {
+        const products = await productsResponse.json();
+        if (products && products.length > 0) {
+          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+          console.log('📦 Produits synchronisés depuis API:', products.length);
+        }
+      }
+      
+      // Synchroniser les catégories via API
+      const categoriesResponse = await fetch('/api/categories');
+      if (categoriesResponse.ok) {
+        const categories = await categoriesResponse.json();
+        if (categories && categories.length > 0) {
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+          console.log('📂 Catégories synchronisées depuis API:', categories.length);
+        }
+      }
+      
+      // Synchroniser les fermes via API
+      const farmsResponse = await fetch('/api/farms');
+      if (farmsResponse.ok) {
+        const farms = await farmsResponse.json();
+        if (farms && farms.length > 0) {
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+          console.log('🏠 Fermes synchronisées depuis API:', farms.length);
+        }
+      }
+      
+      // Synchroniser la config via API
+      const configResponse = await fetch('/api/config');
+      if (configResponse.ok) {
+        const config = await configResponse.json();
+        if (config) {
+          localStorage.setItem(this.CONFIG_KEY, JSON.stringify(config));
+          this.configCache = config;
+          console.log('⚙️ Config synchronisée depuis API');
+        }
+      }
+      
+    } catch (error) {
+      console.error('❌ Erreur sync database:', error);
+      throw error;
+    }
+  }
+
+  // Fallback si MongoDB n'est pas disponible
+  private initializeDefaultDataFallback(): void {
     if (typeof window === 'undefined') return;
 
     try {
-      // Vérifier la version des données pour forcer la synchronisation
-      const currentVersion = localStorage.getItem(this.DATA_VERSION_KEY);
-      const forceUpdate = currentVersion !== this.CURRENT_DATA_VERSION;
-      
-      if (forceUpdate) {
-        console.log('🔄 SYNCHRONISATION FORCÉE - Mise à jour vers version:', this.CURRENT_DATA_VERSION);
-        // Effacer toutes les données pour forcer la resynchronisation
-        localStorage.removeItem(this.PRODUCTS_KEY);
-        localStorage.removeItem(this.CATEGORIES_KEY);
-        localStorage.removeItem(this.FARMS_KEY);
-        localStorage.removeItem(this.SOCIAL_NETWORKS_KEY);
-        localStorage.removeItem(this.INFO_CONTENTS_KEY);
-        localStorage.removeItem(this.CONTACT_CONTENTS_KEY);
-        // Marquer la nouvelle version
-        localStorage.setItem(this.DATA_VERSION_KEY, this.CURRENT_DATA_VERSION);
-      }
-
       // Initialiser les produits
       if (!localStorage.getItem(this.PRODUCTS_KEY)) {
         localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
-        console.log('📦 Produits par défaut initialisés');
+        console.log('📦 Produits par défaut initialisés (fallback)');
       }
 
       // Initialiser les catégories
@@ -239,9 +334,29 @@ export class DataService {
 
   async addProduct(productData: any): Promise<Product> {
     try {
-      const products = this.getProductsSync();
+      // PRIORITÉ 1: Ajouter via API (synchronisation temps réel)
+      try {
+        const response = await fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(productData)
+        });
+        
+        if (response.ok) {
+          const newProduct = await response.json();
+          console.log('✅ Produit ajouté via API:', newProduct.name);
+          
+          // Synchroniser immédiatement tous les appareils
+          await this.performSync();
+          
+          return newProduct;
+        }
+      } catch (apiError) {
+        console.warn('⚠️ API indisponible, fallback localStorage:', apiError);
+      }
       
-      // Générer un nouvel ID
+      // FALLBACK: localStorage si MongoDB échoue
+      const products = this.getProductsSync();
       const newId = Math.max(...products.map(p => p.id), 0) + 1;
       const newProduct: Product = {
         ...productData,
@@ -252,7 +367,7 @@ export class DataService {
       
       products.push(newProduct);
       localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-      console.log('✅ Produit ajouté:', newProduct.name);
+      console.log('✅ Produit ajouté (localStorage):', newProduct.name);
       this.notifyDataUpdate();
       
       return newProduct;
@@ -285,6 +400,25 @@ export class DataService {
 
   async deleteProduct(id: number): Promise<boolean> {
     try {
+      // PRIORITÉ 1: Supprimer via API (synchronisation temps réel)
+      try {
+        const response = await fetch(`/api/products/${id}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          console.log('✅ Produit supprimé via API:', id);
+          
+          // Synchroniser immédiatement tous les appareils
+          await this.performSync();
+          
+          return true;
+        }
+      } catch (apiError) {
+        console.warn('⚠️ API indisponible, fallback localStorage:', apiError);
+      }
+      
+      // FALLBACK: localStorage si MongoDB échoue
       const products = this.getProductsSync();
       const index = products.findIndex(p => p.id === id);
       
@@ -292,7 +426,7 @@ export class DataService {
         const deletedProduct = products[index];
         products.splice(index, 1);
         localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-        console.log('✅ Produit supprimé:', deletedProduct.name, '- Restants:', products.length);
+        console.log('✅ Produit supprimé (localStorage):', deletedProduct.name, '- Restants:', products.length);
         this.notifyDataUpdate();
         return true;
       }
@@ -768,6 +902,27 @@ export class DataService {
     this.configCache = null;
     this.notifyDataUpdate();
     console.log('✅ Reset terminé');
+  }
+
+  // Nettoyer les ressources
+  destroy(): void {
+    if (this.syncInterval) {
+      clearInterval(this.syncInterval);
+      this.syncInterval = null;
+      console.log('🧹 Synchronisation temps réel arrêtée');
+    }
+  }
+
+  // Forcer une synchronisation immédiate (pour le panel admin)
+  async forceSyncNow(): Promise<void> {
+    console.log('🔄 SYNCHRONISATION FORCÉE MANUELLE');
+    try {
+      await this.performSync();
+      console.log('✅ Synchronisation forcée terminée');
+    } catch (error) {
+      console.error('❌ Erreur synchronisation forcée:', error);
+      throw error;
+    }
   }
 }
 

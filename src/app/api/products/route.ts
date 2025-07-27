@@ -70,14 +70,8 @@ const STATIC_PRODUCTS = [
 ];
 
 export async function GET(request: NextRequest) {
-  console.log('🔍 API GET /products appelée');
-  
-  // TOUJOURS retourner les données statiques en priorité
-  console.log('📦 Retour GARANTI des données statiques');
-  return NextResponse.json(STATIC_PRODUCTS);
-  
-  /* MongoDB désactivé temporairement - données statiques garanties
   try {
+    console.log('🔍 API GET /products appelée');
     const products = await mongoService.getProducts();
     
     // Si MongoDB retourne vide, forcer l'initialisation et réessayer
@@ -104,7 +98,6 @@ export async function GET(request: NextRequest) {
     console.log('📦 Fallback vers données statiques');
     return NextResponse.json(STATIC_PRODUCTS);
   }
-  */
 }
 
 export async function POST(request: NextRequest) {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import mongoService from '@/services/mongoService';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 // Données statiques de fallback
 const STATIC_PRODUCTS = [
@@ -69,38 +70,60 @@ const STATIC_PRODUCTS = [
   }
 ];
 
+// Chemin vers le fichier de données
+const DATA_FILE = path.join(process.cwd(), 'data', 'products.json');
+
+// Assurer que le dossier data existe
+async function ensureDataDir() {
+  const dataDir = path.dirname(DATA_FILE);
+  try {
+    await fs.access(dataDir);
+  } catch {
+    await fs.mkdir(dataDir, { recursive: true });
+  }
+}
+
+// Lire les produits depuis le fichier
+async function readProducts() {
+  try {
+    await ensureDataDir();
+    const data = await fs.readFile(DATA_FILE, 'utf8');
+    return JSON.parse(data);
+  } catch (error) {
+    // Si le fichier n'existe pas, créer avec les données par défaut
+    console.log('📁 Fichier produits inexistant, création avec données par défaut');
+    await writeProducts(STATIC_PRODUCTS);
+    return STATIC_PRODUCTS;
+  }
+}
+
+// Écrire les produits dans le fichier
+async function writeProducts(products: any[]) {
+  try {
+    await ensureDataDir();
+    await fs.writeFile(DATA_FILE, JSON.stringify(products, null, 2));
+    console.log('💾 Produits sauvegardés:', products.length);
+  } catch (error) {
+    console.error('❌ Erreur sauvegarde:', error);
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 API GET /products appelée');
-    
-    // Timeout rapide pour éviter les erreurs Vercel
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Timeout')), 5000); // 5 secondes max
-    });
-    
-    const mongoPromise = mongoService.getProducts();
-    
-    // Course entre MongoDB et timeout
-    const products = await Promise.race([mongoPromise, timeoutPromise]) as any[];
-    
-    // Si MongoDB retourne vide, forcer l'initialisation RAPIDE
-    if (!products || products.length === 0) {
-      console.log('📦 MongoDB vide, utilisation fallback immédiat');
-      return NextResponse.json(STATIC_PRODUCTS);
-    }
-    
-    console.log(`📦 Retour ${products.length} produits depuis MongoDB`);
+    console.log('🔍 API GET /products - SYSTÈME FICHIER JSON');
+    const products = await readProducts();
+    console.log(`📦 Retour ${products.length} produits depuis fichier JSON`);
     return NextResponse.json(products);
   } catch (error) {
-    console.error('❌ Erreur API GET products (timeout/error):', error.message);
-    console.log('📦 Fallback IMMÉDIAT vers données statiques');
+    console.error('❌ Erreur API GET products:', error);
+    console.log('📦 Fallback vers données statiques');
     return NextResponse.json(STATIC_PRODUCTS);
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🔍 API POST /products appelée');
+    console.log('🔍 API POST /products - SYSTÈME FICHIER JSON');
     const productData = await request.json();
     
     // Validation des données requises
@@ -111,10 +134,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const createdProduct = await mongoService.addProduct(productData);
-    console.log('✅ Produit créé:', createdProduct);
+    const products = await readProducts();
+    const newId = Math.max(...products.map((p: any) => p.id), 0) + 1;
+    const newProduct = { ...productData, id: newId };
     
-    return NextResponse.json(createdProduct, { status: 201 });
+    products.push(newProduct);
+    await writeProducts(products);
+    
+    console.log('✅ Produit ajouté:', newProduct.name);
+    return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     console.error('❌ Erreur API POST products:', error);
     

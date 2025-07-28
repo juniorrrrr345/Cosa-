@@ -655,6 +655,55 @@ const ConfigPreview = styled.div<{ $bgType: string; $bgImage?: string; $bgUrl?: 
   border: 1px solid rgba(255,255,255,0.1);
 `;
 
+// Styles pour les notifications
+const NotificationContainer = styled.div<{ $visible: boolean; $type: 'success' | 'error' }>`
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  background: ${props => props.$type === 'success' 
+    ? 'linear-gradient(135deg, #00a86b 0%, #00c851 100%)' 
+    : 'linear-gradient(135deg, #ff5722 0%, #f44336 100%)'};
+  color: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  font-weight: 500;
+  font-size: 14px;
+  max-width: 400px;
+  word-wrap: break-word;
+  opacity: ${props => props.$visible ? 1 : 0};
+  transform: ${props => props.$visible ? 'translateX(0)' : 'translateX(100%)'};
+  transition: all 0.3s ease;
+  pointer-events: ${props => props.$visible ? 'auto' : 'none'};
+  
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  &:before {
+    content: '${props => props.$type === 'success' ? '✅' : '❌'}';
+    font-size: 18px;
+  }
+`;
+
+const NotificationCloseButton = styled.button`
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  margin-left: auto;
+  opacity: 0.7;
+  
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [activeSection, setActiveSection] = useState<AdminSection>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -665,6 +714,32 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [farms, setFarms] = useState<Farm[]>([]);
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   
+  // État pour les messages de notification
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: 'success' | 'error';
+    visible: boolean;
+  }>({
+    message: '',
+    type: 'success',
+    visible: false
+  });
+  
+  // Fonction pour afficher une notification
+  const showNotification = (message: string, type: 'success' | 'error' = 'success') => {
+    setNotification({ message, type, visible: true });
+    
+    // Auto-masquer après 3 secondes
+    setTimeout(() => {
+      setNotification(prev => ({ ...prev, visible: false }));
+    }, 3000);
+  };
+  
+  // Fonction pour masquer la notification
+  const hideNotification = () => {
+    setNotification(prev => ({ ...prev, visible: false }));
+  };
+
   // État pour les contenus Info et Contact
   const [infoContent, setInfoContent] = useState<InfoContent>({
     id: 'main-info',
@@ -738,6 +813,31 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
   useEffect(() => {
     refreshData();
+    
+    // Écouter les événements de mise à jour des données
+    const handleDataUpdate = () => {
+      console.log('🔔 AdminPanel: Événement dataUpdated reçu');
+      refreshData();
+    };
+    
+    const handleBipcosaDataChange = () => {
+      console.log('🔔 AdminPanel: Événement bipcosa06DataChanged reçu');
+      refreshData();
+    };
+
+    // Ajouter les écouteurs d'événements
+    if (typeof window !== 'undefined') {
+      window.addEventListener('dataUpdated', handleDataUpdate);
+      window.addEventListener('bipcosa06DataChanged', handleBipcosaDataChange);
+    }
+
+    // Cleanup des écouteurs
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('dataUpdated', handleDataUpdate);
+        window.removeEventListener('bipcosa06DataChanged', handleBipcosaDataChange);
+      }
+    };
   }, []);
 
   const refreshData = async () => {
@@ -856,9 +956,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
       try {
         console.log('🗑️ Admin: Suppression du produit', id);
+        
+        // Masquer toute notification précédente
+        hideNotification();
+        
         const success = await dataService.deleteProduct(id);
         if (success) {
           console.log('✅ Produit supprimé avec succès');
+          
+          // Afficher notification de succès
+          showNotification('✅ Produit supprimé avec succès', 'success');
           
           // Rechargement immédiat des données locales
           await refreshData();
@@ -866,13 +973,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
           // Force la synchronisation vers la boutique
           console.log('🔄 Synchronisation forcée vers la boutique');
           
-          alert('✅ Produit supprimé avec succès');
         } else {
-          alert('❌ Erreur lors de la suppression du produit');
+          showNotification('❌ Erreur lors de la suppression du produit', 'error');
         }
       } catch (error) {
         console.error('❌ Erreur lors de la suppression:', error);
-        alert('❌ Erreur lors de la suppression du produit');
+        showNotification('❌ Erreur lors de la suppression du produit', 'error');
       }
     }
   };
@@ -1960,6 +2066,17 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
 
       return (
       <AdminContainer>
+        {/* Notification système */}
+        <NotificationContainer 
+          $visible={notification.visible} 
+          $type={notification.type}
+        >
+          {notification.message}
+          <NotificationCloseButton onClick={hideNotification}>
+            ×
+          </NotificationCloseButton>
+        </NotificationContainer>
+        
         <Sidebar $isOpen={true}>
         <SidebarHeader>
           <SidebarTitle>ADMIN BIPCOSA06</SidebarTitle>

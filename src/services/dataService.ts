@@ -186,10 +186,10 @@ export class DataService {
     try {
       const now = Date.now();
       
-      // Éviter les sync trop fréquentes
-      if (now - this.lastSyncTime < 2000) return;
+      // Éviter les sync trop fréquentes (sauf si lastSyncTime = 0, forcé)
+      if (this.lastSyncTime > 0 && now - this.lastSyncTime < 2000) return;
       
-      console.log('🔄 Synchronisation en cours...');
+      console.log('🔄 Synchronisation en cours... (forcée:', this.lastSyncTime === 0, ')');
       
       // Synchroniser depuis MongoDB
       await this.syncFromDatabase();
@@ -214,7 +214,13 @@ export class DataService {
         const products = await productsResponse.json();
         // ACCEPTER les tableaux vides (suppression réussie)
         localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-        console.log('📦 Produits synchronisés depuis API:', products.length);
+        console.log('📦 Produits synchronisés depuis API:', products.length, '- Cache nettoyé');
+        
+        // Forcer le rafraîchissement de l'interface
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new CustomEvent('productsUpdated', { detail: products }));
+        }
+        
       } else {
         // Si l'API échoue complètement, utiliser les données par défaut
         console.log('📦 API indisponible, utilisation produits par défaut');
@@ -461,10 +467,24 @@ export class DataService {
           
           // FORCER nettoyage cache et synchronisation IMMÉDIATE
           this.lastSyncTime = 0; // Reset cooldown pour forcer sync
+          
+          // Nettoyer les données locales IMMÉDIATEMENT
+          const products = this.getProductsSync();
+          const index = products.findIndex(p => p.id === id);
+          
+          if (index !== -1) {
+            products.splice(index, 1);
+            localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+            console.log('🧹 Cache local nettoyé immédiatement');
+          }
+          
+          // Forcer la synchronisation
           await this.performSync();
           
-          // Double sécurité: forcer notification
+          // Triple notification pour s'assurer que l'UI se met à jour
           this.notifyDataUpdate();
+          setTimeout(() => this.notifyDataUpdate(), 100);
+          setTimeout(() => this.notifyDataUpdate(), 500);
           
           console.log('🔄 Cache synchronisé après suppression');
           return true;

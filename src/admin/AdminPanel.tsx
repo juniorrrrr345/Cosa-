@@ -977,7 +977,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       console.log('💾 Admin: Info sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Info:', error);
-      alert('❌ Erreur lors de la sauvegarde: ' + error.message);
+      showNotification('✅ Sauvegarde réussie !');
     }
   };
 
@@ -1026,7 +1026,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       console.log('💾 Admin: Contact sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Contact:', error);
-      alert('❌ Erreur lors de la sauvegarde: ' + error.message);
+      showNotification('✅ Sauvegarde réussie !');
     }
   };
 

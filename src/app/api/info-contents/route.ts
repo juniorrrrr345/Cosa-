@@ -40,21 +40,17 @@ export async function GET(request: NextRequest) {
     const infoContents = await mongoService.getInfoContents();
     console.log('ℹ️ MongoDB contenus info:', infoContents ? infoContents.length : 'null');
     
-    // Si MongoDB est vide, retourner le contenu par défaut
+    // Si MongoDB est vide, retourner une liste vide
     if (!infoContents || infoContents.length === 0) {
-      console.log('ℹ️ MongoDB vide, retour contenu par défaut');
-      // Sauvegarder le contenu par défaut dans MongoDB
-      for (const content of DEFAULT_INFO_CONTENTS) {
-        await mongoService.saveInfoContent(content);
-      }
-      return NextResponse.json(DEFAULT_INFO_CONTENTS);
+      console.log('ℹ️ MongoDB vide, retour liste vide');
+      return NextResponse.json([]);
     }
     
     return NextResponse.json(infoContents);
   } catch (error) {
     console.error('❌ Erreur MongoDB:', error);
-    console.log('ℹ️ Erreur MongoDB, retour contenu par défaut');
-    return NextResponse.json(DEFAULT_INFO_CONTENTS);
+    console.log('ℹ️ Erreur MongoDB, retour liste vide');
+    return NextResponse.json([]);
   }
 }
 

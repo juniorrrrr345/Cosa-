@@ -45,21 +45,17 @@ export async function GET(request: NextRequest) {
     const socialNetworks = await mongoService.getSocialNetworks();
     console.log('📱 MongoDB réseaux sociaux:', socialNetworks ? socialNetworks.length : 'null');
     
-    // Si MongoDB est vide, retourner le contenu par défaut
+    // Si MongoDB est vide, retourner une liste vide
     if (!socialNetworks || socialNetworks.length === 0) {
-      console.log('📱 MongoDB vide, retour contenu par défaut');
-      // Sauvegarder le contenu par défaut dans MongoDB
-      for (const network of DEFAULT_SOCIAL_NETWORKS) {
-        await mongoService.saveSocialNetwork(network);
-      }
-      return NextResponse.json(DEFAULT_SOCIAL_NETWORKS);
+      console.log('📱 MongoDB vide, retour liste vide');
+      return NextResponse.json([]);
     }
     
     return NextResponse.json(socialNetworks);
   } catch (error) {
     console.error('❌ Erreur MongoDB:', error);
-    console.log('📱 Erreur MongoDB, retour contenu par défaut');
-    return NextResponse.json(DEFAULT_SOCIAL_NETWORKS);
+    console.log('📱 Erreur MongoDB, retour liste vide');
+    return NextResponse.json([]);
   }
 }
 

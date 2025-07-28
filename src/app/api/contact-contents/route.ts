@@ -49,21 +49,17 @@ export async function GET(request: NextRequest) {
     const contactContents = await mongoService.getContactContents();
     console.log('📞 MongoDB contenus contact:', contactContents ? contactContents.length : 'null');
     
-    // Si MongoDB est vide, retourner le contenu par défaut
+    // Si MongoDB est vide, retourner une liste vide
     if (!contactContents || contactContents.length === 0) {
-      console.log('📞 MongoDB vide, retour contenu par défaut');
-      // Sauvegarder le contenu par défaut dans MongoDB
-      for (const content of DEFAULT_CONTACT_CONTENTS) {
-        await mongoService.saveContactContent(content);
-      }
-      return NextResponse.json(DEFAULT_CONTACT_CONTENTS);
+      console.log('📞 MongoDB vide, retour liste vide');
+      return NextResponse.json([]);
     }
     
     return NextResponse.json(contactContents);
   } catch (error) {
     console.error('❌ Erreur MongoDB:', error);
-    console.log('📞 Erreur MongoDB, retour contenu par défaut');
-    return NextResponse.json(DEFAULT_CONTACT_CONTENTS);
+    console.log('📞 Erreur MongoDB, retour liste vide');
+    return NextResponse.json([]);
   }
 }
 

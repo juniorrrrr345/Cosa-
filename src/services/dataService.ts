@@ -1017,6 +1017,75 @@ class DataService {
     }
   }
 
+  async getInfoContents(): Promise<any[]> {
+    try {
+      console.log('ℹ️ getInfoContents - TOUJOURS depuis MongoDB API...');
+      const response = await fetch('/api/info-contents');
+      if (response.ok) {
+        const infoContents = await response.json();
+        console.log('ℹ️ Contenus info chargés depuis MongoDB:', infoContents.length);
+        return infoContents;
+      } else {
+        console.error('❌ API info-contents a échoué:', response.status);
+        throw new Error('API MongoDB indisponible');
+      }
+    } catch (error) {
+      console.error('❌ Erreur critique API info-contents:', error);
+      return []; // Retour vide en cas d'erreur
+    }
+  }
+
+  async addInfoContent(content: any): Promise<any> {
+    try {
+      console.log('ℹ️ addInfoContent - MongoDB API:', content.title);
+      
+      const response = await fetch('/api/info-contents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content)
+      });
+
+      if (response.ok) {
+        const savedContent = await response.json();
+        console.log('✅ Contenu info ajouté dans MongoDB');
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return savedContent;
+      } else {
+        throw new Error('Échec ajout contenu info MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur addInfoContent:', error);
+      throw error;
+    }
+  }
+
+  async deleteInfoContent(id: string): Promise<boolean> {
+    try {
+      console.log('ℹ️ deleteInfoContent - MongoDB API:', id);
+      
+      const response = await fetch(`/api/info-contents?id=${id}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('✅ Contenu info supprimé dans MongoDB');
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return true;
+      } else {
+        throw new Error('Échec suppression contenu info MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur deleteInfoContent:', error);
+      throw error;
+    }
+  }
+
   // === CONTENU CONTACT - API MongoDB ===
   async getContactContents(): Promise<any[]> {
     try {
@@ -1059,6 +1128,57 @@ class DataService {
       }
     } catch (error) {
       console.error('❌ Erreur updateContactContent:', error);
+      throw error;
+    }
+  }
+
+  async addContactContent(content: any): Promise<any> {
+    try {
+      console.log('📞 addContactContent - MongoDB API:', content.title);
+      
+      const response = await fetch('/api/contact-contents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content)
+      });
+
+      if (response.ok) {
+        const savedContent = await response.json();
+        console.log('✅ Contenu contact ajouté dans MongoDB');
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return savedContent;
+      } else {
+        throw new Error('Échec ajout contenu contact MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur addContactContent:', error);
+      throw error;
+    }
+  }
+
+  async deleteContactContent(id: string): Promise<boolean> {
+    try {
+      console.log('📞 deleteContactContent - MongoDB API:', id);
+      
+      const response = await fetch(`/api/contact-contents?id=${id}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('✅ Contenu contact supprimé dans MongoDB');
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return true;
+      } else {
+        throw new Error('Échec suppression contenu contact MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur deleteContactContent:', error);
       throw error;
     }
   }

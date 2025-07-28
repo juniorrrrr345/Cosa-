@@ -15,10 +15,14 @@ class MongoService {
     if (this.isConnected) return;
 
     try {
-      // NOUVELLE MONGODB URI QUI FONCTIONNE
-      const uri = 'mongodb+srv://Junior:Lacrim123@cluster0.q4vnfin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+      // Utiliser la variable d'environnement pour l'URI MongoDB
+      const uri = process.env.MONGODB_URI || 'mongodb+srv://Junior:Lacrim123@cluster0.q4vnfin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
       
-      console.log('🔗 Connexion MongoDB avec NOUVELLE URI...');
+      if (!uri) {
+        throw new Error('MONGODB_URI non définie dans les variables d\'environnement');
+      }
+      
+      console.log('🔗 Connexion MongoDB...');
       
       this.client = new MongoClient(uri, {
         maxPoolSize: 10,

@@ -42,6 +42,8 @@ export interface ShopConfig {
   backgroundImagePublicId?: string;
   shopName: string;
   description: string;
+  orderInfo?: string;
+  orderButtonText?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -71,5 +73,6 @@ export interface ContactContent {
   description: string;
   telegramUsername?: string;
   telegramLink?: string;
+  telegramText?: string;
   additionalInfo?: string;
 }

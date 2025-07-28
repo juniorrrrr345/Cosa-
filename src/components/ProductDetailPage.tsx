@@ -442,12 +442,11 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         <OrderSection>
           <OrderTitle>📱 Commander</OrderTitle>
           <OrderInfo>
-            Contactez-nous directement via Telegram pour passer votre commande.
-            Livraison rapide et discrète.
+            {config.orderInfo || ''}
           </OrderInfo>
           <TelegramButton onClick={() => handleTelegramOrder(product.name)}>
             <span>📱</span>
-            Commander via Telegram
+            {config.orderButtonText || 'Commander'}
           </TelegramButton>
         </OrderSection>
       </Content>

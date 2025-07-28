@@ -294,7 +294,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
                 rel="noopener noreferrer"
               >
                 <span>📱</span>
-                Contacter sur Telegram
+                {contact.telegramText || 'Telegram'}
               </TelegramButton>
             )}
             

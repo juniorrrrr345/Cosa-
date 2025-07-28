@@ -424,19 +424,9 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
     .filter(network => network.isActive)
     .sort((a, b) => a.order - b.order);
 
-  const getSocialDescription = (name: string): string => {
-    const descriptions: { [key: string]: string } = {
-      'Telegram': 'Contactez-nous directement sur Telegram',
-      'WhatsApp': 'Discutez avec nous sur WhatsApp',
-      'Instagram': 'Suivez-nous sur Instagram',
-      'Discord': 'Rejoignez notre serveur Discord',
-      'Facebook': 'Aimez notre page Facebook',
-      'Twitter': 'Suivez-nous sur Twitter',
-      'TikTok': 'Nos vidéos sur TikTok',
-      'Snapchat': 'Ajoutez-nous sur Snapchat'
-    };
-    
-    return descriptions[name] || `Retrouvez-nous sur ${name}`;
+  const getSocialDescription = (network: SocialNetwork): string => {
+    // Utiliser UNIQUEMENT la description du panel admin
+    return network.description || '';
   };
 
   const handleSocialClick = (url: string, name: string) => {
@@ -487,42 +477,37 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
           ← Retour à la boutique
         </BackButton>
 
-        <SocialSection>
-          <SocialHeader>
-            <SocialTitle>🌐 Nos Réseaux Sociaux</SocialTitle>
-            <SocialDescription>
-              Suivez-nous et restez connectés avec {config.shopName || 'BIPCOSA06'}
-            </SocialDescription>
-          </SocialHeader>
-
-          <SocialGrid>
-            {activeSocialNetworks.map((network) => (
-                <SocialCard
-                  key={network.id}
-                  onClick={() => handleSocialClick(network.url, network.name)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleSocialClick(network.url, network.name);
-                    }
-                  }}
-                >
-                  <SocialEmoji>{network.emoji}</SocialEmoji>
-                  <SocialInfo>
-                    <SocialName>{network.name}</SocialName>
-                    <SocialCardDescription>
-                      {getSocialDescription(network.name)}
+        {activeSocialNetworks.length > 0 && (
+          <SocialSection>
+            <SocialGrid>
+              {activeSocialNetworks.map((network) => (
+                  <SocialCard
+                    key={network.id}
+                    onClick={() => handleSocialClick(network.url, network.name)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleSocialClick(network.url, network.name);
+                      }
+                    }}
+                  >
+                    <SocialEmoji>{network.emoji}</SocialEmoji>
+                    <SocialInfo>
+                      <SocialName>{network.name}</SocialName>
+                                          <SocialCardDescription>
+                      {getSocialDescription(network)}
                     </SocialCardDescription>
-                    <SocialLink>
-                      {network.url.replace(/^https?:\/\//, '')}
-                    </SocialLink>
-                  </SocialInfo>
-                </SocialCard>
-                              ))}
-            </SocialGrid>
-        </SocialSection>
+                      <SocialLink>
+                        {network.url.replace(/^https?:\/\//, '')}
+                      </SocialLink>
+                    </SocialInfo>
+                  </SocialCard>
+                                ))}
+              </SocialGrid>
+          </SocialSection>
+        )}
       </Content>
     </div>
   );

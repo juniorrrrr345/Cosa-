@@ -77,21 +77,30 @@ export async function POST() {
       cleaned: {
         products: productsResult.deletedCount,
         categories: categoriesResult.deletedCount,
-        farms: farmsResult.deletedCount
+        farms: farmsResult.deletedCount,
+        contacts: contactsResult.deletedCount,
+        infos: infosResult.deletedCount,
+        socials: socialsResult.deletedCount
       },
       before: {
         products: productsBefore.length,
         categories: categoriesBefore.length,
-        farms: farmsBefore.length
+        farms: farmsBefore.length,
+        contacts: contactsBefore.length,
+        infos: infosBefore.length,
+        socials: socialsBefore.length
       },
       after: {
         products: productsAfter.length,
         categories: categoriesAfter.length,
-        farms: farmsAfter.length
+        farms: farmsAfter.length,
+        contacts: contactsAfter.length,
+        infos: infosAfter.length,
+        socials: socialsAfter.length
       },
       verification: {
-        totalRemoved: productsResult.deletedCount + categoriesResult.deletedCount + farmsResult.deletedCount,
-        isEmpty: productsAfter.length === 0 && categoriesAfter.length === 0 && farmsAfter.length === 0
+        totalRemoved: productsResult.deletedCount + categoriesResult.deletedCount + farmsResult.deletedCount + contactsResult.deletedCount + infosResult.deletedCount + socialsResult.deletedCount,
+        isEmpty: productsAfter.length === 0 && categoriesAfter.length === 0 && farmsAfter.length === 0 && contactsAfter.length === 0 && infosAfter.length === 0 && socialsAfter.length === 0
       },
       timestamp: new Date().toISOString()
     });

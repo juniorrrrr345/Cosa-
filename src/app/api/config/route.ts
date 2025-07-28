@@ -56,3 +56,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ...STATIC_CONFIG, ...configData });
   }
 }
+
+export async function PUT(request: NextRequest) {
+  try {
+    console.log('🔍 API PUT /config - Mise à jour MongoDB');
+    const updates = await request.json();
+    
+    const updatedConfig = await mongoService.updateShopConfig(updates);
+    console.log('✅ Config mise à jour via PUT:', updatedConfig);
+    
+    return NextResponse.json(updatedConfig);
+  } catch (error) {
+    console.error('❌ Erreur API PUT config:', error);
+    
+    // Fallback: retourner la config mise à jour localement
+    console.log('📦 Fallback: config mise à jour sans persistance');
+    return NextResponse.json({ ...STATIC_CONFIG, ...updates });
+  }
+}

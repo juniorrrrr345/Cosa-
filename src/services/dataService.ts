@@ -1118,6 +1118,24 @@ class DataService {
     }
   }
 
+  async getSocialNetworks(): Promise<any[]> {
+    try {
+      console.log('📱 getSocialNetworks - TOUJOURS depuis MongoDB API...');
+      const response = await fetch('/api/social-networks');
+      if (response.ok) {
+        const socialNetworks = await response.json();
+        console.log('📱 Réseaux sociaux chargés depuis MongoDB:', socialNetworks.length);
+        return socialNetworks;
+      } else {
+        console.error('❌ API social-networks a échoué:', response.status);
+        throw new Error('API MongoDB indisponible');
+      }
+    } catch (error) {
+      console.error('❌ Erreur critique API social-networks:', error);
+      return []; // Retour vide en cas d'erreur
+    }
+  }
+
   async deleteSocialNetwork(id: string): Promise<boolean> {
     try {
       console.log('📱 deleteSocialNetwork - MongoDB API:', id);

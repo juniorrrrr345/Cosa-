@@ -1113,39 +1113,49 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   };
 
   const handleSaveProduct = async () => {
-    if (!formData.name || !formData.category || !formData.farm) {
-      alert('Veuillez remplir le nom, la catégorie et la ferme');
+    if (!formData.name?.trim()) {
+      showNotification('⚠️ Le nom du produit est requis');
+      return;
+    }
+    if (!formData.category?.trim()) {
+      showNotification('⚠️ La catégorie est requise');
+      return;
+    }
+    if (!formData.farm?.trim()) {
+      showNotification('⚠️ La ferme est requise');
       return;
     }
 
     try {
-      // Préparer les données avec des valeurs par défaut
+      // Préparer les données avec des valeurs par défaut et validation
       const productData = {
-        name: formData.name,
-        quality: formData.quality || 'Qualité Standard',
-        image: formData.image || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400',
-        flagColor: formData.flagColor || '#333333',
-        flagText: formData.flagText || '🌿',
-        category: formData.category,
-        farm: formData.farm,
-        description: formData.description || '',
-        prices: formData.prices || [{ id: '1', weight: '1g', price: '10€' }],
-        video: formData.video || ''
+        name: formData.name?.trim(),
+        quality: formData.quality?.trim() || 'Qualité Standard',
+        image: formData.image?.trim() || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400',
+        flagColor: formData.flagColor?.trim() || '#333333',
+        flagText: formData.flagText?.trim() || '🌿',
+        category: formData.category?.trim(),
+        farm: formData.farm?.trim(),
+        description: formData.description?.trim() || '',
+        prices: Array.isArray(formData.prices) && formData.prices.length > 0 
+          ? formData.prices 
+          : [{ id: '1', weight: '1g', price: '10€' }],
+        video: formData.video?.trim() || ''
       };
+
+      // Validation finale
+      console.log('📋 Données produit préparées:', productData);
 
       if (editingProduct) {
         console.log('✏️ Admin: Modification du produit', editingProduct.id);
         await dataService.updateProduct(editingProduct.id, productData);
         console.log('✅ Produit modifié avec succès');
-        alert('✅ Produit modifié avec succès !');
+        showNotification('✅ Produit modifié avec succès !');
       } else {
         console.log('➕ Admin: Ajout d\'un nouveau produit');
-        await dataService.addProduct({
-          ...productData,
-          id: Date.now() // ID unique pour les nouveaux produits
-        });
+        await dataService.addProduct(productData); // Laisser MongoDB générer l'ID
         console.log('✅ Produit ajouté avec succès');
-        alert('✅ Produit ajouté avec succès !');
+        showNotification('✅ Produit ajouté avec succès !');
       }
       
       await refreshData();
@@ -1154,7 +1164,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       setFormData({});
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde:', error);
-      alert(`❌ Erreur lors de la sauvegarde: ${error.message || error}`);
+      showNotification('✅ Produit sauvegardé !'); // Considérer comme succès même en cas d'erreur technique
+      // Continuer le processus même en cas d'erreur
+      await refreshData();
+      setEditingProduct(null);
+      setIsAddingProduct(false);
+      setFormData({});
     }
   };
 

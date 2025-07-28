@@ -341,14 +341,21 @@ export class DataService {
 
   // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
+    // POUR LE PANEL ADMIN: utiliser localStorage en priorité pour la stabilité
+    const localProducts = this.getProductsSync();
+    if (localProducts.length > 0) {
+      console.log('📦 getProducts - Utilisation localStorage (panel admin):', localProducts.length);
+      return localProducts;
+    }
+    
+    // Sinon essayer l'API
     try {
-      console.log('🔍 getProducts - Fetch API DIRECT');
-      // TOUJOURS faire un fetch API d'abord pour avoir les données MongoDB à jour
+      console.log('🔍 getProducts - Fetch API en fallback');
       const response = await fetch('/api/products');
       if (response.ok) {
         const products = await response.json();
         console.log('📦 getProducts - Produits depuis API:', products.length);
-        // FORCER mise à jour localStorage avec les données fraîches (même si vide)
+        // Mettre à jour localStorage avec les données fraîches
         if (typeof window !== 'undefined') {
           localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
           console.log('🗑️ localStorage produits mis à jour avec API:', products.length);
@@ -356,13 +363,11 @@ export class DataService {
         return products;
       }
     } catch (error) {
-      console.warn('⚠️ API indisponible, fallback localStorage:', error);
+      console.warn('⚠️ API indisponible, utilisation localStorage:', error);
     }
     
-    // Fallback vers localStorage seulement si API échoue COMPLÈTEMENT
-    const fallbackProducts = this.getProductsSync();
-    console.log('📦 Fallback localStorage:', fallbackProducts.length);
-    return fallbackProducts;
+    // Retourner localStorage même si vide
+    return localProducts;
   }
 
   getProductsSync(): Product[] {
@@ -500,9 +505,16 @@ export class DataService {
 
   // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
   async getCategories(): Promise<Category[]> {
+    // POUR LE PANEL ADMIN: utiliser localStorage en priorité
+    const localCategories = this.getCategoriesSync();
+    if (localCategories.length > 0) {
+      console.log('📂 getCategories - Utilisation localStorage (panel admin):', localCategories.length);
+      return localCategories;
+    }
+    
+    // Sinon essayer l'API
     try {
-      console.log('🔍 getCategories - Fetch API DIRECT');
-      // TOUJOURS faire un fetch API d'abord pour avoir les données MongoDB à jour
+      console.log('🔍 getCategories - Fetch API en fallback');
       const response = await fetch('/api/categories');
       if (response.ok) {
         const categories = await response.json();
@@ -514,11 +526,11 @@ export class DataService {
         return categories;
       }
     } catch (error) {
-      console.warn('⚠️ API catégories indisponible, fallback localStorage:', error);
+      console.warn('⚠️ API catégories indisponible, utilisation localStorage:', error);
     }
     
-    // Fallback vers localStorage seulement si API échoue
-    return this.getCategoriesSync();
+    // Retourner localStorage même si vide
+    return localCategories;
   }
 
   getCategoriesSync(): Category[] {
@@ -604,9 +616,16 @@ export class DataService {
 
   // === FERMES - SYSTÈME DYNAMIQUE ===
   async getFarms(): Promise<Farm[]> {
+    // POUR LE PANEL ADMIN: utiliser localStorage en priorité
+    const localFarms = this.getFarmsSync();
+    if (localFarms.length > 0) {
+      console.log('🏠 getFarms - Utilisation localStorage (panel admin):', localFarms.length);
+      return localFarms;
+    }
+    
+    // Sinon essayer l'API
     try {
-      console.log('🔍 getFarms - Fetch API DIRECT');
-      // TOUJOURS faire un fetch API d'abord pour avoir les données MongoDB à jour
+      console.log('🔍 getFarms - Fetch API en fallback');
       const response = await fetch('/api/farms');
       if (response.ok) {
         const farms = await response.json();
@@ -618,11 +637,11 @@ export class DataService {
         return farms;
       }
     } catch (error) {
-      console.warn('⚠️ API farms indisponible, fallback localStorage:', error);
+      console.warn('⚠️ API farms indisponible, utilisation localStorage:', error);
     }
     
-    // Fallback vers localStorage seulement si API échoue
-    return this.getFarmsSync();
+    // Retourner localStorage même si vide
+    return localFarms;
   }
 
   getFarmsSync(): Farm[] {
@@ -1014,18 +1033,19 @@ export class DataService {
 
   // Force un refresh complet depuis l'API
   async forceRefreshFromAPI(): Promise<void> {
-    console.log('🔄 REFRESH FORCÉ depuis API...');
+    console.log('🔄 REFRESH FORCÉ - Réinitialisation données par défaut...');
     this.clearAllLocalStorage();
     
-    // Recharger toutes les données depuis l'API
-    await Promise.all([
-      this.getProducts(),
-      this.getCategories(), 
-      this.getFarms()
-    ]);
+    // Réinitialiser avec les données par défaut pour le panel admin
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+      localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+      console.log('✅ localStorage réinitialisé avec données par défaut');
+    }
     
     this.notifyDataUpdate();
-    console.log('✅ Refresh forcé terminé');
+    console.log('✅ Refresh forcé terminé - Panel admin fonctionnel');
   }
 
   // Nettoyer les ressources

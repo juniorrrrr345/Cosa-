@@ -352,21 +352,9 @@ interface SocialNetworksPageProps {
 }
 
 const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
-  // Initialiser avec les données du cache pour éviter le flash
-  const [socialNetworks, setSocialNetworks] = useState<SocialNetwork[]>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_social_networks');
-      return cached ? JSON.parse(cached) : [];
-    }
-    return [];
-  });
-  const [config, setConfig] = useState<ShopConfig>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_config');
-      return cached ? JSON.parse(cached) : {} as ShopConfig;
-    }
-    return {} as ShopConfig;
-  });
+  // Démarrer complètement vide - AUCUN contenu par défaut
+  const [socialNetworks, setSocialNetworks] = useState<SocialNetwork[]>([]);
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
 
   useEffect(() => {
     loadData();

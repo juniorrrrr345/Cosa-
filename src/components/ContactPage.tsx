@@ -212,21 +212,9 @@ const NavLabel = styled.div`
 `;
 
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
-  // Initialiser avec les données du cache pour éviter le flash
-  const [config, setConfig] = useState<ShopConfig>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_config');
-      return cached ? JSON.parse(cached) : {} as ShopConfig;
-    }
-    return {} as ShopConfig;
-  });
-  const [contactContents, setContactContents] = useState<ContactContent[]>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_contact_contents');
-      return cached ? JSON.parse(cached) : [];
-    }
-    return [];
-  });
+  // Démarrer complètement vide - AUCUN contenu par défaut
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+  const [contactContents, setContactContents] = useState<ContactContent[]>([]);
 
   useEffect(() => {
     loadData();

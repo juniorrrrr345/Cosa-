@@ -210,21 +210,9 @@ interface InfoPageProps {
 }
 
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
-  // Initialiser avec les données du cache pour éviter le flash
-  const [config, setConfig] = useState<ShopConfig>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_config');
-      return cached ? JSON.parse(cached) : {} as ShopConfig;
-    }
-    return {} as ShopConfig;
-  });
-  const [infoContents, setInfoContents] = useState<InfoContent[]>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_info_contents');
-      return cached ? JSON.parse(cached) : [];
-    }
-    return [];
-  });
+  // Démarrer complètement vide - AUCUN contenu par défaut
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+  const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
 
   useEffect(() => {
     loadData();
@@ -242,31 +230,36 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
     };
   }, []);
 
-  // Fonction pour charger les données - VERSION AVEC API
+  // Charger UNIQUEMENT depuis l'API MongoDB - AUCUN cache
   const loadData = async () => {
     try {
-      console.log('📥 InfoPage - Chargement des données...');
+      console.log('📥 InfoPage - Chargement UNIQUEMENT depuis API MongoDB...');
       
-      // Charger la config de manière synchrone
-      const configData = dataService.getConfigSync();
-      setConfig(configData);
-      
-      // Charger les contenus info depuis l'API
-      const response = await fetch('/api/info-contents');
-      if (response.ok) {
-        const infoData = await response.json();
-        setInfoContents(infoData);
-        console.log('✅ InfoPage - Contenus chargés depuis API:', infoData.length);
+      // Charger depuis l'API MongoDB, pas localStorage
+      const [configRes, infoRes] = await Promise.all([
+        fetch('/api/config'),
+        fetch('/api/info-contents')
+      ]);
+
+      if (configRes.ok) {
+        const configData = await configRes.json();
+        setConfig(configData);
+        console.log('⚙️ Config chargée depuis MongoDB');
       } else {
-        console.warn('⚠️ API info-contents indisponible');
+        setConfig({} as ShopConfig);
+      }
+
+      if (infoRes.ok) {
+        const infoData = await infoRes.json();
+        setInfoContents(infoData);
+        console.log('📄 Contenus info chargés depuis MongoDB:', infoData.length);
+      } else {
         setInfoContents([]);
       }
       
-      console.log('✅ InfoPage - Données chargées avec succès');
+      console.log('✅ InfoPage - Données chargées UNIQUEMENT depuis MongoDB');
     } catch (error) {
-      console.error('❌ Erreur lors du chargement des données:', error);
-      
-      // Fallback minimal
+      console.error('❌ Erreur chargement depuis API:', error);
       setConfig({} as ShopConfig);
       setInfoContents([]);
     }

@@ -337,35 +337,11 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, currentView = 'menu' }) => {
-  // Initialiser avec les données du cache pour éviter le flash
-  const [products, setProducts] = useState<Product[]>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_products');
-      return cached ? JSON.parse(cached) : [];
-    }
-    return [];
-  });
-  const [categories, setCategories] = useState<Category[]>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_categories');
-      return cached ? JSON.parse(cached) : [{ value: 'all', label: 'Toutes les catégories' }];
-    }
-    return [{ value: 'all', label: 'Toutes les catégories' }];
-  });
-  const [farms, setFarms] = useState<Farm[]>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_farms');
-      return cached ? JSON.parse(cached) : [{ value: 'all', label: 'Toutes les fermes', country: '' }];
-    }
-    return [{ value: 'all', label: 'Toutes les fermes', country: '' }];
-  });
-  const [config, setConfig] = useState<ShopConfig>(() => {
-    if (typeof window !== 'undefined') {
-      const cached = localStorage.getItem('bipcosa06_config');
-      return cached ? JSON.parse(cached) : {} as ShopConfig;
-    }
-    return {} as ShopConfig;
-  });
+  // Démarrer complètement vide - AUCUN contenu par défaut
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [farms, setFarms] = useState<Farm[]>([]);
+  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedFarm, setSelectedFarm] = useState<string>('all');
   const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());

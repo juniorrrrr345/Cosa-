@@ -71,19 +71,29 @@ const STATIC_PRODUCTS = [
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 API GET /products - FORCE STATIC GARANTI');
+    console.log('🔍 API GET /products - MongoDB avec fallback statique');
     
-    // FORCE TEMPORAIRE: Toujours retourner les données statiques
-    // pour garantir que cosa-tau.vercel.app ait TOUJOURS des produits
-    console.log('📦 FORCE: Retour données statiques garanties');
-    return NextResponse.json(STATIC_PRODUCTS);
-    
-    // MongoDB est commenté temporairement pour forcer les données
-    /*
     const products = await mongoService.getProducts();
     console.log('📦 MongoDB résultat brut:', products ? products.length : 'null', products);
-    return NextResponse.json(products || []);
-    */
+    
+    // Si MongoDB est vide, initialiser avec les données statiques
+    if (!products || products.length === 0) {
+      console.log('📦 MongoDB vide, initialisation avec données statiques...');
+      await mongoService.forceInitializeData();
+      
+      // Récupérer à nouveau après initialisation
+      const initializedProducts = await mongoService.getProducts();
+      if (initializedProducts && initializedProducts.length > 0) {
+        console.log('✅ Données initialisées, retour:', initializedProducts.length, 'produits');
+        return NextResponse.json(initializedProducts);
+      }
+      
+      // Si l'initialisation échoue, retourner les données statiques directement
+      console.log('📦 Fallback final: retour données statiques');
+      return NextResponse.json(STATIC_PRODUCTS);
+    }
+    
+    return NextResponse.json(products);
   } catch (error) {
     console.error('❌ Erreur MongoDB:', error);
     console.log('📦 Fallback vers données statiques à cause erreur');

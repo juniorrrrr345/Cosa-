@@ -11,20 +11,21 @@ const STATIC_FARMS = [
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 API GET /farms appelée');
-    const farms = await mongoService.getFarms();
+    console.log('🔍 API GET /farms - MongoDB avec fallback statique');
     
-    // Si MongoDB retourne vide ou échoue, utiliser les données statiques
+    const farms = await mongoService.getFarms();
+    console.log('🏠 MongoDB farms résultat:', farms ? farms.length : 'null');
+    
+    // Si MongoDB est vide, retourner les données statiques
     if (!farms || farms.length === 0) {
-      console.log('📦 MongoDB vide/indisponible, utilisation farms statiques');
+      console.log('🏠 MongoDB vide, retour données statiques farms');
       return NextResponse.json(STATIC_FARMS);
     }
     
-    console.log(`📦 Retour ${farms.length} farms depuis MongoDB`);
     return NextResponse.json(farms);
   } catch (error) {
-    console.error('❌ Erreur API GET farms:', error);
-    console.log('📦 Fallback vers farms statiques');
+    console.error('❌ Erreur MongoDB farms:', error);
+    console.log('🏠 Fallback vers données statiques farms');
     return NextResponse.json(STATIC_FARMS);
   }
 }

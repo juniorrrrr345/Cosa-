@@ -12,20 +12,21 @@ const STATIC_CATEGORIES = [
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 API GET /categories appelée');
-    const categories = await mongoService.getCategories();
+    console.log('🔍 API GET /categories - MongoDB avec fallback statique');
     
-    // Si MongoDB retourne vide ou échoue, utiliser les données statiques
+    const categories = await mongoService.getCategories();
+    console.log('📂 MongoDB catégories résultat:', categories ? categories.length : 'null');
+    
+    // Si MongoDB est vide, retourner les données statiques
     if (!categories || categories.length === 0) {
-      console.log('📦 MongoDB vide/indisponible, utilisation catégories statiques');
+      console.log('📂 MongoDB vide, retour données statiques catégories');
       return NextResponse.json(STATIC_CATEGORIES);
     }
     
-    console.log(`📦 Retour ${categories.length} catégories depuis MongoDB`);
     return NextResponse.json(categories);
   } catch (error) {
-    console.error('❌ Erreur API GET categories:', error);
-    console.log('📦 Fallback vers catégories statiques');
+    console.error('❌ Erreur MongoDB catégories:', error);
+    console.log('📂 Fallback vers données statiques catégories');
     return NextResponse.json(STATIC_CATEGORIES);
   }
 }

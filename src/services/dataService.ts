@@ -126,74 +126,20 @@ export class DataService {
   private readonly DATA_VERSION_KEY = 'bipcosa06_data_version';
   
   constructor() {
-    console.log('🚀 DataService avec SYNCHRONISATION TEMPS RÉEL initialisé');
-    
-    // FORCE IMMÉDIATE DES DONNÉES - SANS ATTENDRE L'API
-    this.forceImmediateData();
-    
+    console.log('🚀 DataService SIMPLE initialisé');
     this.initializeDefaultData();
-    
-    // DÉSACTIVER LE SYNC TEMPS RÉEL pour éviter les erreurs server-side
-    // if (this.USE_REAL_TIME_SYNC) {
-    //   this.startRealTimeSync();
-    // }
   }
 
-  private forceImmediateData(): void {
-    if (typeof window === 'undefined') return;
-    
-    console.log('🔥 FORCE IMMÉDIATE DES DONNÉES - GARANTIE 100%');
-    
-    // FORCER IMMÉDIATEMENT les données sans vérification
-    localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
-    localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
-    localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
-    localStorage.setItem(this.CONFIG_KEY, JSON.stringify(STATIC_CONFIG));
-    
-    console.log('✅ DONNÉES FORCÉES IMMÉDIATEMENT:');
-    console.log('📦 Produits:', STATIC_PRODUCTS.length);
-    console.log('📂 Catégories:', STATIC_CATEGORIES.length);
-    console.log('🏠 Farms:', STATIC_FARMS.length);
-    
-    // Notifier immédiatement le changement
-    this.notifyDataUpdate();
-  }
-  
   // Initialisation des données
   private initializeDefaultData(): void {
     if (typeof window === 'undefined') return;
     
-    console.log('🔄 Vérification initialisation données par défaut...');
+    console.log('🔄 Initialisation simple...');
     
-    // FORCER l'initialisation si pas de données
-    const products = localStorage.getItem(this.PRODUCTS_KEY);
-    const categories = localStorage.getItem(this.CATEGORIES_KEY);
-    const farms = localStorage.getItem(this.FARMS_KEY);
-    
-    if (!products || JSON.parse(products).length === 0) {
-      console.log('📦 Initialisation produits par défaut...');
-      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
-    }
-    
-    if (!categories || JSON.parse(categories).length === 0) {
-      console.log('📂 Initialisation catégories par défaut...');
-      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
-    }
-    
-    if (!farms || JSON.parse(farms).length === 0) {
-      console.log('🏠 Initialisation farms par défaut...');
-      localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
-    }
-    
-    // TOUJOURS s'assurer qu'il y a des données par défaut
+    // Juste s'assurer que les clés existent (pas de forçage)
     this.ensureDefaultDataExists();
     
-    if (this.USE_REAL_TIME_SYNC) {
-      console.log('🔄 Mode synchronisation temps réel - MongoDB prioritaire');
-      setTimeout(() => this.performSync(), 100);
-    } else {
-      this.initializeDefaultDataFallback();
-    }
+    console.log('✅ Initialisation terminée - mode simple');
   }
   
   // S'assurer que les données par défaut existent toujours
@@ -386,48 +332,28 @@ export class DataService {
 
   // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
-    // DOUBLE SÉCURITÉ: localStorage immédiat + API dynamique
-    console.log('📦 getProducts - Double sécurité localStorage + API');
+    // SYSTÈME SIMPLE: API MongoDB + fallback immédiat (pas de page noire)
+    console.log('📦 getProducts - Système simple API + fallback');
     
-    // SÉCURITÉ 1: Vérifier localStorage immédiatement
-    const localProducts = this.getProductsSync();
-    if (localProducts.length > 0) {
-      console.log('📦 RETOUR IMMÉDIAT localStorage:', localProducts.length, 'produits');
-      
-      // Lancer l'API en arrière-plan pour mise à jour
-      this.updateFromAPI();
-      
-      return localProducts;
-    }
-    
-    // SÉCURITÉ 2: Si localStorage vide, initialiser + API
-    console.log('📦 localStorage vide, initialisation + API...');
-    
-    // Initialiser immédiatement avec données statiques
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
-    }
-    
-    // Essayer l'API en parallèle
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
         const products = await response.json();
-        console.log('📦 Mise à jour depuis API/MongoDB:', products.length);
+        console.log('📦 API SUCCESS:', products.length, 'produits');
         
-        if (typeof window !== 'undefined') {
+        // Cache pour performance
+        if (typeof window !== 'undefined' && products.length > 0) {
           localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
         }
         
-        this.notifyDataUpdate();
         return products.length > 0 ? products : STATIC_PRODUCTS;
       }
     } catch (error) {
-      console.warn('⚠️ API indisponible:', error);
+      console.warn('⚠️ API échoué:', error);
     }
     
-    // FALLBACK FINAL: données statiques garanties
-    console.log('📦 RETOUR FALLBACK:', STATIC_PRODUCTS.length, 'produits');
+    // FALLBACK IMMÉDIAT: pas de page noire !
+    console.log('📦 FALLBACK immédiat - pas de page noire');
     return STATIC_PRODUCTS;
   }
 
@@ -582,31 +508,29 @@ export class DataService {
 
   // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
   async getCategories(): Promise<Category[]> {
-    // SYSTÈME 100% DYNAMIQUE - API/MongoDB PRIORITAIRE
-    console.log('📂 getCategories - Mode 100% DYNAMIQUE via API');
+    // SYSTÈME SIMPLE: API MongoDB + fallback immédiat
+    console.log('📂 getCategories - Système simple API + fallback');
     
-    // PRIORITÉ 1: API/MongoDB
     try {
       const response = await fetch('/api/categories');
       if (response.ok) {
         const categories = await response.json();
-        console.log('📂 Catégories depuis API/MongoDB:', categories.length);
+        console.log('📂 API SUCCESS:', categories.length, 'catégories');
         
-        // Mettre à jour localStorage avec les données fraîches
-        if (typeof window !== 'undefined') {
+        // Cache pour performance
+        if (typeof window !== 'undefined' && categories.length > 0) {
           localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
         }
         
-        return categories;
+        return categories.length > 0 ? categories : STATIC_CATEGORIES;
       }
     } catch (error) {
-      console.warn('⚠️ API catégories indisponible:', error);
+      console.warn('⚠️ API catégories échoué:', error);
     }
     
-    // FALLBACK: localStorage uniquement si API échoue
-    const localCategories = this.getCategoriesSync();
-    console.log('📂 FALLBACK localStorage:', localCategories.length, 'catégories');
-    return localCategories;
+    // FALLBACK IMMÉDIAT
+    console.log('📂 FALLBACK immédiat catégories');
+    return STATIC_CATEGORIES;
   }
 
   getCategoriesSync(): Category[] {
@@ -751,31 +675,29 @@ export class DataService {
 
   // === FERMES - SYSTÈME DYNAMIQUE ===
   async getFarms(): Promise<Farm[]> {
-    // SYSTÈME 100% DYNAMIQUE - API/MongoDB PRIORITAIRE
-    console.log('🏠 getFarms - Mode 100% DYNAMIQUE via API');
+    // SYSTÈME SIMPLE: API MongoDB + fallback immédiat
+    console.log('🏠 getFarms - Système simple API + fallback');
     
-    // PRIORITÉ 1: API/MongoDB
     try {
       const response = await fetch('/api/farms');
       if (response.ok) {
         const farms = await response.json();
-        console.log('🏠 Farms depuis API/MongoDB:', farms.length);
+        console.log('🏠 API SUCCESS:', farms.length, 'farms');
         
-        // Mettre à jour localStorage avec les données fraîches
-        if (typeof window !== 'undefined') {
+        // Cache pour performance
+        if (typeof window !== 'undefined' && farms.length > 0) {
           localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
         }
         
-        return farms;
+        return farms.length > 0 ? farms : STATIC_FARMS;
       }
     } catch (error) {
-      console.warn('⚠️ API farms indisponible:', error);
+      console.warn('⚠️ API farms échoué:', error);
     }
     
-    // FALLBACK: localStorage uniquement si API échoue
-    const localFarms = this.getFarmsSync();
-    console.log('🏠 FALLBACK localStorage:', localFarms.length, 'farms');
-    return localFarms;
+    // FALLBACK IMMÉDIAT
+    console.log('🏠 FALLBACK immédiat farms');
+    return STATIC_FARMS;
   }
 
   getFarmsSync(): Farm[] {

@@ -138,15 +138,35 @@ export class DataService {
   private initializeDefaultData(): void {
     if (typeof window === 'undefined') return;
     
-    // TOUJOURS initialiser les données par défaut en premier pour éviter les pages vides
+    console.log('🔄 Vérification initialisation données par défaut...');
+    
+    // FORCER l'initialisation si pas de données
+    const products = localStorage.getItem(this.PRODUCTS_KEY);
+    const categories = localStorage.getItem(this.CATEGORIES_KEY);
+    const farms = localStorage.getItem(this.FARMS_KEY);
+    
+    if (!products || JSON.parse(products).length === 0) {
+      console.log('📦 Initialisation produits par défaut...');
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+    }
+    
+    if (!categories || JSON.parse(categories).length === 0) {
+      console.log('📂 Initialisation catégories par défaut...');
+      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+    }
+    
+    if (!farms || JSON.parse(farms).length === 0) {
+      console.log('🏠 Initialisation farms par défaut...');
+      localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+    }
+    
+    // TOUJOURS s'assurer qu'il y a des données par défaut
     this.ensureDefaultDataExists();
     
     if (this.USE_REAL_TIME_SYNC) {
       console.log('🔄 Mode synchronisation temps réel - MongoDB prioritaire');
-      // En mode temps réel, on lance la sync après avoir garanti les données par défaut
       setTimeout(() => this.performSync(), 100);
     } else {
-      // Mode fallback - utiliser localStorage
       this.initializeDefaultDataFallback();
     }
   }

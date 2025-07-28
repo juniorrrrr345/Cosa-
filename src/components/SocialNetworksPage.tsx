@@ -495,17 +495,8 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
             </SocialDescription>
           </SocialHeader>
 
-          {activeSocialNetworks.length === 0 ? (
-            <EmptyState>
-              <EmptyIcon>📱</EmptyIcon>
-              <EmptyText>
-                Aucun réseau social configuré pour le moment.<br />
-                Revenez bientôt pour nous suivre !
-              </EmptyText>
-            </EmptyState>
-          ) : (
-            <SocialGrid>
-              {activeSocialNetworks.map((network) => (
+          <SocialGrid>
+            {activeSocialNetworks.map((network) => (
                 <SocialCard
                   key={network.id}
                   onClick={() => handleSocialClick(network.url, network.name)}
@@ -529,9 +520,8 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
                     </SocialLink>
                   </SocialInfo>
                 </SocialCard>
-              ))}
+                              ))}
             </SocialGrid>
-          )}
         </SocialSection>
       </Content>
     </div>

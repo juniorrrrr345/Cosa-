@@ -282,39 +282,29 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
 
       {/* Contenu principal */}
       <Content>
-        {contactContents.length > 0 ? (
-          contactContents.map((contact) => (
-            <ContactCard key={contact.id}>
-              <ContactTitle>{contact.title}</ContactTitle>
-              <ContactInfo>{contact.description}</ContactInfo>
-              
-              {contact.telegramLink && (
-                <TelegramButton 
-                  href={contact.telegramLink} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                >
-                  <span>📱</span>
-                  Contacter sur Telegram
-                </TelegramButton>
-              )}
-              
-              {contact.additionalInfo && (
-                <ContactDetails>
-                  {contact.additionalInfo}
-                </ContactDetails>
-              )}
-            </ContactCard>
-          ))
-        ) : (
-          <ContactCard>
-            <ContactTitle>📞 Contact</ContactTitle>
-            <ContactInfo>
-              Les informations de contact sont en cours de configuration.
-              Revenez bientôt pour plus de détails !
-            </ContactInfo>
+        {contactContents.map((contact) => (
+          <ContactCard key={contact.id}>
+            <ContactTitle>{contact.title}</ContactTitle>
+            <ContactInfo>{contact.description}</ContactInfo>
+            
+            {contact.telegramLink && (
+              <TelegramButton 
+                href={contact.telegramLink} 
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <span>📱</span>
+                Contacter sur Telegram
+              </TelegramButton>
+            )}
+            
+            {contact.additionalInfo && (
+              <ContactDetails>
+                {contact.additionalInfo}
+              </ContactDetails>
+            )}
           </ContactCard>
-        )}
+        ))}
       </Content>
 
       {/* Navigation en bas */}

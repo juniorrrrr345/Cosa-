@@ -281,33 +281,24 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
 
       {/* Contenu principal */}
       <Content>
-        {infoContents.length > 0 ? (
-          infoContents.map((info) => (
-            <InfoSection key={info.id}>
-              <InfoTitle>{info.title}</InfoTitle>
-              <InfoDescription>{info.description}</InfoDescription>
-              {info.additionalInfo && (
-                <InfoDescription style={{ fontStyle: 'italic', marginTop: '10px', opacity: 0.9 }}>
-                  {info.additionalInfo}
-                </InfoDescription>
-              )}
-              {info.items && info.items.length > 0 && (
-                <InfoList>
-                  {info.items.map((item, index) => (
-                    <InfoItem key={index}>{item}</InfoItem>
-                  ))}
-                </InfoList>
-              )}
-            </InfoSection>
-          ))
-        ) : (
-          <InfoSection>
-            <InfoTitle>ℹ️ Informations</InfoTitle>
-            <InfoDescription>
-              Les informations de la boutique sont en cours de configuration dans le panel d'administration.
-            </InfoDescription>
+        {infoContents.map((info) => (
+          <InfoSection key={info.id}>
+            <InfoTitle>{info.title}</InfoTitle>
+            <InfoDescription>{info.description}</InfoDescription>
+            {info.additionalInfo && (
+              <InfoDescription style={{ fontStyle: 'italic', marginTop: '10px', opacity: 0.9 }}>
+                {info.additionalInfo}
+              </InfoDescription>
+            )}
+            {info.items && info.items.length > 0 && (
+              <InfoList>
+                {info.items.map((item, index) => (
+                  <InfoItem key={index}>{item}</InfoItem>
+                ))}
+              </InfoList>
+            )}
           </InfoSection>
-        )}
+        ))}
       </Content>
 
       {/* Navigation en bas */}

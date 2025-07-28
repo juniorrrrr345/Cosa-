@@ -3,47 +3,74 @@ import mongoService from '@/services/mongoService';
 
 export async function GET() {
   try {
-    console.log('🧪 Test de connexion MongoDB démarré...');
+    console.log('🧪 API /test-mongo - Test de connexion MongoDB');
     
-    // Tester la connexion
+    // Vérifier quelle URI est utilisée
+    const envUri = process.env.MONGODB_URI;
+    const fallbackUri = 'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+    const actualUri = envUri || fallbackUri;
+    
+    console.log('🔍 URI Environment Variable:', envUri ? 'DÉFINIE' : 'NON DÉFINIE');
+    console.log('🔍 URI utilisée:', actualUri.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')); // Masquer les credentials
+    
+    // Identifier quel utilisateur est utilisé
+    let userInUri = 'INCONNU';
+    if (actualUri.includes('BipCosa:Cosa06')) {
+      userInUri = 'BipCosa';
+    } else if (actualUri.includes('Junior:Lacrim123')) {
+      userInUri = 'Junior';
+    } else if (actualUri.includes('cosa_tau_app:CosaTau2024')) {
+      userInUri = 'cosa_tau_app';
+    }
+    
+    // Test de connexion
     await mongoService.connect();
-    
-    console.log('✅ Connexion MongoDB réussie !');
-    
-    // Tester une opération simple
-    const testResult = await mongoService.getProducts();
+    const products = await mongoService.getProducts();
     
     return NextResponse.json({
       status: 'SUCCESS',
       message: 'Connexion MongoDB réussie !',
       details: {
-        connected: mongoService.isConnected,
-        timestamp: new Date().toISOString(),
-        productsCount: testResult.length,
-        mongoUri: process.env.MONGODB_URI ? 'Définie via variable d\'environnement' : 'Utilise URI par défaut',
-        testOperation: 'Lecture des produits réussie'
+        connected: true,
+        productsCount: products.length,
+        mongoUri: envUri ? 'Définie via variable d\'environnement' : 'Utilise URI fallback',
+        uriSource: envUri ? 'ENVIRONMENT_VARIABLE' : 'FALLBACK_CODE',
+        userDetected: userInUri,
+        testOperation: 'Lecture des produits réussie',
+        timestamp: new Date().toISOString()
       }
     });
     
   } catch (error: any) {
-    console.error('❌ Test MongoDB échoué:', error);
+    console.error('❌ Erreur test MongoDB:', error);
     
     // Analyser le type d'erreur
-    let errorType = 'UNKNOWN';
-    let suggestion = 'Vérifier les logs pour plus de détails';
+    let errorType = 'UNKNOWN_ERROR';
+    let suggestion = 'Vérifier la configuration MongoDB';
     
-    if (error.message?.includes('authentication failed')) {
+    if (error.message?.includes('bad auth') || error.message?.includes('authentication failed')) {
       errorType = 'AUTHENTICATION_FAILED';
-      suggestion = 'Vérifier que l\'utilisateur Junior existe dans MongoDB Atlas avec le bon mot de passe';
-    } else if (error.message?.includes('ENOTFOUND')) {
-      errorType = 'DNS_RESOLUTION_FAILED';
-      suggestion = 'Vérifier l\'URI MongoDB et la connectivité réseau';
-    } else if (error.message?.includes('connection refused')) {
-      errorType = 'CONNECTION_REFUSED';
-      suggestion = 'Vérifier que le cluster MongoDB Atlas est actif';
-    } else if (error.message?.includes('timeout')) {
-      errorType = 'TIMEOUT';
-      suggestion = 'Problème de réseau ou cluster surchargé';
+      suggestion = 'Vérifier que l\'utilisateur BipCosa existe dans MongoDB Atlas avec le mot de passe Cosa06';
+    } else if (error.message?.includes('not authorized')) {
+      errorType = 'AUTHORIZATION_FAILED';
+      suggestion = 'Vérifier les permissions de l\'utilisateur dans MongoDB Atlas';
+    } else if (error.message?.includes('ENOTFOUND') || error.message?.includes('network')) {
+      errorType = 'NETWORK_ERROR';
+      suggestion = 'Vérifier la connectivité réseau et l\'URI MongoDB';
+    }
+    
+    // Identifier quel utilisateur était testé
+    const envUri = process.env.MONGODB_URI;
+    const fallbackUri = 'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+    const actualUri = envUri || fallbackUri;
+    
+    let userInUri = 'INCONNU';
+    if (actualUri.includes('BipCosa:Cosa06')) {
+      userInUri = 'BipCosa';
+    } else if (actualUri.includes('Junior:Lacrim123')) {
+      userInUri = 'Junior';
+    } else if (actualUri.includes('cosa_tau_app:CosaTau2024')) {
+      userInUri = 'cosa_tau_app';
     }
     
     return NextResponse.json({
@@ -53,66 +80,60 @@ export async function GET() {
       suggestion,
       details: {
         errorMessage: error.message,
-        errorCode: error.code,
-        errorCodeName: error.codeName,
-        mongoUri: process.env.MONGODB_URI ? 'Variable d\'environnement définie' : 'Utilise URI par défaut',
+        errorCode: error.code || 'N/A',
+        errorCodeName: error.codeName || 'N/A',
+        mongoUri: envUri ? 'Variable d\'environnement définie' : 'Utilise URI fallback',
+        uriSource: envUri ? 'ENVIRONMENT_VARIABLE' : 'FALLBACK_CODE',
+        userDetected: userInUri,
         timestamp: new Date().toISOString()
       }
     }, { status: 500 });
   }
 }
 
-// Route POST pour tester avec une URI personnalisée
 export async function POST(request: Request) {
   try {
     const { testUri } = await request.json();
     
+    console.log('🧪 API /test-mongo POST - Test URI personnalisée');
+    console.log('🔍 URI à tester:', testUri.replace(/\/\/[^:]+:[^@]+@/, '//***:***@'));
+    
     if (!testUri) {
       return NextResponse.json({
         status: 'ERROR',
-        message: 'URI de test requise'
+        message: 'URI MongoDB requise pour le test'
       }, { status: 400 });
     }
     
-    console.log('🧪 Test avec URI personnalisée...');
-    
-    // Import dynamique pour tester avec une URI spécifique
+    // Test direct avec l'URI fournie
     const { MongoClient } = require('mongodb');
-    
-    const client = new MongoClient(testUri, {
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
-      connectTimeoutMS: 10000,
-    });
+    const client = new MongoClient(testUri);
     
     await client.connect();
-    console.log('✅ Connexion test réussie !');
-    
-    // Test simple
-    const db = client.db();
-    const collections = await db.listCollections().toArray();
-    
+    const db = client.db('bipcosa06');
+    const products = await db.collection('products').find({}).toArray();
     await client.close();
     
     return NextResponse.json({
       status: 'SUCCESS',
       message: 'Test URI personnalisée réussi !',
       details: {
-        collectionsFound: collections.length,
-        collectionNames: collections.map(c => c.name),
+        connected: true,
+        productsCount: products.length,
+        testOperation: 'Connexion et lecture réussies',
         timestamp: new Date().toISOString()
       }
     });
     
   } catch (error: any) {
-    console.error('❌ Test URI personnalisée échoué:', error);
+    console.error('❌ Erreur test URI personnalisée:', error);
     
     return NextResponse.json({
       status: 'ERROR',
       message: 'Échec test URI personnalisée',
       details: {
         errorMessage: error.message,
-        errorCode: error.code,
+        errorCode: error.code || 'N/A',
         timestamp: new Date().toISOString()
       }
     }, { status: 500 });

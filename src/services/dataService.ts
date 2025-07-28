@@ -312,29 +312,32 @@ class DataService {
     return DataService.instance;
   }
 
-  // === PRODUITS - PRIORITÉ API MongoDB ===
+  // === PRODUITS - TOUJOURS API MongoDB ===
   async getProducts(): Promise<Product[]> {
     try {
-      // TOUJOURS charger depuis MongoDB en priorité
-      console.log('📦 getProducts - Chargement depuis MongoDB...');
+      // TOUJOURS charger depuis MongoDB - JAMAIS localStorage en premier
+      console.log('📦 getProducts - TOUJOURS depuis MongoDB API...');
       const response = await fetch('/api/products');
       if (response.ok) {
         const products = await response.json();
         console.log('📦 Produits chargés depuis MongoDB:', products.length);
         
-        // Mettre à jour le cache local après chargement MongoDB
+        // Synchroniser le cache local avec MongoDB (pour backup seulement)
         if (typeof window !== 'undefined') {
           localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+          localStorage.setItem(this.PRODUCTS_KEY + '_lastSync', new Date().toISOString());
         }
         
         return products;
+      } else {
+        console.error('❌ API produits a échoué:', response.status);
+        throw new Error('API MongoDB indisponible');
       }
     } catch (error) {
-      console.warn('⚠️ API produits indisponible, fallback localStorage:', error);
+      console.error('❌ Erreur critique API produits:', error);
+      // Seulement en cas d'urgence absolue
+      return this.getProductsSync();
     }
-    
-    // Fallback uniquement si MongoDB échoue complètement
-    return this.getProductsSync();
   }
 
   private async updateFromAPI(): Promise<void> {
@@ -480,6 +483,47 @@ class DataService {
     } catch (error) {
       console.error('❌ Erreur suppression produit:', error);
       return false;
+    }
+  }
+
+  async saveProduct(product: Omit<Product, 'id'>): Promise<Product> {
+    try {
+      // TOUJOURS sauvegarder via API MongoDB FIRST
+      console.log('💾 saveProduct - TOUJOURS via MongoDB API:', product.name);
+      
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(product)
+      });
+
+      if (response.ok) {
+        const savedProduct = await response.json();
+        console.log('✅ Produit sauvegardé dans MongoDB:', savedProduct.id);
+        
+        // Synchroniser immédiatement avec localStorage
+        const products = await this.getProducts(); // Recharger depuis MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+        }
+        
+        // Notifier TOUS les appareils du changement
+        this.notifyDataUpdate();
+        
+        // Force sync pour tous les clients
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('dataUpdatedForced'));
+          window.dispatchEvent(new CustomEvent('bipcosa06ForceSync'));
+        }, 100);
+        
+        return savedProduct;
+      } else {
+        console.error('❌ API saveProduct a échoué:', response.status);
+        throw new Error('Échec sauvegarde MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur critique saveProduct API:', error);
+      throw error; // Pas de fallback - doit utiliser MongoDB
     }
   }
 
@@ -648,6 +692,41 @@ class DataService {
     }
   }
 
+  async saveCategory(category: Omit<Category, 'id'>): Promise<Category> {
+    try {
+      // TOUJOURS sauvegarder via API MongoDB
+      console.log('💾 saveCategory - TOUJOURS via MongoDB API:', category.label);
+      
+      const response = await fetch('/api/categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(category)
+      });
+
+      if (response.ok) {
+        const savedCategory = await response.json();
+        console.log('✅ Catégorie sauvegardée dans MongoDB:', savedCategory.label);
+        
+        // Synchroniser immédiatement
+        const categories = await this.getCategories(); // Recharger depuis MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+        }
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return savedCategory;
+      } else {
+        console.error('❌ API saveCategory a échoué:', response.status);
+        throw new Error('Échec sauvegarde catégorie MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur critique saveCategory API:', error);
+      throw error; // Pas de fallback - doit utiliser MongoDB
+    }
+  }
+
   // === FERMES - PRIORITÉ API MongoDB ===
   async getFarms(): Promise<Farm[]> {
     try {
@@ -751,6 +830,41 @@ class DataService {
     } catch (error) {
       console.error('❌ Erreur suppression ferme:', error);
       return false;
+    }
+  }
+
+  async saveFarm(farm: Omit<Farm, 'id'>): Promise<Farm> {
+    try {
+      // TOUJOURS sauvegarder via API MongoDB
+      console.log('💾 saveFarm - TOUJOURS via MongoDB API:', farm.label);
+      
+      const response = await fetch('/api/farms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(farm)
+      });
+
+      if (response.ok) {
+        const savedFarm = await response.json();
+        console.log('✅ Ferme sauvegardée dans MongoDB:', savedFarm.label);
+        
+        // Synchroniser immédiatement
+        const farms = await this.getFarms(); // Recharger depuis MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        }
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return savedFarm;
+      } else {
+        console.error('❌ API saveFarm a échoué:', response.status);
+        throw new Error('Échec sauvegarde ferme MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur critique saveFarm API:', error);
+      throw error; // Pas de fallback - doit utiliser MongoDB
     }
   }
 

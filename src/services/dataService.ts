@@ -341,6 +341,24 @@ export class DataService {
 
   // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
+    try {
+      console.log('🔍 getProducts - Fetch API DIRECT');
+      // TOUJOURS faire un fetch API d'abord pour avoir les données MongoDB à jour
+      const response = await fetch('/api/products');
+      if (response.ok) {
+        const products = await response.json();
+        console.log('📦 getProducts - Produits depuis API:', products.length);
+        // Mettre à jour localStorage avec les données fraîches
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+        }
+        return products;
+      }
+    } catch (error) {
+      console.warn('⚠️ API indisponible, fallback localStorage:', error);
+    }
+    
+    // Fallback vers localStorage seulement si API échoue
     return this.getProductsSync();
   }
 
@@ -479,6 +497,24 @@ export class DataService {
 
   // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
   async getCategories(): Promise<Category[]> {
+    try {
+      console.log('🔍 getCategories - Fetch API DIRECT');
+      // TOUJOURS faire un fetch API d'abord pour avoir les données MongoDB à jour
+      const response = await fetch('/api/categories');
+      if (response.ok) {
+        const categories = await response.json();
+        console.log('📂 getCategories - Catégories depuis API:', categories.length);
+        // Mettre à jour localStorage avec les données fraîches
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+        }
+        return categories;
+      }
+    } catch (error) {
+      console.warn('⚠️ API catégories indisponible, fallback localStorage:', error);
+    }
+    
+    // Fallback vers localStorage seulement si API échoue
     return this.getCategoriesSync();
   }
 
@@ -565,6 +601,24 @@ export class DataService {
 
   // === FERMES - SYSTÈME DYNAMIQUE ===
   async getFarms(): Promise<Farm[]> {
+    try {
+      console.log('🔍 getFarms - Fetch API DIRECT');
+      // TOUJOURS faire un fetch API d'abord pour avoir les données MongoDB à jour
+      const response = await fetch('/api/farms');
+      if (response.ok) {
+        const farms = await response.json();
+        console.log('🏠 getFarms - Fermes depuis API:', farms.length);
+        // Mettre à jour localStorage avec les données fraîches
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        }
+        return farms;
+      }
+    } catch (error) {
+      console.warn('⚠️ API farms indisponible, fallback localStorage:', error);
+    }
+    
+    // Fallback vers localStorage seulement si API échoue
     return this.getFarmsSync();
   }
 

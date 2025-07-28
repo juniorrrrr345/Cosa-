@@ -2510,7 +2510,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                 <input
                   type="file" 
                   accept="image/*"
-                  capture="environment"
                   disabled={imageUploading}
                   onChange={async (e) => {
                     const file = e.target.files?.[0];
@@ -2619,7 +2618,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                 <input
                   type="file" 
                   accept="video/*,.mp4,.mov,.avi,.webm,.mkv"
-                  capture="environment"
                   disabled={videoUploading}
                   onChange={async (e) => {
                     const file = e.target.files?.[0];

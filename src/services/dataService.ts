@@ -1024,6 +1024,12 @@ class DataService {
       if (response.ok) {
         const infoContents = await response.json();
         console.log('ℹ️ Contenus info chargés depuis MongoDB:', infoContents.length);
+        
+        // Sauvegarder dans localStorage pour éviter les flashs
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify(infoContents));
+        }
+        
         return infoContents;
       } else {
         console.error('❌ API info-contents a échoué:', response.status);
@@ -1094,6 +1100,12 @@ class DataService {
       if (response.ok) {
         const contactContents = await response.json();
         console.log('📞 Contenus contact chargés depuis MongoDB:', contactContents.length);
+        
+        // Sauvegarder dans localStorage pour éviter les flashs
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(contactContents));
+        }
+        
         return contactContents;
       } else {
         console.error('❌ API contact-contents a échoué:', response.status);
@@ -1245,6 +1257,12 @@ class DataService {
       if (response.ok) {
         const socialNetworks = await response.json();
         console.log('📱 Réseaux sociaux chargés depuis MongoDB:', socialNetworks.length);
+        
+        // Sauvegarder dans localStorage pour éviter les flashs
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(socialNetworks));
+        }
+        
         return socialNetworks;
       } else {
         console.error('❌ API social-networks a échoué:', response.status);

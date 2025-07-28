@@ -210,8 +210,21 @@ interface InfoPageProps {
 }
 
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
-  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
-  const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
+  // Initialiser avec les données du cache pour éviter le flash
+  const [config, setConfig] = useState<ShopConfig>(() => {
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem('bipcosa06_config');
+      return cached ? JSON.parse(cached) : {} as ShopConfig;
+    }
+    return {} as ShopConfig;
+  });
+  const [infoContents, setInfoContents] = useState<InfoContent[]>(() => {
+    if (typeof window !== 'undefined') {
+      const cached = localStorage.getItem('bipcosa06_info_contents');
+      return cached ? JSON.parse(cached) : [];
+    }
+    return [];
+  });
 
   useEffect(() => {
     loadData();

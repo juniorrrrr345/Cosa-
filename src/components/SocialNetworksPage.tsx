@@ -404,8 +404,6 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
       console.log('✅ SocialNetworksPage - Données chargées depuis MongoDB');
     } catch (error) {
       console.error('❌ Erreur chargement réseaux sociaux depuis API:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -463,25 +461,6 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
       background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)' 
     };
   };
-
-  if (isLoading) {
-    return (
-      <div style={{
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'white',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
-          <div style={{ fontSize: '18px', opacity: 0.8 }}>Chargement des réseaux sociaux...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={getBackgroundStyle(config)}>

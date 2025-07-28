@@ -948,12 +948,26 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         additionalInfo: infoContent.additionalInfo
       };
       
-      if (infoContent.id === 'new-info') {
-        // Créer un nouveau contenu
-        await dataService.addInfoContent(data);
+      // Si tous les champs sont vides, supprimer le contenu au lieu de le sauvegarder
+      if (!data.title.trim() && !data.description.trim() && (!data.items || data.items.length === 0) && !data.additionalInfo.trim()) {
+        if (infoContent.id !== 'new-info') {
+          await dataService.deleteInfoContent(infoContent.id);
+          setInfoContent({
+            id: 'new-info',
+            title: '',
+            description: '',
+            items: [],
+            additionalInfo: ''
+          });
+        }
       } else {
-        // Mettre à jour le contenu existant
-        await dataService.updateInfoContent(infoContent.id, data);
+        if (infoContent.id === 'new-info') {
+          // Créer un nouveau contenu
+          await dataService.addInfoContent(data);
+        } else {
+          // Mettre à jour le contenu existant
+          await dataService.updateInfoContent(infoContent.id, data);
+        }
       }
       
       // Recharger les données pour synchroniser
@@ -982,12 +996,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         telegramLink: contactContent.telegramLink
       };
       
-      if (contactContent.id === 'new-contact') {
-        // Créer un nouveau contenu
-        await dataService.addContactContent(data);
+      // Si tous les champs sont vides, supprimer le contenu au lieu de le sauvegarder
+      if (!data.title.trim() && !data.description.trim() && !data.contactValue.trim() && !data.additionalInfo.trim()) {
+        if (contactContent.id !== 'new-contact') {
+          await dataService.deleteContactContent(contactContent.id);
+          setContactContent({
+            id: 'new-contact',
+            title: '',
+            description: '',
+            telegramUsername: '',
+            telegramLink: '',
+            additionalInfo: ''
+          });
+        }
       } else {
-        // Mettre à jour le contenu existant
-        await dataService.updateContactContent(contactContent.id, data);
+        if (contactContent.id === 'new-contact') {
+          // Créer un nouveau contenu
+          await dataService.addContactContent(data);
+        } else {
+          // Mettre à jour le contenu existant
+          await dataService.updateContactContent(contactContent.id, data);
+        }
       }
       
       // Recharger les données pour synchroniser
@@ -1666,8 +1695,34 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   />
                 </FormGroup>
                 
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center', display: 'flex', gap: '15px', justifyContent: 'center' }}>
                   <Button onClick={handleSaveInfoContent}>💾 Sauvegarder le contenu Info</Button>
+                  <ActionButton 
+                    $variant="delete" 
+                    onClick={async () => {
+                      if (confirm('🗑️ Êtes-vous sûr de vouloir vider complètement le contenu Info ?')) {
+                        try {
+                          if (infoContent.id !== 'new-info') {
+                            await dataService.deleteInfoContent(infoContent.id);
+                          }
+                          setInfoContent({
+                            id: 'new-info',
+                            title: '',
+                            description: '',
+                            items: [],
+                            additionalInfo: ''
+                          });
+                          await refreshData();
+                          showNotification('✅ Contenu Info vidé avec succès');
+                        } catch (error) {
+                          console.error('❌ Erreur suppression contenu info:', error);
+                          alert('❌ Erreur lors de la suppression: ' + error.message);
+                        }
+                      }
+                    }}
+                  >
+                    🗑️ Vider le contenu
+                  </ActionButton>
                 </div>
               </div>
             </ContentSection>
@@ -1722,8 +1777,35 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   />
                 </FormGroup>
                 
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center', display: 'flex', gap: '15px', justifyContent: 'center' }}>
                   <Button onClick={handleSaveContactContent}>💾 Sauvegarder le contenu Contact</Button>
+                  <ActionButton 
+                    $variant="delete" 
+                    onClick={async () => {
+                      if (confirm('🗑️ Êtes-vous sûr de vouloir vider complètement le contenu Contact ?')) {
+                        try {
+                          if (contactContent.id !== 'new-contact') {
+                            await dataService.deleteContactContent(contactContent.id);
+                          }
+                          setContactContent({
+                            id: 'new-contact',
+                            title: '',
+                            description: '',
+                            telegramUsername: '',
+                            telegramLink: '',
+                            additionalInfo: ''
+                          });
+                          await refreshData();
+                          showNotification('✅ Contenu Contact vidé avec succès');
+                        } catch (error) {
+                          console.error('❌ Erreur suppression contenu contact:', error);
+                          alert('❌ Erreur lors de la suppression: ' + error.message);
+                        }
+                      }
+                    }}
+                  >
+                    🗑️ Vider le contenu
+                  </ActionButton>
                 </div>
               </div>
             </ContentSection>

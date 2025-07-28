@@ -332,28 +332,16 @@ export class DataService {
 
   // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
-    // SYSTÈME SIMPLE: API MongoDB + fallback immédiat (pas de page noire)
-    console.log('📦 getProducts - Système simple API + fallback');
-    
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
         const products = await response.json();
-        console.log('📦 API SUCCESS:', products.length, 'produits');
-        
-        // Cache pour performance
-        if (typeof window !== 'undefined' && products.length > 0) {
-          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-        }
-        
         return products.length > 0 ? products : STATIC_PRODUCTS;
       }
     } catch (error) {
-      console.warn('⚠️ API échoué:', error);
+      // Rien à faire
     }
     
-    // FALLBACK IMMÉDIAT: pas de page noire !
-    console.log('📦 FALLBACK immédiat - pas de page noire');
     return STATIC_PRODUCTS;
   }
 
@@ -508,28 +496,16 @@ export class DataService {
 
   // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
   async getCategories(): Promise<Category[]> {
-    // SYSTÈME SIMPLE: API MongoDB + fallback immédiat
-    console.log('📂 getCategories - Système simple API + fallback');
-    
     try {
       const response = await fetch('/api/categories');
       if (response.ok) {
         const categories = await response.json();
-        console.log('📂 API SUCCESS:', categories.length, 'catégories');
-        
-        // Cache pour performance
-        if (typeof window !== 'undefined' && categories.length > 0) {
-          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-        }
-        
         return categories.length > 0 ? categories : STATIC_CATEGORIES;
       }
     } catch (error) {
-      console.warn('⚠️ API catégories échoué:', error);
+      // Rien à faire
     }
     
-    // FALLBACK IMMÉDIAT
-    console.log('📂 FALLBACK immédiat catégories');
     return STATIC_CATEGORIES;
   }
 
@@ -675,28 +651,16 @@ export class DataService {
 
   // === FERMES - SYSTÈME DYNAMIQUE ===
   async getFarms(): Promise<Farm[]> {
-    // SYSTÈME SIMPLE: API MongoDB + fallback immédiat
-    console.log('🏠 getFarms - Système simple API + fallback');
-    
     try {
       const response = await fetch('/api/farms');
       if (response.ok) {
         const farms = await response.json();
-        console.log('🏠 API SUCCESS:', farms.length, 'farms');
-        
-        // Cache pour performance
-        if (typeof window !== 'undefined' && farms.length > 0) {
-          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
-        }
-        
         return farms.length > 0 ? farms : STATIC_FARMS;
       }
     } catch (error) {
-      console.warn('⚠️ API farms échoué:', error);
+      // Rien à faire
     }
     
-    // FALLBACK IMMÉDIAT
-    console.log('🏠 FALLBACK immédiat farms');
     return STATIC_FARMS;
   }
 

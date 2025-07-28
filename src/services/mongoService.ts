@@ -621,11 +621,32 @@ class MongoService {
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
+      console.log('🔄 updateContactContent - ID:', id, 'Updates:', updates);
+      
       const result = await this.db.collection('contact_contents').findOneAndUpdate(
         { $or: [{ _id: id }, { id: id }] },
         { $set: { ...updates, updatedAt: new Date() } },
         { returnDocument: 'after' }
       );
+      
+      console.log('🔄 updateContactContent - Résultat:', result);
+      
+      // Si result.value est null mais qu'on n'a pas d'erreur, vérifier si le document existe
+      if (!result.value) {
+        // Essayer de récupérer le document pour voir s'il existe
+        const existingDoc = await this.db.collection('contact_contents').findOne(
+          { $or: [{ _id: id }, { id: id }] }
+        );
+        
+        if (existingDoc) {
+          console.log('✅ Document trouvé après mise à jour:', existingDoc);
+          return existingDoc;
+        } else {
+          console.error('❌ Document non trouvé avec ID:', id);
+          throw new Error('Document non trouvé');
+        }
+      }
+      
       return result.value;
     } catch (error) {
       console.error('❌ Erreur mise à jour contact content:', error);

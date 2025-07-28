@@ -1,9 +1,7 @@
 // Configuration Cloudinary pour uploads depuis iPhone/mobile
 export const CLOUDINARY_CONFIG = {
   cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dvsy5mfhu',
-  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'unsigned_upload', // Preset unsigned générique
-  apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '485987511825452',
-  apiSecret: process.env.CLOUDINARY_API_SECRET || 'TCJrWZuCJ6r_BLhO4i6afg3F6JU',
+  uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'bipcosa06_preset',
   folder: 'bipcosa06',
   formats: ['jpg', 'jpeg', 'png', 'webp', 'mp4', 'mov'],
   maxSize: 104857600, // 100MB pour vidéos iPhone/mobile
@@ -25,27 +23,25 @@ export interface CloudinaryError {
   http_code: number;
 }
 
-// Générer une signature pour upload sécurisé
-const generateSignature = (params: Record<string, any>): string => {
-  const timestamp = Math.round(Date.now() / 1000);
-  const paramsToSign = { ...params, timestamp };
-  
-  const sortedParams = Object.keys(paramsToSign)
-    .sort()
-    .map(key => `${key}=${paramsToSign[key]}`)
-    .join('&');
-  
-  // Pour la démo, on simule la signature
-  return `${timestamp}`;
-};
-
-// Upload depuis le client (iPhone/mobile) - Version améliorée
+// Upload depuis le client (iPhone/mobile) - Version simplifiée
 export const uploadToCloudinary = async (
   file: File,
   folder: string = 'products'
 ): Promise<CloudinaryUploadResult> => {
+  console.log('🚀 Upload Cloudinary:', {
+    fileName: file.name,
+    fileSize: `${Math.round(file.size / 1024 / 1024)}MB`,
+    fileType: file.type,
+    cloudName: CLOUDINARY_CONFIG.cloudName,
+    preset: CLOUDINARY_CONFIG.uploadPreset
+  });
+
   if (!CLOUDINARY_CONFIG.cloudName) {
     throw new Error('❌ Cloud name Cloudinary manquant');
+  }
+
+  if (!CLOUDINARY_CONFIG.uploadPreset) {
+    throw new Error('❌ Upload preset Cloudinary manquant');
   }
 
   // Vérifier le type de fichier
@@ -56,73 +52,55 @@ export const uploadToCloudinary = async (
     throw new Error('❌ Type de fichier non supporté. Utilisez JPG, PNG, WebP, MP4 ou MOV');
   }
 
-  // Vérifier la taille avec limites différentes pour images et vidéos
+  // Vérifier la taille
   const maxSizeImage = 20 * 1024 * 1024; // 20MB pour images
   const maxSizeVideo = 100 * 1024 * 1024; // 100MB pour vidéos
   
   if (isImage && file.size > maxSizeImage) {
-    throw new Error(`❌ Image trop volumineuse. Taille max: 20MB (actuelle: ${Math.round(file.size / 1024 / 1024)}MB)`);
+    throw new Error(`❌ Image trop volumineuse. Max: 20MB`);
   }
   
   if (isVideo && file.size > maxSizeVideo) {
-    throw new Error(`❌ Vidéo trop volumineuse. Taille max: 100MB (actuelle: ${Math.round(file.size / 1024 / 1024)}MB)`);
+    throw new Error(`❌ Vidéo trop volumineuse. Max: 100MB`);
   }
 
-  const timestamp = Math.round(Date.now() / 1000);
-  const folderPath = `${CLOUDINARY_CONFIG.folder}/${folder}`;
-  
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('folder', folderPath);
-  
-  // Pour les uploads non signés, SEUL upload_preset est requis
-  // Tous les autres paramètres doivent être dans le preset
-  if (CLOUDINARY_CONFIG.uploadPreset && CLOUDINARY_CONFIG.uploadPreset !== 'unsigned_upload') {
-    formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-  } else {
-    throw new Error('Upload preset manquant - Créez un preset dans Cloudinary console');
-  }
+  formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+  formData.append('folder', `${CLOUDINARY_CONFIG.folder}/${folder}`);
 
   try {
-    console.log('🔄 Upload vers Cloudinary...', {
-      cloudName: CLOUDINARY_CONFIG.cloudName,
-      folder: folderPath,
-      fileType: file.type,
-      fileSize: `${Math.round(file.size / 1024)}KB`
-    });
+    const resourceType = isVideo ? 'video' : 'image';
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${resourceType}/upload`;
+    
+    console.log('📤 Upload vers:', uploadUrl);
 
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${isVideo ? 'video' : 'image'}/upload`,
-      {
-        method: 'POST',
-        body: formData,
-      }
-    );
+    const response = await fetch(uploadUrl, {
+      method: 'POST',
+      body: formData,
+    });
 
     const result = await response.json();
     
     if (!response.ok) {
       console.error('❌ Erreur Cloudinary:', result);
       
-      // Messages d'erreur spécifiques pour aider l'utilisateur
-      let errorMessage = result.error?.message || 'Erreur lors de l\'upload';
+      let errorMessage = result.error?.message || 'Erreur upload';
       
-      if (errorMessage.includes('must be whitelisted')) {
-        errorMessage = '🚨 PRESET ERROR: Allez dans Cloudinary Console → Settings → Upload → Trouvez votre preset → Changez "Signing Mode" vers "Unsigned"';
-      } else if (errorMessage.includes('Upload preset must be specified')) {
-        errorMessage = '🚨 PRESET MISSING: Créez un preset "bipcosa06_preset" en mode Unsigned dans Cloudinary Console';
-      } else if (errorMessage.includes('Invalid upload preset')) {
-        errorMessage = '🚨 PRESET INVALID: Vérifiez que le preset "bipcosa06_preset" existe dans Cloudinary Console';
+      if (errorMessage.includes('Invalid upload preset')) {
+        errorMessage = `❌ Le preset "${CLOUDINARY_CONFIG.uploadPreset}" n'existe pas. Créez-le dans Cloudinary Console.`;
+      } else if (errorMessage.includes('cloud_name')) {
+        errorMessage = `❌ Cloud name "${CLOUDINARY_CONFIG.cloudName}" incorrect.`;
       }
       
       throw new Error(errorMessage);
     }
 
-    console.log('✅ Upload Cloudinary réussi:', result.public_id);
+    console.log('✅ Upload réussi:', result.secure_url);
     return result;
     
   } catch (error) {
-    console.error('❌ Erreur upload Cloudinary:', error);
+    console.error('❌ Erreur upload:', error);
     throw error;
   }
 };

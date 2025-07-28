@@ -2425,20 +2425,35 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                     setImageUploading(true);
                     
                     try {
-                      console.log('📷 Upload image vers Cloudinary...', file.name, `${Math.round(file.size / 1024 / 1024)}MB`);
+                      console.log('📷 Début upload image:', {
+                        name: file.name,
+                        size: `${Math.round(file.size / 1024 / 1024)}MB`,
+                        type: file.type
+                      });
                       
                       const { uploadToCloudinary } = await import('@/config/cloudinary');
                       
                       const result = await uploadToCloudinary(file, 'products');
                       
-                      console.log('✅ Image uploadée:', result.secure_url);
+                      console.log('✅ Image uploadée avec succès:', {
+                        url: result.secure_url,
+                        publicId: result.public_id
+                      });
                       
                       // Mettre à jour le champ image avec l'URL Cloudinary
-                      setFormData(prevData => ({...prevData, image: result.secure_url}));
+                      setFormData(prevData => {
+                        const newData = {
+                          ...prevData, 
+                          image: result.secure_url,
+                          imagePublicId: result.public_id
+                        };
+                        console.log('📝 FormData mis à jour:', newData);
+                        return newData;
+                      });
                       
-                      alert('✅ Image uploadée vers Cloudinary !');
+                      alert(`✅ Image uploadée avec succès !\nURL: ${result.secure_url}`);
                       
-                    } catch (error) {
+                    } catch (error: any) {
                       console.error('❌ Erreur upload image:', error);
                       alert(`❌ Erreur upload image: ${error.message}`);
                     } finally {
@@ -2500,20 +2515,35 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                     setVideoUploading(true);
                     
                     try {
-                      console.log('🎥 Upload vidéo vers Cloudinary...', file.name, `${Math.round(file.size / 1024 / 1024)}MB`);
+                      console.log('🎥 Début upload vidéo:', {
+                        name: file.name,
+                        size: `${Math.round(file.size / 1024 / 1024)}MB`,
+                        type: file.type
+                      });
                       
                       const { uploadToCloudinary } = await import('@/config/cloudinary');
                       
                       const result = await uploadToCloudinary(file, 'videos');
                       
-                      console.log('✅ Vidéo uploadée:', result.secure_url);
+                      console.log('✅ Vidéo uploadée avec succès:', {
+                        url: result.secure_url,
+                        publicId: result.public_id
+                      });
                       
                       // Mettre à jour le champ vidéo avec l'URL Cloudinary
-                      setFormData(prevData => ({...prevData, video: result.secure_url}));
+                      setFormData(prevData => {
+                        const newData = {
+                          ...prevData, 
+                          video: result.secure_url,
+                          videoPublicId: result.public_id
+                        };
+                        console.log('📝 FormData mis à jour avec vidéo:', newData);
+                        return newData;
+                      });
                       
-                      alert('✅ Vidéo uploadée vers Cloudinary !');
+                      alert(`✅ Vidéo uploadée avec succès !\nURL: ${result.secure_url}`);
                       
-                    } catch (error) {
+                    } catch (error: any) {
                       console.error('❌ Erreur upload vidéo:', error);
                       alert(`❌ Erreur upload vidéo: ${error.message}`);
                     } finally {

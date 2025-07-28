@@ -623,31 +623,31 @@ class MongoService {
     try {
       console.log('🔄 updateContactContent - ID:', id, 'Updates:', updates);
       
-      const result = await this.db.collection('contact_contents').findOneAndUpdate(
+      // Utiliser updateOne au lieu de findOneAndUpdate pour éviter les problèmes de result.value null
+      const updateResult = await this.db.collection('contact_contents').updateOne(
         { $or: [{ _id: id }, { id: id }] },
-        { $set: { ...updates, updatedAt: new Date() } },
-        { returnDocument: 'after' }
+        { $set: { ...updates, updatedAt: new Date() } }
       );
       
-      console.log('🔄 updateContactContent - Résultat:', result);
+      console.log('🔄 updateContactContent - UpdateResult:', updateResult);
       
-      // Si result.value est null mais qu'on n'a pas d'erreur, vérifier si le document existe
-      if (!result.value) {
-        // Essayer de récupérer le document pour voir s'il existe
-        const existingDoc = await this.db.collection('contact_contents').findOne(
-          { $or: [{ _id: id }, { id: id }] }
-        );
-        
-        if (existingDoc) {
-          console.log('✅ Document trouvé après mise à jour:', existingDoc);
-          return existingDoc;
-        } else {
-          console.error('❌ Document non trouvé avec ID:', id);
-          throw new Error('Document non trouvé');
-        }
+      if (updateResult.matchedCount === 0) {
+        console.error('❌ Document non trouvé avec ID:', id);
+        throw new Error('Document non trouvé');
       }
       
-      return result.value;
+      if (updateResult.modifiedCount === 0) {
+        console.log('⚠️ Document trouvé mais pas modifié (peut-être déjà à jour)');
+      }
+      
+      // Récupérer le document mis à jour
+      const updatedDoc = await this.db.collection('contact_contents').findOne(
+        { $or: [{ _id: id }, { id: id }] }
+      );
+      
+      console.log('✅ Document après mise à jour:', updatedDoc);
+      return updatedDoc;
+      
     } catch (error) {
       console.error('❌ Erreur mise à jour contact content:', error);
       throw error;

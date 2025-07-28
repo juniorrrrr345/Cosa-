@@ -13,16 +13,20 @@ class MongoService {
 
   private async connect() {
     try {
-      if (!process.env.MONGODB_URI) {
+      // Utiliser l'URI MongoDB fournie
+      const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://Cosa:cosa06@cluster0.inrso7o.mongodb.net/bipcosa06?retryWrites=true&w=majority&appName=Cluster0';
+      
+      if (!mongoURI) {
         console.warn('MongoDB URI non configurée, utilisation des données en mémoire');
         return;
       }
 
-      this.client = new MongoClient(process.env.MONGODB_URI);
+      console.log('🔗 Connexion MongoDB avec URI:', mongoURI.substring(0, 50) + '...');
+      this.client = new MongoClient(mongoURI);
       await this.client.connect();
       this.db = this.client.db('bipcosa06');
       this.isConnected = true;
-      console.log('✅ Connexion MongoDB établie');
+      console.log('✅ Connexion MongoDB établie avec succès');
       
       // Initialiser les données par défaut si les collections sont vides
       await this.initializeDefaultData();

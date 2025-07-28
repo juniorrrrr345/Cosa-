@@ -214,6 +214,7 @@ const NavLabel = styled.div`
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   const [contactContents, setContactContents] = useState<ContactContent[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadData();
@@ -257,8 +258,29 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
       console.log('✅ ContactPage - Données chargées depuis MongoDB');
     } catch (error) {
       console.error('❌ Erreur chargement données contact depuis API:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div style={{
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: 'white',
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
+          <div style={{ fontSize: '18px', opacity: 0.8 }}>Chargement du contact...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={getBackgroundStyle(config)}>

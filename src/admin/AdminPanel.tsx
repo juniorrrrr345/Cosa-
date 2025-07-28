@@ -743,18 +743,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   // État pour les contenus Info et Contact
   const [infoContent, setInfoContent] = useState<InfoContent>({
     id: 'main-info',
-    title: 'À propos de BIPCOSA06',
-    description: 'BIPCOSA06 est votre boutique de confiance pour les produits Cannabis de qualité supérieure dans la région lyonnaise.',
-    items: ['✅ Produits de qualité premium', '✅ Livraison rapide et discrète', '✅ Service client 24/7', '✅ Paiement sécurisé', '✅ Garantie satisfaction']
+    title: '',
+    description: '',
+    items: []
   });
   
   const [contactContent, setContactContent] = useState<ContactContent>({
     id: 'main-contact',
-    title: '✉️ Nous Contacter',
-    description: 'Contactez-nous directement via Telegram pour toutes vos commandes et questions. Notre équipe est disponible 24h/24 pour vous servir.',
-    telegramUsername: '@bipcosa06',
-    telegramLink: 'https://t.me/bipcosa06',
-    additionalInfo: '📍 Zones de livraison: Lyon et région (69, 71, 01, 42, 38)\n⏰ Horaires: 24h/24 - 7j/7\n💳 Paiements acceptés: Espèces, Crypto\n🚚 Livraison: Rapide et discrète'
+    title: '',
+    description: '',
+    telegramUsername: '',
+    telegramLink: '',
+    additionalInfo: ''
   });
 
   // État pour les réseaux sociaux

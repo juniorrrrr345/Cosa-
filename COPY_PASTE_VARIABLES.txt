@@ -1,0 +1,64 @@
+========================================
+VARIABLES À COPIER-COLLER DANS VERCEL
+========================================
+
+MONGODB_URI
+mongodb+srv://Junior:Lacrim123@cluster0.q4vnfin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
+CLOUDINARY_CLOUD_NAME
+dvsy5mfhu
+
+CLOUDINARY_API_KEY
+485987511825452
+
+CLOUDINARY_API_SECRET
+TCJrWZuCJ6r_BLhO4i6afg3F6JU
+
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+dvsy5mfhu
+
+NEXT_PUBLIC_CLOUDINARY_API_KEY
+485987511825452
+
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET
+bipcosa06_preset
+
+NEXT_PUBLIC_APP_URL
+https://cosa-tau.vercel.app
+
+NEXTAUTH_SECRET
+bipcosa06-super-secret-key-production-2024-secure-jwt-token-encryption
+
+NEXTAUTH_URL
+https://cosa-tau.vercel.app
+
+NODE_ENV
+production
+
+LOG_LEVEL
+info
+
+========================================
+LIENS DIRECTS
+========================================
+
+Vercel Variables:
+https://vercel.com/dashboard/[username]/cosa-tau/settings/environment-variables
+
+Cloudinary Console:
+https://console.cloudinary.com/
+
+MongoDB Atlas:
+https://cloud.mongodb.com/
+
+Cloudinary Upload Presets:
+https://console.cloudinary.com/settings/upload
+
+========================================
+À FAIRE APRÈS AJOUT DES VARIABLES
+========================================
+
+1. Créer preset "bipcosa06_preset" dans Cloudinary (mode Unsigned)
+2. Autoriser toutes les IPs (0.0.0.0/0) dans MongoDB Network Access
+3. Redéployer sur Vercel
+4. Tester l'upload d'images dans le panel admin

@@ -945,17 +945,48 @@ class DataService {
   }
 
   async updateConfig(updates: Partial<ShopConfig>): Promise<ShopConfig> {
-    const currentConfig = this.configCache || this.getConfigSync();
-    const updatedConfig = { ...currentConfig, ...updates };
-    
-    this.configCache = updatedConfig;
-    
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
+    try {
+      console.log('⚙️ updateConfig - MongoDB API:', updates);
+      
+      const response = await fetch('/api/config', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updates)
+      });
+
+      if (response.ok) {
+        const updatedConfig = await response.json();
+        console.log('✅ Configuration modifiée dans MongoDB');
+        
+        // Mettre à jour le cache local
+        this.configCache = updatedConfig;
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
+        }
+        
+        // Notifier tous les appareils
+        this.notifyConfigUpdate(updatedConfig);
+        this.notifyDataUpdate();
+        
+        return updatedConfig;
+      } else {
+        throw new Error('Échec modification configuration MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur updateConfig:', error);
+      
+      // Fallback : sauvegarder localement uniquement
+      const currentConfig = this.configCache || this.getConfigSync();
+      const updatedConfig = { ...currentConfig, ...updates };
+      
+      this.configCache = updatedConfig;
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('bipcosa06_config', JSON.stringify(updatedConfig));
+      }
+      
+      this.notifyConfigUpdate(updatedConfig);
+      return updatedConfig;
     }
-    
-    this.notifyConfigUpdate(updatedConfig);
-    return updatedConfig;
   }
 
   // === CONTENU INFO - API MongoDB ===
@@ -987,6 +1018,24 @@ class DataService {
   }
 
   // === CONTENU CONTACT - API MongoDB ===
+  async getContactContents(): Promise<any[]> {
+    try {
+      console.log('📞 getContactContents - TOUJOURS depuis MongoDB API...');
+      const response = await fetch('/api/contact-contents');
+      if (response.ok) {
+        const contactContents = await response.json();
+        console.log('📞 Contenus contact chargés depuis MongoDB:', contactContents.length);
+        return contactContents;
+      } else {
+        console.error('❌ API contact-contents a échoué:', response.status);
+        throw new Error('API MongoDB indisponible');
+      }
+    } catch (error) {
+      console.error('❌ Erreur critique API contact-contents:', error);
+      return []; // Retour vide en cas d'erreur
+    }
+  }
+
   async updateContactContent(id: string, updates: Partial<any>): Promise<any> {
     try {
       console.log('📞 updateContactContent - MongoDB API:', id);

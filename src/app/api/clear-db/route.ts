@@ -28,33 +28,48 @@ export async function POST() {
     console.log('  - Infos:', infosBefore.length);
     console.log('  - Réseaux sociaux:', socialsBefore.length);
     
-    // 3. Supprimer tous les produits anciens
+    // 3. Supprimer tous les contenus
     console.log('🗑️ Suppression de tous les produits...');
-    const db = mongoService['db']; // Accès direct à la DB
     const productsResult = await db.collection('products').deleteMany({});
     console.log(`✅ ${productsResult.deletedCount} produits supprimés`);
     
-    // 4. Supprimer toutes les catégories anciennes
     console.log('🗑️ Suppression de toutes les catégories...');
     const categoriesResult = await db.collection('categories').deleteMany({});
     console.log(`✅ ${categoriesResult.deletedCount} catégories supprimées`);
     
-    // 5. Supprimer toutes les fermes anciennes
     console.log('🗑️ Suppression de toutes les fermes...');
     const farmsResult = await db.collection('farms').deleteMany({});
     console.log(`✅ ${farmsResult.deletedCount} fermes supprimées`);
     
-    // 6. Vérifier l'état après nettoyage
-    const [productsAfter, categoriesAfter, farmsAfter] = await Promise.all([
+    console.log('🗑️ Suppression de tous les contenus contact...');
+    const contactsResult = await db.collection('contact_contents').deleteMany({});
+    console.log(`✅ ${contactsResult.deletedCount} contenus contact supprimés`);
+    
+    console.log('🗑️ Suppression de tous les contenus info...');
+    const infosResult = await db.collection('info_contents').deleteMany({});
+    console.log(`✅ ${infosResult.deletedCount} contenus info supprimés`);
+    
+    console.log('🗑️ Suppression de tous les réseaux sociaux...');
+    const socialsResult = await db.collection('social_networks').deleteMany({});
+    console.log(`✅ ${socialsResult.deletedCount} réseaux sociaux supprimés`);
+    
+    // 4. Vérifier l'état après nettoyage
+    const [productsAfter, categoriesAfter, farmsAfter, contactsAfter, infosAfter, socialsAfter] = await Promise.all([
       mongoService.getProducts(),
       mongoService.getCategories(),
-      mongoService.getFarms()
+      mongoService.getFarms(),
+      db.collection('contact_contents').find({}).toArray(),
+      db.collection('info_contents').find({}).toArray(),
+      db.collection('social_networks').find({}).toArray()
     ]);
     
     console.log('📊 État après nettoyage:');
     console.log('  - Produits:', productsAfter.length);
     console.log('  - Catégories:', categoriesAfter.length);
     console.log('  - Fermes:', farmsAfter.length);
+    console.log('  - Contacts:', contactsAfter.length);
+    console.log('  - Infos:', infosAfter.length);
+    console.log('  - Réseaux sociaux:', socialsAfter.length);
     
     return NextResponse.json({
       status: 'SUCCESS',

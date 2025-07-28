@@ -11,7 +11,7 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
   if (!config) {
     console.log('🎨 InfoPage - Pas de config, background transparent');
     return {
-      background: 'transparent',
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       minHeight: '100vh',
       color: 'white',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -20,7 +20,7 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
     };
   }
   
-  let backgroundValue = 'transparent';
+  let backgroundValue = 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   
   // URL externe (Imgur, etc.) - PRIORITÉ 1
   if (config.backgroundType === 'url' && config.backgroundUrl && config.backgroundUrl.trim()) {
@@ -94,71 +94,163 @@ const LogoImage = styled.img`
 
 const Content = styled.div`
   padding: 40px 20px;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
-  min-height: calc(100vh - 200px);
-  justify-content: center;
-  align-items: center;
 `;
 
 const InfoSection = styled.div`
-  background: rgba(0,0,0,0.7);
+  background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,20,0.9));
   backdrop-filter: blur(20px);
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-  margin: 20px 0;
-  padding: 30px;
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 40px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(76,175,80,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
 
   &:hover {
-    background: rgba(0,0,0,0.8);
-    border-color: rgba(255,255,255,0.2);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(20,20,20,1));
+    border-color: rgba(76,175,80,0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+
+  @media (max-width: 480px) {
+    padding: 25px;
   }
 `;
 
 const InfoTitle = styled.h2`
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  margin: 0 0 20px 0;
+  margin: 0 0 25px 0;
   color: white;
   text-shadow: 0 0 20px rgba(255,255,255,0.3);
   text-align: center;
+  position: relative;
+  z-index: 1;
+  
+  &::after {
+    content: '🌿';
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    opacity: 0.5;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+    &::after {
+      display: none;
+    }
+  }
 `;
 
 const InfoDescription = styled.p`
-  font-size: 16px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.8;
   color: rgba(255,255,255,0.9);
-  margin: 0 0 20px 0;
+  margin: 0 0 25px 0;
   text-align: center;
+  position: relative;
+  z-index: 1;
 `;
 
 const InfoList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  position: relative;
+  z-index: 1;
 `;
 
 const InfoItem = styled.li`
   font-size: 15px;
-  color: rgba(255,255,255,0.85);
-  padding: 12px 20px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 12px;
+  color: rgba(255,255,255,0.9);
+  padding: 15px 20px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.1));
+  border-radius: 15px;
   border: 1px solid rgba(255,255,255,0.1);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '✓';
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 18px;
+  }
 
   &:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
+    background: linear-gradient(135deg, rgba(76,175,80,0.1), rgba(76,175,80,0.2));
+    border-color: rgba(76,175,80,0.3);
     transform: translateX(5px);
+    padding-left: 45px;
+  }
+
+  @media (max-width: 480px) {
+    padding-left: 40px;
+  }
+`;
+
+const AdditionalInfo = styled.div`
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(76,175,80,0.1);
+  border-radius: 15px;
+  border: 1px solid rgba(76,175,80,0.2);
+  font-style: italic;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+`;
+
+// Si aucun contenu, afficher un message par défaut
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  
+  h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: rgba(255,255,255,0.9);
+  }
+  
+  p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
   }
 `;
 
@@ -168,7 +260,7 @@ const BottomNavigation = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.9);
   backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-around;
@@ -184,13 +276,13 @@ const NavItem = styled.div<{ $active?: boolean }>`
   cursor: pointer;
   padding: 8px 15px;
   border-radius: 12px;
-  color: ${props => props.$active ? '#ffffff' : 'rgba(255,255,255,0.6)'};
-  background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
+  color: ${props => props.$active ? '#4CAF50' : 'rgba(255,255,255,0.6)'};
+  background: ${props => props.$active ? 'rgba(76,175,80,0.1)' : 'transparent'};
   transition: all 0.3s ease;
 
   &:hover {
-    color: #ffffff;
-    background: rgba(255,255,255,0.1);
+    color: #4CAF50;
+    background: rgba(76,175,80,0.1);
     transform: translateY(-2px);
   }
 `;
@@ -210,7 +302,6 @@ interface InfoPageProps {
 }
 
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
-  // Démarrer complètement vide - AUCUN contenu par défaut
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
 
@@ -274,24 +365,31 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
 
       {/* Contenu principal */}
       <Content>
-        {infoContents.map((info) => (
-          <InfoSection key={info.id}>
-            <InfoTitle>{info.title}</InfoTitle>
-            <InfoDescription>{info.description}</InfoDescription>
-            {info.additionalInfo && (
-              <InfoDescription style={{ fontStyle: 'italic', marginTop: '10px', opacity: 0.9 }}>
-                {info.additionalInfo}
-              </InfoDescription>
-            )}
-            {info.items && info.items.length > 0 && (
-              <InfoList>
-                {info.items.map((item, index) => (
-                  <InfoItem key={index}>{item}</InfoItem>
-                ))}
-              </InfoList>
-            )}
-          </InfoSection>
-        ))}
+        {infoContents.length > 0 ? (
+          infoContents.map((info) => (
+            <InfoSection key={info.id}>
+              <InfoTitle>{info.title}</InfoTitle>
+              <InfoDescription>{info.description}</InfoDescription>
+              {info.items && info.items.length > 0 && (
+                <InfoList>
+                  {info.items.map((item, index) => (
+                    <InfoItem key={index}>{item}</InfoItem>
+                  ))}
+                </InfoList>
+              )}
+              {info.additionalInfo && (
+                <AdditionalInfo>
+                  {info.additionalInfo}
+                </AdditionalInfo>
+              )}
+            </InfoSection>
+          ))
+        ) : (
+          <EmptyState>
+            <h3>🌿 Bienvenue chez BIPCOSA06</h3>
+            <p>Les informations seront bientôt disponibles.</p>
+          </EmptyState>
+        )}
       </Content>
 
       {/* Navigation en bas */}

@@ -16,7 +16,7 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
   if (!config) {
     console.log('🎨 ContactPage - Pas de config, background transparent');
     return {
-      background: 'transparent',
+      background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       minHeight: '100vh',
       color: 'white',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -25,7 +25,7 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
     };
   }
   
-  let backgroundValue = 'transparent';
+  let backgroundValue = 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   
   // URL externe (Imgur, etc.) - PRIORITÉ 1
   if (config.backgroundType === 'url' && config.backgroundUrl && config.backgroundUrl.trim()) {
@@ -98,75 +98,205 @@ const LogoImage = styled.img`
 `;
 
 const Content = styled.div`
-  padding: 30px 20px;
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 const ContactCard = styled.div`
-  background: rgba(0,0,0,0.7);
+  background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,20,0.9));
   backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 30px;
-  border: 1px solid rgba(255,255,255,0.2);
-  margin-bottom: 20px;
+  border-radius: 25px;
+  padding: 40px;
+  border: 1px solid rgba(255,255,255,0.15);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0,136,204,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
 
   &:hover {
     transform: translateY(-5px);
-    background: rgba(0,0,0,0.9);
-    border-color: rgba(255,255,255,0.3);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(20,20,20,1));
+    border-color: rgba(0,136,204,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+
+  @media (max-width: 480px) {
+    padding: 25px;
   }
 `;
 
 const ContactTitle = styled.h3`
-  font-size: 20px;
-  font-weight: 600;
-  margin: 0 0 15px 0;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 25px 0;
   color: white;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 15px;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 20px rgba(255,255,255,0.3);
+
+  &::before {
+    content: '📱';
+    font-size: 32px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 24px;
+    &::before {
+      font-size: 28px;
+    }
+  }
 `;
 
 const ContactInfo = styled.div`
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.8;
   color: rgba(255,255,255,0.9);
-  margin: 0 0 15px 0;
+  margin: 0 0 30px 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
 `;
 
 const TelegramButton = styled.a`
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   background: linear-gradient(135deg, #0088cc, #005fa3);
   color: white;
   text-decoration: none;
-  padding: 12px 24px;
-  border-radius: 25px;
+  padding: 15px 30px;
+  border-radius: 30px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 18px;
   transition: all 0.3s ease;
   border: 2px solid transparent;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0,136,204,0.4);
-    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,136,204,0.4);
+    border-color: rgba(255,255,255,0.3);
+    
+    &::before {
+      left: 100%;
+    }
   }
 
   &:active {
     transform: scale(0.98);
   }
+
+  span:first-child {
+    font-size: 24px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+    padding: 12px 25px;
+  }
 `;
 
 const ContactDetails = styled.div`
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 30px;
+  padding: 25px;
   background: rgba(255,255,255,0.05);
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 15px;
+  font-size: 15px;
   color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  line-height: 1.6;
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  
+  h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: rgba(255,255,255,0.9);
+  }
+  
+  p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+  }
+`;
+
+const QuickActions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+`;
+
+const ActionCard = styled.div`
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-3px);
+  }
+
+  .icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+
+  .label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+  }
 `;
 
 // Navigation en bas améliorée
@@ -175,7 +305,7 @@ const BottomNavigation = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.9);
   backdrop-filter: blur(20px);
   display: flex;
   justify-content: space-around;
@@ -191,13 +321,13 @@ const NavItem = styled.div<{ $active?: boolean }>`
   cursor: pointer;
   padding: 8px 15px;
   border-radius: 12px;
-  color: ${props => props.$active ? '#ffffff' : 'rgba(255,255,255,0.6)'};
-  background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
+  color: ${props => props.$active ? '#0088cc' : 'rgba(255,255,255,0.6)'};
+  background: ${props => props.$active ? 'rgba(0,136,204,0.1)' : 'transparent'};
   transition: all 0.3s ease;
 
   &:hover {
-    color: #ffffff;
-    background: rgba(255,255,255,0.1);
+    color: #0088cc;
+    background: rgba(0,136,204,0.1);
     transform: translateY(-2px);
   }
 `;
@@ -212,7 +342,6 @@ const NavLabel = styled.div`
 `;
 
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
-  // Démarrer complètement vide - AUCUN contenu par défaut
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   const [contactContents, setContactContents] = useState<ContactContent[]>([]);
 
@@ -261,6 +390,12 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
     }
   };
 
+  const handleQuickAction = (action: string) => {
+    if (action === 'telegram' && contactContents.length > 0 && contactContents[0].telegramLink) {
+      window.open(contactContents[0].telegramLink, '_blank');
+    }
+  };
+
   return (
     <div style={getBackgroundStyle(config)}>
       {/* Header avec nom de la boutique */}
@@ -270,29 +405,51 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
 
       {/* Contenu principal */}
       <Content>
-        {contactContents.map((contact) => (
-          <ContactCard key={contact.id}>
-            <ContactTitle>{contact.title}</ContactTitle>
-            <ContactInfo>{contact.description}</ContactInfo>
-            
-            {contact.telegramLink && (
-              <TelegramButton 
-                href={contact.telegramLink} 
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                <span>📱</span>
-                {contact.telegramText || 'Telegram'}
-              </TelegramButton>
-            )}
-            
-            {contact.additionalInfo && (
-              <ContactDetails>
-                {contact.additionalInfo}
-              </ContactDetails>
-            )}
-          </ContactCard>
-        ))}
+        {contactContents.length > 0 ? (
+          contactContents.map((contact) => (
+            <ContactCard key={contact.id}>
+              <ContactTitle>{contact.title}</ContactTitle>
+              <ContactInfo>{contact.description}</ContactInfo>
+              
+              {contact.telegramLink && (
+                <TelegramButton 
+                  href={contact.telegramLink} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                >
+                  <span>✈️</span>
+                  {contact.telegramText || 'Contactez-nous sur Telegram'}
+                </TelegramButton>
+              )}
+              
+              {contact.additionalInfo && (
+                <ContactDetails>
+                  {contact.additionalInfo}
+                </ContactDetails>
+              )}
+
+              <QuickActions>
+                <ActionCard onClick={() => handleQuickAction('telegram')}>
+                  <div className="icon">💬</div>
+                  <div className="label">Message rapide</div>
+                </ActionCard>
+                <ActionCard onClick={() => handleQuickAction('catalog')}>
+                  <div className="icon">📋</div>
+                  <div className="label">Voir le catalogue</div>
+                </ActionCard>
+                <ActionCard onClick={() => handleQuickAction('hours')}>
+                  <div className="icon">🕐</div>
+                  <div className="label">Horaires</div>
+                </ActionCard>
+              </QuickActions>
+            </ContactCard>
+          ))
+        ) : (
+          <EmptyState>
+            <h3>📱 Contact BIPCOSA06</h3>
+            <p>Les informations de contact seront bientôt disponibles.</p>
+          </EmptyState>
+        )}
       </Content>
 
       {/* Navigation en bas */}

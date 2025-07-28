@@ -81,7 +81,7 @@ const BackButton = styled.button`
   position: absolute;
   left: 20px;
   top: 15px;
-  z-index: 100;
+  z-index: 1000;
   
   &:hover {
     background: rgba(0,0,0,0.9);
@@ -174,17 +174,18 @@ const VideoElement = styled.video`
 `;
 
 const ProductFlag = styled.div`
-  position: absolute;
-  top: 15px;
-  left: 15px;
   background: rgba(0,0,0,0.8);
   color: white;
   padding: 8px 15px;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   border: 1px solid rgba(255,255,255,0.3);
   backdrop-filter: blur(10px);
+  margin-bottom: 20px;
+  display: inline-block;
+  text-align: center;
+  width: auto;
 `;
 
 const ProductInfo = styled.div`

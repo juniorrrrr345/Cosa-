@@ -1140,7 +1140,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         prices: Array.isArray(formData.prices) && formData.prices.length > 0 
           ? formData.prices 
           : [{ id: '1', weight: '1g', price: '10€' }],
-        video: formData.video?.trim() || ''
+        video: formData.video?.trim() || '',
+        videoPublicId: formData.videoPublicId || ''
       };
 
       // Validation finale

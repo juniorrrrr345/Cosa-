@@ -386,15 +386,23 @@ export class DataService {
 
   // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
-    // PRIORITÉ ABSOLUE: DONNÉES STATIQUES GARANTIES
-    console.log('📦 getProducts - DONNÉES STATIQUES GARANTIES');
+    // SYSTÈME HYBRIDE: localStorage PRIORITAIRE + fallback statique
+    console.log('📦 getProducts - Système hybride localStorage + fallback');
     
-    // TOUJOURS retourner les données statiques en premier
+    // Essayer localStorage en premier
+    const localProducts = this.getProductsSync();
+    if (localProducts.length > 0) {
+      console.log('📦 RETOUR localStorage:', localProducts.length, 'produits');
+      return localProducts;
+    }
+    
+    // FALLBACK: données statiques si localStorage vide
+    console.log('📦 FALLBACK: Initialisation avec données statiques');
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
     }
     
-    console.log('📦 RETOUR GARANTI:', STATIC_PRODUCTS.length, 'produits');
+    console.log('📦 RETOUR FALLBACK:', STATIC_PRODUCTS.length, 'produits');
     return STATIC_PRODUCTS;
   }
 
@@ -533,15 +541,23 @@ export class DataService {
 
   // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
   async getCategories(): Promise<Category[]> {
-    // PRIORITÉ ABSOLUE: DONNÉES STATIQUES GARANTIES
-    console.log('📂 getCategories - DONNÉES STATIQUES GARANTIES');
+    // SYSTÈME HYBRIDE: localStorage PRIORITAIRE + fallback statique
+    console.log('📂 getCategories - Système hybride localStorage + fallback');
     
-    // TOUJOURS retourner les données statiques en premier
+    // Essayer localStorage en premier
+    const localCategories = this.getCategoriesSync();
+    if (localCategories.length > 0) {
+      console.log('📂 RETOUR localStorage:', localCategories.length, 'catégories');
+      return localCategories;
+    }
+    
+    // FALLBACK: données statiques si localStorage vide
+    console.log('📂 FALLBACK: Initialisation avec données statiques');
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
     }
     
-    console.log('📂 RETOUR GARANTI:', STATIC_CATEGORIES.length, 'catégories');
+    console.log('📂 RETOUR FALLBACK:', STATIC_CATEGORIES.length, 'catégories');
     return STATIC_CATEGORIES;
   }
 
@@ -566,13 +582,43 @@ export class DataService {
 
   async addCategory(category: Category): Promise<Category> {
     try {
+      console.log('📂 Ajout catégorie:', category.label);
+      
+      // PRIORITÉ 1: Ajouter via API (synchronisation temps réel)
+      try {
+        const response = await fetch('/api/categories', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(category)
+        });
+        
+        if (response.ok) {
+          const newCategory = await response.json();
+          console.log('✅ Catégorie ajoutée via API:', newCategory.label);
+          
+          // Mettre à jour localStorage aussi
+          const categories = this.getCategoriesSync();
+          const existingIndex = categories.findIndex(c => c.value === category.value);
+          if (existingIndex === -1) {
+            categories.push(newCategory);
+            localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+          }
+          
+          this.notifyDataUpdate();
+          return newCategory;
+        }
+      } catch (apiError) {
+        console.warn('⚠️ API catégories indisponible, fallback localStorage:', apiError);
+      }
+      
+      // FALLBACK: localStorage si MongoDB échoue
       const categories = this.getCategoriesSync();
       const existingIndex = categories.findIndex(c => c.value === category.value);
       
       if (existingIndex === -1) {
         categories.push(category);
         localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-        console.log('✅ Catégorie ajoutée:', category.label);
+        console.log('✅ Catégorie ajoutée (localStorage):', category.label);
         this.notifyDataUpdate();
       }
       
@@ -606,6 +652,35 @@ export class DataService {
 
   async deleteCategory(value: string): Promise<boolean> {
     try {
+      console.log('🗑️ Suppression catégorie:', value);
+      
+      // PRIORITÉ 1: Supprimer via API (synchronisation temps réel)
+      try {
+        const response = await fetch(`/api/categories/${encodeURIComponent(value)}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          console.log('✅ Catégorie supprimée via API:', value);
+          
+          // FORCER suppression locale aussi
+          const categories = this.getCategoriesSync();
+          const index = categories.findIndex(c => c.value === value);
+          if (index !== -1) {
+            const deletedCategory = categories[index];
+            categories.splice(index, 1);
+            localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+            console.log('✅ Catégorie supprimée localement aussi:', deletedCategory.label);
+          }
+          
+          this.notifyDataUpdate();
+          return true;
+        }
+      } catch (apiError) {
+        console.warn('⚠️ API catégories indisponible, fallback localStorage:', apiError);
+      }
+      
+      // FALLBACK: localStorage si MongoDB échoue
       const categories = this.getCategoriesSync();
       const index = categories.findIndex(c => c.value === value);
       
@@ -613,7 +688,7 @@ export class DataService {
         const deletedCategory = categories[index];
         categories.splice(index, 1);
         localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-                console.log('✅ Catégorie supprimée:', deletedCategory.label, '- Restantes:', categories.length);
+        console.log('✅ Catégorie supprimée (localStorage):', deletedCategory.label, '- Restantes:', categories.length);
         this.notifyDataUpdate();
         return true;
       }
@@ -628,15 +703,23 @@ export class DataService {
 
   // === FERMES - SYSTÈME DYNAMIQUE ===
   async getFarms(): Promise<Farm[]> {
-    // PRIORITÉ ABSOLUE: DONNÉES STATIQUES GARANTIES
-    console.log('🏠 getFarms - DONNÉES STATIQUES GARANTIES');
+    // SYSTÈME HYBRIDE: localStorage PRIORITAIRE + fallback statique
+    console.log('🏠 getFarms - Système hybride localStorage + fallback');
     
-    // TOUJOURS retourner les données statiques en premier
+    // Essayer localStorage en premier
+    const localFarms = this.getFarmsSync();
+    if (localFarms.length > 0) {
+      console.log('🏠 RETOUR localStorage:', localFarms.length, 'farms');
+      return localFarms;
+    }
+    
+    // FALLBACK: données statiques si localStorage vide
+    console.log('🏠 FALLBACK: Initialisation avec données statiques');
     if (typeof window !== 'undefined') {
       localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
     }
     
-    console.log('🏠 RETOUR GARANTI:', STATIC_FARMS.length, 'farms');
+    console.log('🏠 RETOUR FALLBACK:', STATIC_FARMS.length, 'farms');
     return STATIC_FARMS;
   }
 

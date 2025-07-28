@@ -229,17 +229,25 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
     };
   }, []);
 
-  // Fonction pour charger les données - VERSION SIMPLIFIEE
-  const loadData = () => {
+  // Fonction pour charger les données - VERSION AVEC API
+  const loadData = async () => {
     try {
       console.log('📥 InfoPage - Chargement des données...');
       
-      // Utiliser directement les méthodes synchrones du dataService
+      // Charger la config de manière synchrone
       const configData = dataService.getConfigSync();
-      const infoData = dataService.getInfoContentsSync();
-      
       setConfig(configData);
-      setInfoContents(infoData);
+      
+      // Charger les contenus info depuis l'API
+      const response = await fetch('/api/info-contents');
+      if (response.ok) {
+        const infoData = await response.json();
+        setInfoContents(infoData);
+        console.log('✅ InfoPage - Contenus chargés depuis API:', infoData.length);
+      } else {
+        console.warn('⚠️ API info-contents indisponible');
+        setInfoContents([]);
+      }
       
       console.log('✅ InfoPage - Données chargées avec succès');
     } catch (error) {

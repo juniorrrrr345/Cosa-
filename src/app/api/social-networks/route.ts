@@ -13,6 +13,30 @@ interface SocialNetwork {
   updatedAt: Date;
 }
 
+// Réseaux sociaux par défaut
+const DEFAULT_SOCIAL_NETWORKS = [
+  {
+    id: 'telegram',
+    name: 'Telegram',
+    emoji: '💬',
+    url: 'https://t.me/bipcosa06',
+    isActive: true,
+    order: 1,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
+    id: 'instagram',
+    name: 'Instagram',
+    emoji: '📸',
+    url: 'https://instagram.com/bipcosa06',
+    isActive: true,
+    order: 2,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+];
+
 export async function GET(request: NextRequest) {
   try {
     console.log('🔍 API GET /social-networks - MongoDB');
@@ -21,17 +45,21 @@ export async function GET(request: NextRequest) {
     const socialNetworks = await mongoService.getSocialNetworks();
     console.log('📱 MongoDB réseaux sociaux:', socialNetworks ? socialNetworks.length : 'null');
     
-    // Si MongoDB est vide, retourner une liste vide
+    // Si MongoDB est vide, retourner le contenu par défaut
     if (!socialNetworks || socialNetworks.length === 0) {
-      console.log('📱 MongoDB vide, retour liste vide');
-      return NextResponse.json([]);
+      console.log('📱 MongoDB vide, retour contenu par défaut');
+      // Sauvegarder le contenu par défaut dans MongoDB
+      for (const network of DEFAULT_SOCIAL_NETWORKS) {
+        await mongoService.saveSocialNetwork(network);
+      }
+      return NextResponse.json(DEFAULT_SOCIAL_NETWORKS);
     }
     
     return NextResponse.json(socialNetworks);
   } catch (error) {
     console.error('❌ Erreur MongoDB:', error);
-    console.log('📱 Erreur MongoDB, retour liste vide');
-    return NextResponse.json([]);
+    console.log('📱 Erreur MongoDB, retour contenu par défaut');
+    return NextResponse.json(DEFAULT_SOCIAL_NETWORKS);
   }
 }
 

@@ -425,6 +425,277 @@ class MongoService {
     await this.initializeDefaultData();
   }
 
+  // === MÉTHODES DE SAUVEGARDE MANQUANTES ===
+  
+  async saveCategory(category: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      console.log('💾 Sauvegarde catégorie MongoDB:', category.label);
+      const result = await this.db.collection('categories').insertOne({
+        ...category,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      return { ...category, _id: result.insertedId };
+    } catch (error) {
+      console.error('❌ Erreur sauvegarde catégorie:', error);
+      throw error;
+    }
+  }
+
+  async saveFarm(farm: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      console.log('💾 Sauvegarde ferme MongoDB:', farm.label);
+      const result = await this.db.collection('farms').insertOne({
+        ...farm,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      return { ...farm, _id: result.insertedId };
+    } catch (error) {
+      console.error('❌ Erreur sauvegarde ferme:', error);
+      throw error;
+    }
+  }
+
+  async saveInfoContent(content: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      console.log('💾 Sauvegarde contenu info MongoDB:', content.title);
+      const result = await this.db.collection('info_contents').insertOne({
+        ...content,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      return { ...content, _id: result.insertedId };
+    } catch (error) {
+      console.error('❌ Erreur sauvegarde contenu info:', error);
+      throw error;
+    }
+  }
+
+  async saveContactContent(content: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      console.log('💾 Sauvegarde contenu contact MongoDB:', content.title);
+      const result = await this.db.collection('contact_contents').insertOne({
+        ...content,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      return { ...content, _id: result.insertedId };
+    } catch (error) {
+      console.error('❌ Erreur sauvegarde contenu contact:', error);
+      throw error;
+    }
+  }
+
+  async saveSocialNetwork(network: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      console.log('💾 Sauvegarde réseau social MongoDB:', network.name);
+      const result = await this.db.collection('social_networks').insertOne({
+        ...network,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+      
+      return { ...network, _id: result.insertedId };
+    } catch (error) {
+      console.error('❌ Erreur sauvegarde réseau social:', error);
+      throw error;
+    }
+  }
+
+  async getInfoContents(): Promise<any[]> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) return [];
+    
+    try {
+      const contents = await this.db.collection('info_contents').find({}).toArray();
+      console.log('📖 Info contents récupérés:', contents.length);
+      return contents;
+    } catch (error) {
+      console.error('❌ Erreur récupération info contents:', error);
+      return [];
+    }
+  }
+
+  async getContactContents(): Promise<any[]> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) return [];
+    
+    try {
+      const contents = await this.db.collection('contact_contents').find({}).toArray();
+      console.log('📞 Contact contents récupérés:', contents.length);
+      return contents;
+    } catch (error) {
+      console.error('❌ Erreur récupération contact contents:', error);
+      return [];
+    }
+  }
+
+  async getSocialNetworks(): Promise<any[]> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) return [];
+    
+    try {
+      const networks = await this.db.collection('social_networks').find({}).toArray();
+      console.log('📱 Réseaux sociaux récupérés:', networks.length);
+      return networks;
+    } catch (error) {
+      console.error('❌ Erreur récupération réseaux sociaux:', error);
+      return [];
+    }
+  }
+
+  // Méthodes de mise à jour
+  async updateCategory(id: string, updates: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('categories').findOneAndUpdate(
+        { $or: [{ _id: id }, { value: id }] },
+        { $set: { ...updates, updatedAt: new Date() } },
+        { returnDocument: 'after' }
+      );
+      return result.value;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour catégorie:', error);
+      throw error;
+    }
+  }
+
+  async updateFarm(id: string, updates: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('farms').findOneAndUpdate(
+        { $or: [{ _id: id }, { value: id }] },
+        { $set: { ...updates, updatedAt: new Date() } },
+        { returnDocument: 'after' }
+      );
+      return result.value;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour ferme:', error);
+      throw error;
+    }
+  }
+
+  async updateInfoContent(id: string, updates: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('info_contents').findOneAndUpdate(
+        { $or: [{ _id: id }, { id: id }] },
+        { $set: { ...updates, updatedAt: new Date() } },
+        { returnDocument: 'after' }
+      );
+      return result.value;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour info content:', error);
+      throw error;
+    }
+  }
+
+  async updateContactContent(id: string, updates: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('contact_contents').findOneAndUpdate(
+        { $or: [{ _id: id }, { id: id }] },
+        { $set: { ...updates, updatedAt: new Date() } },
+        { returnDocument: 'after' }
+      );
+      return result.value;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour contact content:', error);
+      throw error;
+    }
+  }
+
+  async updateSocialNetwork(id: string, updates: any): Promise<any> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('social_networks').findOneAndUpdate(
+        { $or: [{ _id: id }, { id: id }] },
+        { $set: { ...updates, updatedAt: new Date() } },
+        { returnDocument: 'after' }
+      );
+      return result.value;
+    } catch (error) {
+      console.error('❌ Erreur mise à jour réseau social:', error);
+      throw error;
+    }
+  }
+
+  // Méthodes de suppression
+  async deleteInfoContent(id: string): Promise<boolean> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('info_contents').deleteOne(
+        { $or: [{ _id: id }, { id: id }] }
+      );
+      return result.deletedCount > 0;
+    } catch (error) {
+      console.error('❌ Erreur suppression info content:', error);
+      throw error;
+    }
+  }
+
+  async deleteContactContent(id: string): Promise<boolean> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('contact_contents').deleteOne(
+        { $or: [{ _id: id }, { id: id }] }
+      );
+      return result.deletedCount > 0;
+    } catch (error) {
+      console.error('❌ Erreur suppression contact content:', error);
+      throw error;
+    }
+  }
+
+  async deleteSocialNetwork(id: string): Promise<boolean> {
+    await this.ensureConnection();
+    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    
+    try {
+      const result = await this.db.collection('social_networks').deleteOne(
+        { $or: [{ _id: id }, { id: id }] }
+      );
+      return result.deletedCount > 0;
+    } catch (error) {
+      console.error('❌ Erreur suppression réseau social:', error);
+      throw error;
+    }
+  }
+
   // Méthode de fermeture de connexion
   async disconnect() {
     if (this.client) {

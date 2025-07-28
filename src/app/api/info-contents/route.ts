@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       id: contentData.id || Date.now().toString(),
       title: contentData.title,
       description: contentData.description,
+      items: contentData.items || [],
       additionalInfo: contentData.additionalInfo || '',
       order: contentData.order || 1,
       createdAt: new Date(),

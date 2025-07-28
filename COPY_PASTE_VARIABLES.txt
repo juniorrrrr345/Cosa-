@@ -3,7 +3,7 @@ VARIABLES À COPIER-COLLER DANS VERCEL
 ========================================
 
 MONGODB_URI
-mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/bipcosa06
 
 CLOUDINARY_CLOUD_NAME
 dvsy5mfhu

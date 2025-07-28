@@ -1,19 +1,19 @@
 // Script de test direct MongoDB pour diagnostiquer les problèmes d'authentification
 const { MongoClient } = require('mongodb');
 
-// URIs à tester
+// URIs à tester (VERSIONS NETTOYÉES SANS CARACTÈRES SPÉCIAUX)
 const uris = [
-  // URI avec utilisateur BipCosa (PRIORITÉ)
-  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+  // URI avec utilisateur BipCosa (PRIORITÉ - VERSION NETTOYÉE)
+  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/bipcosa06',
   
   // URI avec authSource explicite
-  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&authSource=admin',
+  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/bipcosa06?authSource=admin',
   
-  // URI avec base de données spécifique
-  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/bipcosa06?retryWrites=true&w=majority&appName=Cluster0',
+  // URI minimale
+  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/',
   
   // URI avec utilisateur Junior (fallback)
-  'mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+  'mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/bipcosa06'
 ];
 
 async function testConnection(uri, index) {

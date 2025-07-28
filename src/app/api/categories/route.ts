@@ -1,16 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mongoService from '@/services/mongoService';
 
-// Données statiques des catégories
-const STATIC_CATEGORIES = [
-  { value: 'indica', label: 'Indica' },
-  { value: 'sativa', label: 'Sativa' },
-  { value: 'hybrid', label: 'Hybride' },
-  { value: 'indoor', label: 'Indoor' },
-  { value: 'outdoor', label: 'Outdoor' }
-];
+// AUCUNE CATÉGORIE STATIQUE - BOUTIQUE VIDE PAR DÉFAUT
 
 export async function GET(request: NextRequest) {
-  return NextResponse.json(STATIC_CATEGORIES);
+  try {
+    console.log('🔍 API GET /categories - MongoDB seulement');
+    
+    const categories = await mongoService.getCategories();
+    console.log('📦 MongoDB catégories:', categories ? categories.length : 'null');
+    
+    // Si MongoDB est vide, retourner une liste vide (pas de catégories statiques)
+    if (!categories || categories.length === 0) {
+      console.log('📦 MongoDB vide, retour liste vide');
+      return NextResponse.json([]);
+    }
+    
+    return NextResponse.json(categories);
+  } catch (error) {
+    console.error('❌ Erreur MongoDB:', error);
+    console.log('📦 Erreur MongoDB, retour liste vide');
+    return NextResponse.json([]);
+  }
 }
 
 export async function POST(request: NextRequest) {

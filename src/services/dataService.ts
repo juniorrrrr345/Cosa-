@@ -1,111 +1,9 @@
 // Service de gestion des données BIPCOSA06 avec APIs MongoDB et Cloudinary
-import { Product, Category, Farm, ShopConfig, SocialNetwork, InfoContent, ContactContent } from '../types';
+import { Product, Category, Farm, ShopConfig, InfoContent, ContactContent } from './types';
 
-// Données statiques qui fonctionnent TOUJOURS
-const STATIC_CATEGORIES: Category[] = [
-  { value: 'indica', label: 'Indica' },
-  { value: 'sativa', label: 'Sativa' },
-  { value: 'hybrid', label: 'Hybride' },
-  { value: 'indoor', label: 'Indoor' },
-  { value: 'outdoor', label: 'Outdoor' }
-];
+// AUCUNE DONNÉE STATIQUE - BOUTIQUE COMPLÈTEMENT VIDE PAR DÉFAUT
 
-const STATIC_FARMS: Farm[] = [
-  { value: 'holland', label: 'Holland', country: '🇳🇱' },
-  { value: 'espagne', label: 'Espagne', country: '🇪🇸' },
-  { value: 'calispain', label: 'Calispain', country: '🏴‍☠️' },
-  { value: 'premium', label: 'Premium', country: '⭐' }
-];
-
-const STATIC_PRODUCTS: Product[] = [
-  {
-    id: 1,
-    name: "ANIMAL COOKIES",
-    quality: "Qualité Top",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
-    flagColor: "#333333",
-    flagText: "🇳🇱 HOLLAND",
-    category: "indica",
-    farm: "holland",
-    description: "Une variété indica premium avec des arômes sucrés et terreux.",
-    prices: [
-      { id: "1", weight: "1g", price: "12€" },
-      { id: "2", weight: "3.5g", price: "40€" },
-      { id: "3", weight: "7g", price: "75€" }
-    ]
-  },
-  {
-    id: 2,
-    name: "POWER HAZE",
-    quality: "Qualité Mid",
-    image: "https://images.unsplash.com/photo-1574781330855-d0db2706b3d0?w=400&h=300&fit=crop&crop=center",
-    flagColor: "#4CAF50",
-    flagText: "🇪🇸 ESPAGNE",
-    category: "sativa",
-    farm: "espagne",
-    description: "Sativa énergisante avec des effets cérébraux puissants.",
-    prices: [
-      { id: "1", weight: "1g", price: "10€" },
-      { id: "2", weight: "3.5g", price: "32€" },
-      { id: "3", weight: "7g", price: "60€" }
-    ]
-  },
-  {
-    id: 3,
-    name: "PURPLE KUSH",
-    quality: "Qualité Top",
-    image: "https://images.unsplash.com/photo-1536431311719-398b6704d4cc?w=400&h=300&fit=crop&crop=center",
-    flagColor: "#6a1b9a",
-    flagText: "🏴‍☠️ CALISPAIN",
-    category: "indica",
-    farm: "calispain",
-    description: "Indica puissante aux tons violets caractéristiques.",
-    prices: [
-      { id: "1", weight: "1g", price: "15€" },
-      { id: "2", weight: "3.5g", price: "50€" }
-    ]
-  },
-  {
-    id: 4,
-    name: "BLUE DREAM",
-    quality: "Qualité Premium",
-    image: "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?w=400&h=300&fit=crop&crop=center",
-    flagColor: "#2196F3",
-    flagText: "⭐ PREMIUM",
-    category: "hybrid",
-    farm: "premium",
-    description: "Hybride équilibré avec des effets cérébraux créatifs.",
-    prices: [
-      { id: "1", weight: "1g", price: "18€" },
-      { id: "2", weight: "3.5g", price: "60€" }
-    ]
-  }
-];
-
-const defaultSocialNetworks: SocialNetwork[] = [
-  {
-    id: 'telegram',
-    name: 'Telegram',
-    emoji: '📱',
-    url: 'https://t.me/bipcosa06',
-    isActive: true,
-    order: 1,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'instagram',
-    name: 'Instagram',
-    emoji: '📸',
-    url: 'https://instagram.com/bipcosa06',
-    isActive: true,
-    order: 2,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
-
-export class DataService {
+class DataService {
   private static instance: DataService;
   private configCache: ShopConfig | null = null;
   private isInitialized = false;
@@ -224,19 +122,19 @@ export class DataService {
   private ensureDefaultDataExists(): void {
     // Vérifier et initialiser les produits si absent
     if (!localStorage.getItem(this.PRODUCTS_KEY)) {
-      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify([]));
       console.log('📦 Produits par défaut garantis');
     }
     
     // Vérifier et initialiser les catégories si absent
     if (!localStorage.getItem(this.CATEGORIES_KEY)) {
-      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify([]));
       console.log('📂 Catégories par défaut garanties');
     }
     
     // Vérifier et initialiser les fermes si absent
     if (!localStorage.getItem(this.FARMS_KEY)) {
-      localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+      localStorage.setItem(this.FARMS_KEY, JSON.stringify([]));
       console.log('🏠 Fermes par défaut garanties');
     }
   }
@@ -302,7 +200,7 @@ export class DataService {
       } else {
         // Si l'API échoue complètement, utiliser les données par défaut
         console.log('📦 API indisponible, utilisation produits par défaut');
-        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify([]));
       }
       
       // Synchroniser les catégories via API
@@ -314,7 +212,7 @@ export class DataService {
         console.log('📂 Catégories synchronisées depuis API:', categories.length);
       } else {
         console.log('📂 API indisponible, utilisation catégories par défaut');
-        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify([]));
       }
       
       // Synchroniser les fermes via API
@@ -326,7 +224,7 @@ export class DataService {
         console.log('🏠 Fermes synchronisées depuis API:', farms.length);
       } else {
         console.log('🏠 API indisponible, utilisation fermes par défaut');
-        localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify([]));
       }
       
       // Synchroniser la config via API
@@ -353,25 +251,25 @@ export class DataService {
     try {
       // Initialiser les produits
       if (!localStorage.getItem(this.PRODUCTS_KEY)) {
-        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+        localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify([]));
         console.log('📦 Produits par défaut initialisés (fallback)');
       }
 
       // Initialiser les catégories
       if (!localStorage.getItem(this.CATEGORIES_KEY)) {
-        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify([]));
         console.log('📂 Catégories par défaut initialisées');
       }
 
       // Initialiser les fermes
       if (!localStorage.getItem(this.FARMS_KEY)) {
-        localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+        localStorage.setItem(this.FARMS_KEY, JSON.stringify([]));
         console.log('🏠 Fermes par défaut initialisées');
       }
 
       // Initialiser les réseaux sociaux
       if (!localStorage.getItem(this.SOCIAL_NETWORKS_KEY)) {
-        localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(defaultSocialNetworks));
+        localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify([]));
         console.log('🌐 Réseaux sociaux par défaut initialisés');
       }
 
@@ -420,13 +318,13 @@ export class DataService {
       const response = await fetch('/api/products');
       if (response.ok) {
         const products = await response.json();
-        return products.length > 0 ? products : STATIC_PRODUCTS;
+        return products.length > 0 ? products : [];
       }
     } catch (error) {
       // Rien à faire
     }
     
-    return STATIC_PRODUCTS;
+    return [];
   }
 
   private async updateFromAPI(): Promise<void> {
@@ -581,13 +479,13 @@ export class DataService {
       const response = await fetch('/api/categories');
       if (response.ok) {
         const categories = await response.json();
-        return categories.length > 0 ? categories : STATIC_CATEGORIES;
+        return categories.length > 0 ? categories : [];
       }
     } catch (error) {
       // Rien à faire
     }
     
-    return STATIC_CATEGORIES;
+    return [];
   }
 
   getCategoriesSync(): Category[] {
@@ -736,13 +634,13 @@ export class DataService {
       const response = await fetch('/api/farms');
       if (response.ok) {
         const farms = await response.json();
-        return farms.length > 0 ? farms : STATIC_FARMS;
+        return farms.length > 0 ? farms : [];
       }
     } catch (error) {
       // Rien à faire
     }
     
-    return STATIC_FARMS;
+    return [];
   }
 
   getFarmsSync(): Farm[] {
@@ -886,95 +784,95 @@ export class DataService {
   }
 
   // === RÉSEAUX SOCIAUX ===
-  getSocialNetworks(): Promise<SocialNetwork[]> {
-    return Promise.resolve(this.getSocialNetworksSync());
-  }
+  // getSocialNetworks(): Promise<SocialNetwork[]> { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
+  //   return Promise.resolve(this.getSocialNetworksSync());
+  // }
 
-  getSocialNetworksSync(): SocialNetwork[] {
-    try {
-      if (typeof window === 'undefined') return [...defaultSocialNetworks];
+  // getSocialNetworksSync(): SocialNetwork[] { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
+  //   try {
+  //     if (typeof window === 'undefined') return [...defaultSocialNetworks];
       
-      const stored = localStorage.getItem(this.SOCIAL_NETWORKS_KEY);
-      if (stored) {
-        const networks = JSON.parse(stored);
-        console.log('🌐 getSocialNetworksSync - Réseaux depuis localStorage:', networks.length);
-        return networks;
-      }
+  //     const stored = localStorage.getItem(this.SOCIAL_NETWORKS_KEY);
+  //     if (stored) {
+  //       const networks = JSON.parse(stored);
+  //       console.log('🌐 getSocialNetworksSync - Réseaux depuis localStorage:', networks.length);
+  //       return networks;
+  //     }
       
-      console.log('🌐 getSocialNetworksSync - Réseaux par défaut');
-      return [...defaultSocialNetworks];
-    } catch (error) {
-      console.error('❌ Erreur lecture réseaux sociaux:', error);
-      return [...defaultSocialNetworks];
-    }
-  }
+  //     console.log('🌐 getSocialNetworksSync - Réseaux par défaut');
+  //     return [...defaultSocialNetworks];
+  //   } catch (error) {
+  //     console.error('❌ Erreur lecture réseaux sociaux:', error);
+  //     return [...defaultSocialNetworks];
+  //   }
+  // }
 
-  addSocialNetwork(network: Omit<SocialNetwork, 'id' | 'createdAt' | 'updatedAt'>): SocialNetwork {
-    const newNetwork: SocialNetwork = {
-      ...network,
-      id: Date.now().toString(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    
-    const networks = this.getSocialNetworksSync();
-    networks.push(newNetwork);
-    
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
-    }
-    
-    console.log('✅ Réseau social ajouté:', newNetwork.name);
-    this.notifyDataUpdate();
-    return newNetwork;
-  }
+  // addSocialNetwork(network: Omit<SocialNetwork, 'id' | 'createdAt' | 'updatedAt'>): SocialNetwork { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
+  //   const newNetwork: SocialNetwork = {
+  //     ...network,
+  //     id: Date.now().toString(),
+  //     createdAt: new Date(),
+  //     updatedAt: new Date()
+  //   };
+      
+  //   const networks = this.getSocialNetworksSync();
+  //   networks.push(newNetwork);
+      
+  //   if (typeof window !== 'undefined') {
+  //     localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
+  //   }
+      
+  //   console.log('✅ Réseau social ajouté:', newNetwork.name);
+  //   this.notifyDataUpdate();
+  //   return newNetwork;
+  // }
 
-  updateSocialNetwork(id: string, updates: Partial<SocialNetwork>): SocialNetwork | null {
-    const networks = this.getSocialNetworksSync();
-    const index = networks.findIndex(n => n.id === id);
-    
-    if (index !== -1) {
-      networks[index] = { ...networks[index], ...updates, updatedAt: new Date() };
+  // updateSocialNetwork(id: string, updates: Partial<SocialNetwork>): SocialNetwork | null { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
+  //   const networks = this.getSocialNetworksSync();
+  //   const index = networks.findIndex(n => n.id === id);
       
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
-      }
+  //   if (index !== -1) {
+  //     networks[index] = { ...networks[index], ...updates, updatedAt: new Date() };
       
-      console.log('✅ Réseau social mis à jour:', networks[index].name);
-      this.notifyDataUpdate();
-      return networks[index];
-    }
-    return null;
-  }
+  //     if (typeof window !== 'undefined') {
+  //       localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
+  //     }
+      
+  //     console.log('✅ Réseau social mis à jour:', networks[index].name);
+  //     this.notifyDataUpdate();
+  //     return networks[index];
+  //   }
+  //   return null;
+  // }
 
-  deleteSocialNetwork(id: string): boolean {
-    const networks = this.getSocialNetworksSync();
-    const index = networks.findIndex(n => n.id === id);
-    
-    if (index !== -1) {
-      const deletedNetwork = networks[index];
-      networks.splice(index, 1);
+  // deleteSocialNetwork(id: string): boolean { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
+  //   const networks = this.getSocialNetworksSync();
+  //   const index = networks.findIndex(n => n.id === id);
       
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
-      }
+  //   if (index !== -1) {
+  //     const deletedNetwork = networks[index];
+  //     networks.splice(index, 1);
       
-      console.log('✅ Réseau social supprimé:', deletedNetwork.name);
-      this.notifyDataUpdate();
-      return true;
-    }
-    return false;
-  }
+  //     if (typeof window !== 'undefined') {
+  //       localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
+  //     }
+      
+  //     console.log('✅ Réseau social supprimé:', deletedNetwork.name);
+  //     this.notifyDataUpdate();
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   // Méthode pour réinitialiser les réseaux sociaux (utile pour le debug)
-  resetSocialNetworks(): SocialNetwork[] {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(defaultSocialNetworks));
-    }
-    console.log('🔄 Réseaux sociaux réinitialisés aux valeurs par défaut');
-    this.notifyDataUpdate();
-    return [...defaultSocialNetworks];
-  }
+  // resetSocialNetworks(): SocialNetwork[] { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
+  //   if (typeof window !== 'undefined') {
+  //     localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(defaultSocialNetworks));
+  //   }
+  //   console.log('🔄 Réseaux sociaux réinitialisés aux valeurs par défaut');
+  //   this.notifyDataUpdate();
+  //   return [...defaultSocialNetworks];
+  // }
 
   // === CONTENU INFO - SYSTÈME DYNAMIQUE ===
   async getInfoContents(): Promise<InfoContent[]> {
@@ -1210,9 +1108,9 @@ export class DataService {
     
     // Réinitialiser avec les données par défaut pour le panel admin
     if (typeof window !== 'undefined') {
-      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
-      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
-      localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify([]));
+      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify([]));
+      localStorage.setItem(this.FARMS_KEY, JSON.stringify([]));
       console.log('✅ localStorage réinitialisé avec données par défaut');
     }
     

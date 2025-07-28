@@ -10,16 +10,23 @@ export async function POST() {
     console.log('✅ Connexion MongoDB établie');
     
     // 2. Récupérer l'état avant nettoyage
-    const [productsBefore, categoriesBefore, farmsBefore] = await Promise.all([
+    const db = mongoService['db']; // Accès direct à la DB
+    const [productsBefore, categoriesBefore, farmsBefore, contactsBefore, infosBefore, socialsBefore] = await Promise.all([
       mongoService.getProducts(),
       mongoService.getCategories(),
-      mongoService.getFarms()
+      mongoService.getFarms(),
+      db.collection('contact_contents').find({}).toArray(),
+      db.collection('info_contents').find({}).toArray(),
+      db.collection('social_networks').find({}).toArray()
     ]);
     
     console.log('📊 État avant nettoyage:');
     console.log('  - Produits:', productsBefore.length);
     console.log('  - Catégories:', categoriesBefore.length);
     console.log('  - Fermes:', farmsBefore.length);
+    console.log('  - Contacts:', contactsBefore.length);
+    console.log('  - Infos:', infosBefore.length);
+    console.log('  - Réseaux sociaux:', socialsBefore.length);
     
     // 3. Supprimer tous les produits anciens
     console.log('🗑️ Suppression de tous les produits...');

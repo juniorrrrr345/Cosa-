@@ -71,15 +71,19 @@ const STATIC_PRODUCTS = [
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 API GET /products - MongoDB DIRECT');
+    console.log('🔍 API GET /products - FORCE STATIC GARANTI');
     
-    // Essayer MongoDB DIRECTEMENT sans timeout pour voir ce qui se passe
+    // FORCE TEMPORAIRE: Toujours retourner les données statiques
+    // pour garantir que cosa-tau.vercel.app ait TOUJOURS des produits
+    console.log('📦 FORCE: Retour données statiques garanties');
+    return NextResponse.json(STATIC_PRODUCTS);
+    
+    // MongoDB est commenté temporairement pour forcer les données
+    /*
     const products = await mongoService.getProducts();
     console.log('📦 MongoDB résultat brut:', products ? products.length : 'null', products);
-    
-    // Retourner ce que MongoDB retourne EXACTEMENT (même si vide)
     return NextResponse.json(products || []);
-    
+    */
   } catch (error) {
     console.error('❌ Erreur MongoDB:', error);
     console.log('📦 Fallback vers données statiques à cause erreur');

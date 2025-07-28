@@ -12,7 +12,7 @@
 ================================================================================
 
 Variable: MONGODB_URI
-Valeur: mongodb+srv://Junior:Lacrim123@cluster0.q4vnfin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+Valeur: mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 Type: Secret (côté serveur uniquement)
 Environnements: Production, Preview, Development
 Description: URI de connexion à la base de données MongoDB Atlas pour stocker les produits, catégories, fermes et configuration
@@ -107,7 +107,7 @@ Description: Niveau de logging (error, warn, info, debug)
 📋 RÉSUMÉ DES VARIABLES À AJOUTER DANS VERCEL
 ================================================================================
 
-1. MONGODB_URI = mongodb+srv://Junior:Lacrim123@cluster0.q4vnfin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+1. MONGODB_URI = mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 2. CLOUDINARY_CLOUD_NAME = dvsy5mfhu
 

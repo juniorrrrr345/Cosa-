@@ -1,6 +1,6 @@
 // Configuration Cloudinary pour uploads depuis iPhone/mobile
 export const CLOUDINARY_CONFIG = {
-  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dvsy5mfhu',
+  cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dtjab1akq',
   uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'bipcosa06_preset',
   folder: 'bipcosa06',
   formats: ['jpg', 'jpeg', 'png', 'webp', 'mp4', 'mov'],

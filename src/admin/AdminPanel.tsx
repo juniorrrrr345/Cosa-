@@ -1239,6 +1239,26 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         if (result) {
           console.log('✅ Produit modifié avec succès, résultat:', result);
           showNotification('✅ Produit modifié avec succès !');
+          
+          // Rafraîchir les données
+          await refreshData();
+          
+          // Fermer le formulaire et réinitialiser
+          setEditingProduct(null);
+          setFormData({
+            name: '',
+            quality: '',
+            image: '',
+            imagePublicId: '',
+            flagColor: '#333333',
+            flagText: '🌿',
+            category: 'indica',
+            farm: 'holland',
+            description: '',
+            prices: [{ id: '1', weight: '1g', price: '10€' }],
+            video: '',
+            videoPublicId: ''
+          });
         } else {
           console.error('❌ Échec de la modification');
           showNotification('❌ Erreur lors de la modification');
@@ -1248,10 +1268,26 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         const result = await dataService.addProduct(productData);
         console.log('✅ Produit ajouté avec succès:', result);
         showNotification('✅ Produit ajouté avec succès !');
+        
+        // Rafraîchir les données
+        await refreshData();
+        
+        // Réinitialiser le formulaire
+        setFormData({
+          name: '',
+          quality: '',
+          image: '',
+          imagePublicId: '',
+          flagColor: '#333333',
+          flagText: '🌿',
+          category: 'indica',
+          farm: 'holland',
+          description: '',
+          prices: [{ id: '1', weight: '1g', price: '10€' }],
+          video: '',
+          videoPublicId: ''
+        });
       }
-      
-      await refreshData();
-      setEditingProduct(null);
       setIsAddingProduct(false);
       setFormData({});
     } catch (error) {

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Cloudinary Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .upload-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Upload Cloudinary</h1>
+    
+    <div>
+        <p>Cloud Name: <strong>dtjab1akq</strong></p>
+        <p>Preset: <strong>bipcosa06_preset</strong></p>
+    </div>
+    
+    <input type="file" id="fileInput" accept="image/*" />
+    <button class="upload-btn" onclick="uploadImage()">Upload Test</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        async function uploadImage() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('result');
+            
+            if (!fileInput.files[0]) {
+                resultDiv.innerHTML = '<div class="result error">Sélectionnez une image d\'abord</div>';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            
+            formData.append('file', file);
+            formData.append('upload_preset', 'bipcosa06_preset');
+            formData.append('folder', 'bipcosa06/test');
+            
+            resultDiv.innerHTML = '<div class="result">Upload en cours...</div>';
+            
+            try {
+                console.log('🚀 Début upload test...');
+                
+                const response = await fetch(
+                    'https://api.cloudinary.com/v1_1/dtjab1akq/image/upload',
+                    {
+                        method: 'POST',
+                        body: formData
+                    }
+                );
+                
+                const data = await response.json();
+                console.log('📡 Réponse:', data);
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="result success">
+                            <h3>✅ Upload réussi !</h3>
+                            <p>URL: ${data.secure_url}</p>
+                            <img src="${data.secure_url}" style="max-width: 100%; margin-top: 10px;" />
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="result error">
+                            <h3>❌ Erreur</h3>
+                            <p>${data.error?.message || 'Erreur inconnue'}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('❌ Erreur:', error);
+                resultDiv.innerHTML = `
+                    <div class="result error">
+                        <h3>❌ Erreur réseau</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

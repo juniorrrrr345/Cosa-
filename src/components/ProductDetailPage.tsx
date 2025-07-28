@@ -55,11 +55,12 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 15px 20px;
   background: transparent;
   border-bottom: none;
+  position: relative;
   
   /* Mobile */
   @media (max-width: 480px) {
@@ -77,11 +78,23 @@ const BackButton = styled.button`
   font-size: 14px;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  z-index: 100;
   
   &:hover {
     background: rgba(0,0,0,0.9);
     border-color: rgba(255,255,255,0.5);
     transform: translateY(-2px);
+  }
+  
+  /* Mobile */
+  @media (max-width: 480px) {
+    left: 15px;
+    top: 10px;
+    padding: 6px 12px;
+    font-size: 13px;
   }
 `;
 
@@ -404,7 +417,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           ← Retour
         </BackButton>
         <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
-        <div style={{ width: '60px' }}></div>
       </Header>
 
       <Content>

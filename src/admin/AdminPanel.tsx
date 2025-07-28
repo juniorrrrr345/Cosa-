@@ -1080,16 +1080,35 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   };
 
   const handleEditProduct = (product: Product) => {
+    console.log('🔧 Édition du produit:', product);
     setEditingProduct(product);
-    // S'assurer que les prix ont des IDs pour la gestion
-    const productWithIds = {
-      ...product,
+    
+    // Charger toutes les données du produit dans le formulaire
+    const productData = {
+      name: product.name || '',
+      quality: product.quality || '',
+      image: product.image || '',
+      imagePublicId: product.imagePublicId || '',
+      flagColor: product.flagColor || '#333333',
+      flagText: product.flagText || '🌿',
+      category: product.category || 'indica',
+      farm: product.farm || 'holland',
+      description: product.description || '',
       prices: product.prices?.map((price, index) => ({
         ...price,
         id: price.id || `${Date.now()}-${index}`
-      })) || []
+      })) || [{ id: '1', weight: '1g', price: '10€' }],
+      video: product.video || '',
+      videoPublicId: product.videoPublicId || ''
     };
-    setFormData(productWithIds);
+    
+    console.log('📝 FormData chargé:', {
+      name: productData.name,
+      image: productData.image,
+      video: productData.video
+    });
+    
+    setFormData(productData);
   };
 
   const handleAddProduct = () => {
@@ -1132,6 +1151,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         name: formData.name?.trim(),
         quality: formData.quality?.trim() || 'Qualité Standard',
         image: formData.image?.trim() || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400',
+        imagePublicId: formData.imagePublicId || '',
         flagColor: formData.flagColor?.trim() || '#333333',
         flagText: formData.flagText?.trim() || '🌿',
         category: formData.category?.trim(),
@@ -1144,8 +1164,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         videoPublicId: formData.videoPublicId || ''
       };
 
-      // Validation finale
-      console.log('📋 Données produit préparées:', productData);
+      // Validation finale avec logs détaillés
+      console.log('📋 Données produit préparées:', {
+        id: editingProduct?.id,
+        name: productData.name,
+        image: productData.image,
+        video: productData.video,
+        imagePublicId: productData.imagePublicId,
+        videoPublicId: productData.videoPublicId
+      });
 
       if (editingProduct) {
         console.log('✏️ Admin: Modification du produit', editingProduct.id);

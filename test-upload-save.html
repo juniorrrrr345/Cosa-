@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Upload & Save - BIPCOSA06</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: #fafafa;
+        }
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        .btn-secondary {
+            background: #2196F3;
+        }
+        .btn-secondary:hover {
+            background: #1976D2;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        .preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .log-entry {
+            padding: 5px;
+            margin: 2px 0;
+            border-left: 3px solid #4CAF50;
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Complet Upload & Save</h1>
+        
+        <div class="test-section">
+            <h2>1️⃣ Test Upload Cloudinary</h2>
+            <p>Configuration: Cloud Name = <strong>dtjab1akq</strong>, Preset = <strong>bipcosa06_preset</strong></p>
+            
+            <div>
+                <h3>📸 Image</h3>
+                <input type="file" id="imageFile" accept="image/*" />
+                <button class="btn" onclick="testImageUpload()">Tester Upload Image</button>
+                <div id="imagePreview"></div>
+                <div id="imageResult"></div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <h3>🎥 Vidéo</h3>
+                <input type="file" id="videoFile" accept="video/*" />
+                <button class="btn" onclick="testVideoUpload()">Tester Upload Vidéo</button>
+                <div id="videoResult"></div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>2️⃣ Test Sauvegarde MongoDB</h2>
+            <button class="btn btn-secondary" onclick="testSaveProduct()">Tester Sauvegarde Produit</button>
+            <div id="saveResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>3️⃣ Test Complet (Upload + Save)</h2>
+            <button class="btn" onclick="testComplete()">Test Complet</button>
+            <div id="completeResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📊 Logs Console</h2>
+            <button onclick="clearLogs()">Effacer</button>
+            <div id="logs" class="result info"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Variables globales pour stocker les URLs
+        let uploadedImageUrl = '';
+        let uploadedVideoUrl = '';
+        let uploadedImagePublicId = '';
+        let uploadedVideoPublicId = '';
+        
+        // Logger personnalisé
+        const logDiv = document.getElementById('logs');
+        
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        function clearLogs() {
+            logDiv.innerHTML = '';
+        }
+        
+        // Configuration Cloudinary
+        const CLOUDINARY_CONFIG = {
+            cloudName: 'dtjab1akq',
+            uploadPreset: 'bipcosa06_preset'
+        };
+        
+        async function uploadToCloudinary(file, resourceType) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+            formData.append('folder', `bipcosa06/${resourceType}s`);
+            
+            const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${resourceType}/upload`;
+            addLog(`🚀 Upload vers: ${url}`);
+            
+            const response = await fetch(url, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error?.message || 'Erreur upload');
+            }
+            
+            return data;
+        }
+        
+        async function testImageUpload() {
+            const input = document.getElementById('imageFile');
+            const resultDiv = document.getElementById('imageResult');
+            const previewDiv = document.getElementById('imagePreview');
+            
+            if (!input.files[0]) {
+                resultDiv.innerHTML = '<div class="result error">Sélectionnez une image</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<div class="result info">Upload en cours...</div>';
+            addLog('📸 Début upload image...');
+            
+            try {
+                const result = await uploadToCloudinary(input.files[0], 'image');
+                
+                uploadedImageUrl = result.secure_url;
+                uploadedImagePublicId = result.public_id;
+                
+                addLog(`✅ Image uploadée: ${result.secure_url}`);
+                addLog(`📌 Public ID: ${result.public_id}`);
+                
+                previewDiv.innerHTML = `<img src="${result.secure_url}" class="preview" />`;
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        ✅ Upload réussi !
+                        URL: ${result.secure_url}
+                        Public ID: ${result.public_id}
+                    </div>
+                `;
+            } catch (error) {
+                addLog(`❌ Erreur upload: ${error.message}`, 'error');
+                resultDiv.innerHTML = `<div class="result error">❌ Erreur: ${error.message}</div>`;
+            }
+        }
+        
+        async function testVideoUpload() {
+            const input = document.getElementById('videoFile');
+            const resultDiv = document.getElementById('videoResult');
+            
+            if (!input.files[0]) {
+                resultDiv.innerHTML = '<div class="result error">Sélectionnez une vidéo</div>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<div class="result info">Upload en cours... (peut prendre du temps)</div>';
+            addLog('🎥 Début upload vidéo...');
+            
+            try {
+                const result = await uploadToCloudinary(input.files[0], 'video');
+                
+                uploadedVideoUrl = result.secure_url;
+                uploadedVideoPublicId = result.public_id;
+                
+                addLog(`✅ Vidéo uploadée: ${result.secure_url}`);
+                addLog(`📌 Public ID: ${result.public_id}`);
+                
+                resultDiv.innerHTML = `
+                    <div class="result success">
+                        ✅ Upload réussi !
+                        URL: ${result.secure_url}
+                        Public ID: ${result.public_id}
+                    </div>
+                `;
+            } catch (error) {
+                addLog(`❌ Erreur upload: ${error.message}`, 'error');
+                resultDiv.innerHTML = `<div class="result error">❌ Erreur: ${error.message}</div>`;
+            }
+        }
+        
+        async function testSaveProduct() {
+            const resultDiv = document.getElementById('saveResult');
+            
+            if (!uploadedImageUrl) {
+                resultDiv.innerHTML = '<div class="result error">Uploadez d\'abord une image</div>';
+                return;
+            }
+            
+            const productData = {
+                id: Date.now(),
+                name: `TEST SAVE - ${new Date().toLocaleTimeString()}`,
+                quality: "Test Quality",
+                image: uploadedImageUrl,
+                imagePublicId: uploadedImagePublicId,
+                video: uploadedVideoUrl,
+                videoPublicId: uploadedVideoPublicId,
+                flagColor: "#4CAF50",
+                flagText: "🧪 TEST",
+                category: "indica",
+                farm: "holland",
+                description: "Produit de test pour vérifier la sauvegarde",
+                prices: [{ id: "1", weight: "1g", price: "10€" }]
+            };
+            
+            addLog('💾 Test sauvegarde produit...');
+            addLog(`📦 Données: ${JSON.stringify(productData, null, 2)}`);
+            
+            resultDiv.innerHTML = `
+                <div class="result success">
+                    ✅ Données prêtes pour la sauvegarde :
+                    ${JSON.stringify(productData, null, 2)}
+                    
+                    ⚠️ Pour tester la vraie sauvegarde, utilisez le panel admin
+                </div>
+            `;
+        }
+        
+        async function testComplete() {
+            const resultDiv = document.getElementById('completeResult');
+            resultDiv.innerHTML = '<div class="result info">Test complet en cours...</div>';
+            
+            addLog('🚀 Début test complet...');
+            
+            // Simuler un test complet
+            const steps = [
+                '1. Upload image vers Cloudinary',
+                '2. Upload vidéo vers Cloudinary',
+                '3. Préparation des données produit',
+                '4. Envoi vers MongoDB',
+                '5. Vérification de la synchronisation'
+            ];
+            
+            let result = '📋 Étapes du test complet:\n\n';
+            
+            for (const step of steps) {
+                result += `✅ ${step}\n`;
+            }
+            
+            result += '\n⚠️ Pour un test réel, utilisez le panel admin avec ces étapes:\n';
+            result += '1. Cliquez sur "Modifier" un produit\n';
+            result += '2. Uploadez une image\n';
+            result += '3. Uploadez une vidéo\n';
+            result += '4. Cliquez sur "Sauvegarder"\n';
+            result += '5. Vérifiez dans la boutique\n';
+            
+            resultDiv.innerHTML = `<div class="result info">${result}</div>`;
+            addLog('✅ Instructions test complet affichées');
+        }
+        
+        // Message d'accueil
+        addLog('🧪 Page de test prête');
+        addLog('📸 Commencez par uploader une image');
+    </script>
+</body>
+</html>

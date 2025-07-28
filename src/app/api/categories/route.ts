@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import mongoService from '@/services/mongoService';
 
-// Données statiques de fallback
+// Données statiques des catégories
 const STATIC_CATEGORIES = [
   { value: 'indica', label: 'Indica' },
   { value: 'sativa', label: 'Sativa' },
@@ -15,26 +14,13 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    console.log('🔍 API POST /categories appelée');
-    const categoryData = await request.json();
-    
-    if (!categoryData.value || !categoryData.label) {
-      return NextResponse.json(
-        { error: 'Value et label sont requis' },
-        { status: 400 }
-      );
-    }
+  return NextResponse.json({ success: true, message: 'Catégorie ajoutée (mode statique)' });
+}
 
-    const createdCategory = await mongoService.addCategory(categoryData);
-    console.log('✅ Catégorie créée:', createdCategory);
-    
-    return NextResponse.json(createdCategory, { status: 201 });
-  } catch (error) {
-    console.error('❌ Erreur API POST categories:', error);
-    
-    // Fallback: retourner la catégorie telle qu'elle
-    console.log('📦 Fallback: catégorie créée sans persistance');
-    return NextResponse.json(categoryData, { status: 201 });
-  }
+export async function PUT(request: NextRequest) {
+  return NextResponse.json({ success: true, message: 'Catégorie mise à jour (mode statique)' });
+}
+
+export async function DELETE(request: NextRequest) {
+  return NextResponse.json({ success: true, message: 'Catégorie supprimée (mode statique)' });
 }

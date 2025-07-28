@@ -604,12 +604,33 @@ class MongoService {
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
     
     try {
-      const result = await this.db.collection('info_contents').findOneAndUpdate(
+      console.log('🔄 updateInfoContent - ID:', id, 'Updates:', updates);
+      
+      // Utiliser updateOne au lieu de findOneAndUpdate pour éviter les problèmes de result.value null
+      const updateResult = await this.db.collection('info_contents').updateOne(
         { $or: [{ _id: id }, { id: id }] },
-        { $set: { ...updates, updatedAt: new Date() } },
-        { returnDocument: 'after' }
+        { $set: { ...updates, updatedAt: new Date() } }
       );
-      return result.value;
+      
+      console.log('🔄 updateInfoContent - UpdateResult:', updateResult);
+      
+      if (updateResult.matchedCount === 0) {
+        console.error('❌ Document non trouvé avec ID:', id);
+        throw new Error('Document non trouvé');
+      }
+      
+      if (updateResult.modifiedCount === 0) {
+        console.log('⚠️ Document trouvé mais pas modifié (peut-être déjà à jour)');
+      }
+      
+      // Récupérer le document mis à jour
+      const updatedDoc = await this.db.collection('info_contents').findOne(
+        { $or: [{ _id: id }, { id: id }] }
+      );
+      
+      console.log('✅ Document info après mise à jour:', updatedDoc);
+      return updatedDoc;
+      
     } catch (error) {
       console.error('❌ Erreur mise à jour info content:', error);
       throw error;

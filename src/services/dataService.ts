@@ -620,74 +620,69 @@ class DataService {
     }
   }
 
-  async updateCategory(value: string, updates: Partial<Category>): Promise<Category | null> {
+  async updateCategory(id: string, updates: Partial<Category>): Promise<Category | null> {
     try {
-      const categories = this.getCategoriesSync();
-      const index = categories.findIndex(c => c.value === value);
+      // TOUJOURS modifier via API MongoDB
+      console.log('✏️ updateCategory - TOUJOURS via MongoDB API:', id);
       
-      if (index !== -1) {
-        categories[index] = { ...categories[index], ...updates };
-        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-        console.log('✅ Catégorie mise à jour:', value);
+      const response = await fetch('/api/categories', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates })
+      });
+
+      if (response.ok) {
+        const updatedCategory = await response.json();
+        console.log('✅ Catégorie modifiée dans MongoDB:', updatedCategory.label);
+        
+        // Synchroniser immédiatement
+        const categories = await this.getCategories(); // Recharger depuis MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+        }
+        
+        // Notifier tous les appareils
         this.notifyDataUpdate();
-        return categories[index];
+        
+        return updatedCategory;
+      } else {
+        console.error('❌ API updateCategory a échoué:', response.status);
+        throw new Error('Échec modification catégorie MongoDB');
       }
-      
-      console.log('❌ Catégorie non trouvée pour mise à jour:', value);
-      return null;
     } catch (error) {
-      console.error('❌ Erreur mise à jour catégorie:', error);
-      return null;
+      console.error('❌ Erreur critique updateCategory API:', error);
+      throw error;
     }
   }
 
-  async deleteCategory(value: string): Promise<boolean> {
+  async deleteCategory(id: string): Promise<boolean> {
     try {
-      console.log('🗑️ Suppression catégorie:', value);
+      // TOUJOURS supprimer via API MongoDB
+      console.log('🗑️ deleteCategory - TOUJOURS via MongoDB API:', id);
       
-      // PRIORITÉ 1: Supprimer via API (synchronisation temps réel)
-      try {
-        const response = await fetch(`/api/categories/${encodeURIComponent(value)}`, {
-          method: 'DELETE'
-        });
+      const response = await fetch(`/api/categories?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('✅ Catégorie supprimée de MongoDB:', id);
         
-        if (response.ok) {
-          console.log('✅ Catégorie supprimée via API:', value);
-          
-          // FORCER suppression locale aussi
-          const categories = this.getCategoriesSync();
-          const index = categories.findIndex(c => c.value === value);
-          if (index !== -1) {
-            const deletedCategory = categories[index];
-            categories.splice(index, 1);
-            localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-            console.log('✅ Catégorie supprimée localement aussi:', deletedCategory.label);
-          }
-          
-          this.notifyDataUpdate();
-          return true;
+        // Synchroniser immédiatement
+        const categories = await this.getCategories(); // Recharger depuis MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
         }
-      } catch (apiError) {
-        console.warn('⚠️ API catégories indisponible, fallback localStorage:', apiError);
-      }
-      
-      // FALLBACK: localStorage si MongoDB échoue
-      const categories = this.getCategoriesSync();
-      const index = categories.findIndex(c => c.value === value);
-      
-      if (index !== -1) {
-        const deletedCategory = categories[index];
-        categories.splice(index, 1);
-        localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-        console.log('✅ Catégorie supprimée (localStorage):', deletedCategory.label, '- Restantes:', categories.length);
+        
+        // Notifier tous les appareils
         this.notifyDataUpdate();
+        
         return true;
+      } else {
+        console.error('❌ API deleteCategory a échoué:', response.status);
+        return false;
       }
-      
-      console.log('❌ Catégorie non trouvée pour suppression:', value);
-      return false;
     } catch (error) {
-      console.error('❌ Erreur suppression catégorie:', error);
+      console.error('❌ Erreur critique deleteCategory API:', error);
       return false;
     }
   }
@@ -725,6 +720,12 @@ class DataService {
       console.error('❌ Erreur critique saveCategory API:', error);
       throw error; // Pas de fallback - doit utiliser MongoDB
     }
+  }
+
+  // Alias pour compatibilité avec AdminPanel
+  async addCategory(category: Omit<Category, 'id'>): Promise<Category> {
+    console.log('📂 addCategory - Redirection vers saveCategory MongoDB API');
+    return this.saveCategory(category);
   }
 
   // === FERMES - PRIORITÉ API MongoDB ===
@@ -790,45 +791,69 @@ class DataService {
     }
   }
 
-  async updateFarm(value: string, updates: Partial<Farm>): Promise<Farm | null> {
+  async updateFarm(id: string, updates: Partial<Farm>): Promise<Farm | null> {
     try {
-      const farms = this.getFarmsSync();
-      const index = farms.findIndex(f => f.value === value);
+      // TOUJOURS modifier via API MongoDB
+      console.log('✏️ updateFarm - TOUJOURS via MongoDB API:', id);
       
-      if (index !== -1) {
-        farms[index] = { ...farms[index], ...updates };
-        localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
-        console.log('✅ Ferme mise à jour:', value);
+      const response = await fetch('/api/farms', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates })
+      });
+
+      if (response.ok) {
+        const updatedFarm = await response.json();
+        console.log('✅ Ferme modifiée dans MongoDB:', updatedFarm.label);
+        
+        // Synchroniser immédiatement
+        const farms = await this.getFarms(); // Recharger depuis MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        }
+        
+        // Notifier tous les appareils
         this.notifyDataUpdate();
-        return farms[index];
+        
+        return updatedFarm;
+      } else {
+        console.error('❌ API updateFarm a échoué:', response.status);
+        throw new Error('Échec modification ferme MongoDB');
       }
-      
-      console.log('❌ Ferme non trouvée pour mise à jour:', value);
-      return null;
     } catch (error) {
-      console.error('❌ Erreur mise à jour ferme:', error);
-      return null;
+      console.error('❌ Erreur critique updateFarm API:', error);
+      throw error;
     }
   }
 
-  async deleteFarm(value: string): Promise<boolean> {
+  async deleteFarm(id: string): Promise<boolean> {
     try {
-      const farms = this.getFarmsSync();
-      const index = farms.findIndex(f => f.value === value);
+      // TOUJOURS supprimer via API MongoDB
+      console.log('🗑️ deleteFarm - TOUJOURS via MongoDB API:', id);
       
-      if (index !== -1) {
-        const deletedFarm = farms[index];
-        farms.splice(index, 1);
-        localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
-        console.log('✅ Ferme supprimée:', deletedFarm.label, '- Restantes:', farms.length);
+      const response = await fetch(`/api/farms?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('✅ Ferme supprimée de MongoDB:', id);
+        
+        // Synchroniser immédiatement
+        const farms = await this.getFarms(); // Recharger depuis MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        }
+        
+        // Notifier tous les appareils
         this.notifyDataUpdate();
+        
         return true;
+      } else {
+        console.error('❌ API deleteFarm a échoué:', response.status);
+        return false;
       }
-      
-      console.log('❌ Ferme non trouvée pour suppression:', value);
-      return false;
     } catch (error) {
-      console.error('❌ Erreur suppression ferme:', error);
+      console.error('❌ Erreur critique deleteFarm API:', error);
       return false;
     }
   }
@@ -866,6 +891,12 @@ class DataService {
       console.error('❌ Erreur critique saveFarm API:', error);
       throw error; // Pas de fallback - doit utiliser MongoDB
     }
+  }
+
+  // Alias pour compatibilité avec AdminPanel
+  async addFarm(farm: Omit<Farm, 'id'>): Promise<Farm> {
+    console.log('🏠 addFarm - Redirection vers saveFarm MongoDB API');
+    return this.saveFarm(farm);
   }
 
   // === CONFIGURATION ===

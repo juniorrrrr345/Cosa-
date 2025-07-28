@@ -958,206 +958,138 @@ class DataService {
     return updatedConfig;
   }
 
-  // === RÉSEAUX SOCIAUX ===
-  // getSocialNetworks(): Promise<SocialNetwork[]> { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
-  //   return Promise.resolve(this.getSocialNetworksSync());
-  // }
-
-  // getSocialNetworksSync(): SocialNetwork[] { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
-  //   try {
-  //     if (typeof window === 'undefined') return [...defaultSocialNetworks];
-      
-  //     const stored = localStorage.getItem(this.SOCIAL_NETWORKS_KEY);
-  //     if (stored) {
-  //       const networks = JSON.parse(stored);
-  //       console.log('🌐 getSocialNetworksSync - Réseaux depuis localStorage:', networks.length);
-  //       return networks;
-  //     }
-      
-  //     console.log('🌐 getSocialNetworksSync - Réseaux par défaut');
-  //     return [...defaultSocialNetworks];
-  //   } catch (error) {
-  //     console.error('❌ Erreur lecture réseaux sociaux:', error);
-  //     return [...defaultSocialNetworks];
-  //   }
-  // }
-
-  // addSocialNetwork(network: Omit<SocialNetwork, 'id' | 'createdAt' | 'updatedAt'>): SocialNetwork { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
-  //   const newNetwork: SocialNetwork = {
-  //     ...network,
-  //     id: Date.now().toString(),
-  //     createdAt: new Date(),
-  //     updatedAt: new Date()
-  //   };
-      
-  //   const networks = this.getSocialNetworksSync();
-  //   networks.push(newNetwork);
-      
-  //   if (typeof window !== 'undefined') {
-  //     localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
-  //   }
-      
-  //   console.log('✅ Réseau social ajouté:', newNetwork.name);
-  //   this.notifyDataUpdate();
-  //   return newNetwork;
-  // }
-
-  // updateSocialNetwork(id: string, updates: Partial<SocialNetwork>): SocialNetwork | null { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
-  //   const networks = this.getSocialNetworksSync();
-  //   const index = networks.findIndex(n => n.id === id);
-      
-  //   if (index !== -1) {
-  //     networks[index] = { ...networks[index], ...updates, updatedAt: new Date() };
-      
-  //     if (typeof window !== 'undefined') {
-  //       localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
-  //     }
-      
-  //     console.log('✅ Réseau social mis à jour:', networks[index].name);
-  //     this.notifyDataUpdate();
-  //     return networks[index];
-  //   }
-  //   return null;
-  // }
-
-  // deleteSocialNetwork(id: string): boolean { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
-  //   const networks = this.getSocialNetworksSync();
-  //   const index = networks.findIndex(n => n.id === id);
-      
-  //   if (index !== -1) {
-  //     const deletedNetwork = networks[index];
-  //     networks.splice(index, 1);
-      
-  //     if (typeof window !== 'undefined') {
-  //       localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(networks));
-  //     }
-      
-  //     console.log('✅ Réseau social supprimé:', deletedNetwork.name);
-  //     this.notifyDataUpdate();
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // Méthode pour réinitialiser les réseaux sociaux (utile pour le debug)
-  // resetSocialNetworks(): SocialNetwork[] { // SocialNetwork est supprimé, donc cette méthode n'est plus nécessaire
-  //   if (typeof window !== 'undefined') {
-  //     localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify(defaultSocialNetworks));
-  //   }
-  //   console.log('🔄 Réseaux sociaux réinitialisés aux valeurs par défaut');
-  //   this.notifyDataUpdate();
-  //   return [...defaultSocialNetworks];
-  // }
-
-  // === CONTENU INFO - SYSTÈME DYNAMIQUE ===
-  async getInfoContents(): Promise<InfoContent[]> {
-    return this.getInfoContentsSync();
-  }
-
-  getInfoContentsSync(): InfoContent[] {
+  // === CONTENU INFO - API MongoDB ===
+  async updateInfoContent(id: string, updates: Partial<any>): Promise<any> {
     try {
-      if (typeof window === 'undefined') return [];
+      console.log('ℹ️ updateInfoContent - MongoDB API:', id);
       
-      const stored = localStorage.getItem(this.INFO_CONTENTS_KEY);
-      if (stored) {
-        const contents = JSON.parse(stored);
-        console.log('ℹ️ getInfoContentsSync - Contenus depuis localStorage:', contents.length);
-        return contents;
-      }
-      
-      console.log('ℹ️ getInfoContentsSync - Aucun contenu trouvé');
-      return [];
-    } catch (error) {
-      console.error('❌ Erreur lecture contenu info:', error);
-      return [];
-    }
-  }
+      const response = await fetch('/api/info-contents', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates })
+      });
 
-  async updateInfoContent(id: string, updates: Partial<InfoContent>): Promise<InfoContent | null> {
-    try {
-      const contents = this.getInfoContentsSync();
-      const index = contents.findIndex(c => c.id === id);
-      
-      if (index !== -1) {
-        contents[index] = { ...contents[index], ...updates };
-        localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify(contents));
-        console.log('✅ Contenu info mis à jour:', id);
+      if (response.ok) {
+        const updatedContent = await response.json();
+        console.log('✅ Contenu info modifié dans MongoDB');
+        
+        // Notifier tous les appareils
         this.notifyDataUpdate();
-        return contents[index];
+        
+        return updatedContent;
       } else {
-        // Si le contenu n'existe pas, le créer
-        const newContent: InfoContent = {
-          id,
-          title: updates.title || '🌟 BIPCOSA06 - Votre Boutique de Confiance',
-          description: updates.description || 'Découvrez notre sélection premium.',
-          additionalInfo: updates.additionalInfo || 'Qualité garantie'
-        };
-        contents.push(newContent);
-        localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify(contents));
-        console.log('✅ Contenu info créé:', id);
-        this.notifyDataUpdate();
-        return newContent;
+        throw new Error('Échec modification contenu info MongoDB');
       }
     } catch (error) {
-      console.error('❌ Erreur mise à jour contenu info:', error);
+      console.error('❌ Erreur updateInfoContent:', error);
       throw error;
     }
   }
 
-  // === CONTENU CONTACT - SYSTÈME DYNAMIQUE ===
-  async getContactContents(): Promise<ContactContent[]> {
-    return this.getContactContentsSync();
-  }
-
-  getContactContentsSync(): ContactContent[] {
+  // === CONTENU CONTACT - API MongoDB ===
+  async updateContactContent(id: string, updates: Partial<any>): Promise<any> {
     try {
-      if (typeof window === 'undefined') return [];
+      console.log('📞 updateContactContent - MongoDB API:', id);
       
-      const stored = localStorage.getItem(this.CONTACT_CONTENTS_KEY);
-      if (stored) {
-        const contents = JSON.parse(stored);
-        console.log('📞 getContactContentsSync - Contenus depuis localStorage:', contents.length);
-        return contents;
+      const response = await fetch('/api/contact-contents', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates })
+      });
+
+      if (response.ok) {
+        const updatedContent = await response.json();
+        console.log('✅ Contenu contact modifié dans MongoDB');
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return updatedContent;
+      } else {
+        throw new Error('Échec modification contenu contact MongoDB');
       }
-      
-      console.log('📞 getContactContentsSync - Aucun contenu trouvé');
-      return [];
     } catch (error) {
-      console.error('❌ Erreur lecture contenu contact:', error);
-      return [];
+      console.error('❌ Erreur updateContactContent:', error);
+      throw error;
     }
   }
 
-  async updateContactContent(id: string, updates: Partial<ContactContent>): Promise<ContactContent | null> {
+  // === RÉSEAUX SOCIAUX - API MongoDB ===
+  async addSocialNetwork(network: any): Promise<any> {
     try {
-      const contents = this.getContactContentsSync();
-      const index = contents.findIndex(c => c.id === id);
+      console.log('📱 addSocialNetwork - MongoDB API:', network.name);
       
-      if (index !== -1) {
-        contents[index] = { ...contents[index], ...updates };
-        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(contents));
-        console.log('✅ Contenu contact mis à jour:', id);
+      const response = await fetch('/api/social-networks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(network)
+      });
+
+      if (response.ok) {
+        const savedNetwork = await response.json();
+        console.log('✅ Réseau social ajouté dans MongoDB');
+        
+        // Notifier tous les appareils
         this.notifyDataUpdate();
-        return contents[index];
+        
+        return savedNetwork;
       } else {
-        // Si le contenu n'existe pas, le créer
-        const newContent: ContactContent = {
-          id,
-          title: updates.title || '📱 Contact BIPCOSA06',
-          description: updates.description || 'Contactez-nous via Telegram',
-          telegramUsername: updates.telegramUsername || '@bipcosa06',
-          telegramLink: updates.telegramLink || 'https://t.me/bipcosa06',
-          additionalInfo: updates.additionalInfo || 'Service 7j/7'
-        };
-        contents.push(newContent);
-        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(contents));
-        console.log('✅ Contenu contact créé:', id);
-        this.notifyDataUpdate();
-        return newContent;
+        throw new Error('Échec ajout réseau social MongoDB');
       }
     } catch (error) {
-      console.error('❌ Erreur mise à jour contenu contact:', error);
+      console.error('❌ Erreur addSocialNetwork:', error);
       throw error;
+    }
+  }
+
+  async updateSocialNetwork(id: string, updates: Partial<any>): Promise<any> {
+    try {
+      console.log('📱 updateSocialNetwork - MongoDB API:', id);
+      
+      const response = await fetch('/api/social-networks', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates })
+      });
+
+      if (response.ok) {
+        const updatedNetwork = await response.json();
+        console.log('✅ Réseau social modifié dans MongoDB');
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return updatedNetwork;
+      } else {
+        throw new Error('Échec modification réseau social MongoDB');
+      }
+    } catch (error) {
+      console.error('❌ Erreur updateSocialNetwork:', error);
+      throw error;
+    }
+  }
+
+  async deleteSocialNetwork(id: string): Promise<boolean> {
+    try {
+      console.log('📱 deleteSocialNetwork - MongoDB API:', id);
+      
+      const response = await fetch(`/api/social-networks?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        console.log('✅ Réseau social supprimé de MongoDB');
+        
+        // Notifier tous les appareils
+        this.notifyDataUpdate();
+        
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ Erreur deleteSocialNetwork:', error);
+      return false;
     }
   }
 

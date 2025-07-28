@@ -127,11 +127,36 @@ export class DataService {
   
   constructor() {
     console.log('🚀 DataService avec SYNCHRONISATION TEMPS RÉEL initialisé');
+    
+    // FORCE IMMÉDIATE DES DONNÉES - SANS ATTENDRE L'API
+    this.forceImmediateData();
+    
     this.initializeDefaultData();
     
-    if (this.USE_REAL_TIME_SYNC && typeof window !== 'undefined') {
-      this.startRealTimeSync();
-    }
+    // DÉSACTIVER LE SYNC TEMPS RÉEL pour éviter les erreurs server-side
+    // if (this.USE_REAL_TIME_SYNC) {
+    //   this.startRealTimeSync();
+    // }
+  }
+
+  private forceImmediateData(): void {
+    if (typeof window === 'undefined') return;
+    
+    console.log('🔥 FORCE IMMÉDIATE DES DONNÉES - GARANTIE 100%');
+    
+    // FORCER IMMÉDIATEMENT les données sans vérification
+    localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+    localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
+    localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
+    localStorage.setItem(this.CONFIG_KEY, JSON.stringify(STATIC_CONFIG));
+    
+    console.log('✅ DONNÉES FORCÉES IMMÉDIATEMENT:');
+    console.log('📦 Produits:', STATIC_PRODUCTS.length);
+    console.log('📂 Catégories:', STATIC_CATEGORIES.length);
+    console.log('🏠 Farms:', STATIC_FARMS.length);
+    
+    // Notifier immédiatement le changement
+    this.notifyDataUpdate();
   }
   
   // Initialisation des données
@@ -361,33 +386,16 @@ export class DataService {
 
   // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
-    // POUR LE PANEL ADMIN: utiliser localStorage en priorité pour la stabilité
-    const localProducts = this.getProductsSync();
-    if (localProducts.length > 0) {
-      console.log('📦 getProducts - Utilisation localStorage (panel admin):', localProducts.length);
-      return localProducts;
+    // PRIORITÉ ABSOLUE: DONNÉES STATIQUES GARANTIES
+    console.log('📦 getProducts - DONNÉES STATIQUES GARANTIES');
+    
+    // TOUJOURS retourner les données statiques en premier
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
     }
     
-    // Sinon essayer l'API
-    try {
-      console.log('🔍 getProducts - Fetch API en fallback');
-      const response = await fetch('/api/products');
-      if (response.ok) {
-        const products = await response.json();
-        console.log('📦 getProducts - Produits depuis API:', products.length);
-        // Mettre à jour localStorage avec les données fraîches
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-          console.log('🗑️ localStorage produits mis à jour avec API:', products.length);
-        }
-        return products;
-      }
-    } catch (error) {
-      console.warn('⚠️ API indisponible, utilisation localStorage:', error);
-    }
-    
-    // Retourner localStorage même si vide
-    return localProducts;
+    console.log('📦 RETOUR GARANTI:', STATIC_PRODUCTS.length, 'produits');
+    return STATIC_PRODUCTS;
   }
 
   getProductsSync(): Product[] {
@@ -525,32 +533,16 @@ export class DataService {
 
   // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
   async getCategories(): Promise<Category[]> {
-    // POUR LE PANEL ADMIN: utiliser localStorage en priorité
-    const localCategories = this.getCategoriesSync();
-    if (localCategories.length > 0) {
-      console.log('📂 getCategories - Utilisation localStorage (panel admin):', localCategories.length);
-      return localCategories;
+    // PRIORITÉ ABSOLUE: DONNÉES STATIQUES GARANTIES
+    console.log('📂 getCategories - DONNÉES STATIQUES GARANTIES');
+    
+    // TOUJOURS retourner les données statiques en premier
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(STATIC_CATEGORIES));
     }
     
-    // Sinon essayer l'API
-    try {
-      console.log('🔍 getCategories - Fetch API en fallback');
-      const response = await fetch('/api/categories');
-      if (response.ok) {
-        const categories = await response.json();
-        console.log('📂 getCategories - Catégories depuis API:', categories.length);
-        // Mettre à jour localStorage avec les données fraîches
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
-        }
-        return categories;
-      }
-    } catch (error) {
-      console.warn('⚠️ API catégories indisponible, utilisation localStorage:', error);
-    }
-    
-    // Retourner localStorage même si vide
-    return localCategories;
+    console.log('📂 RETOUR GARANTI:', STATIC_CATEGORIES.length, 'catégories');
+    return STATIC_CATEGORIES;
   }
 
   getCategoriesSync(): Category[] {
@@ -636,32 +628,16 @@ export class DataService {
 
   // === FERMES - SYSTÈME DYNAMIQUE ===
   async getFarms(): Promise<Farm[]> {
-    // POUR LE PANEL ADMIN: utiliser localStorage en priorité
-    const localFarms = this.getFarmsSync();
-    if (localFarms.length > 0) {
-      console.log('🏠 getFarms - Utilisation localStorage (panel admin):', localFarms.length);
-      return localFarms;
+    // PRIORITÉ ABSOLUE: DONNÉES STATIQUES GARANTIES
+    console.log('🏠 getFarms - DONNÉES STATIQUES GARANTIES');
+    
+    // TOUJOURS retourner les données statiques en premier
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.FARMS_KEY, JSON.stringify(STATIC_FARMS));
     }
     
-    // Sinon essayer l'API
-    try {
-      console.log('🔍 getFarms - Fetch API en fallback');
-      const response = await fetch('/api/farms');
-      if (response.ok) {
-        const farms = await response.json();
-        console.log('🏠 getFarms - Fermes depuis API:', farms.length);
-        // Mettre à jour localStorage avec les données fraîches
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
-        }
-        return farms;
-      }
-    } catch (error) {
-      console.warn('⚠️ API farms indisponible, utilisation localStorage:', error);
-    }
-    
-    // Retourner localStorage même si vide
-    return localFarms;
+    console.log('🏠 RETOUR GARANTI:', STATIC_FARMS.length, 'farms');
+    return STATIC_FARMS;
   }
 
   getFarmsSync(): Farm[] {

@@ -378,43 +378,32 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
     };
   }, []);
 
-  // Fonction pour charger les données avec priorité localStorage pour config
+  // Charger les données depuis l'API MongoDB
   const loadData = async () => {
     try {
-      console.log('📥 SocialNetworksPage - Chargement des données...');
+      console.log('📥 SocialNetworksPage - Chargement depuis API MongoDB...');
       
-      // Charger config en priorité depuis localStorage (panel admin)
-      let configData;
-      if (typeof window !== 'undefined') {
-        const storedConfig = localStorage.getItem('bipcosa06_config');
-        if (storedConfig) {
-          try {
-            configData = JSON.parse(storedConfig);
-            console.log('📥 SocialNetworksPage - Config depuis localStorage (panel admin):', configData);
-          } catch (e) {
-            console.error('❌ Erreur parsing config localStorage');
-          }
-        }
+      // Charger depuis l'API MongoDB, pas localStorage
+      const [configRes, socialRes] = await Promise.all([
+        fetch('/api/config'),
+        fetch('/api/social-networks')
+      ]);
+
+      if (configRes.ok) {
+        const configData = await configRes.json();
+        setConfig(configData);
+        console.log('⚙️ Config chargée depuis MongoDB');
+      }
+
+      if (socialRes.ok) {
+        const socialData = await socialRes.json();
+        setSocialNetworks(socialData);
+        console.log('📱 Réseaux sociaux chargés depuis MongoDB:', socialData.length);
       }
       
-      // Si pas de config localStorage, utiliser l'API
-      if (!configData) {
-        configData = await dataService.getConfig();
-        console.log('📥 SocialNetworksPage - Config depuis API:', configData);
-      }
-      
-      const socialData = dataService.getSocialNetworksSync();
-      
-      setConfig(configData);
-      setSocialNetworks(socialData);
-      
-      console.log('✅ SocialNetworksPage - Données chargées:', {
-        config: configData,
-        socialNetworks: socialData.length
-      });
+      console.log('✅ SocialNetworksPage - Données chargées depuis MongoDB');
     } catch (error) {
-      console.error('❌ SocialNetworksPage - Erreur lors du chargement:', error);
-      setSocialNetworks([]);
+      console.error('❌ Erreur chargement réseaux sociaux depuis API:', error);
     }
   };
 

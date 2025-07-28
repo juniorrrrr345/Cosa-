@@ -312,19 +312,29 @@ class DataService {
     return DataService.instance;
   }
 
-  // === PRODUITS - SYSTÈME DYNAMIQUE ===
+  // === PRODUITS - PRIORITÉ API MongoDB ===
   async getProducts(): Promise<Product[]> {
     try {
+      // TOUJOURS charger depuis MongoDB en priorité
+      console.log('📦 getProducts - Chargement depuis MongoDB...');
       const response = await fetch('/api/products');
       if (response.ok) {
         const products = await response.json();
-        return products.length > 0 ? products : [];
+        console.log('📦 Produits chargés depuis MongoDB:', products.length);
+        
+        // Mettre à jour le cache local après chargement MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+        }
+        
+        return products;
       }
     } catch (error) {
-      // Rien à faire
+      console.warn('⚠️ API produits indisponible, fallback localStorage:', error);
     }
     
-    return [];
+    // Fallback uniquement si MongoDB échoue complètement
+    return this.getProductsSync();
   }
 
   private async updateFromAPI(): Promise<void> {
@@ -473,19 +483,29 @@ class DataService {
     }
   }
 
-  // === CATÉGORIES - SYSTÈME DYNAMIQUE ===
+  // === CATÉGORIES - PRIORITÉ API MongoDB ===
   async getCategories(): Promise<Category[]> {
     try {
+      // TOUJOURS charger depuis MongoDB en priorité
+      console.log('📂 getCategories - Chargement depuis MongoDB...');
       const response = await fetch('/api/categories');
       if (response.ok) {
         const categories = await response.json();
-        return categories.length > 0 ? categories : [];
+        console.log('📂 Catégories chargées depuis MongoDB:', categories.length);
+        
+        // Mettre à jour le cache local après chargement MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(categories));
+        }
+        
+        return categories;
       }
     } catch (error) {
-      // Rien à faire
+      console.warn('⚠️ API catégories indisponible, fallback localStorage:', error);
     }
     
-    return [];
+    // Fallback uniquement si MongoDB échoue complètement
+    return this.getCategoriesSync();
   }
 
   getCategoriesSync(): Category[] {
@@ -628,19 +648,29 @@ class DataService {
     }
   }
 
-  // === FERMES - SYSTÈME DYNAMIQUE ===
+  // === FERMES - PRIORITÉ API MongoDB ===
   async getFarms(): Promise<Farm[]> {
     try {
+      // TOUJOURS charger depuis MongoDB en priorité
+      console.log('🏠 getFarms - Chargement depuis MongoDB...');
       const response = await fetch('/api/farms');
       if (response.ok) {
         const farms = await response.json();
-        return farms.length > 0 ? farms : [];
+        console.log('🏠 Fermes chargées depuis MongoDB:', farms.length);
+        
+        // Mettre à jour le cache local après chargement MongoDB
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(farms));
+        }
+        
+        return farms;
       }
     } catch (error) {
-      // Rien à faire
+      console.warn('⚠️ API fermes indisponible, fallback localStorage:', error);
     }
     
-    return [];
+    // Fallback uniquement si MongoDB échoue complètement
+    return this.getFarmsSync();
   }
 
   getFarmsSync(): Farm[] {

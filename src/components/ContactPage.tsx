@@ -231,25 +231,32 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
     };
   }, []);
 
-  // Fonction pour charger les données - VERSION SIMPLIFIEE
-  const loadData = () => {
+  // Charger les données depuis l'API MongoDB
+  const loadData = async () => {
     try {
-      console.log('📥 ContactPage - Chargement des données...');
+      console.log('📥 ContactPage - Chargement depuis API MongoDB...');
       
-      // Utiliser directement les méthodes synchrones du dataService
-      const configData = dataService.getConfigSync();
-      const contactData = dataService.getContactContentsSync();
+      // Charger depuis l'API MongoDB, pas localStorage
+      const [configRes, contactRes] = await Promise.all([
+        fetch('/api/config'),
+        fetch('/api/contact-contents')
+      ]);
+
+      if (configRes.ok) {
+        const configData = await configRes.json();
+        setConfig(configData);
+        console.log('⚙️ Config chargée depuis MongoDB');
+      }
+
+      if (contactRes.ok) {
+        const contactData = await contactRes.json();
+        setContactContents(contactData);
+        console.log('📞 Contenus contact chargés depuis MongoDB:', contactData.length);
+      }
       
-      setConfig(configData);
-      setContactContents(contactData);
-      
-      console.log('✅ ContactPage - Données chargées avec succès');
+      console.log('✅ ContactPage - Données chargées depuis MongoDB');
     } catch (error) {
-      console.error('❌ Erreur lors du chargement des données:', error);
-      
-      // Fallback minimal
-      setConfig({} as ShopConfig);
-      setContactContents([]);
+      console.error('❌ Erreur chargement données contact depuis API:', error);
     }
   };
 

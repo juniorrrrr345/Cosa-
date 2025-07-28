@@ -219,60 +219,81 @@ class MongoService {
     }
   }
 
-  async addProduct(product: Omit<Product, '_id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+  async addProduct(productData: Partial<Product>): Promise<Product> {
     await this.ensureConnection();
-    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    if (!this.isConnected || !this.db) throw new Error('Database non connectée');
     
     try {
+      console.log('🔍 MongoService addProduct - Données reçues:', productData);
+      
       const newProduct = {
-        ...product,
+        ...productData,
+        id: Date.now(),
         createdAt: new Date(),
         updatedAt: new Date()
       };
       
+      console.log('📦 MongoService addProduct - Nouveau produit préparé:', {
+        name: newProduct.name,
+        image: newProduct.image,
+        video: newProduct.video
+      });
+      
       const result = await this.db.collection('products').insertOne(newProduct);
       return { ...newProduct, _id: result.insertedId.toString() };
     } catch (error) {
-      console.error('Erreur lors de l\'ajout du produit:', error);
+      console.error('❌ Erreur ajout produit MongoDB:', error);
       throw error;
     }
   }
 
-  async updateProduct(id: string, updates: Partial<Product>): Promise<Product | null> {
+  async updateProduct(id: number, updates: Partial<Product>): Promise<Product | null> {
     await this.ensureConnection();
-    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    if (!this.isConnected || !this.db) throw new Error('Database non connectée');
     
     try {
-      const updateData = {
-        ...updates,
-        updatedAt: new Date()
-      };
+      console.log('🔍 MongoService updateProduct - ID:', id, 'Updates:', updates);
+      console.log('📦 MongoService updateProduct - Détails:', {
+        image: updates.image,
+        video: updates.video
+      });
       
       const result = await this.db.collection('products').findOneAndUpdate(
-        { $or: [{ _id: id }, { id: parseInt(id) }] },
-        { $set: updateData },
+        { id: id },
+        { 
+          $set: { 
+            ...updates, 
+            updatedAt: new Date() 
+          } 
+        },
         { returnDocument: 'after' }
       );
       
-      return result.value ? { ...result.value, _id: result.value._id.toString() } : null;
+      if (result) {
+        console.log('✅ MongoService updateProduct - Produit mis à jour:', {
+          name: result.name,
+          image: result.image,
+          video: result.video
+        });
+      }
+      
+      return result ? { ...result, _id: result._id.toString() } : null;
     } catch (error) {
-      console.error('Erreur lors de la mise à jour du produit:', error);
+      console.error('❌ Erreur mise à jour produit MongoDB:', error);
       throw error;
     }
   }
 
-  async deleteProduct(id: string): Promise<boolean> {
+  async deleteProduct(id: number): Promise<boolean> {
     await this.ensureConnection();
-    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
+    if (!this.isConnected || !this.db) throw new Error('Database non connectée');
     
     try {
-      const result = await this.db.collection('products').deleteOne({
-        $or: [{ _id: id }, { id: parseInt(id) }]
-      });
-      
+      console.log('🗑️ MongoService deleteProduct - ID:', id);
+      const result = await this.db.collection('products').deleteOne({ id: id });
       return result.deletedCount > 0;
     } catch (error) {
-      console.error('Erreur lors de la suppression du produit:', error);
+      console.error('❌ Erreur suppression produit MongoDB:', error);
       throw error;
     }
   }

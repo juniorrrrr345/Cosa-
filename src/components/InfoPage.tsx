@@ -148,22 +148,9 @@ const InfoTitle = styled.h2`
   text-align: center;
   position: relative;
   z-index: 1;
-  
-  &::after {
-    content: '🌿';
-    position: absolute;
-    right: -40px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 24px;
-    opacity: 0.5;
-  }
 
   @media (max-width: 480px) {
     font-size: 24px;
-    &::after {
-      display: none;
-    }
   }
 `;
 

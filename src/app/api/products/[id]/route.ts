@@ -28,7 +28,18 @@ export async function PUT(
     const { id } = params;
     const updates = await request.json();
     
-    const updatedProduct = await mongoService.updateProduct(id, updates);
+    // Convertir l'ID string en number
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) {
+      return NextResponse.json(
+        { error: 'ID invalide' },
+        { status: 400 }
+      );
+    }
+    
+    console.log('🔄 API PUT /products - ID:', numericId, 'Updates:', updates);
+    
+    const updatedProduct = await mongoService.updateProduct(numericId, updates);
     
     if (!updatedProduct) {
       return NextResponse.json(
@@ -53,9 +64,19 @@ export async function DELETE(
 ) {
   try {
     const { id } = params;
-    console.log('🗑️ SUPPRESSION MongoDB DIRECT - ID:', id);
     
-    const success = await mongoService.deleteProduct(id);
+    // Convertir l'ID string en number
+    const numericId = parseInt(id, 10);
+    if (isNaN(numericId)) {
+      return NextResponse.json(
+        { error: 'ID invalide' },
+        { status: 400 }
+      );
+    }
+    
+    console.log('🗑️ API DELETE /products - ID:', numericId);
+    
+    const success = await mongoService.deleteProduct(numericId);
     
     if (!success) {
       return NextResponse.json(
@@ -64,10 +85,9 @@ export async function DELETE(
       );
     }
     
-    console.log('✅ Produit supprimé MongoDB:', id);
-    return NextResponse.json({ message: 'Produit supprimé avec succès' });
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('❌ Erreur API DELETE product:', error);
+    console.error('Erreur API DELETE product:', error);
     return NextResponse.json(
       { error: 'Erreur lors de la suppression du produit' },
       { status: 500 }

@@ -68,6 +68,7 @@ const PageHeader = styled.div`
   padding: 15px 20px;
   background: transparent;
   border-bottom: none;
+  position: relative;
   
   /* Mobile */
   @media (max-width: 480px) {
@@ -279,33 +280,29 @@ const BackButton = styled.button`
   background: rgba(0,0,0,0.7);
   border: 1px solid rgba(255,255,255,0.3);
   color: white;
-  padding: 12px 24px;
+  padding: 8px 15px;
   border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
   transition: all 0.3s ease;
-  margin-bottom: 30px;
   backdrop-filter: blur(10px);
-
+  position: absolute;
+  left: 20px;
+  top: 15px;
+  z-index: 1000;
+  
   &:hover {
     background: rgba(0,0,0,0.9);
     border-color: rgba(255,255,255,0.5);
     transform: translateY(-2px);
   }
   
-  /* Tablette */
-  @media (max-width: 768px) {
-    padding: 10px 20px;
-    margin-bottom: 25px;
-  }
-  
   /* Mobile */
   @media (max-width: 480px) {
-    padding: 8px 16px;
+    left: 15px;
+    top: 10px;
+    padding: 6px 12px;
     font-size: 13px;
-    margin-bottom: 20px;
-    width: auto;
-    align-self: flex-start;
   }
 `;
 
@@ -458,13 +455,12 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
       {/* Header avec logo */}
       <PageHeader>
         <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
-      </PageHeader>
-      
-      <Content>
         <BackButton onClick={onBack}>
           ← Retour à la boutique
         </BackButton>
-
+      </PageHeader>
+      
+      <Content>
         {activeSocialNetworks.length > 0 && (
           <SocialSection>
             <SocialGrid>

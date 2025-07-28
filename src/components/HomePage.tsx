@@ -310,14 +310,31 @@ const NavItem = styled.div<{ $active?: boolean }>`
   cursor: pointer;
   padding: 8px 15px;
   border-radius: 12px;
-  color: ${props => props.$active ? '#ffffff' : 'rgba(255,255,255,0.6)'};
-  background: ${props => props.$active ? 'rgba(255,255,255,0.1)' : 'transparent'};
-  transition: all 0.3s ease;
+  color: ${props => props.$active ? '#4CAF50' : 'rgba(255,255,255,0.6)'};
+  background: ${props => props.$active ? 'rgba(76,175,80,0.15)' : 'transparent'};
+  transition: all 0.2s ease;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: ${props => props.$active ? '30px' : '0'};
+    height: 2px;
+    background: #4CAF50;
+    transition: width 0.3s ease;
+  }
 
   &:hover {
-    color: #ffffff;
-    background: rgba(255,255,255,0.1);
+    color: #4CAF50;
+    background: rgba(76,175,80,0.1);
     transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
@@ -398,7 +415,13 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
       if (productsRes.ok) {
         const productsData = await productsRes.json();
         setProducts(productsData);
-        console.log('📦 Produits chargés depuis MongoDB:', productsData.length);
+        console.log('🛍️ Produits chargés depuis MongoDB:', productsData.length);
+        // Log détaillé pour debug
+        productsData.forEach((p: Product) => {
+          if (p.image || p.video) {
+            console.log(`📦 Produit ${p.name}: image=${p.image}, video=${p.video}`);
+          }
+        });
       }
 
       if (categoriesRes.ok) {

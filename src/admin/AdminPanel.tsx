@@ -754,6 +754,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     description: '',
     telegramUsername: '',
     telegramLink: '',
+    telegramText: '',
     additionalInfo: ''
   });
 
@@ -989,15 +990,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       const data = {
         title: contactContent.title,
         description: contactContent.description,
-        contactMethod: 'telegram',
-        contactValue: contactContent.telegramUsername || contactContent.telegramLink || '',
-        additionalInfo: contactContent.additionalInfo,
         telegramUsername: contactContent.telegramUsername,
-        telegramLink: contactContent.telegramLink
+        telegramLink: contactContent.telegramLink,
+        telegramText: contactContent.telegramText || 'Contacter',
+        additionalInfo: contactContent.additionalInfo
       };
       
       // Si tous les champs sont vides, supprimer le contenu au lieu de le sauvegarder
-      if (!data.title.trim() && !data.description.trim() && !data.contactValue.trim() && !data.additionalInfo.trim()) {
+      if (!data.title.trim() && !data.description.trim() && !data.telegramUsername.trim() && !data.telegramLink.trim() && !data.additionalInfo.trim()) {
         if (contactContent.id !== 'new-contact') {
           await dataService.deleteContactContent(contactContent.id);
           setContactContent({
@@ -1006,6 +1006,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
             description: '',
             telegramUsername: '',
             telegramLink: '',
+            telegramText: '',
             additionalInfo: ''
           });
         }
@@ -1758,6 +1759,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                 </FormGroup>
                 
                 <FormGroup>
+                  <Label>Texte du bouton Telegram</Label>
+                  <Input 
+                    type="text" 
+                    placeholder="Ex: Contactez-nous sur Telegram"
+                    value={contactContent.telegramText || ''}
+                    onChange={(e) => setContactContent({...contactContent, telegramText: e.target.value})}
+                  />
+                </FormGroup>
+                
+                <FormGroup>
                   <Label>Message d'accueil</Label>
                   <TextArea 
                     placeholder="Message qui s'affiche sur la page Contact..."
@@ -1793,6 +1804,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                             description: '',
                             telegramUsername: '',
                             telegramLink: '',
+                            telegramText: '',
                             additionalInfo: ''
                           });
                           await refreshData();

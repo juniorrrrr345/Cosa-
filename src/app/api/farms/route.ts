@@ -25,13 +25,94 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  return NextResponse.json({ success: true, message: 'Farm ajoutée (mode statique)' });
+  try {
+    console.log('🔍 API POST /farms - Ajout MongoDB');
+    const farmData = await request.json();
+    
+    if (!farmData.label || !farmData.value) {
+      return NextResponse.json(
+        { error: 'Le label et la valeur sont requis' },
+        { status: 400 }
+      );
+    }
+
+    await mongoService.connect();
+    const newFarm = await mongoService.saveFarm(farmData);
+    
+    console.log('✅ Ferme ajoutée:', newFarm);
+    return NextResponse.json(newFarm);
+  } catch (error) {
+    console.error('❌ Erreur ajout ferme:', error);
+    return NextResponse.json(
+      { error: 'Échec de l\'ajout de la ferme' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(request: NextRequest) {
-  return NextResponse.json({ success: true, message: 'Farm mise à jour (mode statique)' });
+  try {
+    console.log('🔍 API PUT /farms - Mise à jour MongoDB');
+    const { id, ...updateData } = await request.json();
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'ID de ferme requis' },
+        { status: 400 }
+      );
+    }
+
+    await mongoService.connect();
+    const updatedFarm = await mongoService.updateFarm(id, updateData);
+    
+    if (!updatedFarm) {
+      return NextResponse.json(
+        { error: 'Ferme non trouvée' },
+        { status: 404 }
+      );
+    }
+    
+    console.log('✅ Ferme mise à jour:', updatedFarm);
+    return NextResponse.json(updatedFarm);
+  } catch (error) {
+    console.error('❌ Erreur mise à jour ferme:', error);
+    return NextResponse.json(
+      { error: 'Échec de la mise à jour de la ferme' },
+      { status: 500 }
+    );
+  }
 }
 
 export async function DELETE(request: NextRequest) {
-  return NextResponse.json({ success: true, message: 'Farm supprimée (mode statique)' });
+  try {
+    console.log('🔍 API DELETE /farms - Suppression MongoDB');
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'ID de ferme requis' },
+        { status: 400 }
+      );
+    }
+
+    await mongoService.connect();
+    const success = await mongoService.deleteFarm(id);
+    
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Ferme non trouvée' },
+        { status: 404 }
+      );
+    }
+    
+    console.log('✅ Ferme supprimée:', id);
+    return NextResponse.json({ success: true, message: 'Ferme supprimée' });
+  } catch (error) {
+    console.error('❌ Erreur suppression ferme:', error);
+    return NextResponse.json(
+      { error: 'Échec de la suppression de la ferme' },
+      { status: 500 }
+    );
+  }
 }

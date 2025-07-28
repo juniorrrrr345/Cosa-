@@ -877,10 +877,45 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       
       // Charger les contenus existants
       if (infoData.length > 0) {
-        setInfoContent(infoData[0]);
+        const info = infoData[0];
+        setInfoContent({
+          id: info.id || info._id,
+          title: info.title || '',
+          description: info.description || '',
+          items: info.items || [],
+          additionalInfo: info.additionalInfo || ''
+        });
+      } else {
+        // Si aucun contenu info n'existe, créer un nouveau
+        setInfoContent({
+          id: 'new-info',
+          title: '',
+          description: '',
+          items: [],
+          additionalInfo: ''
+        });
       }
+      
       if (contactData.length > 0) {
-        setContactContent(contactData[0]);
+        const contact = contactData[0];
+        setContactContent({
+          id: contact.id || contact._id,
+          title: contact.title || '',
+          description: contact.description || '',
+          telegramUsername: contact.telegramUsername || contact.contactValue || '',
+          telegramLink: contact.telegramLink || '',
+          additionalInfo: contact.additionalInfo || ''
+        });
+      } else {
+        // Si aucun contenu contact n'existe, créer un nouveau
+        setContactContent({
+          id: 'new-contact',
+          title: '',
+          description: '',
+          telegramUsername: '',
+          telegramLink: '',
+          additionalInfo: ''
+        });
       }
       
       console.log('✅ AdminPanel: Données actualisées avec succès', {
@@ -904,16 +939,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const handleSaveInfoContent = async () => {
     try {
       console.log('💾 Sauvegarde contenu info:', infoContent);
-      await dataService.updateInfoContent(infoContent.id, {
+      
+      // Adapter les données pour correspondre à la structure API
+      const data = {
         title: infoContent.title,
         description: infoContent.description,
+        items: infoContent.items || [],
         additionalInfo: infoContent.additionalInfo
-      });
+      };
+      
+      if (infoContent.id === 'new-info') {
+        // Créer un nouveau contenu
+        await dataService.addInfoContent(data);
+      } else {
+        // Mettre à jour le contenu existant
+        await dataService.updateInfoContent(infoContent.id, data);
+      }
       
       // Recharger les données pour synchroniser
       await refreshData();
       
-      alert('✅ Contenu Info sauvegardé et synchronisé !');
+      showNotification('✅ Contenu Info sauvegardé et synchronisé !');
       console.log('💾 Admin: Info sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Info:', error);
@@ -924,18 +970,30 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const handleSaveContactContent = async () => {
     try {
       console.log('💾 Sauvegarde contenu contact:', contactContent);
-      await dataService.updateContactContent(contactContent.id, {
+      
+      // Adapter les données pour correspondre à la structure API
+      const data = {
         title: contactContent.title,
         description: contactContent.description,
+        contactMethod: 'telegram',
+        contactValue: contactContent.telegramUsername || contactContent.telegramLink || '',
+        additionalInfo: contactContent.additionalInfo,
         telegramUsername: contactContent.telegramUsername,
-        telegramLink: contactContent.telegramLink,
-        additionalInfo: contactContent.additionalInfo
-      });
+        telegramLink: contactContent.telegramLink
+      };
+      
+      if (contactContent.id === 'new-contact') {
+        // Créer un nouveau contenu
+        await dataService.addContactContent(data);
+      } else {
+        // Mettre à jour le contenu existant
+        await dataService.updateContactContent(contactContent.id, data);
+      }
       
       // Recharger les données pour synchroniser
       await refreshData();
       
-      alert('✅ Contenu Contact sauvegardé et synchronisé !');
+      showNotification('✅ Contenu Contact sauvegardé et synchronisé !');
       console.log('💾 Admin: Contact sauvegardé et synchronisé');
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde Contact:', error);

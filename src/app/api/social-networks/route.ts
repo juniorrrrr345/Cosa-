@@ -13,29 +13,8 @@ interface SocialNetwork {
   updatedAt: Date;
 }
 
-// Réseaux sociaux par défaut
-const DEFAULT_SOCIAL_NETWORKS = [
-  {
-    id: 'telegram',
-    name: 'Telegram',
-    emoji: '💬',
-    url: 'https://t.me/bipcosa06',
-    isActive: true,
-    order: 1,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'instagram',
-    name: 'Instagram',
-    emoji: '📸',
-    url: 'https://instagram.com/bipcosa06',
-    isActive: true,
-    order: 2,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
+// Pas de contenu par défaut - retour liste vide
+const DEFAULT_SOCIAL_NETWORKS = [];
 
 export async function GET(request: NextRequest) {
   try {

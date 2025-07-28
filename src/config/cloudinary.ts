@@ -26,81 +26,60 @@ export interface CloudinaryError {
 // Upload depuis le client (iPhone/mobile) - Version simplifiée
 export const uploadToCloudinary = async (
   file: File,
-  folder: string = 'products'
-): Promise<CloudinaryUploadResult> => {
-  console.log('🚀 Upload Cloudinary:', {
+  resourceType: 'image' | 'video' | 'raw' = 'image'
+): Promise<any> => {
+  console.log('🚀 Début upload Cloudinary:', {
     fileName: file.name,
-    fileSize: `${Math.round(file.size / 1024 / 1024)}MB`,
+    fileSize: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
     fileType: file.type,
-    cloudName: CLOUDINARY_CONFIG.cloudName,
-    preset: CLOUDINARY_CONFIG.uploadPreset
+    resourceType,
+    device: navigator.userAgent
   });
 
-  if (!CLOUDINARY_CONFIG.cloudName) {
-    throw new Error('❌ Cloud name Cloudinary manquant');
-  }
-
-  if (!CLOUDINARY_CONFIG.uploadPreset) {
-    throw new Error('❌ Upload preset Cloudinary manquant');
-  }
-
-  // Vérifier le type de fichier
-  const isImage = file.type.startsWith('image/');
-  const isVideo = file.type.startsWith('video/');
-  
-  if (!isImage && !isVideo) {
-    throw new Error('❌ Type de fichier non supporté. Utilisez JPG, PNG, WebP, MP4 ou MOV');
-  }
-
-  // Vérifier la taille
-  const maxSizeImage = 20 * 1024 * 1024; // 20MB pour images
-  const maxSizeVideo = 100 * 1024 * 1024; // 100MB pour vidéos
-  
-  if (isImage && file.size > maxSizeImage) {
-    throw new Error(`❌ Image trop volumineuse. Max: 20MB`);
-  }
-  
-  if (isVideo && file.size > maxSizeVideo) {
-    throw new Error(`❌ Vidéo trop volumineuse. Max: 100MB`);
-  }
-
-  const formData = new FormData();
-  formData.append('file', file);
-  formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
-  formData.append('folder', `${CLOUDINARY_CONFIG.folder}/${folder}`);
-
   try {
-    const resourceType = isVideo ? 'video' : 'image';
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${resourceType}/upload`;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', UPLOAD_PRESET);
+    formData.append('cloud_name', CLOUD_NAME);
     
-    console.log('📤 Upload vers:', uploadUrl);
+    // Optimisations spécifiques selon le type
+    if (resourceType === 'image') {
+      // Compression automatique pour les images
+      formData.append('transformation', 'q_auto:good,f_auto');
+      formData.append('folder', 'bipcosa06/products');
+    } else if (resourceType === 'video') {
+      // Compression vidéo pour mobile
+      formData.append('transformation', 'q_auto:good');
+      formData.append('folder', 'bipcosa06/videos');
+      formData.append('resource_type', 'video');
+    }
+
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`;
+    
+    console.log('📤 Envoi vers:', uploadUrl);
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
       body: formData,
     });
 
-    const result = await response.json();
-    
     if (!response.ok) {
-      console.error('❌ Erreur Cloudinary:', result);
-      
-      let errorMessage = result.error?.message || 'Erreur upload';
-      
-      if (errorMessage.includes('Invalid upload preset')) {
-        errorMessage = `❌ Le preset "${CLOUDINARY_CONFIG.uploadPreset}" n'existe pas. Créez-le dans Cloudinary Console.`;
-      } else if (errorMessage.includes('cloud_name')) {
-        errorMessage = `❌ Cloud name "${CLOUDINARY_CONFIG.cloudName}" incorrect.`;
-      }
-      
-      throw new Error(errorMessage);
+      const errorData = await response.json();
+      console.error('❌ Erreur réponse Cloudinary:', errorData);
+      throw new Error(errorData.error?.message || `Upload échoué: ${response.statusText}`);
     }
 
-    console.log('✅ Upload réussi:', result.secure_url);
+    const result = await response.json();
+    console.log('✅ Upload réussi:', {
+      url: result.secure_url,
+      publicId: result.public_id,
+      format: result.format,
+      size: result.bytes
+    });
+
     return result;
-    
   } catch (error) {
-    console.error('❌ Erreur upload:', error);
+    console.error('❌ Erreur upload Cloudinary:', error);
     throw error;
   }
 };

@@ -704,6 +704,53 @@ const NotificationCloseButton = styled.button`
   }
 `;
 
+const MobileUploadButton = styled.label`
+  display: inline-block;
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a8b3 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 16px 24px;
+    font-size: 16px;
+  }
+`;
+
+const UploadPreview = styled.div`
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  
+  img, video {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+`;
+
 const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
   const [activeSection, setActiveSection] = useState<AdminSection>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -2458,56 +2505,75 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   ⏳ Traitement de votre image...
                 </div>
               )}
-              <Input 
-                type="file" 
-                accept="image/*"
-                style={{ fontSize: '12px' }}
-                disabled={imageUploading}
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (file && !imageUploading) {
-                    setImageUploading(true);
-                    
-                    try {
-                      console.log('📷 Début upload image:', {
-                        name: file.name,
-                        size: `${Math.round(file.size / 1024 / 1024)}MB`,
-                        type: file.type
-                      });
+              <MobileUploadButton>
+                {imageUploading ? '⏳ Upload en cours...' : '📷 Choisir une image'}
+                <input
+                  type="file" 
+                  accept="image/*"
+                  capture="environment"
+                  disabled={imageUploading}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (file && !imageUploading) {
+                      setImageUploading(true);
                       
-                      const { uploadToCloudinary } = await import('@/config/cloudinary');
-                      
-                      const result = await uploadToCloudinary(file, 'products');
-                      
-                      console.log('✅ Image uploadée avec succès:', {
-                        url: result.secure_url,
-                        publicId: result.public_id
-                      });
-                      
-                      // Mettre à jour le champ image avec l'URL Cloudinary
-                      setFormData(prevData => {
-                        const newData = {
-                          ...prevData, 
-                          image: result.secure_url,
-                          imagePublicId: result.public_id
-                        };
-                        console.log('📝 FormData mis à jour:', newData);
-                        return newData;
-                      });
-                      
-                      alert(`✅ Image uploadée avec succès !\nURL: ${result.secure_url}`);
-                      
-                    } catch (error: any) {
-                      console.error('❌ Erreur upload image:', error);
-                      alert(`❌ Erreur upload image: ${error.message}`);
-                    } finally {
-                      setImageUploading(false);
-                      // Reset le input file pour permettre de re-sélectionner
-                      e.target.value = '';
+                      try {
+                        console.log('📷 Début upload image:', {
+                          name: file.name,
+                          size: `${Math.round(file.size / 1024 / 1024)}MB`,
+                          type: file.type,
+                          device: navigator.userAgent
+                        });
+                        
+                        // Vérifier la taille du fichier (max 10MB)
+                        if (file.size > 10 * 1024 * 1024) {
+                          throw new Error('Image trop grande (max 10MB)');
+                        }
+                        
+                        const { uploadToCloudinary } = await import('@/config/cloudinary');
+                        
+                        const result = await uploadToCloudinary(file, 'image');
+                        
+                        console.log('✅ Image uploadée avec succès:', {
+                          url: result.secure_url,
+                          publicId: result.public_id
+                        });
+                        
+                        // Mettre à jour le champ image avec l'URL Cloudinary
+                        setFormData(prevData => {
+                          const newData = {
+                            ...prevData, 
+                            image: result.secure_url,
+                            imagePublicId: result.public_id
+                          };
+                          console.log('📝 FormData mis à jour:', newData);
+                          return newData;
+                        });
+                        
+                        alert(`✅ Image uploadée avec succès !\nURL: ${result.secure_url}`);
+                        
+                      } catch (error: any) {
+                        console.error('❌ Erreur upload image:', error);
+                        alert(`❌ Erreur upload image: ${error.message}`);
+                      } finally {
+                        setImageUploading(false);
+                        // Reset le input file pour permettre de re-sélectionner
+                        e.target.value = '';
+                      }
                     }
-                  }
-                }}
-              />
+                  }}
+                />
+              </MobileUploadButton>
+              
+              {/* Aperçu de l'image */}
+              {formData.image && formData.image !== 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400' && (
+                <UploadPreview>
+                  <img src={formData.image} alt="Aperçu du produit" />
+                  <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '8px' }}>
+                    ✅ Image prête à être sauvegardée
+                  </div>
+                </UploadPreview>
+              )}
             </div>
           </FormGroup>
 
@@ -2548,56 +2614,75 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                   ⏳ Traitement de votre vidéo... (peut prendre plus de temps)
                 </div>
               )}
-              <Input 
-                type="file" 
-                accept="video/*"
-                style={{ fontSize: '12px' }}
-                disabled={videoUploading}
-                onChange={async (e) => {
-                  const file = e.target.files?.[0];
-                  if (file && !videoUploading) {
-                    setVideoUploading(true);
-                    
-                    try {
-                      console.log('🎥 Début upload vidéo:', {
-                        name: file.name,
-                        size: `${Math.round(file.size / 1024 / 1024)}MB`,
-                        type: file.type
-                      });
+              <MobileUploadButton>
+                {videoUploading ? '⏳ Upload en cours...' : '🎥 Choisir une vidéo'}
+                <input
+                  type="file" 
+                  accept="video/*,.mp4,.mov,.avi,.webm,.mkv"
+                  capture="environment"
+                  disabled={videoUploading}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (file && !videoUploading) {
+                      setVideoUploading(true);
                       
-                      const { uploadToCloudinary } = await import('@/config/cloudinary');
-                      
-                      const result = await uploadToCloudinary(file, 'videos');
-                      
-                      console.log('✅ Vidéo uploadée avec succès:', {
-                        url: result.secure_url,
-                        publicId: result.public_id
-                      });
-                      
-                      // Mettre à jour le champ vidéo avec l'URL Cloudinary
-                      setFormData(prevData => {
-                        const newData = {
-                          ...prevData, 
-                          video: result.secure_url,
-                          videoPublicId: result.public_id
-                        };
-                        console.log('📝 FormData mis à jour avec vidéo:', newData);
-                        return newData;
-                      });
-                      
-                      alert(`✅ Vidéo uploadée avec succès !\nURL: ${result.secure_url}`);
-                      
-                    } catch (error: any) {
-                      console.error('❌ Erreur upload vidéo:', error);
-                      alert(`❌ Erreur upload vidéo: ${error.message}`);
-                    } finally {
-                      setVideoUploading(false);
-                      // Reset le input file pour permettre de re-sélectionner
-                      e.target.value = '';
+                      try {
+                        console.log('🎥 Début upload vidéo:', {
+                          name: file.name,
+                          size: `${Math.round(file.size / 1024 / 1024)}MB`,
+                          type: file.type,
+                          device: navigator.userAgent
+                        });
+                        
+                        // Vérifier la taille du fichier (max 100MB pour vidéos)
+                        if (file.size > 100 * 1024 * 1024) {
+                          throw new Error('Vidéo trop grande (max 100MB)');
+                        }
+                        
+                        const { uploadToCloudinary } = await import('@/config/cloudinary');
+                        
+                        const result = await uploadToCloudinary(file, 'video');
+                        
+                        console.log('✅ Vidéo uploadée avec succès:', {
+                          url: result.secure_url,
+                          publicId: result.public_id
+                        });
+                        
+                        // Mettre à jour le champ vidéo avec l'URL Cloudinary
+                        setFormData(prevData => {
+                          const newData = {
+                            ...prevData, 
+                            video: result.secure_url,
+                            videoPublicId: result.public_id
+                          };
+                          console.log('📝 FormData mis à jour avec vidéo:', newData);
+                          return newData;
+                        });
+                        
+                        alert(`✅ Vidéo uploadée avec succès !\nURL: ${result.secure_url}`);
+                        
+                      } catch (error: any) {
+                        console.error('❌ Erreur upload vidéo:', error);
+                        alert(`❌ Erreur upload vidéo: ${error.message}`);
+                      } finally {
+                        setVideoUploading(false);
+                        // Reset le input file pour permettre de re-sélectionner
+                        e.target.value = '';
+                      }
                     }
-                  }
-                }}
-              />
+                  }}
+                />
+              </MobileUploadButton>
+              
+              {/* Aperçu de la vidéo */}
+              {formData.video && (
+                <UploadPreview>
+                  <video src={formData.video} controls />
+                  <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginTop: '8px' }}>
+                    ✅ Vidéo prête à être sauvegardée
+                  </div>
+                </UploadPreview>
+              )}
             </div>
           </FormGroup>
 

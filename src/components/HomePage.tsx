@@ -381,48 +381,46 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     };
   }, []);
 
-  // Fonction pour charger les données - VERSION SYNCHRONE OPTIMISÉE
-  const loadData = () => {
+  // Charger les données depuis l'API (MongoDB) directement
+  const loadData = async () => {
     try {
-      console.log('📥 HomePage - Chargement des données...');
+      console.log('📥 HomePage - Chargement depuis API MongoDB...');
       
-      // Utiliser les méthodes synchrones pour plus de fiabilité
-      const configData = dataService.getConfigSync();
-      const productsData = dataService.getProductsSync();
-      const categoriesRaw = dataService.getCategoriesSync();
-      const farmsRaw = dataService.getFarmsSync();
+      // Toujours charger depuis l'API MongoDB, pas localStorage
+      const [productsRes, categoriesRes, farmsRes, configRes] = await Promise.all([
+        fetch('/api/products'),
+        fetch('/api/categories'),
+        fetch('/api/farms'),
+        fetch('/api/config')
+      ]);
+
+      if (productsRes.ok) {
+        const productsData = await productsRes.json();
+        setProducts(productsData);
+        console.log('📦 Produits chargés depuis MongoDB:', productsData.length);
+      }
+
+      if (categoriesRes.ok) {
+        const categoriesData = await categoriesRes.json();
+        setCategories(categoriesData);
+        console.log('📂 Catégories chargées depuis MongoDB:', categoriesData.length);
+      }
+
+      if (farmsRes.ok) {
+        const farmsData = await farmsRes.json();
+        setFarms(farmsData);
+        console.log('🏠 Fermes chargées depuis MongoDB:', farmsData.length);
+      }
+
+      if (configRes.ok) {
+        const configData = await configRes.json();
+        setConfig(configData);
+        console.log('⚙️ Config chargée depuis MongoDB');
+      }
       
-      // Ajouter les options "Toutes" au début
-      const categoriesData = [
-        { value: 'all', label: 'Toutes les catégories' },
-        ...categoriesRaw
-      ];
-      
-      const farmsData = [
-        { value: 'all', label: 'Toutes les fermes', country: '' },
-        ...farmsRaw
-      ];
-      
-      setProducts(productsData);
-      setCategories(categoriesData);
-      setFarms(farmsData);
-      setConfig(configData);
-      setLastSyncTime(new Date());
-      
-      console.log('✅ HomePage - Données chargées:', {
-        products: productsData.length,
-        categories: categoriesData.length,
-        farms: farmsData.length,
-        config: configData
-      });
+      console.log('✅ HomePage - Toutes les données chargées depuis MongoDB');
     } catch (error) {
-      console.error('❌ HomePage - Erreur lors du chargement:', error);
-      
-      // Fallback de sécurité
-      setProducts([]);
-      setCategories([{ value: 'all', label: 'Toutes les catégories' }]);
-      setFarms([{ value: 'all', label: 'Toutes les fermes', country: '' }]);
-      setConfig({} as ShopConfig);
+      console.error('❌ Erreur chargement données depuis API:', error);
     }
   };
 

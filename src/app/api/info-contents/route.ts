@@ -1,36 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mongoService from '@/services/mongoService';
 
-// Contenu par défaut pour la page Info
-const DEFAULT_INFO_CONTENTS = [
-  {
-    id: 'main-info',
-    title: '🌟 BIPCOSA06 - Votre Boutique de Confiance',
-    description: 'Découvrez notre sélection premium de produits de qualité supérieure.',
-    additionalInfo: 'Nous nous engageons à vous offrir une expérience d\'achat exceptionnelle avec des produits soigneusement sélectionnés.',
-    order: 1,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'quality-info',
-    title: '✨ Qualité Garantie',
-    description: 'Tous nos produits sont testés et certifiés pour vous garantir la meilleure qualité.',
-    additionalInfo: 'Notre équipe d\'experts vérifie chaque produit avant sa mise en vente.',
-    order: 2,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'delivery-info',
-    title: '🚚 Livraison Rapide',
-    description: 'Livraison sécurisée et discrète sous 24-48h.',
-    additionalInfo: 'Nous utilisons des emballages neutres pour préserver votre confidentialité.',
-    order: 3,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
+// Pas de contenu par défaut - retour liste vide
+const DEFAULT_INFO_CONTENTS = [];
 
 export async function GET(request: NextRequest) {
   try {

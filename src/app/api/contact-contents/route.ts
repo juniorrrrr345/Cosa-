@@ -1,45 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import mongoService from '@/services/mongoService';
 
-// Contenu par défaut pour la page Contact
-const DEFAULT_CONTACT_CONTENTS = [
-  {
-    id: 'main-contact',
-    title: '📞 Contactez-nous',
-    description: 'Notre équipe est à votre disposition pour répondre à toutes vos questions.',
-    contactMethod: 'telegram',
-    contactValue: '@bipcosa06',
-    additionalInfo: 'Réponse rapide garantie sous 24h',
-    isActive: true,
-    order: 1,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'telegram-contact',
-    title: '💬 Telegram',
-    description: 'Rejoignez-nous sur Telegram pour un contact direct et sécurisé.',
-    contactMethod: 'telegram',
-    contactValue: 'https://t.me/bipcosa06',
-    additionalInfo: 'Notre canal principal de communication',
-    isActive: true,
-    order: 2,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 'hours-contact',
-    title: '🕒 Horaires',
-    description: 'Nous sommes disponibles 7j/7 de 10h à 22h.',
-    contactMethod: 'info',
-    contactValue: '10h00 - 22h00',
-    additionalInfo: 'Service client disponible tous les jours',
-    isActive: true,
-    order: 3,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  }
-];
+// Pas de contenu par défaut - retour liste vide
+const DEFAULT_CONTACT_CONTENTS = [];
 
 export async function GET(request: NextRequest) {
   try {

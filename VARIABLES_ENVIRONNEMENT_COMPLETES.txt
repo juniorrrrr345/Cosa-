@@ -12,7 +12,7 @@
 ================================================================================
 
 Variable: MONGODB_URI
-Valeur: mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+Valeur: mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 Type: Secret (côté serveur uniquement)
 Environnements: Production, Preview, Development
 Description: URI de connexion à la base de données MongoDB Atlas pour stocker les produits, catégories, fermes et configuration

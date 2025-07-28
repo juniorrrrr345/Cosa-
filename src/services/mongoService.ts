@@ -16,7 +16,7 @@ class MongoService {
 
     try {
       // Utiliser la variable d'environnement pour l'URI MongoDB
-      const uri = process.env.MONGODB_URI || 'mongodb+srv://cosa_tau_app:CosaTau2024@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+      const uri = process.env.MONGODB_URI || 'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
       
       if (!uri) {
         throw new Error('MONGODB_URI non définie dans les variables d\'environnement');

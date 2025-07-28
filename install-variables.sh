@@ -20,7 +20,7 @@ echo "📝 Ajout des variables d'environnement..."
 
 # MongoDB
 echo "🗄️ Configuration MongoDB..."
-echo "mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" | vercel env add MONGODB_URI production preview development
+echo "mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" | vercel env add MONGODB_URI production preview development
 
 # Cloudinary Serveur
 echo "☁️ Configuration Cloudinary (Serveur)..."

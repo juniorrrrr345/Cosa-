@@ -3,17 +3,17 @@ const { MongoClient } = require('mongodb');
 
 // URIs à tester
 const uris = [
-  // URI avec nouvel utilisateur
-  'mongodb+srv://cosa_tau_app:CosaTau2024@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
-  
-  // URI avec utilisateur existant
-  'mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+  // URI avec utilisateur BipCosa (PRIORITÉ)
+  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
   
   // URI avec authSource explicite
-  'mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&authSource=admin',
+  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0&authSource=admin',
   
   // URI avec base de données spécifique
-  'mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/bipcosa06?retryWrites=true&w=majority&appName=Cluster0'
+  'mongodb+srv://BipCosa:Cosa06@cluster0.itciznm.mongodb.net/bipcosa06?retryWrites=true&w=majority&appName=Cluster0',
+  
+  // URI avec utilisateur Junior (fallback)
+  'mongodb+srv://Junior:Lacrim123@cluster0.itciznm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 ];
 
 async function testConnection(uri, index) {

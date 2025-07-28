@@ -386,31 +386,65 @@ export class DataService {
 
   // === PRODUITS - SYSTÈME DYNAMIQUE ===
   async getProducts(): Promise<Product[]> {
-    // SYSTÈME 100% DYNAMIQUE - API/MongoDB PRIORITAIRE
-    console.log('📦 getProducts - Mode 100% DYNAMIQUE via API');
+    // DOUBLE SÉCURITÉ: localStorage immédiat + API dynamique
+    console.log('📦 getProducts - Double sécurité localStorage + API');
     
-    // PRIORITÉ 1: API/MongoDB
+    // SÉCURITÉ 1: Vérifier localStorage immédiatement
+    const localProducts = this.getProductsSync();
+    if (localProducts.length > 0) {
+      console.log('📦 RETOUR IMMÉDIAT localStorage:', localProducts.length, 'produits');
+      
+      // Lancer l'API en arrière-plan pour mise à jour
+      this.updateFromAPI();
+      
+      return localProducts;
+    }
+    
+    // SÉCURITÉ 2: Si localStorage vide, initialiser + API
+    console.log('📦 localStorage vide, initialisation + API...');
+    
+    // Initialiser immédiatement avec données statiques
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(STATIC_PRODUCTS));
+    }
+    
+    // Essayer l'API en parallèle
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
         const products = await response.json();
-        console.log('📦 Produits depuis API/MongoDB:', products.length);
+        console.log('📦 Mise à jour depuis API/MongoDB:', products.length);
         
-        // Mettre à jour localStorage avec les données fraîches
         if (typeof window !== 'undefined') {
           localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
         }
         
-        return products;
+        this.notifyDataUpdate();
+        return products.length > 0 ? products : STATIC_PRODUCTS;
       }
     } catch (error) {
       console.warn('⚠️ API indisponible:', error);
     }
     
-    // FALLBACK: localStorage uniquement si API échoue
-    const localProducts = this.getProductsSync();
-    console.log('📦 FALLBACK localStorage:', localProducts.length, 'produits');
-    return localProducts;
+    // FALLBACK FINAL: données statiques garanties
+    console.log('📦 RETOUR FALLBACK:', STATIC_PRODUCTS.length, 'produits');
+    return STATIC_PRODUCTS;
+  }
+
+  private async updateFromAPI(): Promise<void> {
+    try {
+      const response = await fetch('/api/products');
+      if (response.ok) {
+        const products = await response.json();
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+        }
+        this.notifyDataUpdate();
+        console.log('🔄 Données mises à jour en arrière-plan:', products.length);
+      }
+    } catch (error) {
+      console.warn('⚠️ Mise à jour arrière-plan échouée:', error);
+    }
   }
 
   getProductsSync(): Product[] {

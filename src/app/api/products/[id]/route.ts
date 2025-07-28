@@ -28,26 +28,30 @@ export async function PUT(
     const { id } = params;
     const updates = await request.json();
     
-    // Convertir l'ID string en number
+    console.log('🔄 API PUT /products - ID:', id, 'Type:', typeof id);
+    console.log('📝 Updates reçues:', {
+      name: updates.name,
+      image: updates.image,
+      video: updates.video
+    });
+    
+    // Essayer de convertir en number si possible
     const numericId = parseInt(id, 10);
-    if (isNaN(numericId)) {
-      return NextResponse.json(
-        { error: 'ID invalide' },
-        { status: 400 }
-      );
-    }
+    const idToUse = isNaN(numericId) ? id : numericId;
     
-    console.log('🔄 API PUT /products - ID:', numericId, 'Updates:', updates);
+    console.log('🔍 ID à utiliser:', idToUse, 'Type:', typeof idToUse);
     
-    const updatedProduct = await mongoService.updateProduct(numericId, updates);
+    const updatedProduct = await mongoService.updateProduct(idToUse, updates);
     
     if (!updatedProduct) {
+      console.log('❌ Produit non trouvé');
       return NextResponse.json(
         { error: 'Produit non trouvé' },
         { status: 404 }
       );
     }
     
+    console.log('✅ Produit mis à jour avec succès');
     return NextResponse.json(updatedProduct);
   } catch (error) {
     console.error('Erreur API PUT product:', error);

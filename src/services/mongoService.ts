@@ -247,18 +247,19 @@ class MongoService {
     }
   }
 
-  async updateProduct(id: number, updates: Partial<Product>): Promise<Product | null> {
+  async updateProduct(id: number | string, updates: Partial<Product>): Promise<Product | null> {
     await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('Database non connectée');
     
     try {
-      console.log('🔍 MongoService updateProduct - ID:', id, 'Updates:', updates);
+      console.log('🔍 MongoService updateProduct - ID:', id, 'Type:', typeof id, 'Updates:', updates);
       console.log('📦 MongoService updateProduct - Détails:', {
         image: updates.image,
         video: updates.video
       });
       
-      const result = await this.db.collection('products').findOneAndUpdate(
+      // Essayer de trouver par id numérique d'abord, puis par _id string
+      let result = await this.db.collection('products').findOneAndUpdate(
         { id: id },
         { 
           $set: { 
@@ -269,15 +270,50 @@ class MongoService {
         { returnDocument: 'after' }
       );
       
-      if (result) {
-        console.log('✅ MongoService updateProduct - Produit mis à jour:', {
-          name: result.name,
-          image: result.image,
-          video: result.video
-        });
+      // Si pas trouvé par id, essayer par _id en string
+      if (!result.value) {
+        console.log('🔍 Produit non trouvé par id, essai avec _id:', id.toString());
+        result = await this.db.collection('products').findOneAndUpdate(
+          { _id: id.toString() },
+          { 
+            $set: { 
+              ...updates, 
+              updatedAt: new Date() 
+            } 
+          },
+          { returnDocument: 'after' }
+        );
       }
       
-      return result ? { ...result, _id: result._id.toString() } : null;
+      // Si toujours pas trouvé, essayer de convertir l'id en ObjectId MongoDB
+      if (!result.value) {
+        console.log('🔍 Essai avec recherche par nom:', updates.name);
+        const product = await this.db.collection('products').findOne({ name: updates.name });
+        if (product) {
+          result = await this.db.collection('products').findOneAndUpdate(
+            { _id: product._id },
+            { 
+              $set: { 
+                ...updates, 
+                updatedAt: new Date() 
+              } 
+            },
+            { returnDocument: 'after' }
+          );
+        }
+      }
+      
+      if (result.value) {
+        console.log('✅ MongoService updateProduct - Produit mis à jour:', {
+          name: result.value.name,
+          image: result.value.image,
+          video: result.value.video
+        });
+        return { ...result.value, _id: result.value._id.toString() };
+      }
+      
+      console.log('❌ Produit non trouvé pour mise à jour');
+      return null;
     } catch (error) {
       console.error('❌ Erreur mise à jour produit MongoDB:', error);
       throw error;

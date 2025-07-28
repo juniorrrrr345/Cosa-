@@ -420,15 +420,59 @@ class DataService {
     }
   }
 
-  async updateProduct(id: number, updates: Partial<Product>): Promise<Product | null> {
+  async updateProduct(id: number | string, updates: Partial<Product>): Promise<Product | null> {
     try {
+      console.log('🔄 Mise à jour produit ID:', id, 'Type:', typeof id);
+      console.log('📝 Updates:', updates);
+      
+      // PRIORITÉ 1: Mettre à jour via API MongoDB
+      try {
+        const response = await fetch(`/api/products/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updates)
+        });
+        
+        if (response.ok) {
+          const updatedProduct = await response.json();
+          console.log('✅ Produit mis à jour via API MongoDB:', updatedProduct);
+          
+          // Mettre à jour le cache local
+          const products = this.getProductsSync();
+          const index = products.findIndex(p => 
+            p.id === id || p._id === id || p.id === Number(id) || p._id === String(id)
+          );
+          if (index !== -1) {
+            products[index] = { ...products[index], ...updatedProduct };
+            localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+          }
+          
+          // Forcer la synchronisation
+          await this.forceFullSync();
+          this.notifyDataUpdate();
+          
+          return updatedProduct;
+        } else {
+          const error = await response.json();
+          console.error('❌ Erreur API update:', error);
+        }
+      } catch (apiError) {
+        console.error('❌ Erreur appel API:', apiError);
+      }
+      
+      // FALLBACK: localStorage seulement si l'API échoue
+      console.warn('⚠️ Fallback localStorage pour update');
       const products = this.getProductsSync();
-      const index = products.findIndex(p => p.id === id);
+      const index = products.findIndex(p => 
+        p.id === id || p._id === id || p.id === Number(id) || p._id === String(id)
+      );
       
       if (index !== -1) {
         products[index] = { ...products[index], ...updates, updatedAt: new Date() };
         localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-        console.log('✅ Produit mis à jour:', id);
+        console.log('✅ Produit mis à jour (localStorage):', id);
         this.notifyDataUpdate();
         return products[index];
       }

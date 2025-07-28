@@ -1105,7 +1105,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     console.log('📝 FormData chargé:', {
       name: productData.name,
       image: productData.image,
-      video: productData.video
+      video: productData.video,
+      productId: product.id || product._id
     });
     
     setFormData(productData);
@@ -1175,14 +1176,30 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       });
 
       if (editingProduct) {
-        console.log('✏️ Admin: Modification du produit', editingProduct.id);
-        await dataService.updateProduct(editingProduct.id, productData);
-        console.log('✅ Produit modifié avec succès');
-        showNotification('✅ Produit modifié avec succès !');
+        const productId = editingProduct.id || editingProduct._id;
+        console.log('✏️ Admin: Modification du produit', productId);
+        console.log('📸 Image actuelle:', editingProduct.image);
+        console.log('📸 Nouvelle image:', productData.image);
+        console.log('🎥 Vidéo actuelle:', editingProduct.video);
+        console.log('🎥 Nouvelle vidéo:', productData.video);
+        
+        // Si c'est un _id MongoDB, l'envoyer comme string
+        const result = await dataService.updateProduct(
+          typeof productId === 'string' ? productId : productId, 
+          productData
+        );
+        
+        if (result) {
+          console.log('✅ Produit modifié avec succès, résultat:', result);
+          showNotification('✅ Produit modifié avec succès !');
+        } else {
+          console.error('❌ Échec de la modification');
+          showNotification('❌ Erreur lors de la modification');
+        }
       } else {
         console.log('➕ Admin: Ajout d\'un nouveau produit');
-        await dataService.addProduct(productData); // Laisser MongoDB générer l'ID
-        console.log('✅ Produit ajouté avec succès');
+        const result = await dataService.addProduct(productData);
+        console.log('✅ Produit ajouté avec succès:', result);
         showNotification('✅ Produit ajouté avec succès !');
       }
       

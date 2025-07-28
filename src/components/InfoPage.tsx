@@ -212,7 +212,6 @@ interface InfoPageProps {
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
   const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadData();
@@ -257,29 +256,8 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
       // Fallback minimal
       setConfig({} as ShopConfig);
       setInfoContents([]);
-    } finally {
-      setIsLoading(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div style={{
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'white',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
-          <div style={{ fontSize: '18px', opacity: 0.8 }}>Chargement des informations...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={getBackgroundStyle(config)}>

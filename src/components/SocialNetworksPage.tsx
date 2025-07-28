@@ -354,7 +354,6 @@ interface SocialNetworksPageProps {
 const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
   const [socialNetworks, setSocialNetworks] = useState<SocialNetwork[]>([]);
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadData();

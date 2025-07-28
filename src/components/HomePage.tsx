@@ -344,7 +344,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedFarm, setSelectedFarm] = useState<string>('all');
   const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     loadData();
@@ -422,8 +421,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
       console.log('✅ HomePage - Toutes les données chargées depuis MongoDB');
     } catch (error) {
       console.error('❌ Erreur chargement données depuis API:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -438,25 +435,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   const handleProductClick = (product: any) => {
     onProductClick?.(product);
   };
-
-  if (isLoading) {
-    return (
-      <div style={{
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)',
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'white',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
-          <div style={{ fontSize: '18px', opacity: 0.8 }}>Chargement de la boutique...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div 

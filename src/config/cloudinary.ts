@@ -33,43 +33,73 @@ export const uploadToCloudinary = async (
     fileSize: `${(file.size / 1024 / 1024).toFixed(2)}MB`,
     fileType: file.type,
     resourceType,
-    device: navigator.userAgent
+    cloudName: CLOUDINARY_CONFIG.cloudName,
+    preset: CLOUDINARY_CONFIG.uploadPreset
   });
+
+  // Vérifications préliminaires
+  if (!CLOUDINARY_CONFIG.cloudName) {
+    throw new Error('❌ Cloud name Cloudinary manquant. Vérifiez vos variables d\'environnement.');
+  }
+
+  if (!CLOUDINARY_CONFIG.uploadPreset) {
+    throw new Error('❌ Upload preset Cloudinary manquant. Vérifiez vos variables d\'environnement.');
+  }
+
+  // Vérifier le type de fichier
+  const isImage = file.type.startsWith('image/');
+  const isVideo = file.type.startsWith('video/');
+  
+  if (resourceType === 'image' && !isImage) {
+    throw new Error('❌ Le fichier sélectionné n\'est pas une image');
+  }
+  
+  if (resourceType === 'video' && !isVideo) {
+    throw new Error('❌ Le fichier sélectionné n\'est pas une vidéo');
+  }
 
   try {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', UPLOAD_PRESET);
-    formData.append('cloud_name', CLOUD_NAME);
+    formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
     
     // Optimisations spécifiques selon le type
     if (resourceType === 'image') {
-      // Compression automatique pour les images
-      formData.append('transformation', 'q_auto:good,f_auto');
       formData.append('folder', 'bipcosa06/products');
     } else if (resourceType === 'video') {
-      // Compression vidéo pour mobile
-      formData.append('transformation', 'q_auto:good');
       formData.append('folder', 'bipcosa06/videos');
-      formData.append('resource_type', 'video');
     }
 
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`;
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/${resourceType}/upload`;
     
     console.log('📤 Envoi vers:', uploadUrl);
+    console.log('📦 FormData:', {
+      preset: CLOUDINARY_CONFIG.uploadPreset,
+      folder: resourceType === 'image' ? 'bipcosa06/products' : 'bipcosa06/videos'
+    });
 
     const response = await fetch(uploadUrl, {
       method: 'POST',
       body: formData,
     });
 
+    const result = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('❌ Erreur réponse Cloudinary:', errorData);
-      throw new Error(errorData.error?.message || `Upload échoué: ${response.statusText}`);
+      console.error('❌ Erreur réponse Cloudinary:', result);
+      
+      // Messages d'erreur personnalisés
+      if (result.error?.message?.includes('Invalid upload preset')) {
+        throw new Error(`❌ Le preset "${CLOUDINARY_CONFIG.uploadPreset}" n'existe pas ou n'est pas configuré comme "Unsigned" dans Cloudinary`);
+      }
+      
+      if (result.error?.message?.includes('cloud_name')) {
+        throw new Error(`❌ Cloud name "${CLOUDINARY_CONFIG.cloudName}" incorrect`);
+      }
+      
+      throw new Error(result.error?.message || `Upload échoué: ${response.statusText}`);
     }
 
-    const result = await response.json();
     console.log('✅ Upload réussi:', {
       url: result.secure_url,
       publicId: result.public_id,
@@ -78,8 +108,14 @@ export const uploadToCloudinary = async (
     });
 
     return result;
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ Erreur upload Cloudinary:', error);
+    
+    // Ajouter des conseils de debug
+    if (error.message?.includes('Failed to fetch')) {
+      throw new Error('❌ Erreur de connexion. Vérifiez votre connexion internet.');
+    }
+    
     throw error;
   }
 };

@@ -1207,6 +1207,23 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                  Bienvenue dans le panel d'administration de votre boutique Cannabis.<br/>
                  Gérez tous les aspects de BIPCOSA06 depuis cette interface centralisée.
                </p>
+               
+               {/* Bouton de synchronisation forcée */}
+               <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                 <ActionButton 
+                   $variant="danger" 
+                   onClick={async () => {
+                     if (confirm('Voulez-vous forcer la synchronisation ? Cela va vider le cache local et recharger depuis MongoDB.')) {
+                       await dataService.forceRefreshFromAPI();
+                       refreshData();
+                       alert('Synchronisation forcée terminée !');
+                     }
+                   }}
+                 >
+                   🔄 Forcer Synchronisation MongoDB
+                 </ActionButton>
+               </div>
+               
                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px', marginTop: '20px' }}>
                  <div style={{ background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '10px', textAlign: 'center' }}>
                    <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)' }}>Catégories</div>

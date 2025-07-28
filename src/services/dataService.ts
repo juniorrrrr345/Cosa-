@@ -348,9 +348,10 @@ export class DataService {
       if (response.ok) {
         const products = await response.json();
         console.log('📦 getProducts - Produits depuis API:', products.length);
-        // Mettre à jour localStorage avec les données fraîches
+        // FORCER mise à jour localStorage avec les données fraîches (même si vide)
         if (typeof window !== 'undefined') {
           localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
+          console.log('🗑️ localStorage produits mis à jour avec API:', products.length);
         }
         return products;
       }
@@ -358,8 +359,10 @@ export class DataService {
       console.warn('⚠️ API indisponible, fallback localStorage:', error);
     }
     
-    // Fallback vers localStorage seulement si API échoue
-    return this.getProductsSync();
+    // Fallback vers localStorage seulement si API échoue COMPLÈTEMENT
+    const fallbackProducts = this.getProductsSync();
+    console.log('📦 Fallback localStorage:', fallbackProducts.length);
+    return fallbackProducts;
   }
 
   getProductsSync(): Product[] {
@@ -994,6 +997,35 @@ export class DataService {
     this.configCache = null;
     this.notifyDataUpdate();
     console.log('✅ Reset terminé');
+  }
+
+  // === MÉTHODES DE NETTOYAGE ===
+  clearAllLocalStorage(): void {
+    if (typeof window === 'undefined') return;
+    
+    console.log('🗑️ NETTOYAGE COMPLET localStorage...');
+    localStorage.removeItem(this.PRODUCTS_KEY);
+    localStorage.removeItem(this.CATEGORIES_KEY);
+    localStorage.removeItem(this.FARMS_KEY);
+    localStorage.removeItem(this.CONFIG_KEY);
+    localStorage.removeItem(this.SOCIAL_NETWORKS_KEY);
+    console.log('✅ localStorage vidé complètement');
+  }
+
+  // Force un refresh complet depuis l'API
+  async forceRefreshFromAPI(): Promise<void> {
+    console.log('🔄 REFRESH FORCÉ depuis API...');
+    this.clearAllLocalStorage();
+    
+    // Recharger toutes les données depuis l'API
+    await Promise.all([
+      this.getProducts(),
+      this.getCategories(), 
+      this.getFarms()
+    ]);
+    
+    this.notifyDataUpdate();
+    console.log('✅ Refresh forcé terminé');
   }
 
   // Nettoyer les ressources

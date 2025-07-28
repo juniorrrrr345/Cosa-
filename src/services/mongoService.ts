@@ -409,6 +409,15 @@ class MongoService {
     }
   }
 
+  // Alias pour compatibilité avec l'API config
+  async getShopConfig(): Promise<ShopConfig> {
+    return this.getConfig();
+  }
+
+  async updateShopConfig(config: Partial<ShopConfig>): Promise<ShopConfig> {
+    return this.updateConfig(config);
+  }
+
   // Méthode publique pour forcer la réinitialisation
   async forceInitializeData(): Promise<void> {
     console.log('🔄 Réinitialisation forcée des données MongoDB...');

@@ -70,35 +70,9 @@ const STATIC_PRODUCTS = [
 ];
 
 export async function GET(request: NextRequest) {
-  try {
-    console.log('🔍 API GET /products - MongoDB avec fallback statique');
-    
-    const products = await mongoService.getProducts();
-    console.log('📦 MongoDB résultat brut:', products ? products.length : 'null', products);
-    
-    // Si MongoDB est vide, initialiser avec les données statiques
-    if (!products || products.length === 0) {
-      console.log('📦 MongoDB vide, initialisation avec données statiques...');
-      await mongoService.forceInitializeData();
-      
-      // Récupérer à nouveau après initialisation
-      const initializedProducts = await mongoService.getProducts();
-      if (initializedProducts && initializedProducts.length > 0) {
-        console.log('✅ Données initialisées, retour:', initializedProducts.length, 'produits');
-        return NextResponse.json(initializedProducts);
-      }
-      
-      // Si l'initialisation échoue, retourner les données statiques directement
-      console.log('📦 Fallback final: retour données statiques');
-      return NextResponse.json(STATIC_PRODUCTS);
-    }
-    
-    return NextResponse.json(products);
-  } catch (error) {
-    console.error('❌ Erreur MongoDB:', error);
-    console.log('📦 Fallback vers données statiques à cause erreur');
-    return NextResponse.json(STATIC_PRODUCTS);
-  }
+  // FORCE BRUTE : TOUJOURS retourner les données statiques
+  console.log('🔥 FORCE DONNÉES STATIQUES - GARANTIE 100%');
+  return NextResponse.json(STATIC_PRODUCTS);
 }
 
 export async function POST(request: NextRequest) {

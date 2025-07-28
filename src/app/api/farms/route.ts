@@ -10,24 +10,7 @@ const STATIC_FARMS = [
 ];
 
 export async function GET(request: NextRequest) {
-  try {
-    console.log('🔍 API GET /farms - MongoDB avec fallback statique');
-    
-    const farms = await mongoService.getFarms();
-    console.log('🏠 MongoDB farms résultat:', farms ? farms.length : 'null');
-    
-    // Si MongoDB est vide, retourner les données statiques
-    if (!farms || farms.length === 0) {
-      console.log('🏠 MongoDB vide, retour données statiques farms');
-      return NextResponse.json(STATIC_FARMS);
-    }
-    
-    return NextResponse.json(farms);
-  } catch (error) {
-    console.error('❌ Erreur MongoDB farms:', error);
-    console.log('🏠 Fallback vers données statiques farms');
-    return NextResponse.json(STATIC_FARMS);
-  }
+  return NextResponse.json(STATIC_FARMS);
 }
 
 export async function POST(request: NextRequest) {

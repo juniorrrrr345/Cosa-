@@ -365,11 +365,19 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     window.addEventListener('dataUpdated', handleDataChanged);
     window.addEventListener('bipcosa06DataChanged', handleDataChanged);
     
+    // NOUVEAUX ÉCOUTEURS POUR SYNCHRONISATION FORCÉE
+    window.addEventListener('dataUpdatedForced', handleDataChanged);
+    window.addEventListener('bipcosa06ForceSync', handleDataChanged);
+    
     return () => {
       window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
       window.removeEventListener('configUpdated', loadData);
       window.removeEventListener('dataUpdated', handleDataChanged);
       window.removeEventListener('bipcosa06DataChanged', handleDataChanged);
+      
+      // Cleanup nouveaux écouteurs
+      window.removeEventListener('dataUpdatedForced', handleDataChanged);
+      window.removeEventListener('bipcosa06ForceSync', handleDataChanged);
     };
   }, []);
 

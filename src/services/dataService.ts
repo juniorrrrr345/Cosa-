@@ -108,8 +108,9 @@ const defaultSocialNetworks: SocialNetwork[] = [
 export class DataService {
   private static instance: DataService;
   private configCache: ShopConfig | null = null;
-  private syncInterval: NodeJS.Timeout | null = null;
-  private lastSyncTime: number = 0;
+  private isInitialized = false;
+  private lastSyncTime = 0;
+  private syncInterval: NodeJS.Timeout | null = null; // Pour la vérification automatique
 
   // Configuration pour la synchronisation temps réel
   private readonly SYNC_INTERVAL_MS = 5000; // Sync toutes les 5 secondes
@@ -126,8 +127,85 @@ export class DataService {
   private readonly DATA_VERSION_KEY = 'bipcosa06_data_version';
   
   constructor() {
-    console.log('🚀 DataService SIMPLE initialisé');
-    this.initializeDefaultData();
+    if (typeof window !== 'undefined') {
+      this.initializeDefaultData();
+      
+      // Démarrer la vérification automatique de synchronisation
+      this.startAutoSyncCheck();
+      
+      // Synchroniser périodiquement
+      setInterval(() => {
+        this.performSync();
+      }, 30000); // Toutes les 30 secondes
+      
+      // Synchroniser quand l'utilisateur revient sur l'onglet
+      window.addEventListener('focus', () => this.performSync());
+      window.addEventListener('online', () => this.performSync());
+    }
+  }
+  
+  // Nouvelle méthode pour vérifier automatiquement la synchronisation
+  private startAutoSyncCheck(): void {
+    if (this.syncInterval) return; // Éviter les doublons
+    
+    this.syncInterval = setInterval(async () => {
+      try {
+        console.log('🔍 Vérification automatique de la synchronisation...');
+        
+        // Vérifier l'état de synchronisation via l'API
+        const response = await fetch('/api/sync');
+        
+        if (response.ok) {
+          const syncStatus = await response.json();
+          console.log('📊 État synchronisation:', syncStatus);
+          
+          // Comparer avec les données locales
+          const localProducts = this.getProductsSync();
+          const localCategories = this.getCategoriesSync();
+          const localFarms = this.getFarmsSync();
+          
+          const isOutOfSync = 
+            localProducts.length !== syncStatus.counts.products ||
+            localCategories.length !== syncStatus.counts.categories ||
+            localFarms.length !== syncStatus.counts.farms;
+          
+          if (isOutOfSync) {
+            console.warn('⚠️ DÉSYNCHRONISATION DÉTECTÉE!', {
+              local: { products: localProducts.length, categories: localCategories.length, farms: localFarms.length },
+              server: syncStatus.counts
+            });
+            
+            // Notification visuelle pour l'utilisateur
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new CustomEvent('syncStatusChanged', { 
+                detail: { 
+                  status: 'syncing', 
+                  message: 'Synchronisation en cours...',
+                  local: { products: localProducts.length, categories: localCategories.length, farms: localFarms.length },
+                  server: syncStatus.counts
+                } 
+              }));
+            }
+            
+            // Forcer une synchronisation
+            await this.forceFullSync();
+            
+            // Notification de fin de synchronisation
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new CustomEvent('syncStatusChanged', { 
+                detail: { 
+                  status: 'synchronized', 
+                  message: 'Données synchronisées avec succès !',
+                  server: syncStatus.counts
+                } 
+              }));
+            }
+          }
+        }
+      } catch (error) {
+        console.warn('⚠️ Erreur vérification sync automatique:', error);
+      }
+    }, 60000); // Toutes les 60 secondes
   }
 
   // Initialisation des données
@@ -465,26 +543,9 @@ export class DataService {
         if (response.ok) {
           console.log('✅ Produit supprimé via API:', id);
           
-          // FORCER nettoyage cache et synchronisation IMMÉDIATE
-          this.lastSyncTime = 0; // Reset cooldown pour forcer sync
-          
-          // Nettoyer les données locales IMMÉDIATEMENT
-          const products = this.getProductsSync();
-          const index = products.findIndex(p => p.id === id);
-          
-          if (index !== -1) {
-            products.splice(index, 1);
-            localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(products));
-            console.log('🧹 Cache local nettoyé immédiatement');
-          }
-          
-          // Forcer la synchronisation
-          await this.performSync();
-          
-          // Triple notification pour s'assurer que l'UI se met à jour
-          this.notifyDataUpdate();
-          setTimeout(() => this.notifyDataUpdate(), 100);
-          setTimeout(() => this.notifyDataUpdate(), 500);
+          // SYNCHRONISATION FORCÉE IMMÉDIATE
+          console.log('🚀 Lancement synchronisation forcée après suppression');
+          await this.forceFullSync();
           
           console.log('🔄 Cache synchronisé après suppression');
           return true;
@@ -1027,17 +1088,88 @@ export class DataService {
     }
   }
 
-  // === NOTIFICATIONS ===
+  // === NOTIFICATIONS RENFORCÉES ===
   private notifyDataUpdate(): void {
-    console.log('🔔 DataService - Notification mise à jour données');
+    console.log('🔔 DataService - Notification mise à jour données FORCÉE');
     if (typeof window !== 'undefined') {
-      // Délai court pour éviter les conflits de state
+      // Force immédiate sans délai
+      window.dispatchEvent(new CustomEvent('dataUpdated'));
+      window.dispatchEvent(new CustomEvent('bipcosa06DataChanged'));
+      
+      // Notification retardée pour s'assurer que tous les composants reçoivent
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('dataUpdatedForced'));
+        window.dispatchEvent(new CustomEvent('bipcosa06ForceSync'));
+        console.log('📢 Événements FORCÉS envoyés');
+      }, 50);
+      
+      // Triple notification pour s'assurer de la réception
       setTimeout(() => {
         window.dispatchEvent(new CustomEvent('dataUpdated'));
         window.dispatchEvent(new CustomEvent('bipcosa06DataChanged'));
-        console.log('📢 Événements dataUpdated envoyés');
-      }, 10);
+        console.log('📢 Triple notification envoyée');
+      }, 100);
+      
+      // Forcer rechargement cache
+      this.clearCache();
     }
+  }
+  
+  // Nouvelle méthode pour vider le cache local
+  private clearCache(): void {
+    console.log('🧹 Vidage du cache localStorage forcé');
+    // Ne pas vider, mais marquer comme périmé pour forcer API sync
+    localStorage.setItem(this.PRODUCTS_KEY + '_expired', Date.now().toString());
+    localStorage.setItem(this.CATEGORIES_KEY + '_expired', Date.now().toString());
+    localStorage.setItem(this.FARMS_KEY + '_expired', Date.now().toString());
+  }
+  
+  // Méthode publique pour forcer synchronisation totale
+  public async forceFullSync(): Promise<void> {
+    console.log('🚀 SYNCHRONISATION TOTALE FORCÉE');
+    
+    try {
+      // Appeler l'API de synchronisation forcée
+      const response = await fetch('/api/sync', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        console.log('✅ Synchronisation API réussie:', result.data);
+        
+        // Utiliser les données fraîches retournées par l'API
+        if (result.freshData) {
+          localStorage.setItem(this.PRODUCTS_KEY, JSON.stringify(result.freshData.products));
+          localStorage.setItem(this.CATEGORIES_KEY, JSON.stringify(result.freshData.categories));
+          localStorage.setItem(this.FARMS_KEY, JSON.stringify(result.freshData.farms));
+          console.log('💾 Cache localStorage mis à jour avec données fraîches');
+        }
+      } else {
+        console.warn('⚠️ API sync échouée, fallback méthode locale');
+        // Fallback sur l'ancienne méthode
+        this.clearCache();
+        this.lastSyncTime = 0;
+        await this.performSync();
+      }
+    } catch (error) {
+      console.error('❌ Erreur sync API:', error);
+      // Fallback sur l'ancienne méthode
+      this.clearCache();
+      this.lastSyncTime = 0;
+      await this.performSync();
+    }
+    
+    // Quadruple notification pour s'assurer que TOUS les composants se mettent à jour
+    this.notifyDataUpdate();
+    setTimeout(() => this.notifyDataUpdate(), 200);
+    setTimeout(() => this.notifyDataUpdate(), 500);
+    setTimeout(() => this.notifyDataUpdate(), 1000);
+    
+    console.log('🎯 Synchronisation totale terminée');
   }
 
   private notifyConfigUpdate(config: ShopConfig): void {

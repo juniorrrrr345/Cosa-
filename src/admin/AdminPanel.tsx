@@ -829,6 +829,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     if (typeof window !== 'undefined') {
       window.addEventListener('dataUpdated', handleDataUpdate);
       window.addEventListener('bipcosa06DataChanged', handleBipcosaDataChange);
+      
+      // NOUVEAUX ÉCOUTEURS POUR SYNCHRONISATION FORCÉE
+      window.addEventListener('dataUpdatedForced', handleDataUpdate);
+      window.addEventListener('bipcosa06ForceSync', handleBipcosaDataChange);
     }
 
     // Cleanup des écouteurs
@@ -836,6 +840,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
       if (typeof window !== 'undefined') {
         window.removeEventListener('dataUpdated', handleDataUpdate);
         window.removeEventListener('bipcosa06DataChanged', handleBipcosaDataChange);
+        
+        // Cleanup nouveaux écouteurs
+        window.removeEventListener('dataUpdatedForced', handleDataUpdate);
+        window.removeEventListener('bipcosa06ForceSync', handleBipcosaDataChange);
       }
     };
   }, []);
@@ -1319,14 +1327,25 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
                  <ActionButton 
                    $variant="danger" 
                    onClick={async () => {
-                     if (confirm('Voulez-vous forcer la synchronisation ? Cela va vider le cache local et recharger depuis MongoDB.')) {
-                       await dataService.forceRefreshFromAPI();
-                       refreshData();
-                       alert('Synchronisation forcée terminée !');
+                     try {
+                       console.log('🚀 ADMIN: Synchronisation forcée démarrée');
+                       showNotification('🔄 Synchronisation en cours...', 'success');
+                       
+                       // Utiliser la nouvelle méthode de synchronisation ultra-robuste
+                       await dataService.forceFullSync();
+                       
+                       // Forcer le rechargement local
+                       await refreshData();
+                       
+                       showNotification('✅ Synchronisation forcée terminée ! Toutes les données sont à jour.', 'success');
+                       console.log('✅ ADMIN: Synchronisation forcée terminée');
+                     } catch (error) {
+                       console.error('❌ ADMIN: Erreur synchronisation forcée:', error);
+                       showNotification('❌ Erreur lors de la synchronisation forcée', 'error');
                      }
                    }}
                  >
-                   🔄 Forcer Synchronisation MongoDB
+                   🔄 FORCER SYNCHRONISATION COMPLÈTE
                  </ActionButton>
                </div>
                

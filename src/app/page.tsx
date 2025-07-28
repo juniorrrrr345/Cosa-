@@ -8,6 +8,7 @@ import SocialNetworksPage from '@/components/SocialNetworksPage';
 import ProductDetailPage from '@/components/ProductDetailPage';
 import AdminPanel from '@/admin/AdminPanel';
 import LoadingScreen from '@/components/LoadingScreen';
+import SyncNotification from '@/components/SyncNotification';
 
 export default function MainPage() {
   const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact' | 'social' | 'product-detail'>('menu');
@@ -131,38 +132,64 @@ export default function MainPage() {
   }
 
   if (currentView === 'admin') {
-    return <AdminPanel onBack={handleAdminBack} />;
+    return (
+      <>
+        <SyncNotification />
+        <AdminPanel onBack={handleBackToMenu} />
+      </>
+    );
   }
 
     if (currentView === 'info') {
-    return <InfoPage onNavigate={handleNavigation} currentView={currentView} />;
+    return (
+      <>
+        <SyncNotification />
+        <InfoPage onNavigate={handleNavigation} currentView={currentView} />
+      </>
+    );
   }
 
   if (currentView === 'contact') {
-    return <ContactPage onNavigate={handleNavigation} currentView={currentView} />;
+    return (
+      <>
+        <SyncNotification />
+        <ContactPage onNavigate={handleNavigation} currentView={currentView} />
+      </>
+    );
   }
 
   if (currentView === 'social') {
-    return <SocialNetworksPage onBack={() => handleNavigation('menu')} />;
+    return (
+      <>
+        <SyncNotification />
+        <SocialNetworksPage onBack={() => handleNavigation('menu')} />
+      </>
+    );
   }
 
   if (currentView === 'product-detail' && selectedProduct) {
     return (
-      <ProductDetailPage 
-        product={selectedProduct}
-        onNavigate={handleNavigation}
-        onBack={handleBackToMenu}
-        currentView="menu"
-      />
+      <>
+        <SyncNotification />
+        <ProductDetailPage 
+          product={selectedProduct}
+          onNavigate={handleNavigation}
+          onBack={handleBackToMenu}
+          currentView="menu"
+        />
+      </>
     );
   }
 
   // Vue Menu par défaut (la boutique avec les produits)
   return (
-    <HomePage 
-      onNavigate={handleNavigation} 
-      onProductClick={handleProductClick}
-      currentView={currentView} 
-    />
+    <>
+      <SyncNotification />
+      <HomePage 
+        onNavigate={handleNavigation} 
+        onProductClick={handleProductClick}
+        currentView={currentView} 
+      />
+    </>
   );
 }

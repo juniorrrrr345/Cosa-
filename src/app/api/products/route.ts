@@ -70,9 +70,24 @@ const STATIC_PRODUCTS = [
 ];
 
 export async function GET(request: NextRequest) {
-  // FORCE BRUTE : TOUJOURS retourner les données statiques
-  console.log('🔥 FORCE DONNÉES STATIQUES - GARANTIE 100%');
-  return NextResponse.json(STATIC_PRODUCTS);
+  try {
+    console.log('🔍 API GET /products - NOUVELLE MongoDB');
+    
+    const products = await mongoService.getProducts();
+    console.log('📦 MongoDB résultat:', products ? products.length : 'null');
+    
+    // Si MongoDB est vide, retourner les données statiques
+    if (!products || products.length === 0) {
+      console.log('📦 MongoDB vide, retour données statiques');
+      return NextResponse.json(STATIC_PRODUCTS);
+    }
+    
+    return NextResponse.json(products);
+  } catch (error) {
+    console.error('❌ Erreur MongoDB:', error);
+    console.log('📦 Fallback vers données statiques');
+    return NextResponse.json(STATIC_PRODUCTS);
+  }
 }
 
 export async function POST(request: NextRequest) {

@@ -11,28 +11,29 @@ class MongoService {
     this.connectionPromise = this.connect();
   }
 
-  private async connect() {
-    try {
-      // Utiliser l'URI MongoDB fournie
-      const mongoURI = process.env.MONGODB_URI || 'mongodb+srv://Cosa:cosa06@cluster0.inrso7o.mongodb.net/bipcosa06?retryWrites=true&w=majority&appName=Cluster0';
-      
-      if (!mongoURI) {
-        console.warn('MongoDB URI non configurée, utilisation des données en mémoire');
-        return;
-      }
+  private async connect(): Promise<void> {
+    if (this.isConnected) return;
 
-      console.log('🔗 Connexion MongoDB avec URI:', mongoURI.substring(0, 50) + '...');
-      this.client = new MongoClient(mongoURI);
+    try {
+      // NOUVELLE MONGODB URI QUI FONCTIONNE
+      const uri = 'mongodb+srv://Junior:Lacrim123@cluster0.q4vnfin.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+      
+      console.log('🔗 Connexion MongoDB avec NOUVELLE URI...');
+      
+      this.client = new MongoClient(uri, {
+        maxPoolSize: 10,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
+      });
+
       await this.client.connect();
       this.db = this.client.db('bipcosa06');
       this.isConnected = true;
-      console.log('✅ Connexion MongoDB établie avec succès');
       
-      // Initialiser les données par défaut si les collections sont vides
-      await this.initializeDefaultData();
+      console.log('✅ MongoDB connecté avec succès !');
     } catch (error) {
       console.error('❌ Erreur de connexion MongoDB:', error);
-      this.isConnected = false;
+      throw error;
     }
   }
 

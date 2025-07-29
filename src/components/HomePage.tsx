@@ -137,6 +137,50 @@ const FilterDropdown = styled.div<{ $active?: boolean }>`
   }
 `;
 
+const SelectWrapper = styled.div`
+  position: relative;
+  
+  select {
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 12px 40px 12px 15px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    min-width: 150px;
+    
+    &:hover {
+      border-color: rgba(255,255,255,0.5);
+      background: rgba(0,0,0,0.9);
+    }
+    
+    &:focus {
+      outline: none;
+      border-color: #4ecdc4;
+      box-shadow: 0 0 0 3px rgba(78,205,196,0.2);
+    }
+    
+    option {
+      background: #1a1a1a;
+      color: white;
+      padding: 10px;
+      font-weight: 500;
+    }
+    
+    option:checked {
+      background: #4ecdc4;
+      color: black;
+    }
+  }
+`;
+
 const DropdownArrow = styled.span`
   position: absolute;
   right: 15px;
@@ -145,6 +189,23 @@ const DropdownArrow = styled.span`
   color: white;
   font-size: 18px;
   pointer-events: none;
+  transition: color 0.3s ease;
+  
+  ${SelectWrapper}:hover & {
+    color: #4ecdc4;
+  }
+`;
+
+const ProductsCount = styled.div`
+  text-align: center;
+  color: rgba(255,255,255,0.8);
+  font-size: 14px;
+  margin: 20px 0 10px 0;
+  
+  span {
+    color: #4ecdc4;
+    font-weight: bold;
+  }
 `;
 
 // Section produits avec grille responsive
@@ -471,6 +532,18 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     return categoryMatch && farmMatch;
   });
 
+  // Log pour debug
+  useEffect(() => {
+    console.log('🔍 Filtrage:', {
+      selectedCategory,
+      selectedFarm,
+      totalProducts: products.length,
+      filteredProducts: filteredProducts.length,
+      categories: categories.map(c => c.id),
+      farms: farms.map(f => f.id)
+    });
+  }, [selectedCategory, selectedFarm, products.length, filteredProducts.length]);
+
   const handleProductClick = (product: any) => {
     onProductClick?.(product);
   };
@@ -486,36 +559,42 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
 
       {/* Section filtres avec design noir/blanc */}
       <FiltersSection>
-        <FilterDropdown $active={selectedCategory !== 'all'}>
+        <SelectWrapper>
           <select 
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
           >
+            <option value="all">🏷️ Toutes les catégories</option>
             {categories.map(cat => (
-              <option key={cat.value} value={cat.value}>
-                {cat.label}
+              <option key={cat.id} value={cat.id}>
+                {cat.emoji} {cat.name}
               </option>
             ))}
           </select>
           <DropdownArrow>⌄</DropdownArrow>
-        </FilterDropdown>
-        <FilterDropdown $active={selectedFarm !== 'all'}>
+        </SelectWrapper>
+        
+        <SelectWrapper>
           <select 
             value={selectedFarm}
             onChange={(e) => setSelectedFarm(e.target.value)}
           >
+            <option value="all">🌱 Toutes les farms</option>
             {farms.map(farm => (
-              <option key={farm.value} value={farm.value}>
-                {farm.label}
+              <option key={farm.id} value={farm.id}>
+                {farm.emoji} {farm.name}
               </option>
             ))}
           </select>
           <DropdownArrow>⌄</DropdownArrow>
-        </FilterDropdown>
+        </SelectWrapper>
       </FiltersSection>
 
       {/* Section produits avec design amélioré */}
       <ProductsSection>
+        <ProductsCount>
+          <span>{filteredProducts.length}</span> produits trouvés
+        </ProductsCount>
         <ProductsGrid>
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} onClick={() => handleProductClick(product)}>

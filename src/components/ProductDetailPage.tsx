@@ -213,10 +213,40 @@ const ProductQuality = styled.p`
 `;
 
 const ProductDescription = styled.p`
-  font-size: 14px;
-  color: rgba(255,255,255,0.7);
+  font-size: 16px;
   line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
   margin: 0;
+`;
+
+const ProductMeta = styled.div`
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+`;
+
+const MetaTag = styled.div`
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+
+  span:first-child {
+    font-size: 16px;
+  }
 `;
 
 const PricesSection = styled.div`
@@ -369,6 +399,8 @@ interface Product {
     weight: string;
     price: string;
   }>;
+  category?: string;
+  farm?: string;
 }
 
 interface ProductDetailPageProps {
@@ -428,6 +460,21 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           <ProductName>{product.name}</ProductName>
           <ProductQuality>{product.quality}</ProductQuality>
           <ProductDescription>{product.description}</ProductDescription>
+          
+          <ProductMeta>
+            {product.category && (
+              <MetaTag>
+                <span>🏷️</span>
+                {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+              </MetaTag>
+            )}
+            {product.farm && (
+              <MetaTag>
+                <span>🌱</span>
+                {product.farm.charAt(0).toUpperCase() + product.farm.slice(1)}
+              </MetaTag>
+            )}
+          </ProductMeta>
         </ProductInfo>
 
         {product.video && (

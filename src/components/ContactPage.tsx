@@ -2,19 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { dataService, ShopConfig, ContactContent } from '@/services/dataService';
+import { ShopConfig, ContactContent } from '@/services/dataService';
 
 interface ContactPageProps {
   onNavigate?: (view: string) => void;
   currentView?: string;
 }
 
-// Fonction pour obtenir le style de background directement
+// Fonction pour obtenir le style de background
 const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
-  console.log('🎨 ContactPage getBackgroundStyle - Config reçue:', config);
-  
   if (!config) {
-    console.log('🎨 ContactPage - Pas de config, background transparent');
     return {
       background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       minHeight: '100vh',
@@ -27,22 +24,14 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
   
   let backgroundValue = 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   
-  // URL externe (Imgur, etc.) - PRIORITÉ 1
-  if (config.backgroundType === 'url' && config.backgroundUrl && config.backgroundUrl.trim()) {
+  if (config.backgroundType === 'url' && config.backgroundUrl?.trim()) {
     const safeUrl = config.backgroundUrl.replace(/['"]/g, '');
     backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
-    console.log('🎨 ContactPage - Background URL externe:', safeUrl);
-  }
-  // Image Cloudinary - PRIORITÉ 2
-  else if (config.backgroundType === 'image' && config.backgroundImage && config.backgroundImage.trim()) {
+  } else if (config.backgroundType === 'image' && config.backgroundImage?.trim()) {
     const safeUrl = config.backgroundImage.replace(/['"]/g, '');
     backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
-    console.log('🎨 ContactPage - Background Image Cloudinary:', safeUrl);
-  }
-  // Dégradé - PRIORITÉ 3
-  else if (config.backgroundType === 'gradient') {
+  } else if (config.backgroundType === 'gradient') {
     backgroundValue = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
-    console.log('🎨 ContactPage - Background dégradé');
   }
   
   return {
@@ -66,7 +55,6 @@ const Header = styled.div`
   background: transparent;
   border-bottom: none;
   
-  /* Mobile */
   @media (max-width: 480px) {
     padding: 10px 15px;
   }
@@ -79,13 +67,11 @@ const LogoImage = styled.img`
   filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
   transition: transform 0.3s ease, filter 0.3s ease;
   
-  /* Tablette */
   @media (max-width: 768px) {
     height: 100px;
     max-width: 400px;
   }
   
-  /* Mobile */
   @media (max-width: 480px) {
     height: 80px;
     max-width: 300px;
@@ -265,41 +251,6 @@ const EmptyState = styled.div`
   }
 `;
 
-const QuickActions = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-`;
-
-const ActionCard = styled.div`
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 15px;
-  padding: 20px;
-  text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: rgba(255,255,255,0.2);
-    transform: translateY(-3px);
-  }
-
-  .icon {
-    font-size: 32px;
-    margin-bottom: 10px;
-  }
-
-  .label {
-    font-size: 14px;
-    color: rgba(255,255,255,0.9);
-    font-weight: 500;
-  }
-`;
-
-// Navigation en bas améliorée
 const BottomNavigation = styled.div`
   position: fixed;
   bottom: 0;
@@ -342,31 +293,19 @@ const NavLabel = styled.div`
 `;
 
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
-  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+  const [config, setConfig] = useState<ShopConfig | null>(null);
   const [contactContents, setContactContents] = useState<ContactContent[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
-    
-    // Écouter les changements de configuration
-    const handleConfigChanged = (event: any) => {
-      console.log('🔄 ContactPage - Config changée:', event.detail);
-      setConfig(event.detail);
-    };
-    
-    window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
-    
-    return () => {
-      window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
-    };
+    loadDataFromMongoDB();
   }, []);
 
-  // Charger les données depuis l'API MongoDB
-  const loadData = async () => {
+  const loadDataFromMongoDB = async () => {
     try {
-      console.log('📥 ContactPage - Chargement depuis API MongoDB...');
+      setLoading(true);
       
-      // Charger depuis l'API MongoDB, pas localStorage
+      // Charger UNIQUEMENT depuis MongoDB
       const [configRes, contactRes] = await Promise.all([
         fetch('/api/config'),
         fetch('/api/contact-contents')
@@ -375,35 +314,42 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
       if (configRes.ok) {
         const configData = await configRes.json();
         setConfig(configData);
-        console.log('⚙️ Config chargée depuis MongoDB');
       }
 
       if (contactRes.ok) {
         const contactData = await contactRes.json();
         setContactContents(contactData);
-        console.log('📞 Contenus contact chargés depuis MongoDB:', contactData.length);
       }
       
-      console.log('✅ ContactPage - Données chargées depuis MongoDB');
     } catch (error) {
-      console.error('❌ Erreur chargement données contact depuis API:', error);
+      console.error('Erreur chargement:', error);
+      setContactContents([]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleQuickAction = (action: string) => {
-    if (action === 'telegram' && contactContents.length > 0 && contactContents[0].telegramLink) {
-      window.open(contactContents[0].telegramLink, '_blank');
-    }
-  };
+  if (loading) {
+    return (
+      <div style={getBackgroundStyle(config || undefined)}>
+        <Header>
+          <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
+        </Header>
+        <Content>
+          <EmptyState>
+            <h3>⏳ Chargement...</h3>
+          </EmptyState>
+        </Content>
+      </div>
+    );
+  }
 
   return (
-    <div style={getBackgroundStyle(config)}>
-      {/* Header avec nom de la boutique */}
+    <div style={getBackgroundStyle(config || undefined)}>
       <Header>
         <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
       </Header>
 
-      {/* Contenu principal */}
       <Content>
         {contactContents.length > 0 ? (
           contactContents.map((contact) => (
@@ -437,7 +383,6 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
         )}
       </Content>
 
-      {/* Navigation en bas */}
       <BottomNavigation>
         <NavItem $active={currentView === 'menu'} onClick={() => onNavigate?.('menu')}>
           <NavIcon>🏠</NavIcon>

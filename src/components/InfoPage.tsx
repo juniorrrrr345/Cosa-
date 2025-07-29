@@ -2,14 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { dataService, ShopConfig, InfoContent } from '@/services/dataService';
+import { ShopConfig, InfoContent } from '@/services/dataService';
 
-// Fonction pour obtenir le style de background directement
+// Fonction pour obtenir le style de background
 const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
-  console.log('🎨 InfoPage getBackgroundStyle - Config reçue:', config);
-  
   if (!config) {
-    console.log('🎨 InfoPage - Pas de config, background transparent');
     return {
       background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)',
       minHeight: '100vh',
@@ -22,22 +19,14 @@ const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
   
   let backgroundValue = 'linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%)';
   
-  // URL externe (Imgur, etc.) - PRIORITÉ 1
-  if (config.backgroundType === 'url' && config.backgroundUrl && config.backgroundUrl.trim()) {
+  if (config.backgroundType === 'url' && config.backgroundUrl?.trim()) {
     const safeUrl = config.backgroundUrl.replace(/['"]/g, '');
     backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
-    console.log('🎨 InfoPage - Background URL externe:', safeUrl);
-  }
-  // Image Cloudinary - PRIORITÉ 2
-  else if (config.backgroundType === 'image' && config.backgroundImage && config.backgroundImage.trim()) {
+  } else if (config.backgroundType === 'image' && config.backgroundImage?.trim()) {
     const safeUrl = config.backgroundImage.replace(/['"]/g, '');
     backgroundValue = `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("${safeUrl}")`;
-    console.log('🎨 InfoPage - Background Image Cloudinary:', safeUrl);
-  }
-  // Dégradé - PRIORITÉ 3
-  else if (config.backgroundType === 'gradient') {
+  } else if (config.backgroundType === 'gradient') {
     backgroundValue = 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%)';
-    console.log('🎨 InfoPage - Background dégradé');
   }
   
   return {
@@ -61,7 +50,6 @@ const Header = styled.div`
   background: transparent;
   border-bottom: none;
   
-  /* Mobile */
   @media (max-width: 480px) {
     padding: 10px 15px;
   }
@@ -74,13 +62,11 @@ const LogoImage = styled.img`
   filter: drop-shadow(0 0 20px rgba(0,0,0,0.9));
   transition: transform 0.3s ease, filter 0.3s ease;
   
-  /* Tablette */
   @media (max-width: 768px) {
     height: 100px;
     max-width: 400px;
   }
   
-  /* Mobile */
   @media (max-width: 480px) {
     height: 80px;
     max-width: 300px;
@@ -185,6 +171,7 @@ const InfoItem = styled.li`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  padding-left: 40px;
 
   &::before {
     content: '✓';
@@ -221,7 +208,6 @@ const AdditionalInfo = styled.div`
   z-index: 1;
 `;
 
-// Si aucun contenu, afficher un message par défaut
 const EmptyState = styled.div`
   text-align: center;
   padding: 60px 20px;
@@ -241,7 +227,6 @@ const EmptyState = styled.div`
   }
 `;
 
-// Navigation en bas améliorée
 const BottomNavigation = styled.div`
   position: fixed;
   bottom: 0;
@@ -289,31 +274,19 @@ interface InfoPageProps {
 }
 
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
-  const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
+  const [config, setConfig] = useState<ShopConfig | null>(null);
   const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadData();
-    
-    // Écouter les changements de configuration
-    const handleConfigChanged = (event: any) => {
-      console.log('🔄 InfoPage - Config changée:', event.detail);
-      setConfig(event.detail);
-    };
-    
-    window.addEventListener('bipcosa06ConfigChanged', handleConfigChanged);
-    
-    return () => {
-      window.removeEventListener('bipcosa06ConfigChanged', handleConfigChanged);
-    };
+    loadDataFromMongoDB();
   }, []);
 
-  // Charger UNIQUEMENT depuis l'API MongoDB - AUCUN cache
-  const loadData = async () => {
+  const loadDataFromMongoDB = async () => {
     try {
-      console.log('📥 InfoPage - Chargement UNIQUEMENT depuis API MongoDB...');
+      setLoading(true);
       
-      // Charger depuis l'API MongoDB, pas localStorage
+      // Charger UNIQUEMENT depuis MongoDB
       const [configRes, infoRes] = await Promise.all([
         fetch('/api/config'),
         fetch('/api/info-contents')
@@ -322,35 +295,42 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
       if (configRes.ok) {
         const configData = await configRes.json();
         setConfig(configData);
-        console.log('⚙️ Config chargée depuis MongoDB');
-      } else {
-        setConfig({} as ShopConfig);
       }
 
       if (infoRes.ok) {
         const infoData = await infoRes.json();
         setInfoContents(infoData);
-        console.log('📄 Contenus info chargés depuis MongoDB:', infoData.length);
-      } else {
-        setInfoContents([]);
       }
       
-      console.log('✅ InfoPage - Données chargées UNIQUEMENT depuis MongoDB');
     } catch (error) {
-      console.error('❌ Erreur chargement depuis API:', error);
-      setConfig({} as ShopConfig);
+      console.error('Erreur chargement:', error);
       setInfoContents([]);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return (
+      <div style={getBackgroundStyle(config || undefined)}>
+        <Header>
+          <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
+        </Header>
+        <Content>
+          <EmptyState>
+            <h3>⏳ Chargement...</h3>
+          </EmptyState>
+        </Content>
+      </div>
+    );
+  }
+
   return (
-    <div style={getBackgroundStyle(config)}>
-      {/* Header avec nom de la boutique */}
+    <div style={getBackgroundStyle(config || undefined)}>
       <Header>
         <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
       </Header>
 
-      {/* Contenu principal */}
       <Content>
         {infoContents.length > 0 ? (
           infoContents.map((info) => (
@@ -379,7 +359,6 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
         )}
       </Content>
 
-      {/* Navigation en bas */}
       <BottomNavigation>
         <NavItem $active={currentView === 'menu'} onClick={() => onNavigate?.('menu')}>
           <NavIcon>🏠</NavIcon>

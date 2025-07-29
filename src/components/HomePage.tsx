@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dataService';
+import { clearAllCache } from '@/utils/clearCache';
 
 // Fonction pour obtenir le style de background directement
 const getBackgroundStyle = (config?: ShopConfig): React.CSSProperties => {
@@ -362,6 +363,8 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedFarm, setSelectedFarm] = useState<string>('all');
   const [lastSyncTime, setLastSyncTime] = useState<Date>(new Date());
+  const [clickCount, setClickCount] = useState(0);
+  const [lastClickTime, setLastClickTime] = useState(0);
 
   useEffect(() => {
     loadData();
@@ -448,7 +451,19 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     }
   };
 
-
+  const handleLogoClick = () => {
+    const now = Date.now();
+    if (now - lastClickTime < 500) { // 500ms entre les clics
+      setClickCount(prev => prev + 1);
+      if (clickCount >= 2) { // 3 clics
+        clearAllCache();
+        window.location.reload();
+      }
+    } else {
+      setClickCount(0);
+    }
+    setLastClickTime(now);
+  };
 
   const filteredProducts = products.filter(product => {
     const categoryMatch = selectedCategory === 'all' || product.category === selectedCategory;
@@ -466,7 +481,7 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
     >
       {/* Header avec logo */}
       <Header>
-        <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
+        <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" onClick={handleLogoClick} />
       </Header>
 
       {/* Section filtres avec design noir/blanc */}

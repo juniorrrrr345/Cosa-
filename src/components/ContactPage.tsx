@@ -295,7 +295,6 @@ const NavLabel = styled.div`
 const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'contact' }) => {
   const [config, setConfig] = useState<ShopConfig | null>(null);
   const [contactContents, setContactContents] = useState<ContactContent[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadDataFromMongoDB();
@@ -303,8 +302,6 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
 
   const loadDataFromMongoDB = async () => {
     try {
-      setLoading(true);
-      
       // Charger UNIQUEMENT depuis MongoDB
       const [configRes, contactRes] = await Promise.all([
         fetch('/api/config'),
@@ -324,25 +321,8 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
     } catch (error) {
       console.error('Erreur chargement:', error);
       setContactContents([]);
-    } finally {
-      setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <div style={getBackgroundStyle(config || undefined)}>
-        <Header>
-          <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
-        </Header>
-        <Content>
-          <EmptyState>
-            <h3>⏳ Chargement...</h3>
-          </EmptyState>
-        </Content>
-      </div>
-    );
-  }
 
   return (
     <div style={getBackgroundStyle(config || undefined)}>

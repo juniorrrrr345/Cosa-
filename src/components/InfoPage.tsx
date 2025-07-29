@@ -276,7 +276,6 @@ interface InfoPageProps {
 const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' }) => {
   const [config, setConfig] = useState<ShopConfig | null>(null);
   const [infoContents, setInfoContents] = useState<InfoContent[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadDataFromMongoDB();
@@ -284,8 +283,6 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
 
   const loadDataFromMongoDB = async () => {
     try {
-      setLoading(true);
-      
       // Charger UNIQUEMENT depuis MongoDB
       const [configRes, infoRes] = await Promise.all([
         fetch('/api/config'),
@@ -305,25 +302,8 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
     } catch (error) {
       console.error('Erreur chargement:', error);
       setInfoContents([]);
-    } finally {
-      setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <div style={getBackgroundStyle(config || undefined)}>
-        <Header>
-          <LogoImage src="https://i.imgur.com/b1O92qz.jpeg" alt="Logo" />
-        </Header>
-        <Content>
-          <EmptyState>
-            <h3>⏳ Chargement...</h3>
-          </EmptyState>
-        </Content>
-      </div>
-    );
-  }
 
   return (
     <div style={getBackgroundStyle(config || undefined)}>

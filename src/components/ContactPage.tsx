@@ -427,27 +427,12 @@ const ContactPage: React.FC<ContactPageProps> = ({ onNavigate, currentView = 'co
                   {contact.additionalInfo}
                 </ContactDetails>
               )}
-
-              <QuickActions>
-                <ActionCard onClick={() => handleQuickAction('telegram')}>
-                  <div className="icon">💬</div>
-                  <div className="label">Message rapide</div>
-                </ActionCard>
-                <ActionCard onClick={() => handleQuickAction('catalog')}>
-                  <div className="icon">📋</div>
-                  <div className="label">Voir le catalogue</div>
-                </ActionCard>
-                <ActionCard onClick={() => handleQuickAction('hours')}>
-                  <div className="icon">🕐</div>
-                  <div className="label">Horaires</div>
-                </ActionCard>
-              </QuickActions>
             </ContactCard>
           ))
         ) : (
           <EmptyState>
-            <h3>📱 Contact BIPCOSA06</h3>
-            <p>Les informations de contact seront bientôt disponibles.</p>
+            <h3>✉️ Page Contact</h3>
+            <p>Aucun contenu configuré. Ajoutez du contenu depuis le panel admin.</p>
           </EmptyState>
         )}
       </Content>

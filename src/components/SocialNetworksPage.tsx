@@ -254,13 +254,9 @@ const SocialName = styled.h3`
 
 const SocialCardDescription = styled.p`
   font-size: 14px;
-  color: rgba(255,255,255,0.7);
-  margin: 0;
-  
-  /* Mobile */
-  @media (max-width: 480px) {
-    font-size: 13px;
-  }
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 5px;
+  line-height: 1.4;
 `;
 
 const SocialLink = styled.div`
@@ -308,16 +304,20 @@ const BackButton = styled.button`
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: 40px 20px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 15px;
+  padding: 60px 20px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
   
-  /* Mobile */
-  @media (max-width: 480px) {
-    padding: 30px 15px;
-    border-radius: 12px;
+  h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: rgba(255,255,255,0.9);
+  }
+  
+  p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
   }
 `;
 
@@ -461,7 +461,7 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
       </PageHeader>
       
       <Content>
-        {activeSocialNetworks.length > 0 && (
+        {activeSocialNetworks.length > 0 ? (
           <SocialSection>
             <SocialGrid>
               {activeSocialNetworks.map((network) => (
@@ -491,6 +491,11 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
                                 ))}
               </SocialGrid>
           </SocialSection>
+        ) : (
+          <EmptyState>
+            <h3>🌐 Page Réseaux Sociaux</h3>
+            <p>Aucun réseau social configuré. Ajoutez des réseaux depuis le panel admin.</p>
+          </EmptyState>
         )}
       </Content>
     </div>

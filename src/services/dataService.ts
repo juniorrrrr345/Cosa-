@@ -270,33 +270,19 @@ class DataService {
       // Initialiser les réseaux sociaux
       if (!localStorage.getItem(this.SOCIAL_NETWORKS_KEY)) {
         localStorage.setItem(this.SOCIAL_NETWORKS_KEY, JSON.stringify([]));
-        console.log('🌐 Réseaux sociaux par défaut initialisés');
+        console.log('🌐 Réseaux sociaux initialisés (vide)');
       }
 
       // Initialiser le contenu info
-      const defaultInfoContents = [{
-        id: 'main-info',
-        title: '🌟 BIPCOSA06 - Votre Boutique de Confiance',
-        description: 'Découvrez notre sélection premium de produits de qualité. Livraison rapide et service client exceptionnel.',
-        additionalInfo: 'Qualité garantie - Satisfaction 100%'
-      }];
       if (!localStorage.getItem(this.INFO_CONTENTS_KEY)) {
-        localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify(defaultInfoContents));
-        console.log('ℹ️ Contenu info par défaut initialisé');
+        localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify([]));
+        console.log('ℹ️ Contenu info initialisé (vide)');
       }
 
       // Initialiser le contenu contact
-      const defaultContactContents = [{
-        id: 'main-contact',
-        title: '📱 Contact BIPCOSA06',
-        description: 'Contactez-nous facilement via Telegram pour vos commandes',
-        telegramUsername: '@bipcosa06',
-        telegramLink: 'https://t.me/bipcosa06',
-        additionalInfo: 'Réponse rapide garantie - Service 7j/7'
-      }];
       if (!localStorage.getItem(this.CONTACT_CONTENTS_KEY)) {
-        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(defaultContactContents));
-        console.log('📞 Contenu contact par défaut initialisé');
+        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify([]));
+        console.log('📞 Contenu contact initialisé (vide)');
       }
 
       console.log('✅ DataService - Données par défaut initialisées');

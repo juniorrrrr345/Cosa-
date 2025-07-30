@@ -331,12 +331,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
               )}
             </InfoSection>
           ))
-        ) : (
-          <EmptyState>
-            <h3>ℹ️ Page Info</h3>
-            <p>Aucun contenu configuré. Ajoutez du contenu depuis le panel admin.</p>
-          </EmptyState>
-        )}
+        ) : null}
       </Content>
 
       <BottomNavigation>

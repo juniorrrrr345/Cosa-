@@ -491,12 +491,7 @@ const SocialNetworksPage: React.FC<SocialNetworksPageProps> = ({ onBack }) => {
                                 ))}
               </SocialGrid>
           </SocialSection>
-        ) : (
-          <EmptyState>
-            <h3>🌐 Page Réseaux Sociaux</h3>
-            <p>Aucun réseau social configuré. Ajoutez des réseaux depuis le panel admin.</p>
-          </EmptyState>
-        )}
+        ) : null}
       </Content>
     </div>
   );

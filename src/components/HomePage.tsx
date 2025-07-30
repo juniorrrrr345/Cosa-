@@ -99,6 +99,18 @@ const FiltersSection = styled.div`
   padding: 30px 20px;
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  
+  @media (max-width: 768px) {
+    padding: 20px 15px;
+    gap: 10px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 15px 10px;
+    gap: 8px;
+  }
 `;
 
 const FilterDropdown = styled.div<{ $active?: boolean }>`
@@ -139,8 +151,22 @@ const FilterDropdown = styled.div<{ $active?: boolean }>`
 
 const SelectWrapper = styled.div`
   position: relative;
+  flex: 1;
+  min-width: 140px;
+  max-width: 250px;
+  
+  @media (max-width: 768px) {
+    min-width: 120px;
+    max-width: 200px;
+  }
+  
+  @media (max-width: 480px) {
+    min-width: 100px;
+    max-width: 180px;
+  }
   
   select {
+    width: 100%;
     background: rgba(0,0,0,0.8);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255,255,255,0.3);
@@ -154,7 +180,6 @@ const SelectWrapper = styled.div`
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    min-width: 150px;
     
     &:hover {
       border-color: rgba(255,255,255,0.5);
@@ -177,6 +202,16 @@ const SelectWrapper = styled.div`
     option:checked {
       background: #4ecdc4;
       color: black;
+    }
+    
+    @media (max-width: 768px) {
+      padding: 10px 35px 10px 12px;
+      font-size: 13px;
+    }
+    
+    @media (max-width: 480px) {
+      padding: 8px 30px 8px 10px;
+      font-size: 12px;
     }
   }
 `;

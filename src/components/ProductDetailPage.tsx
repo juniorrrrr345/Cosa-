@@ -524,10 +524,6 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
           <NavIcon>🌐</NavIcon>
           <NavLabel>Réseaux</NavLabel>
         </NavItem>
-        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
-          <NavIcon>✉️</NavIcon>
-          <NavLabel>Contact</NavLabel>
-        </NavItem>
       </BottomNavigation>
     </div>
   );

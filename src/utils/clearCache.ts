@@ -6,8 +6,7 @@ export const clearAllCache = () => {
     'bipcosa06_farms',
     'bipcosa06_config',
     'bipcosa06_socialNetworks',
-    'bipcosa06_infoContents',
-    'bipcosa06_contactContents'
+    'bipcosa06_infoContents'
   ];
 
   keysToRemove.forEach(key => {

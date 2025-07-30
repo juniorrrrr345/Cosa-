@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import HomePage from '@/components/HomePage';
 import InfoPage from '@/components/InfoPage';
-import ContactPage from '@/components/ContactPage';
 import SocialNetworksPage from '@/components/SocialNetworksPage';
 import ProductDetailPage from '@/components/ProductDetailPage';
 import AdminPanel from '@/admin/AdminPanel';
@@ -11,7 +10,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 import SyncNotification from '@/components/SyncNotification';
 
 export default function MainPage() {
-  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'contact' | 'social' | 'product-detail'>('menu');
+  const [currentView, setCurrentView] = useState<'menu' | 'info' | 'admin' | 'social' | 'product-detail'>('menu');
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isFirstVisit, setIsFirstVisit] = useState(true);
@@ -50,8 +49,6 @@ export default function MainPage() {
       setCurrentView('admin');
     } else if (view === 'info') {
       setCurrentView('info');
-    } else if (view === 'contact') {
-      setCurrentView('contact');
     } else if (view === 'social') {
       setCurrentView('social');
     } else {
@@ -145,15 +142,6 @@ export default function MainPage() {
       <>
         <SyncNotification />
         <InfoPage onNavigate={handleNavigation} currentView={currentView} />
-      </>
-    );
-  }
-
-  if (currentView === 'contact') {
-    return (
-      <>
-        <SyncNotification />
-        <ContactPage onNavigate={handleNavigation} currentView={currentView} />
       </>
     );
   }

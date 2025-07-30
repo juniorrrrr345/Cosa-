@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
-import { Product, Category, Farm, ShopConfig, InfoContent, ContactContent } from './dataService';
+import { Product, Category, Farm, ShopConfig, InfoContent } from './dataService';
 
 class MongoService {
   private client: MongoClient | null = null;
@@ -541,25 +541,6 @@ class MongoService {
     }
   }
 
-  async saveContactContent(content: any): Promise<any> {
-    await this.ensureConnection();
-    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
-    
-    try {
-      console.log('💾 Sauvegarde contenu contact MongoDB:', content.title);
-      const result = await this.db.collection('contact_contents').insertOne({
-        ...content,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      });
-      
-      return { ...content, _id: result.insertedId };
-    } catch (error) {
-      console.error('❌ Erreur sauvegarde contenu contact:', error);
-      throw error;
-    }
-  }
-
   async saveSocialNetwork(network: any): Promise<any> {
     await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
@@ -589,20 +570,6 @@ class MongoService {
       return contents;
     } catch (error) {
       console.error('❌ Erreur récupération info contents:', error);
-      return [];
-    }
-  }
-
-  async getContactContents(): Promise<any[]> {
-    await this.ensureConnection();
-    if (!this.isConnected || !this.db) return [];
-    
-    try {
-      const contents = await this.db.collection('contact_contents').find({}).toArray();
-      console.log('📞 Contact contents récupérés:', contents.length);
-      return contents;
-    } catch (error) {
-      console.error('❌ Erreur récupération contact contents:', error);
       return [];
     }
   }
@@ -694,44 +661,6 @@ class MongoService {
     }
   }
 
-  async updateContactContent(id: string, updates: any): Promise<any> {
-    await this.ensureConnection();
-    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
-    
-    try {
-      console.log('🔄 updateContactContent - ID:', id, 'Updates:', updates);
-      
-      // Utiliser updateOne au lieu de findOneAndUpdate pour éviter les problèmes de result.value null
-      const updateResult = await this.db.collection('contact_contents').updateOne(
-        { $or: [{ _id: id }, { id: id }] },
-        { $set: { ...updates, updatedAt: new Date() } }
-      );
-      
-      console.log('🔄 updateContactContent - UpdateResult:', updateResult);
-      
-      if (updateResult.matchedCount === 0) {
-        console.error('❌ Document non trouvé avec ID:', id);
-        throw new Error('Document non trouvé');
-      }
-      
-      if (updateResult.modifiedCount === 0) {
-        console.log('⚠️ Document trouvé mais pas modifié (peut-être déjà à jour)');
-      }
-      
-      // Récupérer le document mis à jour
-      const updatedDoc = await this.db.collection('contact_contents').findOne(
-        { $or: [{ _id: id }, { id: id }] }
-      );
-      
-      console.log('✅ Document après mise à jour:', updatedDoc);
-      return updatedDoc;
-      
-    } catch (error) {
-      console.error('❌ Erreur mise à jour contact content:', error);
-      throw error;
-    }
-  }
-
   async updateSocialNetwork(id: string, updates: any): Promise<any> {
     await this.ensureConnection();
     if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
@@ -761,21 +690,6 @@ class MongoService {
       return result.deletedCount > 0;
     } catch (error) {
       console.error('❌ Erreur suppression info content:', error);
-      throw error;
-    }
-  }
-
-  async deleteContactContent(id: string): Promise<boolean> {
-    await this.ensureConnection();
-    if (!this.isConnected || !this.db) throw new Error('MongoDB non connecté');
-    
-    try {
-      const result = await this.db.collection('contact_contents').deleteOne(
-        { $or: [{ _id: id }, { id: id }] }
-      );
-      return result.deletedCount > 0;
-    } catch (error) {
-      console.error('❌ Erreur suppression contact content:', error);
       throw error;
     }
   }

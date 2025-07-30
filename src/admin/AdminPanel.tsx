@@ -6,7 +6,7 @@ import { dataService, Product, Category, Farm, ShopConfig } from '@/services/dat
 import { SocialNetwork } from '@/models/SocialNetwork';
 
 // Types pour les sections admin
-type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'social-networks' | 'content-info' | 'content-contact' | 'config' | 'background';
+type AdminSection = 'dashboard' | 'products' | 'categories' | 'farms' | 'social-networks' | 'content-info' | 'config' | 'background';
 
 interface AdminPanelProps {
   onBack?: () => void;
@@ -794,16 +794,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     description: '',
     items: []
   });
-  
-  const [contactContent, setContactContent] = useState<ContactContent>({
-    id: 'main-contact',
-    title: '',
-    description: '',
-    telegramUsername: '',
-    telegramLink: '',
-    telegramText: '',
-    additionalInfo: ''
-  });
 
   // État pour les réseaux sociaux
   const [socialNetworks, setSocialNetworks] = useState<SocialNetwork[]>([]);
@@ -900,13 +890,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     try {
       console.log('🔄 AdminPanel refreshData - Début...');
       
-      const [productsData, categoriesData, farmsData, configData, infoData, contactData, socialData] = await Promise.all([
+      const [productsData, categoriesData, farmsData, configData, infoData, socialData] = await Promise.all([
         dataService.getProducts(),
         dataService.getCategories(),
         dataService.getFarms(),
         dataService.getConfig(),
         Promise.resolve(dataService.getInfoContents()),
-        Promise.resolve(dataService.getContactContents()),
         dataService.getSocialNetworks()
       ]);
       
@@ -944,34 +933,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
         });
       }
       
-      if (contactData.length > 0) {
-        const contact = contactData[0];
-        setContactContent({
-          id: contact.id || contact._id,
-          title: contact.title || '',
-          description: contact.description || '',
-          telegramUsername: contact.telegramUsername || contact.contactValue || '',
-          telegramLink: contact.telegramLink || '',
-          additionalInfo: contact.additionalInfo || ''
-        });
-      } else {
-        // Si aucun contenu contact n'existe, créer un nouveau
-        setContactContent({
-          id: 'new-contact',
-          title: '',
-          description: '',
-          telegramUsername: '',
-          telegramLink: '',
-          additionalInfo: ''
-        });
-      }
-      
       console.log('✅ AdminPanel: Données actualisées avec succès', {
         products: productsData.length,
         categories: categoriesData.length,
         farms: farmsData.length,
-        info: infoData.length,
-        contact: contactData.length
+        info: infoData.length
       });
     } catch (error) {
       console.error('❌ Erreur lors de l\'actualisation des données:', error);
@@ -1029,55 +995,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     }
   };
 
-  const handleSaveContactContent = async () => {
-    try {
-      console.log('💾 Sauvegarde contenu contact:', contactContent);
-      
-      // Adapter les données pour correspondre à la structure API
-      const data = {
-        title: contactContent.title,
-        description: contactContent.description,
-        telegramUsername: contactContent.telegramUsername,
-        telegramLink: contactContent.telegramLink,
-        telegramText: contactContent.telegramText || 'Contacter',
-        additionalInfo: contactContent.additionalInfo
-      };
-      
-      // Si tous les champs sont vides, supprimer le contenu au lieu de le sauvegarder
-      if (!data.title.trim() && !data.description.trim() && !data.telegramUsername.trim() && !data.telegramLink.trim() && !data.additionalInfo.trim()) {
-        if (contactContent.id !== 'new-contact') {
-          await dataService.deleteContactContent(contactContent.id);
-          setContactContent({
-            id: 'new-contact',
-            title: '',
-            description: '',
-            telegramUsername: '',
-            telegramLink: '',
-            telegramText: '',
-            additionalInfo: ''
-          });
-        }
-      } else {
-        if (contactContent.id === 'new-contact') {
-          // Créer un nouveau contenu
-          await dataService.addContactContent(data);
-        } else {
-          // Mettre à jour le contenu existant
-          await dataService.updateContactContent(contactContent.id, data);
-        }
-      }
-      
-      // Recharger les données pour synchroniser
-      await refreshData();
-      
-      showNotification('✅ Contenu Contact sauvegardé et synchronisé !');
-      console.log('💾 Admin: Contact sauvegardé et synchronisé');
-    } catch (error) {
-      console.error('❌ Erreur lors de la sauvegarde Contact:', error);
-      showNotification('✅ Sauvegarde réussie !');
-    }
-  };
-
   const menuItems = [
     { id: 'dashboard' as AdminSection, icon: '📊', label: 'Tableau de bord' },
     { id: 'products' as AdminSection, icon: '🌿', label: 'Produits' },
@@ -1086,7 +1003,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
     { id: 'social-networks' as AdminSection, icon: '🌐', label: 'Réseaux Sociaux' },
     { id: 'background' as AdminSection, icon: '🖼️', label: 'Background' },
     { id: 'content-info' as AdminSection, icon: 'ℹ️', label: 'Contenu Info' },
-    { id: 'content-contact' as AdminSection, icon: '✉️', label: 'Contenu Contact' },
     { id: 'config' as AdminSection, icon: '⚙️', label: 'Configuration' },
   ];
 
@@ -1871,92 +1787,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               </div>
             </ContentSection>
           );
-
-        case 'content-contact':
-          return (
-            <ContentSection>
-              <SectionTitle>✉️ Gestion du Contenu Contact</SectionTitle>
-              <p style={{ textAlign: 'center', marginBottom: '30px', color: 'rgba(255,255,255,0.8)' }}>
-                Gérez les informations de contact qui s'affichent dans la page "Contact" de la boutique
-              </p>
-              
-              <div style={{ display: 'grid', gap: '20px' }}>
-                <FormGroup>
-                  <Label>Nom d'utilisateur Telegram</Label>
-                  <Input 
-                    type="text" 
-                    placeholder="Ex: @bipcosa06"
-                    value={contactContent.telegramUsername || ''}
-                    onChange={(e) => setContactContent({...contactContent, telegramUsername: e.target.value})}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Lien Telegram complet</Label>
-                  <Input 
-                    type="url" 
-                    placeholder="Ex: https://t.me/bipcosa06"
-                    value={contactContent.telegramLink || ''}
-                    onChange={(e) => setContactContent({...contactContent, telegramLink: e.target.value})}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Texte du bouton Telegram</Label>
-                  <Input 
-                    type="text" 
-                    placeholder="Ex: Contactez-nous sur Telegram"
-                    value={contactContent.telegramText || ''}
-                    onChange={(e) => setContactContent({...contactContent, telegramText: e.target.value})}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Message d'accueil</Label>
-                  <TextArea 
-                    placeholder="Message qui s'affiche sur la page Contact..."
-                    value={contactContent.description}
-                    onChange={(e) => setContactContent({...contactContent, description: e.target.value})}
-                    rows={4}
-                  />
-                </FormGroup>
-                
-                <FormGroup>
-                  <Label>Informations supplémentaires</Label>
-                  <TextArea 
-                    placeholder="Informations additionnelles (horaires, zones de livraison, etc.)..."
-                    value={contactContent.additionalInfo || ''}
-                    onChange={(e) => setContactContent({...contactContent, additionalInfo: e.target.value})}
-                    rows={6}
-                  />
-                </FormGroup>
-                
-                <div style={{ textAlign: 'center', display: 'flex', gap: '15px', justifyContent: 'center' }}>
-                  <Button onClick={handleSaveContactContent}>💾 Sauvegarder le contenu Contact</Button>
-                  <ActionButton 
-                    $variant="delete" 
-                    onClick={async () => {
-                      if (confirm('🗑️ Êtes-vous sûr de vouloir vider complètement le contenu Contact ?')) {
-                        try {
-                          if (contactContent.id !== 'new-contact') {
-                            await dataService.deleteContactContent(contactContent.id);
-                          }
-                          setContactContent({
-                            id: 'new-contact',
-                            title: '',
-                            description: '',
-                            telegramUsername: '',
-                            telegramLink: '',
-                            telegramText: '',
-                            additionalInfo: ''
-                          });
-                          await refreshData();
-                          showNotification('✅ Contenu Contact vidé avec succès');
-                        } catch (error) {
-                          console.error('❌ Erreur suppression contenu contact:', error);
-                          alert('❌ Erreur lors de la suppression: ' + error.message);
-                        }
-                      }
                     }}
                   >
                     🗑️ Vider le contenu

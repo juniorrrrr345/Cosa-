@@ -626,10 +626,6 @@ const HomePage: React.FC<HomePageProps> = ({ onNavigate, onProductClick, current
           <NavIcon>🌐</NavIcon>
           <NavLabel>Réseaux</NavLabel>
         </NavItem>
-        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
-          <NavIcon>✉️</NavIcon>
-          <NavLabel>Contact</NavLabel>
-        </NavItem>
       </BottomNavigation>
     </div>
   );

@@ -352,10 +352,6 @@ const InfoPage: React.FC<InfoPageProps> = ({ onNavigate, currentView = 'info' })
           <NavIcon>🌐</NavIcon>
           <NavLabel>Réseaux</NavLabel>
         </NavItem>
-        <NavItem $active={currentView === 'contact'} onClick={() => onNavigate?.('contact')}>
-          <NavIcon>✉️</NavIcon>
-          <NavLabel>Contact</NavLabel>
-        </NavItem>
       </BottomNavigation>
     </div>
   );

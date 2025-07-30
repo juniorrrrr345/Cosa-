@@ -66,13 +66,3 @@ export interface InfoContent {
   additionalInfo?: string;
   items?: string[];
 }
-
-export interface ContactContent {
-  id: string;
-  title: string;
-  description: string;
-  telegramUsername?: string;
-  telegramLink?: string;
-  telegramText?: string;
-  additionalInfo?: string;
-}

@@ -1,5 +1,5 @@
 // Service de gestion des données BIPCOSA06 avec APIs MongoDB et Cloudinary
-import { Product, Category, Farm, ShopConfig, InfoContent, ContactContent } from './types';
+import { Product, Category, Farm, ShopConfig, InfoContent } from './types';
 
 // AUCUNE DONNÉE STATIQUE - BOUTIQUE COMPLÈTEMENT VIDE PAR DÉFAUT
 
@@ -20,7 +20,7 @@ class DataService {
   private readonly FARMS_KEY = 'bipcosa06_farms';
   private readonly CONFIG_KEY = 'bipcosa06_config';
   private readonly INFO_CONTENTS_KEY = 'bipcosa06_info_contents';
-  private readonly CONTACT_CONTENTS_KEY = 'bipcosa06_contact_contents';
+
   private readonly SOCIAL_NETWORKS_KEY = 'bipcosa06_social_networks';
   private readonly DATA_VERSION_KEY = 'bipcosa06_data_version';
   
@@ -277,12 +277,6 @@ class DataService {
       if (!localStorage.getItem(this.INFO_CONTENTS_KEY)) {
         localStorage.setItem(this.INFO_CONTENTS_KEY, JSON.stringify([]));
         console.log('ℹ️ Contenu info initialisé (vide)');
-      }
-
-      // Initialiser le contenu contact
-      if (!localStorage.getItem(this.CONTACT_CONTENTS_KEY)) {
-        localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify([]));
-        console.log('📞 Contenu contact initialisé (vide)');
       }
 
       console.log('✅ DataService - Données par défaut initialisées');
@@ -1124,116 +1118,6 @@ class DataService {
       }
     } catch (error) {
       console.error('❌ Erreur deleteInfoContent:', error);
-      throw error;
-    }
-  }
-
-  // === CONTENU CONTACT - API MongoDB ===
-  async getContactContents(): Promise<any[]> {
-    try {
-      console.log('📞 getContactContents - TOUJOURS depuis MongoDB API...');
-      const response = await fetch('/api/contact-contents');
-      if (response.ok) {
-        const contactContents = await response.json();
-        console.log('📞 Contenus contact chargés depuis MongoDB:', contactContents.length);
-        
-        // Sauvegarder dans localStorage pour éviter les flashs
-        if (typeof window !== 'undefined') {
-          localStorage.setItem(this.CONTACT_CONTENTS_KEY, JSON.stringify(contactContents));
-        }
-        
-        return contactContents;
-      } else {
-        console.error('❌ API contact-contents a échoué:', response.status);
-        throw new Error('API MongoDB indisponible');
-      }
-    } catch (error) {
-      console.error('❌ Erreur critique API contact-contents:', error);
-      return []; // Retour vide en cas d'erreur
-    }
-  }
-
-  async updateContactContent(id: string, updates: Partial<any>): Promise<any> {
-    try {
-      console.log('📞 updateContactContent - MongoDB API:', id);
-      
-      const response = await fetch('/api/contact-contents', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, ...updates })
-      });
-
-      if (response.ok) {
-        const updatedContent = await response.json();
-        console.log('✅ Contenu contact modifié dans MongoDB');
-        
-        // Notifier tous les appareils
-        this.notifyDataUpdate();
-        
-        return updatedContent;
-      } else {
-        console.log('✅ Sauvegarde réussie !');
-        this.notifyDataUpdate();
-        return { success: true };
-      }
-    } catch (error) {
-      console.error('❌ Erreur updateContactContent:', error);
-      throw error;
-    }
-  }
-
-  async addContactContent(content: any): Promise<any> {
-    try {
-      console.log('📞 addContactContent - MongoDB API:', content.title);
-      
-      const response = await fetch('/api/contact-contents', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(content)
-      });
-
-      if (response.ok) {
-        const savedContent = await response.json();
-        console.log('✅ Contenu contact ajouté dans MongoDB');
-        
-        // Notifier tous les appareils
-        this.notifyDataUpdate();
-        
-        return savedContent;
-      } else {
-        // Pas d'erreur - considérer comme succès
-        console.log('✅ Sauvegarde réussie !');
-        this.notifyDataUpdate();
-        return { success: true };
-      }
-    } catch (error) {
-      console.error('❌ Erreur addContactContent:', error);
-      throw error;
-    }
-  }
-
-  async deleteContactContent(id: string): Promise<boolean> {
-    try {
-      console.log('📞 deleteContactContent - MongoDB API:', id);
-      
-      const response = await fetch(`/api/contact-contents?id=${id}`, {
-        method: 'DELETE'
-      });
-
-      if (response.ok) {
-        console.log('✅ Contenu contact supprimé dans MongoDB');
-        
-        // Notifier tous les appareils
-        this.notifyDataUpdate();
-        
-        return true;
-      } else {
-        console.log('✅ Sauvegarde réussie !');
-        this.notifyDataUpdate();
-        return true;
-      }
-    } catch (error) {
-      console.error('❌ Erreur deleteContactContent:', error);
       throw error;
     }
   }

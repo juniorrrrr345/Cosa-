@@ -1787,14 +1787,6 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onBack }) => {
               </div>
             </ContentSection>
           );
-                    }}
-                  >
-                    🗑️ Vider le contenu
-                  </ActionButton>
-                </div>
-              </div>
-            </ContentSection>
-          );
 
         case 'background':
           return (

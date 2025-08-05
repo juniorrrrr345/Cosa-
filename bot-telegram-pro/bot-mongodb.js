@@ -150,8 +150,8 @@ function setupBotHandlers() {
         // Sauvegarder l'utilisateur
         await saveUser(userId, msg.from);
         
-        // NE PAS supprimer la commande /start elle-même
-        // Mais supprimer tous les anciens messages du bot
+        // NE PAS supprimer la commande /start - elle reste visible
+        // Supprimer seulement les anciens messages du bot
         await deleteAllMessages(chatId);
         
         // Message personnalisé
@@ -639,7 +639,7 @@ async function handleInfo(chatId) {
 }
 
 async function handleBackToMenu(chatId, userId) {
-    // Supprimer tous les anciens messages du bot (mais pas les messages utilisateur)
+    // Supprimer tous les anciens messages
     await deleteAllMessages(chatId);
     
     const user = await User.findOne({ userId });

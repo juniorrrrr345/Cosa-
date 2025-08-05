@@ -48,7 +48,7 @@ PORT = 3000
 
 ⚠️ **Important** : Après le premier déploiement, ajoutez :
 ```
-WEBHOOK_URL = https://cosa-29zq.onrender.com
+WEBHOOK_URL = https://bipcosa06-bot.onrender.com
 ```
 
 ### 4. Déployer
@@ -61,8 +61,8 @@ WEBHOOK_URL = https://cosa-29zq.onrender.com
 
 Une fois déployé :
 
-1. L'URL de votre service est : `https://cosa-29zq.onrender.com`
-2. Ajoutez la variable `WEBHOOK_URL = https://cosa-29zq.onrender.com`
+1. Copiez l'URL de votre service : `https://bipcosa06-bot.onrender.com`
+2. Ajoutez la variable `WEBHOOK_URL` avec cette URL
 3. Le bot redémarrera automatiquement
 
 ## ✅ Vérification

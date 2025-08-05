@@ -18,10 +18,10 @@ PORT=3000
 
 ## APRÈS le déploiement
 
-1. Copiez l'URL de votre service Render (ex: `https://bipcosa06-bot.onrender.com`)
+1. Copiez l'URL de votre service Render : `https://cosa-29zq.onrender.com`
 2. Ajoutez cette variable :
 ```
-WEBHOOK_URL=https://bipcosa06-bot.onrender.com
+WEBHOOK_URL=https://cosa-29zq.onrender.com
 ```
 3. Le bot redémarrera automatiquement
 

@@ -150,8 +150,9 @@ function setupBotHandlers() {
         // Sauvegarder l'utilisateur
         await saveUser(userId, msg.from);
         
-        // NE PAS supprimer les messages pour /start
-        // Juste envoyer le message d'accueil normalement
+        // NE PAS supprimer la commande /start elle-même
+        // Mais supprimer tous les anciens messages du bot
+        await deleteAllMessages(chatId);
         
         // Message personnalisé
         const firstName = msg.from.first_name || 'là';
@@ -159,26 +160,22 @@ function setupBotHandlers() {
             ? config.welcomeMessage.replace('{firstname}', firstName)
             : `Bienvenue ${firstName}! 👋`;
         
-        // Envoyer le message d'accueil SANS suppression
+        // Envoyer le message d'accueil
         if (config.welcomeImage) {
             try {
-                await bot.sendPhoto(chatId, config.welcomeImage, {
+                const sentMsg = await bot.sendPhoto(chatId, config.welcomeImage, {
                     caption: welcomeText,
                     reply_markup: getMainKeyboard(config),
                     parse_mode: 'HTML'
                 });
+                activeMessages[chatId] = sentMsg.message_id;
+                addToHistory(chatId, sentMsg.message_id);
             } catch (error) {
                 // Si l'image échoue, envoyer juste le texte
-                await bot.sendMessage(chatId, welcomeText, {
-                    reply_markup: getMainKeyboard(config),
-                    parse_mode: 'HTML'
-                });
+                await sendOrEditMessage(chatId, welcomeText, getMainKeyboard(config), 'HTML', true);
             }
         } else {
-            await bot.sendMessage(chatId, welcomeText, {
-                reply_markup: getMainKeyboard(config),
-                parse_mode: 'HTML'
-            });
+            await sendOrEditMessage(chatId, welcomeText, getMainKeyboard(config), 'HTML', true);
         }
     });
 
@@ -642,8 +639,8 @@ async function handleInfo(chatId) {
 }
 
 async function handleBackToMenu(chatId, userId) {
-    // NE PAS supprimer les messages pour le retour au menu
-    // Juste envoyer un nouveau message
+    // Supprimer tous les anciens messages du bot (mais pas les messages utilisateur)
+    await deleteAllMessages(chatId);
     
     const user = await User.findOne({ userId });
     const firstName = user?.firstName || 'là';
@@ -651,26 +648,22 @@ async function handleBackToMenu(chatId, userId) {
         ? config.welcomeMessage.replace('{firstname}', firstName)
         : `Bienvenue ${firstName}! 👋`;
     
-    // Afficher le message d'accueil SANS suppression
+    // Afficher le message d'accueil avec l'image si elle existe
     if (config.welcomeImage) {
         try {
-            await bot.sendPhoto(chatId, config.welcomeImage, {
+            const sentMsg = await bot.sendPhoto(chatId, config.welcomeImage, {
                 caption: welcomeText,
                 reply_markup: getMainKeyboard(config),
                 parse_mode: 'HTML'
             });
+            activeMessages[chatId] = sentMsg.message_id;
+            addToHistory(chatId, sentMsg.message_id);
         } catch (error) {
             // Si l'image échoue, envoyer juste le texte
-            await bot.sendMessage(chatId, welcomeText, {
-                reply_markup: getMainKeyboard(config),
-                parse_mode: 'HTML'
-            });
+            await sendOrEditMessage(chatId, welcomeText, getMainKeyboard(config), 'HTML', true);
         }
     } else {
-        await bot.sendMessage(chatId, welcomeText, {
-            reply_markup: getMainKeyboard(config),
-            parse_mode: 'HTML'
-        });
+        await sendOrEditMessage(chatId, welcomeText, getMainKeyboard(config), 'HTML', true);
     }
 }
 

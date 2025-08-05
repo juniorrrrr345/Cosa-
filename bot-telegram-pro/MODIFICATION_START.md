@@ -1,25 +1,25 @@
-# ✅ Modification : /start sans suppression
+# ✅ Modification : /start garde la commande visible
 
 ## Ce qui a été modifié :
 
 1. **Commande `/start`** :
-   - ❌ Ne supprime PLUS les messages
-   - ✅ Envoie simplement le message d'accueil
-   - ✅ Garde l'historique de conversation
+   - ✅ La commande `/start` RESTE VISIBLE dans le chat
+   - ✅ Supprime tous les anciens messages du BOT
+   - ✅ Affiche le nouveau menu principal
 
 2. **Bouton "Retour au menu"** :
-   - ❌ Ne supprime PLUS les messages
-   - ✅ Ajoute un nouveau message à chaque fois
+   - ✅ Supprime les anciens messages du bot
+   - ✅ Affiche un nouveau menu principal
 
 3. **Commande `/admin`** :
-   - ✅ CONTINUE à supprimer les messages
+   - ✅ Supprime la commande `/admin` ET tous les messages
    - ✅ Interface propre pour l'administration
 
-## Résultat :
+## Comportement :
 
-- Les utilisateurs voient tous leurs messages avec `/start`
-- L'admin a toujours une interface propre avec `/admin`
-- Exactement comme demandé !
+- Avec `/start` : La commande reste visible, seuls les messages du bot sont supprimés
+- Avec `/admin` : Tout est supprimé pour une interface propre
+- Exactement comme le bot LANATION original !
 
 ---
 

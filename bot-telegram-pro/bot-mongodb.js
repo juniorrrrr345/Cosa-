@@ -24,7 +24,7 @@ if (!token || !adminId || !mongoUri) {
 // Initialisation du bot
 const bot = new TelegramBot(token, { 
   polling: !isProduction,
-  webHook: isProduction ? { port } : false
+  webHook: isProduction ? true : false
 });
 
 // Configuration du webhook en production
@@ -49,10 +49,7 @@ app.get('/', (req, res) => {
 const userSessions = new Map();
 
 // Connexion à MongoDB
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(async () => {
+mongoose.connect(mongoUri).then(async () => {
   console.log('✅ Connecté à MongoDB');
   await ConfigManager.initialize();
   
@@ -819,13 +816,26 @@ bot.on('webhook_error', (error) => {
   console.error('Erreur de webhook:', error);
 });
 
-// Démarrer le serveur
-app.listen(port, () => {
-  console.log(`🚀 Serveur démarré sur le port ${port}`);
-  console.log(`🤖 Bot @${bot.options.username || 'telegram_bot'} est en ligne!`);
-  console.log(`📊 Mode: ${isProduction ? 'Production' : 'Development'}`);
-  console.log(`🔗 Webhook: ${isProduction ? 'Activé' : 'Désactivé (Polling)'}`);
-});
+// Démarrer le serveur seulement en production ou si webhook
+if (isProduction || webhookUrl) {
+  const server = app.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Serveur démarré sur le port ${port}`);
+    console.log(`🤖 Bot @${bot.options.username || 'telegram_bot'} est en ligne!`);
+    console.log(`📊 Mode: ${isProduction ? 'Production' : 'Development'}`);
+    console.log(`🔗 Webhook: ${isProduction ? 'Activé' : 'Désactivé (Polling)'}`);
+  });
+  
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`❌ Le port ${port} est déjà utilisé`);
+      process.exit(1);
+    }
+  });
+} else {
+  console.log(`🤖 Bot en mode développement (polling)`);
+  console.log(`📊 Mode: Development`);
+  console.log(`🔗 Webhook: Désactivé (Polling)`);
+}
 
 // Gestion de l'arrêt gracieux
 process.on('SIGINT', async () => {

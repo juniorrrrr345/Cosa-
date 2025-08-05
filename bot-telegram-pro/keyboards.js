@@ -1,214 +1,127 @@
-const ConfigManager = require('./config');
-
-class Keyboards {
-  // Clavier principal avec réseaux sociaux
-  static async getMainKeyboard() {
-    const socialNetworks = await ConfigManager.getSocialNetworks();
+// Clavier principal
+function getMainKeyboard(config) {
     const keyboard = [];
     
-    // Ajouter les réseaux sociaux par paires
-    for (let i = 0; i < socialNetworks.length; i += 2) {
-      const row = [];
-      row.push({
-        text: `${socialNetworks[i].emoji} ${socialNetworks[i].name}`,
-        url: socialNetworks[i].url
-      });
-      
-      if (socialNetworks[i + 1]) {
-        row.push({
-          text: `${socialNetworks[i + 1].emoji} ${socialNetworks[i + 1].name}`,
-          url: socialNetworks[i + 1].url
-        });
-      }
-      
-      keyboard.push(row);
+    // Première ligne - Mini App si configurée
+    if (config.miniApp && config.miniApp.url) {
+        keyboard.push([{
+            text: config.miniApp.text || '🎮 Mini Application',
+            web_app: { url: config.miniApp.url }
+        }]);
     }
     
-    // Ajouter les boutons d'action
+    // Bouton Informations
     keyboard.push([
-      { text: 'ℹ️ Information', callback_data: 'info' },
-      { text: '📊 Statistiques', callback_data: 'stats' }
+        { text: 'ℹ️ Informations', callback_data: 'info' }
     ]);
     
-    keyboard.push([
-      { text: '🔄 Rafraîchir', callback_data: 'refresh' }
-    ]);
-    
-    return {
-      inline_keyboard: keyboard
-    };
-  }
-
-  // Clavier d'administration principal
-  static getAdminKeyboard() {
-    return {
-      inline_keyboard: [
-        [
-          { text: '📝 Message d\'accueil', callback_data: 'admin_welcome' },
-          { text: '🖼 Photo d\'accueil', callback_data: 'admin_photo' }
-        ],
-        [
-          { text: '🔗 Réseaux sociaux', callback_data: 'admin_social' },
-          { text: 'ℹ️ Texte info', callback_data: 'admin_info' }
-        ],
-        [
-          { text: '📊 Statistiques', callback_data: 'admin_stats' },
-          { text: '👥 Utilisateurs', callback_data: 'admin_users' }
-        ],
-        [
-          { text: '📢 Diffusion', callback_data: 'admin_broadcast' },
-          { text: '⚙️ Paramètres', callback_data: 'admin_settings' }
-        ],
-        [
-          { text: '🔙 Retour au menu', callback_data: 'start' }
-        ]
-      ]
-    };
-  }
-
-  // Clavier de gestion des réseaux sociaux
-  static async getSocialManagementKeyboard() {
-    const socialNetworks = await ConfigManager.getSocialNetworks();
-    const keyboard = [];
-    
-    // Lister tous les réseaux sociaux avec options
-    for (const network of socialNetworks) {
-      keyboard.push([
-        {
-          text: `${network.emoji} ${network.name}`,
-          callback_data: `social_view_${network._id}`
-        },
-        {
-          text: '✏️',
-          callback_data: `social_edit_${network._id}`
-        },
-        {
-          text: '🗑',
-          callback_data: `social_delete_${network._id}`
+    // Réseaux sociaux directement dans le menu
+    if (config.socialNetworks && config.socialNetworks.length > 0) {
+        const buttonsPerRow = config.socialButtonsPerRow || 3;
+        
+        for (let i = 0; i < config.socialNetworks.length; i += buttonsPerRow) {
+            const row = [];
+            for (let j = 0; j < buttonsPerRow && i + j < config.socialNetworks.length; j++) {
+                const network = config.socialNetworks[i + j];
+                row.push({
+                    text: `${network.emoji} ${network.name}`,
+                    url: network.url
+                });
+            }
+            keyboard.push(row);
         }
-      ]);
     }
     
-    keyboard.push([
-      { text: '➕ Ajouter un réseau', callback_data: 'social_add' }
-    ]);
-    
-    keyboard.push([
-      { text: '🔙 Retour admin', callback_data: 'admin' }
-    ]);
-    
-    return {
-      inline_keyboard: keyboard
-    };
-  }
-
-  // Clavier de confirmation
-  static getConfirmKeyboard(action) {
-    return {
-      inline_keyboard: [
-        [
-          { text: '✅ Confirmer', callback_data: `confirm_${action}` },
-          { text: '❌ Annuler', callback_data: 'cancel' }
-        ]
-      ]
-    };
-  }
-
-  // Clavier de retour
-  static getBackKeyboard(destination = 'admin') {
-    return {
-      inline_keyboard: [
-        [
-          { text: '🔙 Retour', callback_data: destination }
-        ]
-      ]
-    };
-  }
-
-  // Clavier des paramètres
-  static getSettingsKeyboard(settings) {
-    const keyboard = [
-      [
-        {
-          text: `🔧 Mode maintenance: ${settings.maintenanceMode ? '✅' : '❌'}`,
-          callback_data: 'toggle_maintenance'
-        }
-      ],
-      [
-        {
-          text: `🗑 Suppression auto: ${settings.autoDeleteMessages ? '✅' : '❌'}`,
-          callback_data: 'toggle_autodelete'
-        }
-      ],
-      [
-        {
-          text: `📢 Diffusion: ${settings.broadcastEnabled ? '✅' : '❌'}`,
-          callback_data: 'toggle_broadcast'
-        }
-      ],
-      [
-        {
-          text: `📊 Statistiques: ${settings.statsEnabled ? '✅' : '❌'}`,
-          callback_data: 'toggle_stats'
-        }
-      ],
-      [
-        { text: '🔄 Réinitialiser config', callback_data: 'reset_config' }
-      ],
-      [
-        { text: '🔙 Retour admin', callback_data: 'admin' }
-      ]
-    ];
-    
-    return {
-      inline_keyboard: keyboard
-    };
-  }
-
-  // Clavier de gestion des utilisateurs
-  static getUserManagementKeyboard() {
-    return {
-      inline_keyboard: [
-        [
-          { text: '👥 Liste des utilisateurs', callback_data: 'users_list' },
-          { text: '🚫 Utilisateurs bloqués', callback_data: 'users_blocked' }
-        ],
-        [
-          { text: '👑 Administrateurs', callback_data: 'users_admins' },
-          { text: '📊 Statistiques users', callback_data: 'users_stats' }
-        ],
-        [
-          { text: '🔍 Rechercher', callback_data: 'users_search' },
-          { text: '📤 Exporter', callback_data: 'users_export' }
-        ],
-        [
-          { text: '🔙 Retour admin', callback_data: 'admin' }
-        ]
-      ]
-    };
-  }
-
-  // Clavier de pagination
-  static getPaginationKeyboard(currentPage, totalPages, prefix) {
-    const keyboard = [];
-    const row = [];
-    
-    if (currentPage > 1) {
-      row.push({ text: '◀️', callback_data: `${prefix}_page_${currentPage - 1}` });
-    }
-    
-    row.push({ text: `${currentPage}/${totalPages}`, callback_data: 'noop' });
-    
-    if (currentPage < totalPages) {
-      row.push({ text: '▶️', callback_data: `${prefix}_page_${currentPage + 1}` });
-    }
-    
-    if (row.length > 0) {
-      keyboard.push(row);
-    }
-    
-    return keyboard;
-  }
+    return { inline_keyboard: keyboard };
 }
 
-module.exports = Keyboards;
+// Clavier admin complet
+function getAdminKeyboard() {
+    return {
+        inline_keyboard: [
+            [
+                { text: '📝 Modifier le message d\'accueil', callback_data: 'admin_message' }
+            ],
+            [
+                { text: '🖼️ Modifier la photo d\'accueil', callback_data: 'admin_photo' }
+            ],
+            [
+                { text: '📱 Modifier la mini application', callback_data: 'admin_miniapp' }
+            ],
+            [
+                { text: '🌐 Gérer les réseaux sociaux', callback_data: 'admin_social' }
+            ],
+            [
+                { text: 'ℹ️ Modifier les informations', callback_data: 'admin_info' }
+            ],
+            [
+                { text: '📢 Envoyer un message à tous', callback_data: 'admin_broadcast' }
+            ],
+            [
+                { text: '👥 Gérer les administrateurs', callback_data: 'admin_admins' }
+            ],
+            [
+                { text: '📊 Statistiques du bot', callback_data: 'admin_stats' }
+            ]
+        ]
+    };
+}
+
+// Clavier de gestion des réseaux sociaux
+function getSocialManageKeyboard() {
+    return {
+        inline_keyboard: [
+            [
+                { text: '➕ Ajouter', callback_data: 'social_add' },
+                { text: '❌ Supprimer', callback_data: 'social_remove' }
+            ],
+            [
+                { text: '📐 Disposition', callback_data: 'social_layout' }
+            ],
+            [
+                { text: '🔙 Retour', callback_data: 'admin_back' }
+            ]
+        ]
+    };
+}
+
+// Clavier de disposition des réseaux sociaux
+function getSocialLayoutKeyboard() {
+    return {
+        inline_keyboard: [
+            [
+                { text: '1️⃣', callback_data: 'layout_1' },
+                { text: '2️⃣', callback_data: 'layout_2' },
+                { text: '3️⃣', callback_data: 'layout_3' }
+            ],
+            [
+                { text: '4️⃣', callback_data: 'layout_4' },
+                { text: '5️⃣', callback_data: 'layout_5' },
+                { text: '6️⃣', callback_data: 'layout_6' }
+            ],
+            [
+                { text: '🔙 Retour', callback_data: 'admin_social' }
+            ]
+        ]
+    };
+}
+
+// Clavier de confirmation
+function getConfirmKeyboard() {
+    return {
+        inline_keyboard: [
+            [
+                { text: '✅ Confirmer', callback_data: 'confirm' },
+                { text: '❌ Annuler', callback_data: 'cancel' }
+            ]
+        ]
+    };
+}
+
+module.exports = {
+    getMainKeyboard,
+    getAdminKeyboard,
+    getSocialManageKeyboard,
+    getSocialLayoutKeyboard,
+    getConfirmKeyboard
+};

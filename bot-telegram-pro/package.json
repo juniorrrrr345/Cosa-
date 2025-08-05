@@ -1,29 +1,22 @@
 {
-  "name": "bot-telegram-professionnel",
+  "name": "telegram-bot-lanation",
   "version": "1.0.0",
-  "description": "Bot Telegram professionnel avec panel d'administration",
+  "description": "Bot Telegram avec MongoDB pour LANATION",
   "main": "bot-mongodb.js",
   "scripts": {
     "start": "node bot-mongodb.js",
+    "webhook": "node bot-webhook.js",
     "dev": "nodemon bot-mongodb.js",
     "test": "node test-local.js"
   },
-  "keywords": [
-    "telegram",
-    "bot",
-    "admin",
-    "mongodb"
-  ],
-  "author": "LANATION",
-  "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "mongoose": "^8.1.1",
     "node-telegram-bot-api": "^0.64.0",
-    "express": "^4.18.2"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^8.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.2"
   },
   "engines": {
     "node": ">=14.0.0"

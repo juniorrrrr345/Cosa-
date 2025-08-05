@@ -1,232 +1,165 @@
-# Bot Telegram Professionnel 🤖
+# Bot Telegram avec Interface d'Administration
 
-Bot Telegram complet avec panel d'administration, prêt à l'emploi et déployable en 5 minutes.
+Un bot Telegram simple et efficace avec une interface d'administration complète.
 
-## 📦 Fonctionnalités
+## 🚀 Fonctionnalités
 
 ### Pour les utilisateurs
-- ✅ Menu principal avec photo et message personnalisable
-- ✅ Réseaux sociaux directement accessibles
-- ✅ Page d'information personnalisable
-- ✅ Statistiques publiques (si activées)
-- ✅ Interface fluide avec suppression automatique des anciens messages
+- **Message d'accueil** avec photo personnalisable
+- **Mini Application** intégrée (Web App Telegram)
+- **Boutons de réseaux sociaux** configurables
+- **Section Informations** avec contenu personnalisable
 
-### Pour les administrateurs
-- ✅ Panel admin complet via `/admin`
-- ✅ Modification du message et photo d'accueil
-- ✅ Gestion des réseaux sociaux (ajouter, modifier, supprimer)
-- ✅ Diffusion de messages à tous les utilisateurs
-- ✅ Statistiques détaillées
-- ✅ Gestion des utilisateurs
-- ✅ Mode maintenance
-- ✅ Paramètres configurables
+### Pour l'administrateur
+- Commande `/admin` pour accéder au menu d'administration
+- Modifier le message et la photo d'accueil
+- Gérer la mini application
+- Ajouter/supprimer des réseaux sociaux
+- Modifier le texte des informations
 
-## 🚀 Installation rapide
+## 📋 Prérequis
 
-### 1. Prérequis
-- Node.js 14+ installé
-- Un compte MongoDB (gratuit sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas))
+- Node.js (version 14 ou supérieure)
 - Un bot Telegram (créé via [@BotFather](https://t.me/botfather))
+- Votre ID Telegram (obtenu via [@userinfobot](https://t.me/userinfobot))
 
-### 2. Installation
+## 🛠️ Installation
 
+1. **Cloner ou télécharger le projet**
+
+2. **Installer les dépendances**
 ```bash
-# Cloner le repository
-git clone https://github.com/juniorrrrr345/LANATION.git
-cd LANATION/bot-telegram-pro
-
-# Installer les dépendances
+cd telegram-bot
 npm install
-
-# Copier le fichier d'environnement
-cp .env.example .env
 ```
 
-### 3. Configuration
-
-Éditez le fichier `.env` avec vos informations :
-
+3. **Configurer les variables d'environnement**
+   - Copier `.env.example` vers `.env`
+   - Modifier `.env` avec vos informations :
 ```env
 BOT_TOKEN=votre_token_bot_telegram
 ADMIN_ID=votre_id_telegram
-MONGODB_URI=votre_uri_mongodb
 ```
 
-#### Comment obtenir ces informations :
-
-**BOT_TOKEN** :
-1. Parlez à [@BotFather](https://t.me/botfather)
-2. Créez un nouveau bot avec `/newbot`
-3. Copiez le token fourni
-
-**ADMIN_ID** :
-1. Parlez à [@userinfobot](https://t.me/userinfobot)
-2. Copiez votre ID numérique
-
-**MONGODB_URI** :
-1. Créez un compte sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Créez un cluster gratuit
-3. Créez un utilisateur de base de données
-4. Obtenez l'URI de connexion
-
-### 4. Lancement
-
+4. **Démarrer le bot**
 ```bash
-# Mode développement
-npm run dev
-
-# Mode production
 npm start
 ```
 
 ## 📱 Utilisation
 
-### Commandes utilisateur
-- `/start` - Menu principal
+### Commandes disponibles
 
-### Commandes administrateur
-- `/admin` - Accéder au panel d'administration
-- `/removephoto` - Supprimer la photo d'accueil
+- `/start` - Affiche le message d'accueil avec les boutons
+- `/admin` - Ouvre le menu d'administration (réservé à l'admin)
 
-### Navigation dans le panel admin
+### Menu administrateur
 
-1. **📝 Message d'accueil** : Modifier le message de bienvenue
-   - Utilisez `{firstname}` pour personnaliser avec le prénom
+1. **📝 Modifier le message d'accueil**
+   - Permet de changer le texte affiché au démarrage
 
-2. **🖼 Photo d'accueil** : Ajouter/modifier la photo du menu principal
+2. **🖼️ Modifier la photo d'accueil**
+   - Envoyer une nouvelle photo pour l'accueil et les informations
 
-3. **🔗 Réseaux sociaux** : Gérer les liens sociaux
-   - Ajouter : `Nom | URL | Emoji`
-   - Exemple : `Instagram | https://instagram.com/moncompte | 📸`
+3. **📱 Modifier la mini application**
+   - Configurer l'URL et le texte du bouton Web App
 
-4. **ℹ️ Texte info** : Modifier la page d'information
+4. **🌐 Gérer les réseaux sociaux**
+   - Ajouter de nouveaux réseaux (nom, URL, emoji)
+   - Supprimer des réseaux existants
 
-5. **📊 Statistiques** : Voir les stats détaillées du bot
-
-6. **👥 Utilisateurs** : Gérer les utilisateurs
-
-7. **📢 Diffusion** : Envoyer un message à tous les utilisateurs
-
-8. **⚙️ Paramètres** : Configurer le comportement du bot
-
-## 🌐 Déploiement sur Render
-
-### 1. Préparer le déploiement
-
-Créez un compte sur [Render.com](https://render.com) (gratuit).
-
-### 2. Créer un nouveau Web Service
-
-1. Connectez votre compte GitHub
-2. Sélectionnez votre repository
-3. Configurez :
-   - **Name** : nom-de-votre-bot
-   - **Environment** : Node
-   - **Build Command** : `npm install`
-   - **Start Command** : `npm start`
-
-### 3. Variables d'environnement
-
-Dans les settings de Render, ajoutez :
-- `BOT_TOKEN`
-- `ADMIN_ID`
-- `MONGODB_URI`
-- `NODE_ENV` = `production`
-- `WEBHOOK_URL` = `https://nom-de-votre-bot.onrender.com`
-
-### 4. Déployer
-
-Cliquez sur "Create Web Service" et attendez le déploiement.
+5. **ℹ️ Modifier les informations**
+   - Changer le texte affiché dans la section informations
 
 ## 🔧 Configuration avancée
 
 ### Structure des fichiers
 
-```
-bot-telegram-pro/
-├── bot-mongodb.js      # Fichier principal
-├── config.js           # Gestionnaire de configuration
-├── models.js           # Modèles MongoDB
-├── keyboards.js        # Claviers Telegram
-├── package.json        # Dépendances
-├── .env.example        # Template variables
-└── README.md          # Documentation
-```
+- `bot.js` - Fichier principal du bot
+- `config.js` - Gestion de la configuration
+- `keyboards.js` - Claviers inline Telegram
+- `bot-config.json` - Configuration sauvegardée (généré automatiquement)
+- `images/` - Dossier pour stocker les photos
 
-### Variables d'environnement
+### Format de la configuration
 
-| Variable | Description | Obligatoire |
-|----------|-------------|-------------|
-| BOT_TOKEN | Token du bot Telegram | ✅ |
-| ADMIN_ID | ID Telegram de l'admin | ✅ |
-| MONGODB_URI | URI de connexion MongoDB | ✅ |
-| PORT | Port du serveur (défaut: 3000) | ❌ |
-| WEBHOOK_URL | URL pour le webhook | ❌ |
-| NODE_ENV | Environnement (development/production) | ❌ |
+La configuration est stockée dans `bot-config.json` :
 
-### Personnalisation
-
-Le bot est conçu pour être facilement personnalisable :
-
-1. **Modifier les messages par défaut** : Éditez `defaultConfig` dans `config.js`
-2. **Ajouter des fonctionnalités** : Étendez le switch case dans `bot-mongodb.js`
-3. **Nouveaux claviers** : Ajoutez des méthodes dans `keyboards.js`
-4. **Nouveaux modèles** : Ajoutez des schémas dans `models.js`
-
-## 📊 Base de données
-
-### Collections MongoDB
-
-- **users** : Informations des utilisateurs
-- **configs** : Configuration du bot
-- **socialnetworks** : Réseaux sociaux
-- **messages** : Historique des messages
-- **stats** : Statistiques quotidiennes
-
-### Sauvegarde
-
-MongoDB Atlas offre des sauvegardes automatiques. Pour une sauvegarde manuelle :
-
-```bash
-mongodump --uri="votre_mongodb_uri"
+```json
+{
+  "welcomeMessage": "Message d'accueil",
+  "welcomeImage": "nom_du_fichier.jpg",
+  "infoText": "Texte des informations",
+  "miniApp": {
+    "url": "https://votre-app.com",
+    "text": "🎮 Ma Mini App"
+  },
+  "socialNetworks": [
+    {
+      "name": "Twitter",
+      "url": "https://twitter.com/username",
+      "emoji": "🐦"
+    }
+  ]
+}
 ```
 
-## 🆘 Dépannage
+## 🚨 Dépannage
 
 ### Le bot ne répond pas
-1. Vérifiez que le token est correct
-2. Vérifiez que MongoDB est accessible
-3. Consultez les logs : `npm run dev`
+- Vérifier que le token est correct
+- S'assurer que le bot n'est pas déjà en cours d'exécution ailleurs
 
-### Erreur de connexion MongoDB
-1. Vérifiez l'URI de connexion
-2. Autorisez votre IP dans MongoDB Atlas
-3. Vérifiez les credentials
+### Erreur "ADMIN_ID n'est pas défini"
+- Ajouter votre ID Telegram dans le fichier `.env`
 
-### Les messages ne se suppriment pas
-1. Le bot doit être admin du groupe (si utilisé en groupe)
-2. Vérifiez le paramètre "Suppression auto" dans les settings
+### Les images ne s'affichent pas
+- Vérifier que le dossier `images/` existe
+- S'assurer que les photos sont bien envoyées en tant que photos (pas fichiers)
 
-## 🚀 Améliorations futures
+## 📝 Notes
 
-- [ ] Support multi-langues
-- [ ] Intégration de paiements
-- [ ] Analytics avancées
-- [ ] Export des données utilisateurs
-- [ ] Templates de messages
-- [ ] Scheduler pour messages automatiques
-
-## 📝 License
-
-MIT License - Utilisez librement ce bot pour vos projets personnels ou commerciaux.
+- Les photos sont automatiquement sauvegardées localement
+- La configuration est persistante (survit aux redémarrages)
+- Un seul administrateur peut être défini à la fois
+- Les mini applications nécessitent HTTPS
 
 ## 🤝 Support
 
-Pour toute question ou problème :
-1. Consultez cette documentation
-2. Vérifiez les logs du bot
-3. Créez une issue sur GitHub
+Pour toute question ou problème, vérifiez d'abord que :
+- Node.js est bien installé
+- Les dépendances sont installées (`npm install`)
+- Le fichier `.env` est correctement configuré
+- Le bot a été créé via BotFather et est actif
 
----
+## 🚀 Déploiement sur Render
 
-Créé avec ❤️ pour la communauté Telegram
+### 1. Préparer le code
+- Assurez-vous que votre code est sur GitHub, GitLab ou Bitbucket
+- Le fichier `render.yaml` est déjà configuré pour le déploiement
+
+### 2. Créer un nouveau service sur Render
+1. Allez sur [render.com](https://render.com)
+2. Connectez votre compte GitHub/GitLab
+3. Cliquez sur "New +" → "Background Worker"
+4. Sélectionnez votre repository
+5. Render détectera automatiquement le fichier `render.yaml`
+
+### 3. Configurer les variables d'environnement
+Dans les paramètres du service Render, ajoutez :
+- `BOT_TOKEN` : Votre token de bot Telegram
+- `ADMIN_ID` : Votre ID utilisateur Telegram
+
+### 4. Déployer
+- Cliquez sur "Create Background Worker"
+- Render construira et démarrera automatiquement votre bot
+
+### 5. Vérifier le fonctionnement
+- Vérifiez les logs dans le dashboard Render
+- Testez votre bot sur Telegram avec `/start`
+
+### Notes importantes pour Render
+- Le bot est déployé comme "Background Worker" (pas Web Service)
+- Render redémarre automatiquement le bot en cas de crash
+- Les images uploadées seront perdues lors des redéploiements (utilisez un service de stockage externe pour la persistance)
+- La version gratuite de Render peut avoir des limitations

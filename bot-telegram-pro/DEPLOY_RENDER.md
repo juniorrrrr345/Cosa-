@@ -1,152 +1,92 @@
-# 🚀 Guide de Déploiement sur Render
-
-Guide complet pour déployer votre bot Telegram sur Render (gratuit).
+# 🚀 Guide de déploiement gratuit sur Render
 
 ## 📋 Prérequis
-
-- ✅ Bot configuré et testé localement
-- ✅ Compte GitHub avec le code
-- ✅ Variables d'environnement prêtes
+- Un compte GitHub
+- Un compte Render (gratuit)
+- Votre bot Telegram configuré
 
 ## 🔧 Étapes de déploiement
 
-### 1. Créer un compte Render
+### 1. Préparer votre repository GitHub
+
+1. Assurez-vous que votre code est sur GitHub
+2. Le fichier `render.yaml` est déjà configuré pour le déploiement gratuit
+
+### 2. Créer un compte Render
 
 1. Allez sur [render.com](https://render.com)
-2. Inscrivez-vous avec GitHub (recommandé)
-3. Confirmez votre email
+2. Inscrivez-vous gratuitement avec votre compte GitHub
 
-### 2. Créer un nouveau Web Service
+### 3. Déployer le bot
 
-1. Cliquez sur **"New +"** → **"Web Service"**
+1. Dans Render, cliquez sur **"New +"** → **"Web Service"**
 2. Connectez votre repository GitHub
-3. Sélectionnez `LANATION`
-4. Configurez :
+3. Sélectionnez votre repository `bottelegramplug`
+4. Render détectera automatiquement le fichier `render.yaml`
 
-```
-Name: bipcosa06-bot
-Region: Frankfurt (EU Central)
-Branch: main
-Root Directory: bot-telegram-pro
-Runtime: Node
-Build Command: npm install
-Start Command: npm start
-Instance Type: Free
-```
+### 4. Configurer les variables d'environnement
 
-### 3. Configurer les variables d'environnement
+Dans Render, ajoutez ces variables d'environnement :
 
-Dans l'onglet **Environment**, ajoutez :
+| Variable | Valeur |
+|----------|--------|
+| `BOT_TOKEN` | `8128299360:AAEWmbRLjkTaQYP17GsiGm5vhQv8AcJLKIY` |
+| `ADMIN_ID` | `7670522278` |
+| `WEBHOOK_URL` | (sera ajouté après le déploiement) |
 
-```
-BOT_TOKEN = 8420727291:AAFDYTSccQdfr7ydbUwGW8o6oIue9Y2QC-c
-ADMIN_ID = 7670522278
-MONGODB_URI = mongodb+srv://cosa92700:nGURLgzXTzWpKyvL@cosabip.j9zt3ig.mongodb.net/telegram_bot?retryWrites=true&w=majority&appName=cosabip
-NODE_ENV = production
-PORT = 3000
-```
-
-⚠️ **Important** : Après le premier déploiement, ajoutez :
-```
-WEBHOOK_URL = https://bipcosa06-bot.onrender.com
-```
-
-### 4. Déployer
+### 5. Déployer
 
 1. Cliquez sur **"Create Web Service"**
-2. Attendez le build (5-10 minutes)
-3. Vérifiez les logs pour confirmer
+2. Attendez que le déploiement se termine
+3. Copiez l'URL de votre service (ex: `https://votre-bot.onrender.com`)
 
-### 5. Configuration du Webhook
+### 6. Configurer le webhook
 
-Une fois déployé :
+1. Retournez dans les variables d'environnement
+2. Ajoutez/modifiez `WEBHOOK_URL` avec : `https://votre-bot.onrender.com`
+3. Le service redémarrera automatiquement
 
-1. Copiez l'URL de votre service : `https://bipcosa06-bot.onrender.com`
-2. Ajoutez la variable `WEBHOOK_URL` avec cette URL
-3. Le bot redémarrera automatiquement
+### 7. Activer le webhook sur Telegram
 
-## ✅ Vérification
-
-1. Allez sur Telegram
-2. Cherchez `@BipCosa06bot_Bot`
-3. Envoyez `/start`
-4. Vérifiez que le bot répond
-
-## 🔍 Monitoring
-
-### Logs en temps réel
-
-Dans Render Dashboard :
-- Onglet **"Logs"** pour voir l'activité
-- Filtrez par type : Info, Warning, Error
-
-### Métriques
-
-- **Uptime** : Devrait être proche de 100%
-- **Response time** : < 500ms normal
-- **Memory** : < 256MB pour le plan gratuit
+Le bot configurera automatiquement le webhook au démarrage.
 
 ## ⚠️ Limitations du plan gratuit
 
-- ✅ 750 heures/mois (largement suffisant)
-- ✅ Redémarrage automatique
-- ✅ HTTPS inclus
-- ⚠️ Peut s'endormir après 15min d'inactivité
-- ⚠️ 512MB RAM max
+- Le service se met en veille après 15 minutes d'inactivité
+- Premier message peut prendre 30-50 secondes (réveil du service)
+- Limite de 750 heures/mois (largement suffisant pour un bot)
 
-## 🔧 Maintenance
+## 💡 Variables personnalisées dans le message d'accueil
 
-### Redémarrer le bot
+Vous pouvez utiliser ces variables dans votre message d'accueil :
+- `{firstname}` - Prénom de l'utilisateur
+- `{lastname}` - Nom de famille
+- `{username}` - @username
+- `{fullname}` - Nom complet
 
-1. Dashboard Render
-2. Cliquez sur **"Manual Deploy"** → **"Deploy latest commit"**
+**Exemple :**
+```
+Bienvenue {firstname} ! 👋
+Ravi de te voir sur notre bot !
+```
 
-### Mettre à jour le code
+## 🔍 Vérification
 
-1. Faites vos modifications en local
-2. Committez et pushez sur GitHub
-3. Render détecte et redéploie automatiquement
-
-### Voir les statistiques MongoDB
-
-1. Connectez-vous à MongoDB Atlas
-2. Allez dans **"Clusters"** → **"Collections"**
-3. Explorez les données
+Pour vérifier que tout fonctionne :
+1. Allez sur Telegram
+2. Cherchez votre bot : `@jsjshsheejdbot`
+3. Envoyez `/start`
 
 ## 🆘 Dépannage
 
-### "Application failed to respond"
+Si le bot ne répond pas :
+1. Vérifiez les logs dans Render (Dashboard → Logs)
+2. Assurez-vous que toutes les variables sont correctement définies
+3. Vérifiez que l'URL du webhook est correcte
 
-1. Vérifiez les logs pour des erreurs
-2. Confirmez que toutes les variables sont définies
-3. Vérifiez la connexion MongoDB
+## 📝 Notes importantes
 
-### Bot ne répond pas
-
-1. Vérifiez que `NODE_ENV=production`
-2. Confirmez le `WEBHOOK_URL`
-3. Testez avec `/start` et `/admin`
-
-### Erreurs MongoDB
-
-1. Vérifiez l'URI de connexion
-2. Confirmez l'accès réseau (0.0.0.0/0)
-3. Vérifiez les credentials
-
-## 📱 URLs importantes
-
-- **Bot Telegram** : https://t.me/BipCosa06bot_Bot
-- **Dashboard Render** : https://dashboard.render.com
-- **MongoDB Atlas** : https://cloud.mongodb.com
-- **Webhook** : https://bipcosa06-bot.onrender.com
-
-## 🎯 Prochaines étapes
-
-1. Configurez le message d'accueil via `/admin`
-2. Ajoutez vos réseaux sociaux
-3. Personnalisez la photo
-4. Activez les fonctionnalités souhaitées
-
----
-
-💡 **Astuce** : Gardez un œil sur les logs pendant les premières 24h pour vous assurer que tout fonctionne correctement !
+- Le mode webhook est GRATUIT sur Render
+- Pas besoin de carte de crédit
+- Le bot restera actif tant que des utilisateurs l'utilisent
+- Les données (config.json, users.json, etc.) sont persistantes

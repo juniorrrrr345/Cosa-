@@ -1,148 +1,154 @@
-const { Config, SocialNetwork } = require('./models');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+// Connexion MongoDB avec options améliorées
+const mongoOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+};
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/telegram-bot', mongoOptions)
+    .then(() => {
+        console.log('✅ Connecté à MongoDB');
+        console.log('📍 Database:', mongoose.connection.name);
+    })
+    .catch(err => {
+        console.error('❌ Erreur connexion MongoDB:', err);
+        process.exit(1);
+    });
+
+// Schéma pour la configuration du bot
+const configSchema = new mongoose.Schema({
+    botId: { type: String, default: 'main', unique: true, required: true },
+    welcomeMessage: { type: String, default: "🤖 Bienvenue {firstname} sur notre bot!\n\nUtilisez les boutons ci-dessous pour naviguer." },
+    welcomeImage: { type: String, default: null },
+    infoText: { type: String, default: "ℹ️ Informations\n\nCeci est la section d'informations du bot." },
+    miniApp: {
+        url: { type: String, default: null },
+        text: { type: String, default: "🎮 Mini Application" }
+    },
+    socialNetworks: [{
+        name: String,
+        url: String,
+        emoji: String
+    }],
+    socialButtonsPerRow: { type: Number, default: 3 },
+    lastModified: { type: Date, default: Date.now }
+}, { timestamps: true });
+
+const Config = mongoose.model('BotConfig', configSchema);
 
 // Configuration par défaut
 const defaultConfig = {
-  welcomeMessage: "Bienvenue {firstname} ! 🎉\n\nJe suis votre assistant personnel. Utilisez les boutons ci-dessous pour naviguer.",
-  welcomePhoto: null,
-  infoText: "ℹ️ Information\n\nCe bot a été créé pour vous aider. N'hésitez pas à explorer toutes les fonctionnalités disponibles.",
-  maintenanceMode: false,
-  maintenanceMessage: "🔧 Le bot est actuellement en maintenance. Veuillez réessayer plus tard.",
-  broadcastEnabled: true,
-  statsEnabled: true,
-  autoDeleteMessages: true,
-  deleteDelay: 30, // secondes
-  maxMessageLength: 4096,
-  allowedCommands: ['start', 'help', 'info', 'admin', 'stats'],
-  webhookEnabled: false
+    botId: 'main',
+    welcomeMessage: "🤖 Bienvenue {firstname} sur notre bot!\n\nUtilisez les boutons ci-dessous pour naviguer.",
+    welcomeImage: null,
+    infoText: "ℹ️ Informations\n\nCeci est la section d'informations du bot.",
+    miniApp: {
+        url: null,
+        text: "🎮 Mini Application"
+    },
+    socialNetworks: [
+        { name: "Twitter", url: "https://twitter.com", emoji: "🐦" },
+        { name: "Instagram", url: "https://instagram.com", emoji: "📷" },
+        { name: "Facebook", url: "https://facebook.com", emoji: "👍" }
+    ],
+    socialButtonsPerRow: 3
 };
 
-// Réseaux sociaux par défaut
-const defaultSocialNetworks = [
-  { name: 'Instagram', url: 'https://instagram.com', emoji: '📸', order: 1 },
-  { name: 'Telegram', url: 'https://t.me', emoji: '💬', order: 2 },
-  { name: 'YouTube', url: 'https://youtube.com', emoji: '📺', order: 3 },
-  { name: 'Twitter', url: 'https://twitter.com', emoji: '🐦', order: 4 }
-];
-
-class ConfigManager {
-  // Initialiser la configuration
-  static async initialize() {
+// Charger la configuration depuis MongoDB
+async function loadConfig() {
     try {
-      // Vérifier et créer la configuration par défaut
-      for (const [key, value] of Object.entries(defaultConfig)) {
-        const existing = await Config.findOne({ key });
-        if (!existing) {
-          await Config.create({ key, value });
+        console.log('📖 Chargement de la configuration...');
+        let config = await Config.findOne({ botId: 'main' }).lean();
+        
+        if (!config) {
+            console.log('⚠️ Aucune configuration trouvée, création de la configuration par défaut...');
+            config = await Config.create(defaultConfig);
+            console.log('✅ Configuration par défaut créée');
+            return config.toObject();
         }
-      }
-
-      // Vérifier et créer les réseaux sociaux par défaut
-      const socialCount = await SocialNetwork.countDocuments();
-      if (socialCount === 0) {
-        await SocialNetwork.insertMany(defaultSocialNetworks);
-      }
-
-      console.log('✅ Configuration initialisée');
+        
+        console.log('✅ Configuration chargée:', {
+            welcomeMessage: config.welcomeMessage?.substring(0, 50) + '...',
+            welcomeImage: config.welcomeImage ? 'Définie' : 'Non définie',
+            socialNetworks: config.socialNetworks?.length || 0,
+            lastModified: config.lastModified
+        });
+        
+        return config;
     } catch (error) {
-      console.error('❌ Erreur lors de l\'initialisation de la configuration:', error);
+        console.error('❌ Erreur lors du chargement de la configuration:', error);
+        return defaultConfig;
     }
-  }
-
-  // Obtenir une valeur de configuration
-  static async get(key) {
-    try {
-      const config = await Config.findOne({ key });
-      return config ? config.value : defaultConfig[key];
-    } catch (error) {
-      console.error(`Erreur lors de la récupération de ${key}:`, error);
-      return defaultConfig[key];
-    }
-  }
-
-  // Définir une valeur de configuration
-  static async set(key, value) {
-    try {
-      await Config.findOneAndUpdate(
-        { key },
-        { value, updatedAt: new Date() },
-        { upsert: true, new: true }
-      );
-      return true;
-    } catch (error) {
-      console.error(`Erreur lors de la mise à jour de ${key}:`, error);
-      return false;
-    }
-  }
-
-  // Obtenir toute la configuration
-  static async getAll() {
-    try {
-      const configs = await Config.find({});
-      const result = { ...defaultConfig };
-      
-      configs.forEach(config => {
-        result[config.key] = config.value;
-      });
-      
-      return result;
-    } catch (error) {
-      console.error('Erreur lors de la récupération de la configuration:', error);
-      return defaultConfig;
-    }
-  }
-
-  // Réinitialiser la configuration
-  static async reset() {
-    try {
-      await Config.deleteMany({});
-      await SocialNetwork.deleteMany({});
-      await this.initialize();
-      return true;
-    } catch (error) {
-      console.error('Erreur lors de la réinitialisation:', error);
-      return false;
-    }
-  }
-
-  // Gestion des réseaux sociaux
-  static async getSocialNetworks() {
-    try {
-      return await SocialNetwork.find({ isActive: true }).sort('order');
-    } catch (error) {
-      console.error('Erreur lors de la récupération des réseaux sociaux:', error);
-      return [];
-    }
-  }
-
-  static async addSocialNetwork(name, url, emoji = '🔗') {
-    try {
-      const maxOrder = await SocialNetwork.findOne().sort('-order');
-      const order = maxOrder ? maxOrder.order + 1 : 1;
-      
-      return await SocialNetwork.create({ name, url, emoji, order });
-    } catch (error) {
-      console.error('Erreur lors de l\'ajout du réseau social:', error);
-      return null;
-    }
-  }
-
-  static async updateSocialNetwork(id, updates) {
-    try {
-      return await SocialNetwork.findByIdAndUpdate(id, updates, { new: true });
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du réseau social:', error);
-      return null;
-    }
-  }
-
-  static async deleteSocialNetwork(id) {
-    try {
-      return await SocialNetwork.findByIdAndDelete(id);
-    } catch (error) {
-      console.error('Erreur lors de la suppression du réseau social:', error);
-      return null;
-    }
-  }
 }
 
-module.exports = ConfigManager;
+// Sauvegarder la configuration dans MongoDB
+async function saveConfig(configData) {
+    try {
+        console.log('💾 Sauvegarde de la configuration...');
+        
+        // Nettoyer les données avant sauvegarde
+        const dataToSave = {
+            botId: 'main',
+            welcomeMessage: configData.welcomeMessage,
+            welcomeImage: configData.welcomeImage,
+            infoText: configData.infoText,
+            miniApp: configData.miniApp,
+            socialNetworks: configData.socialNetworks,
+            socialButtonsPerRow: configData.socialButtonsPerRow || 3,
+            lastModified: new Date()
+        };
+        
+        const config = await Config.findOneAndUpdate(
+            { botId: 'main' },
+            { $set: dataToSave },
+            { 
+                new: true, 
+                upsert: true,
+                runValidators: true
+            }
+        );
+        
+        console.log('✅ Configuration sauvegardée avec succès');
+        console.log('📝 Détails sauvegardés:', {
+            welcomeMessage: config.welcomeMessage?.substring(0, 50) + '...',
+            welcomeImage: config.welcomeImage ? 'Définie' : 'Non définie',
+            socialNetworks: config.socialNetworks?.length || 0
+        });
+        
+        return true;
+    } catch (error) {
+        console.error('❌ Erreur lors de la sauvegarde de la configuration:', error);
+        return false;
+    }
+}
+
+// Réinitialiser la configuration (utile pour debug)
+async function resetConfig() {
+    try {
+        await Config.deleteOne({ botId: 'main' });
+        const newConfig = await Config.create(defaultConfig);
+        console.log('🔄 Configuration réinitialisée');
+        return newConfig.toObject();
+    } catch (error) {
+        console.error('❌ Erreur lors de la réinitialisation:', error);
+        return defaultConfig;
+    }
+}
+
+// Obtenir l'URL d'une image (stockée dans Cloudinary ou base64)
+function getImagePath(imageUrl) {
+    return imageUrl; // Retourne directement l'URL ou file_id Telegram
+}
+
+module.exports = {
+    loadConfig,
+    saveConfig,
+    resetConfig,
+    getImagePath,
+    Config, // Exporter le modèle pour debug si nécessaire
+    IMAGES_DIR: null // Plus utilisé avec MongoDB
+};

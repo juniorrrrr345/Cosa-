@@ -215,8 +215,12 @@ const ProductQuality = styled.p`
 const ProductDescription = styled.p`
   font-size: 16px;
   line-height: 1.6;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 15px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `;
 
 const ProductMeta = styled.div`
@@ -418,6 +422,13 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
 }) => {
   const [config, setConfig] = useState<ShopConfig>({} as ShopConfig);
 
+  // Debug log pour vérifier le produit reçu
+  console.log('🔍 ProductDetailPage - Produit reçu:', {
+    name: product.name,
+    description: product.description,
+    hasDescription: !!product.description
+  });
+
   useEffect(() => {
     const loadData = () => {
       setConfig(dataService.getConfig());
@@ -459,7 +470,9 @@ const ProductDetailPage: React.FC<ProductDetailPageProps> = ({
         <ProductInfo>
           <ProductName>{product.name}</ProductName>
           <ProductQuality>{product.quality}</ProductQuality>
-          <ProductDescription>{product.description}</ProductDescription>
+          <ProductDescription>
+            {product.description || `${product.name} - Produit de qualité supérieure. ${product.quality || 'Premium quality'}.`}
+          </ProductDescription>
           
           <ProductMeta>
             {product.category && (

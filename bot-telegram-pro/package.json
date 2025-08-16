@@ -9,8 +9,8 @@
     "start:nextjs": "next start",
     "lint": "next lint",
     "setup-new-shop": "node scripts/duplicate-setup.js",
-    "bot": "node bot.js",
-    "bot:dev": "nodemon bot.js",
+    "bot": "node bot-complete.js",
+    "bot:dev": "node bot.js",
     "bot:mongodb": "node bot-mongodb.js",
     "bot:webhook": "node bot-webhook.js",
     "bot:production": "node bot-webhook-production.js"

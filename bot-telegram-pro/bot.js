@@ -579,15 +579,15 @@ bot.on('callback_query', async (callbackQuery) => {
                 
                 // Créer le contenu du fichier avec des statistiques
                 const exportDate = new Date().toLocaleString('fr-FR', { timeZone: 'Europe/Paris' });
-                const totalUsersExport = users.size;
-                const totalAdminsExport = admins.size;
-                const regularUsersExport = totalUsersExport - totalAdminsExport;
+                const totalUsers = users.size;
+                const totalAdmins = admins.size;
+                const regularUsers = totalUsers - totalAdmins;
                 
                 const fileContent = `📊 EXPORT DES UTILISATEURS DU BOT\n` +
                     `📅 Date d'export: ${exportDate}\n` +
                     `============================\n\n` +
                     `STATISTIQUES:\n` +
-                    `- Total utilisateurs: ${totalUsersExport}\n` +
+                    `- Total utilisateurs: ${totalUsers}\n` +
                     `- Utilisateurs réguliers: ${regularUsers}\n` +
                     `- Administrateurs: ${totalAdmins}\n` +
                     `============================\n\n` +

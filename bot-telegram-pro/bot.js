@@ -814,26 +814,106 @@ bot.on('message', async (msg) => {
                 const message = msg.text;
                 let successCount = 0;
                 let failCount = 0;
+                let blockedCount = 0;
                 
-                await updateMessage(chatId, userState.messageId, '📤 Envoi en cours...');
+                await updateMessage(chatId, userState.messageId, '📤 Préparation de l\'envoi...\n⏳ Cela peut prendre quelques minutes pour respecter les limites Telegram.');
                 
-                for (const targetUserId of users) {
-                    if (!admins.has(targetUserId)) { // Ne pas envoyer aux admins
-                        try {
-                            await bot.sendMessage(targetUserId, `📢 Message de l'administrateur:\n\n${message}`);
+                // Configuration pour respecter les limites Telegram
+                const MESSAGES_PER_SECOND = 25; // Limite sécurisée (Telegram permet 30/sec)
+                const BATCH_SIZE = 25; // Nombre de messages par batch
+                const BATCH_DELAY = 1100; // Délai entre les batches (1.1 seconde)
+                const ERROR_RETRY_DELAY = 5000; // Délai après une erreur 429 (5 secondes)
+                
+                // Convertir Set en Array pour pouvoir faire des batches
+                const targetUsers = Array.from(users).filter(uid => !admins.has(uid));
+                const totalUsers = targetUsers.length;
+                
+                // Diviser les utilisateurs en batches
+                for (let i = 0; i < targetUsers.length; i += BATCH_SIZE) {
+                    const batch = targetUsers.slice(i, i + BATCH_SIZE);
+                    const batchPromises = [];
+                    
+                    for (const targetUserId of batch) {
+                        const sendPromise = bot.sendMessage(
+                            targetUserId, 
+                            `📢 <b>Message de l'administrateur:</b>\n\n${message}`,
+                            { parse_mode: 'HTML' }
+                        ).then(() => {
                             successCount++;
-                        } catch (error) {
-                            failCount++;
-                        }
+                        }).catch(async (error) => {
+                            // Gestion spécifique des erreurs Telegram
+                            if (error.response && error.response.statusCode === 429) {
+                                // Too Many Requests - attendre avant de réessayer
+                                console.log('⚠️ Rate limit atteint, pause de 5 secondes...');
+                                await new Promise(resolve => setTimeout(resolve, ERROR_RETRY_DELAY));
+                                
+                                // Réessayer une fois après le délai
+                                try {
+                                    await bot.sendMessage(targetUserId, `📢 <b>Message de l'administrateur:</b>\n\n${message}`, { parse_mode: 'HTML' });
+                                    successCount++;
+                                } catch (retryError) {
+                                    failCount++;
+                                    console.error(`Échec définitif pour l'utilisateur ${targetUserId}:`, retryError.message);
+                                }
+                            } else if (error.response && error.response.statusCode === 403) {
+                                // L'utilisateur a bloqué le bot
+                                blockedCount++;
+                            } else {
+                                failCount++;
+                                console.error(`Erreur envoi à ${targetUserId}:`, error.message);
+                            }
+                        });
+                        
+                        batchPromises.push(sendPromise);
+                    }
+                    
+                    // Attendre que tous les messages du batch soient traités
+                    await Promise.all(batchPromises);
+                    
+                    // Mettre à jour le statut après chaque batch
+                    const progress = Math.round(((i + batch.length) / totalUsers) * 100);
+                    await updateMessage(chatId, userState.messageId, 
+                        `📤 Envoi en cours...\n\n` +
+                        `📊 Progression: ${progress}%\n` +
+                        `✅ Envoyés: ${successCount}\n` +
+                        `❌ Échecs: ${failCount}\n` +
+                        `🚫 Bloqués: ${blockedCount}\n\n` +
+                        `⏳ Veuillez patienter...`
+                    );
+                    
+                    // Attendre avant le prochain batch (sauf pour le dernier)
+                    if (i + BATCH_SIZE < targetUsers.length) {
+                        await new Promise(resolve => setTimeout(resolve, BATCH_DELAY));
                     }
                 }
                 
-                const totalUsers = users.size - admins.size; // Exclure tous les admins
                 delete userStates[userId];
+                
+                // Message final avec statistiques complètes
+                let statusEmoji = '✅';
+                let statusText = 'Message diffusé avec succès!';
+                
+                if (failCount > totalUsers * 0.3) {
+                    statusEmoji = '⚠️';
+                    statusText = 'Diffusion terminée avec des erreurs';
+                } else if (failCount > 0) {
+                    statusEmoji = '✅';
+                    statusText = 'Diffusion terminée';
+                }
+                
                 await updateMessage(chatId, userState.messageId, 
-                    `✅ Message diffusé!\n\n📊 Statistiques:\n👥 Utilisateurs totaux: ${totalUsers}\n✅ Envoyés: ${successCount}\n❌ Échecs: ${failCount}`, {
-                    reply_markup: getAdminKeyboard()
-                });
+                    `${statusEmoji} <b>${statusText}</b>\n\n` +
+                    `📊 <b>Statistiques détaillées:</b>\n` +
+                    `👥 Utilisateurs ciblés: ${totalUsers}\n` +
+                    `✅ Messages envoyés: ${successCount}\n` +
+                    `❌ Échecs techniques: ${failCount}\n` +
+                    `🚫 Utilisateurs ayant bloqué le bot: ${blockedCount}\n\n` +
+                    `💡 <i>Conseil: Les utilisateurs qui ont bloqué le bot ne recevront plus de messages.</i>`,
+                    {
+                        reply_markup: getAdminKeyboard(),
+                        parse_mode: 'HTML'
+                    }
+                );
                 break;
 
             case 'adding_admin':

@@ -150,8 +150,9 @@ function setupBotHandlers() {
         // Sauvegarder l'utilisateur
         await saveUser(userId, msg.from);
         
-        // NE PAS supprimer la commande /start - elle reste visible
-        // Supprimer seulement les anciens messages du bot
+        // NE PAS supprimer la commande /start - la laisser visible
+        
+        // Supprimer tous les anciens messages du bot
         await deleteAllMessages(chatId);
         
         // Message personnalisé
@@ -201,6 +202,51 @@ function setupBotHandlers() {
         
         // Afficher le menu admin
         await showAdminMenu(chatId);
+    });
+
+    // Commande /notifications - Gérer les préférences de notifications
+    bot.onText(/\/notifications/, async (msg) => {
+        const chatId = msg.chat.id;
+        const userId = msg.from.id;
+        
+        try {
+            // Récupérer l'utilisateur depuis la DB
+            let user = await User.findOne({ userId });
+            
+            if (!user) {
+                // Créer l'utilisateur s'il n'existe pas
+                user = await User.create({
+                    userId,
+                    username: msg.from.username,
+                    firstName: msg.from.first_name,
+                    lastName: msg.from.last_name,
+                    notificationsEnabled: true
+                });
+            }
+            
+            const currentStatus = user.notificationsEnabled ? '✅ Activées' : '❌ Désactivées';
+            
+            await sendOrEditMessage(chatId,
+                `🔔 <b>Gestion des notifications</b>\n\n` +
+                `État actuel: ${currentStatus}\n\n` +
+                `Les notifications vous permettent de recevoir des messages importants de l'administrateur.\n\n` +
+                `<i>Vous pouvez modifier ce paramètre à tout moment.</i>`,
+                {
+                    inline_keyboard: [
+                        [
+                            { 
+                                text: user.notificationsEnabled ? '🔕 Désactiver' : '🔔 Activer', 
+                                callback_data: user.notificationsEnabled ? 'notifications_off' : 'notifications_on' 
+                            }
+                        ],
+                        [{ text: '🔙 Retour au menu', callback_data: 'back_to_menu' }]
+                    ]
+                }
+            );
+        } catch (error) {
+            console.error('Erreur gestion notifications:', error);
+            await bot.sendMessage(chatId, '❌ Une erreur s\'est produite. Veuillez réessayer.');
+        }
     });
 
     // Callback pour les boutons
@@ -390,6 +436,49 @@ function setupBotHandlers() {
             await saveConfig(config);
             await sendOrEditMessage(chatId, `✅ Disposition mise à jour: ${buttonsPerRow} boutons par ligne`, { inline_keyboard: [] });
             setTimeout(() => handleSocialConfig(chatId), 1000);
+        }
+
+        // Gestion des notifications
+        if (data === 'notifications_on') {
+            await User.findOneAndUpdate(
+                { userId },
+                { notificationsEnabled: true },
+                { upsert: true }
+            );
+            
+            await bot.answerCallbackQuery(callbackQuery.id, {
+                text: '✅ Notifications activées!',
+                show_alert: true
+            });
+            
+            await sendOrEditMessage(chatId,
+                `✅ <b>Notifications activées</b>\n\n` +
+                `Vous recevrez désormais les messages importants de l'administrateur.\n\n` +
+                `<i>Vous pouvez modifier ce paramètre à tout moment avec /notifications</i>`,
+                {
+                    inline_keyboard: [[{ text: '🔙 Retour au menu', callback_data: 'back_to_menu' }]]
+                }
+            );
+        } else if (data === 'notifications_off') {
+            await User.findOneAndUpdate(
+                { userId },
+                { notificationsEnabled: false },
+                { upsert: true }
+            );
+            
+            await bot.answerCallbackQuery(callbackQuery.id, {
+                text: '🔕 Notifications désactivées',
+                show_alert: true
+            });
+            
+            await sendOrEditMessage(chatId,
+                `🔕 <b>Notifications désactivées</b>\n\n` +
+                `Vous ne recevrez plus de messages de diffusion.\n\n` +
+                `<i>Vous pouvez réactiver les notifications à tout moment avec /notifications</i>`,
+                {
+                    inline_keyboard: [[{ text: '🔙 Retour au menu', callback_data: 'back_to_menu' }]]
+                }
+            );
         }
     });
 
@@ -720,14 +809,19 @@ async function handleSocialLayout(chatId) {
 
 async function handleBroadcast(chatId, userId) {
     const totalUsers = await User.countDocuments();
+    const consentingUsers = await User.countDocuments({ notificationsEnabled: true, botBlocked: { $ne: true } });
     
     await sendOrEditMessage(chatId,
         '📢 <b>Diffusion de message</b>\n\n' +
-        `Ce message sera envoyé à ${totalUsers} utilisateurs.\n\n` +
+        `📊 Statistiques:\n` +
+        `• Utilisateurs totaux: ${totalUsers}\n` +
+        `• Utilisateurs avec notifications activées: ${consentingUsers}\n` +
+        `• Utilisateurs exclus: ${totalUsers - consentingUsers}\n\n` +
+        `⚠️ <b>Important:</b> Le message sera envoyé uniquement aux utilisateurs ayant activé les notifications.\n\n` +
         'Choisissez une option:',
         {
             inline_keyboard: [
-                [{ text: '📤 Envoyer à tous', callback_data: 'broadcast_all' }],
+                [{ text: `📤 Envoyer à ${consentingUsers} utilisateurs`, callback_data: 'broadcast_all' }],
                 [{ text: '🔙 Retour', callback_data: 'admin_back' }]
             ]
         }
@@ -737,25 +831,111 @@ async function handleBroadcast(chatId, userId) {
 async function handleBroadcastSend(chatId, userId, message) {
     delete userStates[userId];
     
-    await sendOrEditMessage(chatId, '📤 Envoi en cours...', { inline_keyboard: [] });
+    await sendOrEditMessage(chatId, '📤 Préparation de l\'envoi...\n⏳ Cela peut prendre quelques minutes pour respecter les limites Telegram.', { inline_keyboard: [] });
     
-    const users = await User.find({});
+    // Ne récupérer que les utilisateurs ayant consenti aux notifications et n'ayant pas bloqué le bot
+    const users = await User.find({ 
+        notificationsEnabled: true,
+        botBlocked: { $ne: true }
+    });
+    
     let sent = 0;
     let failed = 0;
+    let blocked = 0;
     
-    for (const user of users) {
-        try {
-            await bot.sendMessage(user.userId, message, { parse_mode: 'HTML' });
-            sent++;
-        } catch (error) {
-            failed++;
+    // Configuration pour respecter les limites Telegram
+    const BATCH_SIZE = 25; // Nombre de messages par batch
+    const BATCH_DELAY = 1100; // Délai entre les batches (1.1 seconde)
+    const ERROR_RETRY_DELAY = 5000; // Délai après une erreur 429 (5 secondes)
+    
+    // Message avec footer de désinscription
+    const messageWithFooter = `${message}\n\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `<i>Pour désactiver les notifications, envoyez /notifications</i>`;
+    
+    // Diviser les utilisateurs en batches
+    for (let i = 0; i < users.length; i += BATCH_SIZE) {
+        const batch = users.slice(i, i + BATCH_SIZE);
+        const batchPromises = [];
+        
+        for (const user of batch) {
+            const sendPromise = bot.sendMessage(user.userId, messageWithFooter, { parse_mode: 'HTML' })
+                .then(() => {
+                    sent++;
+                })
+                .catch(async (error) => {
+                    // Gestion spécifique des erreurs Telegram
+                    if (error.response && error.response.statusCode === 429) {
+                        // Too Many Requests - attendre avant de réessayer
+                        console.log('⚠️ Rate limit atteint, pause de 5 secondes...');
+                        await new Promise(resolve => setTimeout(resolve, ERROR_RETRY_DELAY));
+                        
+                        // Réessayer une fois après le délai
+                        try {
+                            await bot.sendMessage(user.userId, messageWithFooter, { parse_mode: 'HTML' });
+                            sent++;
+                        } catch (retryError) {
+                            failed++;
+                            console.error(`Échec définitif pour l'utilisateur ${user.userId}:`, retryError.message);
+                        }
+                    } else if (error.response && error.response.statusCode === 403) {
+                        // L'utilisateur a bloqué le bot
+                        blocked++;
+                        // Marquer l'utilisateur comme bloqué dans la DB
+                        await User.findOneAndUpdate(
+                            { userId: user.userId },
+                            { botBlocked: true, botBlockedAt: new Date() }
+                        ).catch(() => {});
+                    } else {
+                        failed++;
+                        console.error(`Erreur envoi à ${user.userId}:`, error.message);
+                    }
+                });
+            
+            batchPromises.push(sendPromise);
+        }
+        
+        // Attendre que tous les messages du batch soient traités
+        await Promise.all(batchPromises);
+        
+        // Mettre à jour le statut après chaque batch
+        const progress = Math.round(((i + batch.length) / users.length) * 100);
+        await sendOrEditMessage(chatId,
+            `📤 <b>Envoi en cours...</b>\n\n` +
+            `📊 Progression: ${progress}%\n` +
+            `✅ Envoyés: ${sent}\n` +
+            `❌ Échecs: ${failed}\n` +
+            `🚫 Bloqués: ${blocked}\n\n` +
+            `⏳ Veuillez patienter...`,
+            { inline_keyboard: [] }
+        );
+        
+        // Attendre avant le prochain batch (sauf pour le dernier)
+        if (i + BATCH_SIZE < users.length) {
+            await new Promise(resolve => setTimeout(resolve, BATCH_DELAY));
         }
     }
     
+    // Message final avec statistiques complètes
+    let statusEmoji = '✅';
+    let statusText = 'Diffusion terminée avec succès!';
+    
+    if (failed > users.length * 0.3) {
+        statusEmoji = '⚠️';
+        statusText = 'Diffusion terminée avec des erreurs';
+    } else if (failed > 0) {
+        statusEmoji = '✅';
+        statusText = 'Diffusion terminée';
+    }
+    
     await sendOrEditMessage(chatId,
-        `✅ <b>Diffusion terminée!</b>\n\n` +
+        `${statusEmoji} <b>${statusText}</b>\n\n` +
+        `📊 <b>Statistiques détaillées:</b>\n` +
         `• Messages envoyés: ${sent}\n` +
-        `• Échecs: ${failed}`,
+        `• Échecs techniques: ${failed}\n` +
+        `• Utilisateurs ayant bloqué le bot: ${blocked}\n` +
+        `• Total traité: ${users.length}\n\n` +
+        `💡 <i>Les messages ont été envoyés uniquement aux utilisateurs ayant activé les notifications.</i>`,
         { inline_keyboard: [[{ text: '🔙 Retour', callback_data: 'admin_back' }]] }
     );
 }

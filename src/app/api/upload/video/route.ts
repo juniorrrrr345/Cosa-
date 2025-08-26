@@ -39,11 +39,7 @@ export async function POST(request: NextRequest) {
     const result = await CloudinaryService.uploadVideo(buffer, {
       folder,
       public_id: publicId,
-      transformation: [
-        { quality: 'auto:good' },
-        { fetch_format: 'auto' },
-        { width: 800, height: 600, crop: 'limit' }
-      ]
+      transformation: []
     });
 
     return NextResponse.json({

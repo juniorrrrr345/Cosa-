@@ -40,8 +40,6 @@ export async function POST(request: NextRequest) {
       folder,
       public_id: publicId,
       transformation: [
-        { quality: 'auto:good' },
-        { fetch_format: 'auto' },
         { width: 800, height: 600, crop: 'fill' }
       ]
     });

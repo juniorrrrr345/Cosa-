@@ -131,7 +131,7 @@ export const getOptimizedUrl = (
   } = {}
 ): string => {
   const baseUrl = `https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}`;
-  const { width = 800, height = 600, quality = 'auto:good', format = 'auto' } = options;
+  const { width = 800, height = 600, quality = '90', format = 'jpg' } = options;
   
   return `${baseUrl}/image/upload/w_${width},h_${height},c_limit,q_${quality},f_${format}/${publicId}`;
 };

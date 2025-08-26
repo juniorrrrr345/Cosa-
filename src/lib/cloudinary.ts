@@ -33,10 +33,7 @@ export class CloudinaryService {
         resource_type: 'image',
         folder: options.folder || 'bipcosa06/products',
         public_id: options.public_id,
-        transformation: options.transformation || [
-          { quality: 'auto:good' },
-          { fetch_format: 'auto' }
-        ],
+        transformation: options.transformation || [],
         overwrite: true,
       });
 
@@ -68,10 +65,7 @@ export class CloudinaryService {
         resource_type: 'video',
         folder: options.folder || 'bipcosa06/videos',
         public_id: options.public_id,
-        transformation: options.transformation || [
-          { quality: 'auto:good' },
-          { fetch_format: 'auto' }
-        ],
+        transformation: options.transformation || [],
         overwrite: true,
       });
 

@@ -1,0 +1,36 @@
+{
+  "name": "cloudflare-migration-bipcosa06",
+  "version": "1.0.0",
+  "description": "Scripts de migration des médias vers Cloudflare pour BIPCOSA06",
+  "main": "migrate-all.js",
+  "scripts": {
+    "migrate": "node migrate-all.js",
+    "migrate:videos": "node migrate-videos.js",
+    "migrate:images": "node migrate-images.js",
+    "update:urls": "node update-urls.js",
+    "update:db": "node ../../update-mongodb-bipcosa06.js",
+    "test": "node migrate-all.js --dry-run",
+    "help": "node migrate-all.js --help"
+  },
+  "keywords": [
+    "cloudflare",
+    "migration",
+    "bipcosa06",
+    "stream",
+    "images",
+    "cdn"
+  ],
+  "author": "BIPCOSA06",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.7",
+    "form-data": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bipcosa06"
+  }
+}

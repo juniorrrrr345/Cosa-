@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Composant pour afficher les médias Cloudflare (Stream & Images)
  * Boutique: BIPCOSA06

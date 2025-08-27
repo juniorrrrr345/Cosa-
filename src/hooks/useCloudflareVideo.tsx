@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * Hook pour utiliser les médias Cloudflare dans BIPCOSA06
  */

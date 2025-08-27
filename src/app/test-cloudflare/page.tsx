@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { CloudflareVideo, CloudflareGallery } from '@/components/CloudflareMedia';
 import { BIPCOSA06_VIDEO_MAPPING, PRODUCTS_WITH_VIDEOS } from '@/config/cloudflare-bipcosa06';

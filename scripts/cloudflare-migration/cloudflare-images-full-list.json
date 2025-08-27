@@ -1,0 +1,2852 @@
+[
+  {
+    "id": "gd33-test-1756266255",
+    "filename": "photo-1560707303-4e980ce876ad",
+    "meta": {
+      "boutique": "GD33",
+      "folder": "GD33/images",
+      "test": true
+    },
+    "uploaded": "2025-08-27T03:44:16.232Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gd33-test-1756266255/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gd33-test-1756266255/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gd33-test-1756266255/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gd33-test-1756266255/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gd33-test-1756266255/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gd33-test-1756266255/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-d5d6d602",
+    "filename": "sample.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "sample",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 576,
+      "migratedAt": "2025-08-27T03:43:46.828Z",
+      "originalName": "sample",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333664/sample.jpg",
+      "size": 120253,
+      "sizeFormatted": "117.43 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:46.827Z",
+      "width": 864
+    },
+    "uploaded": "2025-08-27T03:43:47.587Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d5d6d602/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d5d6d602/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d5d6d602/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d5d6d602/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d5d6d602/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d5d6d602/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-878da649",
+    "filename": "analog-classic.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/ecommerce/analog-classic",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 853,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/ecommerce/analog-classic",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333665/samples/ecommerce/analog-classic.jpg",
+      "size": 72558,
+      "sizeFormatted": "70.86 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 1280
+    },
+    "uploaded": "2025-08-27T03:43:46.331Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-878da649/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-878da649/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-878da649/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-878da649/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-878da649/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-878da649/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-0ac2d338",
+    "filename": "kitchen-bar.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/people/kitchen-bar",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 813,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/people/kitchen-bar",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333666/samples/people/kitchen-bar.jpg",
+      "size": 154151,
+      "sizeFormatted": "150.54 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 1220
+    },
+    "uploaded": "2025-08-27T03:43:46.319Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0ac2d338/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0ac2d338/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0ac2d338/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0ac2d338/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0ac2d338/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0ac2d338/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-f699244f",
+    "filename": "dessert.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/food/dessert",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 813,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/food/dessert",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333665/samples/food/dessert.jpg",
+      "size": 125888,
+      "sizeFormatted": "122.94 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 1220
+    },
+    "uploaded": "2025-08-27T03:43:46.113Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f699244f/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f699244f/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f699244f/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f699244f/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f699244f/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f699244f/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-7c1d6e59",
+    "filename": "cat.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/animals/cat",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1024,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/animals/cat",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333665/samples/animals/cat.jpg",
+      "size": 92690,
+      "sizeFormatted": "90.52 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 768
+    },
+    "uploaded": "2025-08-27T03:43:46.094Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7c1d6e59/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7c1d6e59/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7c1d6e59/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7c1d6e59/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7c1d6e59/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7c1d6e59/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-5b6a762c",
+    "filename": "reindeer.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/animals/reindeer",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 813,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/animals/reindeer",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333666/samples/animals/reindeer.jpg",
+      "size": 161150,
+      "sizeFormatted": "157.37 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 1220
+    },
+    "uploaded": "2025-08-27T03:43:46.029Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5b6a762c/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5b6a762c/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5b6a762c/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5b6a762c/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5b6a762c/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5b6a762c/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-6d77b3ee",
+    "filename": "fish-vegetables.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/food/fish-vegetables",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 813,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/food/fish-vegetables",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333666/samples/food/fish-vegetables.jpg",
+      "size": 169013,
+      "sizeFormatted": "165.05 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 1220
+    },
+    "uploaded": "2025-08-27T03:43:46.002Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-6d77b3ee/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-6d77b3ee/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-6d77b3ee/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-6d77b3ee/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-6d77b3ee/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-6d77b3ee/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-8720ddfa",
+    "filename": "pot-mussels.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/food/pot-mussels",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 818,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/food/pot-mussels",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333666/samples/food/pot-mussels.jpg",
+      "size": 191852,
+      "sizeFormatted": "187.36 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 1220
+    },
+    "uploaded": "2025-08-27T03:43:45.982Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8720ddfa/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8720ddfa/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8720ddfa/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8720ddfa/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8720ddfa/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8720ddfa/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-588a7155",
+    "filename": "sheep.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/sheep",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1067,
+      "migratedAt": "2025-08-27T03:43:45.366Z",
+      "originalName": "samples/sheep",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333666/samples/sheep.jpg",
+      "size": 269304,
+      "sizeFormatted": "262.99 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.366Z",
+      "width": 1600
+    },
+    "uploaded": "2025-08-27T03:43:45.866Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-588a7155/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-588a7155/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-588a7155/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-588a7155/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-588a7155/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-588a7155/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-0d714968",
+    "filename": "cloudinary-icon.png",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/cloudinary-icon",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "png",
+      "height": 1000,
+      "migratedAt": "2025-08-27T03:43:45.367Z",
+      "originalName": "samples/cloudinary-icon",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333665/samples/cloudinary-icon.png",
+      "size": 57334,
+      "sizeFormatted": "55.99 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.367Z",
+      "width": 1000
+    },
+    "uploaded": "2025-08-27T03:43:45.843Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d714968/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d714968/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d714968/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d714968/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d714968/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d714968/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-a5eb2f8a",
+    "filename": "cloudinary-logo-vector.svg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/cloudinary-logo-vector",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "svg",
+      "height": 320,
+      "migratedAt": "2025-08-27T03:43:45.366Z",
+      "originalName": "samples/cloudinary-logo-vector",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333665/samples/cloudinary-logo-vector.svg",
+      "size": 5961,
+      "sizeFormatted": "5.82 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:45.366Z",
+      "width": 1000
+    },
+    "uploaded": "2025-08-27T03:43:45.787Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a5eb2f8a/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a5eb2f8a/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a5eb2f8a/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a5eb2f8a/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a5eb2f8a/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a5eb2f8a/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-436a2741",
+    "filename": "bike.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/bike",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1333,
+      "migratedAt": "2025-08-27T03:43:43.697Z",
+      "originalName": "samples/bike",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/bike.jpg",
+      "size": 475687,
+      "sizeFormatted": "464.54 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.697Z",
+      "width": 2000
+    },
+    "uploaded": "2025-08-27T03:43:44.857Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-436a2741/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-436a2741/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-436a2741/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-436a2741/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-436a2741/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-436a2741/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-332e736a",
+    "filename": "car-interior-design.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/ecommerce/car-interior-design",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2667,
+      "migratedAt": "2025-08-27T03:43:43.696Z",
+      "originalName": "samples/ecommerce/car-interior-design",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/ecommerce/car-interior-design.jpg",
+      "size": 1254103,
+      "sizeFormatted": "1.20 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.696Z",
+      "width": 2000
+    },
+    "uploaded": "2025-08-27T03:43:44.727Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-332e736a/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-332e736a/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-332e736a/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-332e736a/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-332e736a/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-332e736a/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-b51ed9c7",
+    "filename": "jazz.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/people/jazz",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1993,
+      "migratedAt": "2025-08-27T03:43:43.697Z",
+      "originalName": "samples/people/jazz",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/people/jazz.jpg",
+      "size": 695548,
+      "sizeFormatted": "679.25 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.697Z",
+      "width": 3000
+    },
+    "uploaded": "2025-08-27T03:43:44.694Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b51ed9c7/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b51ed9c7/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b51ed9c7/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b51ed9c7/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b51ed9c7/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b51ed9c7/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-340c0598",
+    "filename": "shoes.png",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/ecommerce/shoes",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "png",
+      "height": 507,
+      "migratedAt": "2025-08-27T03:43:43.697Z",
+      "originalName": "samples/ecommerce/shoes",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/ecommerce/shoes.png",
+      "size": 393265,
+      "sizeFormatted": "384.05 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.697Z",
+      "width": 587
+    },
+    "uploaded": "2025-08-27T03:43:44.491Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-340c0598/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-340c0598/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-340c0598/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-340c0598/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-340c0598/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-340c0598/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-61ea54e8",
+    "filename": "smiling-man.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/people/smiling-man",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 565,
+      "migratedAt": "2025-08-27T03:43:43.698Z",
+      "originalName": "samples/people/smiling-man",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333666/samples/people/smiling-man.jpg",
+      "size": 338794,
+      "sizeFormatted": "330.85 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.698Z",
+      "width": 849
+    },
+    "uploaded": "2025-08-27T03:43:44.454Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-61ea54e8/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-61ea54e8/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-61ea54e8/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-61ea54e8/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-61ea54e8/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-61ea54e8/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-94f43a74",
+    "filename": "architecture-signs.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/landscapes/architecture-signs",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2000,
+      "migratedAt": "2025-08-27T03:43:43.697Z",
+      "originalName": "samples/landscapes/architecture-signs",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/landscapes/architecture-signs.jpg",
+      "size": 945255,
+      "sizeFormatted": "923.10 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.697Z",
+      "width": 3000
+    },
+    "uploaded": "2025-08-27T03:43:44.355Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94f43a74/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94f43a74/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94f43a74/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94f43a74/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94f43a74/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94f43a74/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-7aa42c09",
+    "filename": "beach-boat.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/landscapes/beach-boat",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1950,
+      "migratedAt": "2025-08-27T03:43:43.696Z",
+      "originalName": "samples/landscapes/beach-boat",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/landscapes/beach-boat.jpg",
+      "size": 1235823,
+      "sizeFormatted": "1.18 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.696Z",
+      "width": 2600
+    },
+    "uploaded": "2025-08-27T03:43:44.336Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7aa42c09/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7aa42c09/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7aa42c09/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7aa42c09/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7aa42c09/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7aa42c09/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-3a504482",
+    "filename": "three-dogs.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/animals/three-dogs",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1800,
+      "migratedAt": "2025-08-27T03:43:43.696Z",
+      "originalName": "samples/animals/three-dogs",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/animals/three-dogs.jpg",
+      "size": 854929,
+      "sizeFormatted": "834.89 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.696Z",
+      "width": 2700
+    },
+    "uploaded": "2025-08-27T03:43:44.282Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3a504482/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3a504482/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3a504482/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3a504482/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3a504482/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3a504482/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-e419d1d1",
+    "filename": "boy-snow-hoodie.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/people/boy-snow-hoodie",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1332,
+      "migratedAt": "2025-08-27T03:43:43.697Z",
+      "originalName": "samples/people/boy-snow-hoodie",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/people/boy-snow-hoodie.jpg",
+      "size": 581238,
+      "sizeFormatted": "567.62 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.697Z",
+      "width": 1777
+    },
+    "uploaded": "2025-08-27T03:43:44.223Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e419d1d1/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e419d1d1/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e419d1d1/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e419d1d1/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e419d1d1/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e419d1d1/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-03c0ef7c",
+    "filename": "girl-urban-view.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/landscapes/girl-urban-view",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1252,
+      "migratedAt": "2025-08-27T03:43:43.698Z",
+      "originalName": "samples/landscapes/girl-urban-view",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333666/samples/landscapes/girl-urban-view.jpg",
+      "size": 372778,
+      "sizeFormatted": "364.04 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:43.698Z",
+      "width": 2048
+    },
+    "uploaded": "2025-08-27T03:43:44.218Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-03c0ef7c/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-03c0ef7c/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-03c0ef7c/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-03c0ef7c/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-03c0ef7c/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-03c0ef7c/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-eb8de458",
+    "filename": "kitten-playing.gif",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/animals/kitten-playing",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "gif",
+      "height": 180,
+      "migratedAt": "2025-08-27T03:43:41.708Z",
+      "originalName": "samples/animals/kitten-playing",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333668/samples/animals/kitten-playing.gif",
+      "size": 6620002,
+      "sizeFormatted": "6.31 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.708Z",
+      "width": 320
+    },
+    "uploaded": "2025-08-27T03:43:42.994Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-eb8de458/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-eb8de458/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-eb8de458/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-eb8de458/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-eb8de458/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-eb8de458/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-01a32ee5",
+    "filename": "accessories-bag.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/ecommerce/accessories-bag",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2000,
+      "migratedAt": "2025-08-27T03:43:41.709Z",
+      "originalName": "samples/ecommerce/accessories-bag",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333668/samples/ecommerce/accessories-bag.jpg",
+      "size": 1459256,
+      "sizeFormatted": "1.39 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.709Z",
+      "width": 3000
+    },
+    "uploaded": "2025-08-27T03:43:42.724Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-01a32ee5/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-01a32ee5/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-01a32ee5/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-01a32ee5/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-01a32ee5/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-01a32ee5/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-84e0184d",
+    "filename": "bicycle.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/people/bicycle",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1926,
+      "migratedAt": "2025-08-27T03:43:41.710Z",
+      "originalName": "samples/people/bicycle",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333667/samples/people/bicycle.jpg",
+      "size": 1130015,
+      "sizeFormatted": "1.08 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.710Z",
+      "width": 2889
+    },
+    "uploaded": "2025-08-27T03:43:42.612Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-84e0184d/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-84e0184d/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-84e0184d/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-84e0184d/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-84e0184d/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-84e0184d/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-231de2e0",
+    "filename": "leather-bag-gray.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/ecommerce/leather-bag-gray",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1590,
+      "migratedAt": "2025-08-27T03:43:41.709Z",
+      "originalName": "samples/ecommerce/leather-bag-gray",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333668/samples/ecommerce/leather-bag-gray.jpg",
+      "size": 1323582,
+      "sizeFormatted": "1.26 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.709Z",
+      "width": 2385
+    },
+    "uploaded": "2025-08-27T03:43:42.518Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-231de2e0/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-231de2e0/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-231de2e0/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-231de2e0/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-231de2e0/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-231de2e0/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-50c5e7ab",
+    "filename": "landscape-panorama.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/landscapes/landscape-panorama",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2349,
+      "migratedAt": "2025-08-27T03:43:41.708Z",
+      "originalName": "samples/landscapes/landscape-panorama",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333669/samples/landscapes/landscape-panorama.jpg",
+      "size": 7858062,
+      "sizeFormatted": "7.49 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.708Z",
+      "width": 10906
+    },
+    "uploaded": "2025-08-27T03:43:42.440Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-50c5e7ab/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-50c5e7ab/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-50c5e7ab/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-50c5e7ab/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-50c5e7ab/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-50c5e7ab/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-432d45a5",
+    "filename": "nature-mountains.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/landscapes/nature-mountains",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2000,
+      "migratedAt": "2025-08-27T03:43:41.709Z",
+      "originalName": "samples/landscapes/nature-mountains",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333668/samples/landscapes/nature-mountains.jpg",
+      "size": 3171453,
+      "sizeFormatted": "3.02 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.708Z",
+      "width": 3000
+    },
+    "uploaded": "2025-08-27T03:43:42.427Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-432d45a5/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-432d45a5/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-432d45a5/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-432d45a5/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-432d45a5/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-432d45a5/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-42800605",
+    "filename": "cloudinary-group.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/cloudinary-group",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1526,
+      "migratedAt": "2025-08-27T03:43:41.709Z",
+      "originalName": "samples/cloudinary-group",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333668/samples/cloudinary-group.jpg",
+      "size": 2856169,
+      "sizeFormatted": "2.72 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.709Z",
+      "width": 3000
+    },
+    "uploaded": "2025-08-27T03:43:42.425Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-42800605/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-42800605/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-42800605/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-42800605/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-42800605/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-42800605/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-a295a140",
+    "filename": "spices.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/food/spices",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2000,
+      "migratedAt": "2025-08-27T03:43:41.709Z",
+      "originalName": "samples/food/spices",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333668/samples/food/spices.jpg",
+      "size": 2129950,
+      "sizeFormatted": "2.03 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.709Z",
+      "width": 2000
+    },
+    "uploaded": "2025-08-27T03:43:42.405Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a295a140/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a295a140/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a295a140/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a295a140/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a295a140/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a295a140/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-62ee633c",
+    "filename": "imagecon-group.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/imagecon-group",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1867,
+      "migratedAt": "2025-08-27T03:43:41.709Z",
+      "originalName": "samples/imagecon-group",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333668/samples/imagecon-group.jpg",
+      "size": 1487070,
+      "sizeFormatted": "1.42 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.709Z",
+      "width": 2800
+    },
+    "uploaded": "2025-08-27T03:43:42.349Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-62ee633c/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-62ee633c/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-62ee633c/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-62ee633c/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-62ee633c/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-62ee633c/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-ce20d97f",
+    "filename": "two-ladies.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/two-ladies",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1200,
+      "migratedAt": "2025-08-27T03:43:41.708Z",
+      "originalName": "samples/two-ladies",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333670/samples/two-ladies.jpg",
+      "size": 211712,
+      "sizeFormatted": "206.75 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:41.708Z",
+      "width": 1500
+    },
+    "uploaded": "2025-08-27T03:43:42.325Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ce20d97f/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ce20d97f/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ce20d97f/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ce20d97f/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ce20d97f/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ce20d97f/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-2ed927a2",
+    "filename": "smile.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/smile",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1000,
+      "migratedAt": "2025-08-27T03:43:39.813Z",
+      "originalName": "samples/smile",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333674/samples/smile.jpg",
+      "size": 657749,
+      "sizeFormatted": "642.33 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.813Z",
+      "width": 1552
+    },
+    "uploaded": "2025-08-27T03:43:40.785Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2ed927a2/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2ed927a2/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2ed927a2/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2ed927a2/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2ed927a2/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2ed927a2/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-8a586055",
+    "filename": "man-on-a-street.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/man-on-a-street",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1340,
+      "migratedAt": "2025-08-27T03:43:39.812Z",
+      "originalName": "samples/man-on-a-street",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/man-on-a-street.jpg",
+      "size": 564013,
+      "sizeFormatted": "550.79 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.812Z",
+      "width": 1340
+    },
+    "uploaded": "2025-08-27T03:43:40.755Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8a586055/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8a586055/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8a586055/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8a586055/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8a586055/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8a586055/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-91d9a07a",
+    "filename": "breakfast.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/breakfast",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2196,
+      "migratedAt": "2025-08-27T03:43:39.813Z",
+      "originalName": "samples/breakfast",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333674/samples/breakfast.jpg",
+      "size": 3024938,
+      "sizeFormatted": "2.88 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.813Z",
+      "width": 2447
+    },
+    "uploaded": "2025-08-27T03:43:40.611Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-91d9a07a/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-91d9a07a/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-91d9a07a/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-91d9a07a/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-91d9a07a/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-91d9a07a/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-205e54a3",
+    "filename": "man-portrait.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/man-portrait",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2000,
+      "migratedAt": "2025-08-27T03:43:39.812Z",
+      "originalName": "samples/man-portrait",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/man-portrait.jpg",
+      "size": 505607,
+      "sizeFormatted": "493.76 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.812Z",
+      "width": 1333
+    },
+    "uploaded": "2025-08-27T03:43:40.529Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-205e54a3/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-205e54a3/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-205e54a3/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-205e54a3/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-205e54a3/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-205e54a3/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-cee65178",
+    "filename": "outdoor-woman.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/outdoor-woman",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 963,
+      "migratedAt": "2025-08-27T03:43:39.812Z",
+      "originalName": "samples/outdoor-woman",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/outdoor-woman.jpg",
+      "size": 93473,
+      "sizeFormatted": "91.28 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.812Z",
+      "width": 640
+    },
+    "uploaded": "2025-08-27T03:43:40.493Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cee65178/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cee65178/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cee65178/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cee65178/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cee65178/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cee65178/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-3c41dd3d",
+    "filename": "balloons.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/balloons",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 667,
+      "migratedAt": "2025-08-27T03:43:39.813Z",
+      "originalName": "samples/balloons",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333673/samples/balloons.jpg",
+      "size": 117237,
+      "sizeFormatted": "114.49 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.813Z",
+      "width": 1000
+    },
+    "uploaded": "2025-08-27T03:43:40.457Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3c41dd3d/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3c41dd3d/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3c41dd3d/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3c41dd3d/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3c41dd3d/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-3c41dd3d/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-effb4e40",
+    "filename": "shoe.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/shoe",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1140,
+      "migratedAt": "2025-08-27T03:43:39.813Z",
+      "originalName": "samples/shoe",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333671/samples/shoe.jpg",
+      "size": 72888,
+      "sizeFormatted": "71.18 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.813Z",
+      "width": 1000
+    },
+    "uploaded": "2025-08-27T03:43:40.373Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-effb4e40/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-effb4e40/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-effb4e40/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-effb4e40/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-effb4e40/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-effb4e40/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-9e492262",
+    "filename": "man-on-a-escalator.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/man-on-a-escalator",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1340,
+      "migratedAt": "2025-08-27T03:43:39.812Z",
+      "originalName": "samples/man-on-a-escalator",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/man-on-a-escalator.jpg",
+      "size": 563708,
+      "sizeFormatted": "550.50 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.812Z",
+      "width": 1340
+    },
+    "uploaded": "2025-08-27T03:43:40.368Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9e492262/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9e492262/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9e492262/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9e492262/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9e492262/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9e492262/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-49110555",
+    "filename": "chair-and-coffee-table.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/chair-and-coffee-table",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1500,
+      "migratedAt": "2025-08-27T03:43:39.812Z",
+      "originalName": "samples/chair-and-coffee-table",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/chair-and-coffee-table.jpg",
+      "size": 64504,
+      "sizeFormatted": "62.99 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.812Z",
+      "width": 1001
+    },
+    "uploaded": "2025-08-27T03:43:40.313Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-49110555/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-49110555/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-49110555/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-49110555/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-49110555/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-49110555/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-b7deb2ed",
+    "filename": "look-up.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/look-up",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 900,
+      "migratedAt": "2025-08-27T03:43:39.813Z",
+      "originalName": "samples/look-up",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/look-up.jpg",
+      "size": 414964,
+      "sizeFormatted": "405.24 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:39.812Z",
+      "width": 900
+    },
+    "uploaded": "2025-08-27T03:43:40.280Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b7deb2ed/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b7deb2ed/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b7deb2ed/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b7deb2ed/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b7deb2ed/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-b7deb2ed/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-94c49b9b",
+    "filename": "woman-on-a-football-field.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/woman-on-a-football-field",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1350,
+      "migratedAt": "2025-08-27T03:43:38.366Z",
+      "originalName": "samples/woman-on-a-football-field",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333676/samples/woman-on-a-football-field.jpg",
+      "size": 416598,
+      "sizeFormatted": "406.83 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.366Z",
+      "width": 1200
+    },
+    "uploaded": "2025-08-27T03:43:39.180Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94c49b9b/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94c49b9b/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94c49b9b/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94c49b9b/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94c49b9b/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-94c49b9b/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-920928f8",
+    "filename": "chair.png",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/chair",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "png",
+      "height": 600,
+      "migratedAt": "2025-08-27T03:43:38.366Z",
+      "originalName": "samples/chair",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/chair.png",
+      "size": 130488,
+      "sizeFormatted": "127.43 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.366Z",
+      "width": 800
+    },
+    "uploaded": "2025-08-27T03:43:39.064Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-920928f8/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-920928f8/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-920928f8/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-920928f8/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-920928f8/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-920928f8/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-dfab74a4",
+    "filename": "cld-sample.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "cld-sample",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1250,
+      "migratedAt": "2025-08-27T03:43:38.366Z",
+      "originalName": "cld-sample",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333676/cld-sample.jpg",
+      "size": 476846,
+      "sizeFormatted": "465.67 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.366Z",
+      "width": 1870
+    },
+    "uploaded": "2025-08-27T03:43:39.056Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-dfab74a4/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-dfab74a4/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-dfab74a4/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-dfab74a4/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-dfab74a4/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-dfab74a4/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-df7b7a71",
+    "filename": "cld-sample-2.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "cld-sample-2",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1250,
+      "migratedAt": "2025-08-27T03:43:38.366Z",
+      "originalName": "cld-sample-2",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333677/cld-sample-2.jpg",
+      "size": 592235,
+      "sizeFormatted": "578.35 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.366Z",
+      "width": 1870
+    },
+    "uploaded": "2025-08-27T03:43:39.013Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-df7b7a71/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-df7b7a71/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-df7b7a71/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-df7b7a71/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-df7b7a71/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-df7b7a71/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-af8a09d1",
+    "filename": "cup-on-a-table.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/cup-on-a-table",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1500,
+      "migratedAt": "2025-08-27T03:43:38.367Z",
+      "originalName": "samples/cup-on-a-table",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/cup-on-a-table.jpg",
+      "size": 134300,
+      "sizeFormatted": "131.15 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.367Z",
+      "width": 2246
+    },
+    "uploaded": "2025-08-27T03:43:38.973Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-af8a09d1/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-af8a09d1/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-af8a09d1/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-af8a09d1/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-af8a09d1/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-af8a09d1/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-55515ec7",
+    "filename": "cld-sample-5.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "cld-sample-5",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1250,
+      "migratedAt": "2025-08-27T03:43:38.365Z",
+      "originalName": "cld-sample-5",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333677/cld-sample-5.jpg",
+      "size": 379132,
+      "sizeFormatted": "370.25 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.365Z",
+      "width": 1870
+    },
+    "uploaded": "2025-08-27T03:43:38.930Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-55515ec7/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-55515ec7/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-55515ec7/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-55515ec7/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-55515ec7/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-55515ec7/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-abfc0d5f",
+    "filename": "dessert-on-a-plate.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/dessert-on-a-plate",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1200,
+      "migratedAt": "2025-08-27T03:43:38.366Z",
+      "originalName": "samples/dessert-on-a-plate",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333676/samples/dessert-on-a-plate.jpg",
+      "size": 348717,
+      "sizeFormatted": "340.54 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.366Z",
+      "width": 1200
+    },
+    "uploaded": "2025-08-27T03:43:38.924Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-abfc0d5f/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-abfc0d5f/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-abfc0d5f/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-abfc0d5f/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-abfc0d5f/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-abfc0d5f/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-f50dedaa",
+    "filename": "upscale-face-1.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/upscale-face-1",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 233,
+      "migratedAt": "2025-08-27T03:43:38.366Z",
+      "originalName": "samples/upscale-face-1",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333676/samples/upscale-face-1.jpg",
+      "size": 18110,
+      "sizeFormatted": "17.69 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.366Z",
+      "width": 233
+    },
+    "uploaded": "2025-08-27T03:43:38.848Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f50dedaa/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f50dedaa/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f50dedaa/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f50dedaa/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f50dedaa/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-f50dedaa/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-c0a18444",
+    "filename": "logo.png",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/logo",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "png",
+      "height": 314,
+      "migratedAt": "2025-08-27T03:43:38.366Z",
+      "originalName": "samples/logo",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333676/samples/logo.png",
+      "size": 10897,
+      "sizeFormatted": "10.64 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.366Z",
+      "width": 480
+    },
+    "uploaded": "2025-08-27T03:43:38.836Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c0a18444/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c0a18444/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c0a18444/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c0a18444/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c0a18444/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c0a18444/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-7267a995",
+    "filename": "coffee.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "samples/coffee",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1280,
+      "migratedAt": "2025-08-27T03:43:38.367Z",
+      "originalName": "samples/coffee",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333675/samples/coffee.jpg",
+      "size": 165287,
+      "sizeFormatted": "161.41 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:38.367Z",
+      "width": 1920
+    },
+    "uploaded": "2025-08-27T03:43:38.821Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7267a995/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7267a995/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7267a995/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7267a995/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7267a995/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-7267a995/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-ef05252a",
+    "filename": "pie7ohat0lm8oabphg18.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "pie7ohat0lm8oabphg18",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1040,
+      "migratedAt": "2025-08-27T03:43:37.008Z",
+      "originalName": "pie7ohat0lm8oabphg18",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754345223/pie7ohat0lm8oabphg18.jpg",
+      "size": 135124,
+      "sizeFormatted": "131.96 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.008Z",
+      "width": 590
+    },
+    "uploaded": "2025-08-27T03:43:37.879Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ef05252a/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ef05252a/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ef05252a/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ef05252a/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ef05252a/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ef05252a/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-5fd12971",
+    "filename": "cld-sample-3.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "cld-sample-3",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1250,
+      "migratedAt": "2025-08-27T03:43:37.009Z",
+      "originalName": "cld-sample-3",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333677/cld-sample-3.jpg",
+      "size": 905834,
+      "sizeFormatted": "884.60 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.009Z",
+      "width": 1870
+    },
+    "uploaded": "2025-08-27T03:43:37.867Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5fd12971/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5fd12971/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5fd12971/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5fd12971/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5fd12971/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5fd12971/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-8511a5b1",
+    "filename": "cld-sample-4.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "cld-sample-4",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1250,
+      "migratedAt": "2025-08-27T03:43:37.009Z",
+      "originalName": "cld-sample-4",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333677/cld-sample-4.jpg",
+      "size": 818600,
+      "sizeFormatted": "799.41 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.009Z",
+      "width": 1870
+    },
+    "uploaded": "2025-08-27T03:43:37.670Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8511a5b1/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8511a5b1/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8511a5b1/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8511a5b1/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8511a5b1/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8511a5b1/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-0d74d251",
+    "filename": "t4qoyl1ttlwqtbxteibb.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "t4qoyl1ttlwqtbxteibb",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1040,
+      "migratedAt": "2025-08-27T03:43:37.008Z",
+      "originalName": "t4qoyl1ttlwqtbxteibb",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754345575/t4qoyl1ttlwqtbxteibb.jpg",
+      "size": 135124,
+      "sizeFormatted": "131.96 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.008Z",
+      "width": 590
+    },
+    "uploaded": "2025-08-27T03:43:37.602Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d74d251/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d74d251/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d74d251/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d74d251/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d74d251/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0d74d251/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-92d8169a",
+    "filename": "main-sample.png",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "main-sample",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "png",
+      "height": 832,
+      "migratedAt": "2025-08-27T03:43:37.009Z",
+      "originalName": "main-sample",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754333677/main-sample.png",
+      "size": 1868954,
+      "sizeFormatted": "1.78 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.009Z",
+      "width": 1248
+    },
+    "uploaded": "2025-08-27T03:43:37.580Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-92d8169a/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-92d8169a/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-92d8169a/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-92d8169a/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-92d8169a/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-92d8169a/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-a3781bc9",
+    "filename": "mv0uxxrsqje1gwtjkory.png",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "mv0uxxrsqje1gwtjkory",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "png",
+      "height": 2796,
+      "migratedAt": "2025-08-27T03:43:37.008Z",
+      "originalName": "mv0uxxrsqje1gwtjkory",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754340375/mv0uxxrsqje1gwtjkory.png",
+      "size": 567119,
+      "sizeFormatted": "553.83 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.008Z",
+      "width": 1290
+    },
+    "uploaded": "2025-08-27T03:43:37.571Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a3781bc9/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a3781bc9/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a3781bc9/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a3781bc9/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a3781bc9/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-a3781bc9/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-cc7316db",
+    "filename": "nx7sfxh3l0odbup3zzc9.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "nx7sfxh3l0odbup3zzc9",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2053,
+      "migratedAt": "2025-08-27T03:43:37.007Z",
+      "originalName": "nx7sfxh3l0odbup3zzc9",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754345992/nx7sfxh3l0odbup3zzc9.jpg",
+      "size": 1513659,
+      "sizeFormatted": "1.44 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.007Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:37.475Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc7316db/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc7316db/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc7316db/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc7316db/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc7316db/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc7316db/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-da32b827",
+    "filename": "w2erixrnonkx7axlspgl.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "w2erixrnonkx7axlspgl",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2061,
+      "migratedAt": "2025-08-27T03:43:37.007Z",
+      "originalName": "w2erixrnonkx7axlspgl",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754345875/w2erixrnonkx7axlspgl.jpg",
+      "size": 1699465,
+      "sizeFormatted": "1.62 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.007Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:37.436Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-da32b827/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-da32b827/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-da32b827/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-da32b827/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-da32b827/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-da32b827/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-448ef2c1",
+    "filename": "fozvvqcya0gdl2o0j4dd.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "fozvvqcya0gdl2o0j4dd",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2063,
+      "migratedAt": "2025-08-27T03:43:37.007Z",
+      "originalName": "fozvvqcya0gdl2o0j4dd",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754345762/fozvvqcya0gdl2o0j4dd.jpg",
+      "size": 2007332,
+      "sizeFormatted": "1.91 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.007Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:37.427Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-448ef2c1/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-448ef2c1/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-448ef2c1/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-448ef2c1/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-448ef2c1/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-448ef2c1/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-64bee9d9",
+    "filename": "zz4tsfqo3vetzmlkwdx6.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "zz4tsfqo3vetzmlkwdx6",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2067,
+      "migratedAt": "2025-08-27T03:43:37.008Z",
+      "originalName": "zz4tsfqo3vetzmlkwdx6",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754345638/zz4tsfqo3vetzmlkwdx6.jpg",
+      "size": 508766,
+      "sizeFormatted": "496.84 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:37.008Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:37.337Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-64bee9d9/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-64bee9d9/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-64bee9d9/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-64bee9d9/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-64bee9d9/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-64bee9d9/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-ee8fdb7f",
+    "filename": "ylbcp0q6bxwpxrlwcjta.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "ylbcp0q6bxwpxrlwcjta",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2054,
+      "migratedAt": "2025-08-27T03:43:34.543Z",
+      "originalName": "ylbcp0q6bxwpxrlwcjta",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754347241/ylbcp0q6bxwpxrlwcjta.jpg",
+      "size": 1661718,
+      "sizeFormatted": "1.58 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.543Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:36.249Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ee8fdb7f/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ee8fdb7f/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ee8fdb7f/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ee8fdb7f/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ee8fdb7f/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-ee8fdb7f/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-fd6eb369",
+    "filename": "huerfyk4nopof1fwnk3c.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "huerfyk4nopof1fwnk3c",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2064,
+      "migratedAt": "2025-08-27T03:43:34.543Z",
+      "originalName": "huerfyk4nopof1fwnk3c",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754346333/huerfyk4nopof1fwnk3c.jpg",
+      "size": 1543790,
+      "sizeFormatted": "1.47 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.543Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:36.126Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd6eb369/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd6eb369/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd6eb369/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd6eb369/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd6eb369/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd6eb369/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-cc21a95a",
+    "filename": "et4yvqdw5qyydzix6bqz.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "et4yvqdw5qyydzix6bqz",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2051,
+      "migratedAt": "2025-08-27T03:43:34.543Z",
+      "originalName": "et4yvqdw5qyydzix6bqz",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754346733/et4yvqdw5qyydzix6bqz.jpg",
+      "size": 1787191,
+      "sizeFormatted": "1.70 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.543Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:36.089Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc21a95a/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc21a95a/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc21a95a/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc21a95a/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc21a95a/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-cc21a95a/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-5f71793a",
+    "filename": "v8vfaegorx6qsqixzafi.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "v8vfaegorx6qsqixzafi",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2067,
+      "migratedAt": "2025-08-27T03:43:34.542Z",
+      "originalName": "v8vfaegorx6qsqixzafi",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754347795/v8vfaegorx6qsqixzafi.jpg",
+      "size": 1834850,
+      "sizeFormatted": "1.75 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.542Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:36.076Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5f71793a/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5f71793a/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5f71793a/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5f71793a/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5f71793a/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-5f71793a/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-acd44ae5",
+    "filename": "y7niqidho1jcyujskrvh.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "y7niqidho1jcyujskrvh",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2054,
+      "migratedAt": "2025-08-27T03:43:34.542Z",
+      "originalName": "y7niqidho1jcyujskrvh",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754347749/y7niqidho1jcyujskrvh.jpg",
+      "size": 1661718,
+      "sizeFormatted": "1.58 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.542Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:36.075Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-acd44ae5/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-acd44ae5/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-acd44ae5/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-acd44ae5/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-acd44ae5/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-acd44ae5/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-fd7755b9",
+    "filename": "o0w7jveqhsflyjr7ie9a.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "o0w7jveqhsflyjr7ie9a",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2077,
+      "migratedAt": "2025-08-27T03:43:34.543Z",
+      "originalName": "o0w7jveqhsflyjr7ie9a",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754347005/o0w7jveqhsflyjr7ie9a.jpg",
+      "size": 1951659,
+      "sizeFormatted": "1.86 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.543Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:36.041Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd7755b9/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd7755b9/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd7755b9/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd7755b9/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd7755b9/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fd7755b9/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-89c73f44",
+    "filename": "uwf6xf0hrrpyx4wbauwu.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "uwf6xf0hrrpyx4wbauwu",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2073,
+      "migratedAt": "2025-08-27T03:43:34.543Z",
+      "originalName": "uwf6xf0hrrpyx4wbauwu",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754346891/uwf6xf0hrrpyx4wbauwu.jpg",
+      "size": 1834859,
+      "sizeFormatted": "1.75 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.543Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:35.996Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-89c73f44/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-89c73f44/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-89c73f44/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-89c73f44/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-89c73f44/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-89c73f44/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-d3122460",
+    "filename": "aosyrzcitwpvrv4vavlo.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "aosyrzcitwpvrv4vavlo",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 846,
+      "migratedAt": "2025-08-27T03:43:34.542Z",
+      "originalName": "aosyrzcitwpvrv4vavlo",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754499904/aosyrzcitwpvrv4vavlo.jpg",
+      "size": 275140,
+      "sizeFormatted": "268.69 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.542Z",
+      "width": 960
+    },
+    "uploaded": "2025-08-27T03:43:35.902Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d3122460/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d3122460/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d3122460/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d3122460/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d3122460/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d3122460/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-29bde1c6",
+    "filename": "yvfxvw9mjaudqrdavq1p.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "yvfxvw9mjaudqrdavq1p",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2055,
+      "migratedAt": "2025-08-27T03:43:34.543Z",
+      "originalName": "yvfxvw9mjaudqrdavq1p",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754346142/yvfxvw9mjaudqrdavq1p.jpg",
+      "size": 1817576,
+      "sizeFormatted": "1.73 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.543Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:35.823Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-29bde1c6/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-29bde1c6/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-29bde1c6/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-29bde1c6/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-29bde1c6/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-29bde1c6/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-15e750ce",
+    "filename": "ebjft3z6hyvh8gec1okc.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "ebjft3z6hyvh8gec1okc",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1875,
+      "migratedAt": "2025-08-27T03:43:34.543Z",
+      "originalName": "ebjft3z6hyvh8gec1okc",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754346470/ebjft3z6hyvh8gec1okc.jpg",
+      "size": 556971,
+      "sizeFormatted": "543.92 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:34.543Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:35.796Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-15e750ce/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-15e750ce/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-15e750ce/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-15e750ce/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-15e750ce/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-15e750ce/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-28eaa4c0",
+    "filename": "ijsuo2rkini4vgibkkti.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "ijsuo2rkini4vgibkkti",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2201,
+      "migratedAt": "2025-08-27T03:43:33.135Z",
+      "originalName": "ijsuo2rkini4vgibkkti",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754768042/ijsuo2rkini4vgibkkti.jpg",
+      "size": 1647066,
+      "sizeFormatted": "1.57 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.135Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:34.054Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-28eaa4c0/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-28eaa4c0/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-28eaa4c0/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-28eaa4c0/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-28eaa4c0/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-28eaa4c0/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-9688632e",
+    "filename": "srn7lqtf3mntz90nk5zp.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "srn7lqtf3mntz90nk5zp",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2109,
+      "migratedAt": "2025-08-27T03:43:33.136Z",
+      "originalName": "srn7lqtf3mntz90nk5zp",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754767592/srn7lqtf3mntz90nk5zp.jpg",
+      "size": 1079999,
+      "sizeFormatted": "1.03 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.136Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:33.914Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9688632e/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9688632e/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9688632e/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9688632e/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9688632e/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-9688632e/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-d756edf9",
+    "filename": "tkigtqrh3hg8yudghwns.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "tkigtqrh3hg8yudghwns",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2049,
+      "migratedAt": "2025-08-27T03:43:33.136Z",
+      "originalName": "tkigtqrh3hg8yudghwns",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754500727/tkigtqrh3hg8yudghwns.jpg",
+      "size": 1366711,
+      "sizeFormatted": "1.30 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.136Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:33.687Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d756edf9/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d756edf9/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d756edf9/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d756edf9/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d756edf9/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d756edf9/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-12d60dcb",
+    "filename": "bwdu0gwedvjyzvsdxhkd.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "bwdu0gwedvjyzvsdxhkd",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2093,
+      "migratedAt": "2025-08-27T03:43:33.136Z",
+      "originalName": "bwdu0gwedvjyzvsdxhkd",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754500166/bwdu0gwedvjyzvsdxhkd.jpg",
+      "size": 1197042,
+      "sizeFormatted": "1.14 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.136Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:33.628Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-12d60dcb/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-12d60dcb/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-12d60dcb/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-12d60dcb/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-12d60dcb/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-12d60dcb/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-fdbdca02",
+    "filename": "hbuulpsv30yl89jd7pje.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "hbuulpsv30yl89jd7pje",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2114,
+      "migratedAt": "2025-08-27T03:43:33.136Z",
+      "originalName": "hbuulpsv30yl89jd7pje",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754500427/hbuulpsv30yl89jd7pje.jpg",
+      "size": 1334734,
+      "sizeFormatted": "1.27 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.136Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:33.627Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fdbdca02/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fdbdca02/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fdbdca02/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fdbdca02/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fdbdca02/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-fdbdca02/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-1b532864",
+    "filename": "hehkiimzjmvv0meryx0s.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "hehkiimzjmvv0meryx0s",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2075,
+      "migratedAt": "2025-08-27T03:43:33.136Z",
+      "originalName": "hehkiimzjmvv0meryx0s",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754767415/hehkiimzjmvv0meryx0s.jpg",
+      "size": 1669779,
+      "sizeFormatted": "1.59 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.136Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:33.561Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1b532864/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1b532864/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1b532864/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1b532864/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1b532864/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1b532864/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-d278589f",
+    "filename": "gamlx8bbalmpx7emslva.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "gamlx8bbalmpx7emslva",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1280,
+      "migratedAt": "2025-08-27T03:43:33.136Z",
+      "originalName": "gamlx8bbalmpx7emslva",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754500914/gamlx8bbalmpx7emslva.jpg",
+      "size": 218501,
+      "sizeFormatted": "213.38 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.136Z",
+      "width": 1043
+    },
+    "uploaded": "2025-08-27T03:43:33.552Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d278589f/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d278589f/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d278589f/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d278589f/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d278589f/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-d278589f/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-c885555c",
+    "filename": "wfezp0u5frtc5jsbivga.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "wfezp0u5frtc5jsbivga",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2173,
+      "migratedAt": "2025-08-27T03:43:33.136Z",
+      "originalName": "wfezp0u5frtc5jsbivga",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754767060/wfezp0u5frtc5jsbivga.jpg",
+      "size": 1489304,
+      "sizeFormatted": "1.42 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.136Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:33.499Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c885555c/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c885555c/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c885555c/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c885555c/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c885555c/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-c885555c/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-bb797ef6",
+    "filename": "efd2vgcqqu6mxspugz61.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "efd2vgcqqu6mxspugz61",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2053,
+      "migratedAt": "2025-08-27T03:43:33.135Z",
+      "originalName": "efd2vgcqqu6mxspugz61",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754767739/efd2vgcqqu6mxspugz61.jpg",
+      "size": 380768,
+      "sizeFormatted": "371.84 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.135Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:33.487Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-bb797ef6/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-bb797ef6/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-bb797ef6/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-bb797ef6/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-bb797ef6/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-bb797ef6/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-4751ef07",
+    "filename": "bfcdymq24pskq6aellp0.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "bfcdymq24pskq6aellp0",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 530,
+      "migratedAt": "2025-08-27T03:43:33.137Z",
+      "originalName": "bfcdymq24pskq6aellp0",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754500006/bfcdymq24pskq6aellp0.jpg",
+      "size": 139833,
+      "sizeFormatted": "136.56 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:33.137Z",
+      "width": 960
+    },
+    "uploaded": "2025-08-27T03:43:33.442Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-4751ef07/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-4751ef07/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-4751ef07/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-4751ef07/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-4751ef07/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-4751ef07/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-0b9b73bc",
+    "filename": "ixflnzt5ehattsrytgsp.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "ixflnzt5ehattsrytgsp",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2024,
+      "migratedAt": "2025-08-27T03:43:31.180Z",
+      "originalName": "ixflnzt5ehattsrytgsp",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1756045320/ixflnzt5ehattsrytgsp.jpg",
+      "size": 1312145,
+      "sizeFormatted": "1.25 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.180Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:32.653Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0b9b73bc/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0b9b73bc/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0b9b73bc/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0b9b73bc/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0b9b73bc/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0b9b73bc/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-e9278d6e",
+    "filename": "tnzom4jvrari0fpi7m4n.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "tnzom4jvrari0fpi7m4n",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1280,
+      "migratedAt": "2025-08-27T03:43:31.188Z",
+      "originalName": "tnzom4jvrari0fpi7m4n",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754768623/tnzom4jvrari0fpi7m4n.jpg",
+      "size": 191121,
+      "sizeFormatted": "186.64 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.188Z",
+      "width": 960
+    },
+    "uploaded": "2025-08-27T03:43:32.512Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e9278d6e/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e9278d6e/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e9278d6e/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e9278d6e/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e9278d6e/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-e9278d6e/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-0c99133e",
+    "filename": "gxfbckzr9ugopsrs01ef.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "gxfbckzr9ugopsrs01ef",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2061,
+      "migratedAt": "2025-08-27T03:43:31.185Z",
+      "originalName": "gxfbckzr9ugopsrs01ef",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754769129/gxfbckzr9ugopsrs01ef.jpg",
+      "size": 1437583,
+      "sizeFormatted": "1.37 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.184Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:31.869Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0c99133e/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0c99133e/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0c99133e/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0c99133e/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0c99133e/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-0c99133e/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-25d3096d",
+    "filename": "i0i9zzthbyrhjprawdlj.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "i0i9zzthbyrhjprawdlj",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2058,
+      "migratedAt": "2025-08-27T03:43:31.183Z",
+      "originalName": "i0i9zzthbyrhjprawdlj",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754769329/i0i9zzthbyrhjprawdlj.jpg",
+      "size": 1414352,
+      "sizeFormatted": "1.35 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.183Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:31.736Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25d3096d/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25d3096d/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25d3096d/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25d3096d/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25d3096d/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25d3096d/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-1047f018",
+    "filename": "kgknnen4dgo7hwbnot09.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "kgknnen4dgo7hwbnot09",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2195,
+      "migratedAt": "2025-08-27T03:43:31.189Z",
+      "originalName": "kgknnen4dgo7hwbnot09",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754768168/kgknnen4dgo7hwbnot09.jpg",
+      "size": 1409558,
+      "sizeFormatted": "1.34 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.189Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:31.721Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1047f018/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1047f018/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1047f018/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1047f018/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1047f018/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-1047f018/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-904da2d2",
+    "filename": "tjgwcyzhbumc0lqxsapv.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "tjgwcyzhbumc0lqxsapv",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1280,
+      "migratedAt": "2025-08-27T03:43:31.180Z",
+      "originalName": "tjgwcyzhbumc0lqxsapv",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754769917/tjgwcyzhbumc0lqxsapv.jpg",
+      "size": 307192,
+      "sizeFormatted": "299.99 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.180Z",
+      "width": 960
+    },
+    "uploaded": "2025-08-27T03:43:31.690Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-904da2d2/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-904da2d2/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-904da2d2/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-904da2d2/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-904da2d2/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-904da2d2/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-514ba657",
+    "filename": "ijx7myu7jitpqb6m6qjn.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "ijx7myu7jitpqb6m6qjn",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 2070,
+      "migratedAt": "2025-08-27T03:43:31.182Z",
+      "originalName": "ijx7myu7jitpqb6m6qjn",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754769573/ijx7myu7jitpqb6m6qjn.jpg",
+      "size": 1515545,
+      "sizeFormatted": "1.45 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.182Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:31.666Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-514ba657/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-514ba657/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-514ba657/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-514ba657/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-514ba657/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-514ba657/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-2db0ae5d",
+    "filename": "zkfnz5ezjlk5sbnlz9sg.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "zkfnz5ezjlk5sbnlz9sg",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1280,
+      "migratedAt": "2025-08-27T03:43:31.187Z",
+      "originalName": "zkfnz5ezjlk5sbnlz9sg",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754768728/zkfnz5ezjlk5sbnlz9sg.jpg",
+      "size": 228630,
+      "sizeFormatted": "223.27 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.187Z",
+      "width": 960
+    },
+    "uploaded": "2025-08-27T03:43:31.588Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2db0ae5d/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2db0ae5d/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2db0ae5d/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2db0ae5d/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2db0ae5d/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-2db0ae5d/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-8afaadb8",
+    "filename": "dcv5nxfci6fmkqvoywta.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "dcv5nxfci6fmkqvoywta",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1280,
+      "migratedAt": "2025-08-27T03:43:31.186Z",
+      "originalName": "dcv5nxfci6fmkqvoywta",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1754768838/dcv5nxfci6fmkqvoywta.jpg",
+      "size": 191121,
+      "sizeFormatted": "186.64 KB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.186Z",
+      "width": 960
+    },
+    "uploaded": "2025-08-27T03:43:31.554Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8afaadb8/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8afaadb8/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8afaadb8/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8afaadb8/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8afaadb8/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-8afaadb8/original"
+    ]
+  },
+  {
+    "id": "jbel-industry-shop-img-25e2d9fa",
+    "filename": "qtpvqz6raf1zybvdw3io.jpg",
+    "meta": {
+      "boutique": "jbel-industry-shop",
+      "cloudinaryPublicId": "qtpvqz6raf1zybvdw3io",
+      "folder": "/jbel-industry-shop/images/",
+      "format": "jpg",
+      "height": 1550,
+      "migratedAt": "2025-08-27T03:43:31.179Z",
+      "originalName": "qtpvqz6raf1zybvdw3io",
+      "originalUrl": "https://res.cloudinary.com/dwez3etsh/image/upload/v1756045577/qtpvqz6raf1zybvdw3io.jpg",
+      "size": 1570072,
+      "sizeFormatted": "1.50 MB",
+      "type": "image",
+      "uploadedAt": "2025-08-27T03:43:31.178Z",
+      "width": 1179
+    },
+    "uploaded": "2025-08-27T03:43:31.548Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25e2d9fa/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25e2d9fa/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25e2d9fa/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25e2d9fa/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25e2d9fa/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/jbel-industry-shop-img-25e2d9fa/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a85e5c9e5e7a0b993bde61",
+    "filename": "dcprpt64kqvtymtqq8ov.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "Weed 🥗",
+      "farm": "Calispain mid shelf (indoor) 🇪🇸",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755864525/gotham/dcprpt64kqvtymtqq8ov.jpg",
+      "productId": "68a85e5c9e5e7a0b993bde61",
+      "productName": "Trop cherry🍒",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:55.843Z"
+    },
+    "uploaded": "2025-08-27T03:38:56.447Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a85e5c9e5e7a0b993bde61/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a85e5c9e5e7a0b993bde61/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a85e5c9e5e7a0b993bde61/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a85e5c9e5e7a0b993bde61/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a85e5c9e5e7a0b993bde61/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a85e5c9e5e7a0b993bde61/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a7d4abd38d9aa422759d53",
+    "filename": "xfdluohfphgsojjzzswl.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "90u",
+      "farm": "Gaz&Fruit 🍇",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755829006/gotham/xfdluohfphgsojjzzswl.jpg",
+      "productId": "68a7d4abd38d9aa422759d53",
+      "productName": "Fresh Fanta; Orange Soda; Mimozz; Pink Limez ",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:54.395Z"
+    },
+    "uploaded": "2025-08-27T03:38:55.221Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d4abd38d9aa422759d53/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d4abd38d9aa422759d53/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d4abd38d9aa422759d53/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d4abd38d9aa422759d53/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d4abd38d9aa422759d53/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d4abd38d9aa422759d53/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a7d1a7d38d9aa422759d52",
+    "filename": "g4gkomiltpdpoqqtnz78.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "Weed 🥗",
+      "farm": "Cali flowers Wizard Trees®",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755828640/gotham/g4gkomiltpdpoqqtnz78.jpg",
+      "productId": "68a7d1a7d38d9aa422759d52",
+      "productName": "New Yorker 🇺🇸",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:53.054Z"
+    },
+    "uploaded": "2025-08-27T03:38:53.864Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d1a7d38d9aa422759d52/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d1a7d38d9aa422759d52/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d1a7d38d9aa422759d52/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d1a7d38d9aa422759d52/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d1a7d38d9aa422759d52/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7d1a7d38d9aa422759d52/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a7cfafd38d9aa422759d51",
+    "filename": "njmyady45jwr1ipqnwuo.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "Weed 🥗",
+      "farm": "Cali flowers Wizard Trees®",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755825665/gotham/njmyady45jwr1ipqnwuo.jpg",
+      "productId": "68a7cfafd38d9aa422759d51",
+      "productName": "British Delight 🇬🇧",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:49.638Z"
+    },
+    "uploaded": "2025-08-27T03:38:50.583Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7cfafd38d9aa422759d51/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7cfafd38d9aa422759d51/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7cfafd38d9aa422759d51/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7cfafd38d9aa422759d51/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7cfafd38d9aa422759d51/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7cfafd38d9aa422759d51/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a7c259f2029892d22ba16c",
+    "filename": "ymsg5o5iaqh02qmqngw5.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "Weed 🥗",
+      "farm": "Cali flowers Wizard Trees®",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755824529/gotham/ymsg5o5iaqh02qmqngw5.jpg",
+      "productId": "68a7c259f2029892d22ba16c",
+      "productName": "Zoza 🪻",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:48.126Z"
+    },
+    "uploaded": "2025-08-27T03:38:49.101Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7c259f2029892d22ba16c/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7c259f2029892d22ba16c/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7c259f2029892d22ba16c/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7c259f2029892d22ba16c/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7c259f2029892d22ba16c/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7c259f2029892d22ba16c/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a7be33f460259cf93b0f0e",
+    "filename": "kb1qu6bt4f5osmkwsd8o.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "Weed 🥗",
+      "farm": "Cali flowers Wizard Trees®",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755823591/gotham/kb1qu6bt4f5osmkwsd8o.jpg",
+      "productId": "68a7be33f460259cf93b0f0e",
+      "productName": "Dark Matter 🏴‍☠️",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:46.789Z"
+    },
+    "uploaded": "2025-08-27T03:38:47.618Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7be33f460259cf93b0f0e/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7be33f460259cf93b0f0e/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7be33f460259cf93b0f0e/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7be33f460259cf93b0f0e/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7be33f460259cf93b0f0e/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7be33f460259cf93b0f0e/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a7bcf1f460259cf93b0f0d",
+    "filename": "fw8wjpd4xtklm38uksdh.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "Weed 🥗",
+      "farm": "Cali flowers Wizard Trees®",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755822976/gotham/fw8wjpd4xtklm38uksdh.jpg",
+      "productId": "68a7bcf1f460259cf93b0f0d",
+      "productName": "Zangria 🍹",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:45.550Z"
+    },
+    "uploaded": "2025-08-27T03:38:46.302Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7bcf1f460259cf93b0f0d/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7bcf1f460259cf93b0f0d/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7bcf1f460259cf93b0f0d/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7bcf1f460259cf93b0f0d/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7bcf1f460259cf93b0f0d/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7bcf1f460259cf93b0f0d/original"
+    ]
+  },
+  {
+    "id": "gothamcity_68a7ba2bf460259cf93b0f0c",
+    "filename": "blhmb6kdiu424rsrkj0g.jpg",
+    "meta": {
+      "boutique": "gothamcity",
+      "category": "Weed 🥗",
+      "farm": "Cali flowers Wizard Trees®",
+      "originalUrl": "https://res.cloudinary.com/ducewyjc2/image/upload/v1755822433/gotham/blhmb6kdiu424rsrkj0g.jpg",
+      "productId": "68a7ba2bf460259cf93b0f0c",
+      "productName": "Gas Gilmet 🌿",
+      "source": "cloudinary",
+      "uploadedAt": "2025-08-27T03:38:44.366Z"
+    },
+    "uploaded": "2025-08-27T03:38:45.036Z",
+    "requireSignedURLs": false,
+    "variants": [
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7ba2bf460259cf93b0f0c/thumbnail",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7ba2bf460259cf93b0f0c/medium",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7ba2bf460259cf93b0f0c/public",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7ba2bf460259cf93b0f0c/small",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7ba2bf460259cf93b0f0c/large",
+      "https://imagedelivery.net/ARYXrwYsY_ECAYN3cIpzBg/gothamcity_68a7ba2bf460259cf93b0f0c/original"
+    ]
+  }
+]

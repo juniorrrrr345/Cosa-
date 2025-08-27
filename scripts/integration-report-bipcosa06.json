@@ -1,0 +1,142 @@
+{
+  "boutique": "BIPCOSA06",
+  "timestamp": "2025-08-27T03:46:27.384Z",
+  "integration": {
+    "videos": {
+      "total": 24,
+      "products": [
+        {
+          "name": "Mousseux-USA",
+          "id": "10233b5c493bc246c5fde0791bb7ebd7",
+          "url": "https://iframe.videodelivery.net/10233b5c493bc246c5fde0791bb7ebd7"
+        },
+        {
+          "name": "G21-haze",
+          "id": "5404acb47778da5a286ef96334ba524b",
+          "url": "https://iframe.videodelivery.net/5404acb47778da5a286ef96334ba524b"
+        },
+        {
+          "name": "Docteur-grinspoon",
+          "id": "cf54dde99c9a2584d63ecb728fc54652",
+          "url": "https://iframe.videodelivery.net/cf54dde99c9a2584d63ecb728fc54652"
+        },
+        {
+          "name": "Godzilla-haze",
+          "id": "52dcbe929501c416437f260b6c276d4d",
+          "url": "https://iframe.videodelivery.net/52dcbe929501c416437f260b6c276d4d"
+        },
+        {
+          "name": "Forbidden-fruit",
+          "id": "4be718e1a43fb10e17e41e8c06ec6be1",
+          "url": "https://iframe.videodelivery.net/4be718e1a43fb10e17e41e8c06ec6be1"
+        },
+        {
+          "name": "Candy-Kane",
+          "id": "9819825b564909ade5de979ed650b7cc",
+          "url": "https://iframe.videodelivery.net/9819825b564909ade5de979ed650b7cc"
+        },
+        {
+          "name": "Gush-Mint",
+          "id": "6a40ab187ba56c1db18223934996b368",
+          "url": "https://iframe.videodelivery.net/6a40ab187ba56c1db18223934996b368"
+        },
+        {
+          "name": "Guava-gelonade",
+          "id": "76442eb8242a10a819b3f524152b2a2d",
+          "url": "https://iframe.videodelivery.net/76442eb8242a10a819b3f524152b2a2d"
+        },
+        {
+          "name": "Wizzard",
+          "id": "462984f7c53ec242b8d8d2901c447d1a",
+          "url": "https://iframe.videodelivery.net/462984f7c53ec242b8d8d2901c447d1a"
+        },
+        {
+          "name": "Gummies",
+          "id": "f4610ce92e6b91668c45822afd8f026e",
+          "url": "https://iframe.videodelivery.net/f4610ce92e6b91668c45822afd8f026e"
+        },
+        {
+          "name": "Pinky-Runtz",
+          "id": "2fd10d3690b14e459f17d6b6aaf18aae",
+          "url": "https://iframe.videodelivery.net/2fd10d3690b14e459f17d6b6aaf18aae"
+        },
+        {
+          "name": "Amnesia-haze-pro",
+          "id": "3c7d01de276be709ffcbc71152d07757",
+          "url": "https://iframe.videodelivery.net/3c7d01de276be709ffcbc71152d07757"
+        },
+        {
+          "name": "Blue-Twister",
+          "id": "5adacdb0a32327eb9e2bb4f621574748",
+          "url": "https://iframe.videodelivery.net/5adacdb0a32327eb9e2bb4f621574748"
+        },
+        {
+          "name": "Swartiz",
+          "id": "0e0873d946972af5281b59aa353ee472",
+          "url": "https://iframe.videodelivery.net/0e0873d946972af5281b59aa353ee472"
+        },
+        {
+          "name": "GMO",
+          "id": "81b04cc7f744e7434ade97fb699909f3",
+          "url": "https://iframe.videodelivery.net/81b04cc7f744e7434ade97fb699909f3"
+        },
+        {
+          "name": "Pink-pineapple",
+          "id": "f40f4755cb4ad5fd65eebc900b08e430",
+          "url": "https://iframe.videodelivery.net/f40f4755cb4ad5fd65eebc900b08e430"
+        },
+        {
+          "name": "Formula-Z",
+          "id": "236a59c223abdca3743f528e80df4385",
+          "url": "https://iframe.videodelivery.net/236a59c223abdca3743f528e80df4385"
+        },
+        {
+          "name": "Lemon-cherry-gelato",
+          "id": "b6e3e51791d3ccd281bc0dcc87affdef",
+          "url": "https://iframe.videodelivery.net/b6e3e51791d3ccd281bc0dcc87affdef"
+        },
+        {
+          "name": "Zoap",
+          "id": "bd134653c73159096332776925621916",
+          "url": "https://iframe.videodelivery.net/bd134653c73159096332776925621916"
+        },
+        {
+          "name": "Girl-Scout-cookie",
+          "id": "27fe1f6a714b07da18ffdac3116e21b0",
+          "url": "https://iframe.videodelivery.net/27fe1f6a714b07da18ffdac3116e21b0"
+        },
+        {
+          "name": "Triple-mango",
+          "id": "fa1d815a187e5142fc74c02fac945e61",
+          "url": "https://iframe.videodelivery.net/fa1d815a187e5142fc74c02fac945e61"
+        },
+        {
+          "name": "Forbidden-Fruit",
+          "id": "d90b33e71b9736117d912f46be7a79b1",
+          "url": "https://iframe.videodelivery.net/d90b33e71b9736117d912f46be7a79b1"
+        },
+        {
+          "name": "hashburger-S1",
+          "id": "8cc8a282b114493a2ab6483249d59192",
+          "url": "https://iframe.videodelivery.net/8cc8a282b114493a2ab6483249d59192"
+        },
+        {
+          "name": "Tropicburger",
+          "id": "84bd1b0afb786d91f3f74a67be68d93d",
+          "url": "https://iframe.videodelivery.net/84bd1b0afb786d91f3f74a67be68d93d"
+        }
+      ]
+    },
+    "filesCreated": [
+      "src/config/cloudflare-bipcosa06.ts",
+      "src/hooks/useCloudflareVideo.tsx",
+      "src/app/test-cloudflare/page.tsx"
+    ],
+    "nextSteps": [
+      "Lancer le serveur de développement: npm run dev",
+      "Tester sur: http://localhost:3000/test-cloudflare",
+      "Intégrer ProductCloudflareVideo dans vos composants produits",
+      "Déployer sur Vercel"
+    ]
+  }
+}

@@ -14,7 +14,8 @@ const config = {
   // Configuration Cloudflare
   cloudflare: {
     accountId: '7979421604bd07b3bd34d3ed96222512',
-    apiToken: '61mW7CZfq0K6OdcYN9YIC4laRaZNLZAL1Lm4gFhh',
+    apiToken: '2c419602af3bbf30000dc77dc55c67ef5d69a', // Token pour vidéos Stream
+    apiTokenImages: '61mW7CZfq0K6OdcYN9YIC4laRaZNLZAL1Lm4gFhh', // Token pour Images
     
     // Cloudflare Stream (pour vidéos)
     stream: {

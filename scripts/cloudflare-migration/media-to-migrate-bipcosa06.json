@@ -1,0 +1,25 @@
+{
+  "boutique": "BIPCOSA06",
+  "timestamp": "2025-08-27T03:55:18.212Z",
+  "videos": [
+    "https://res.cloudinary.com/dtjab1akq/video/upload/v1234567890/bipcosa06/videos/test-video.mp4"
+  ],
+  "images": [
+    "https://i.imgur.com/${imageId}.jpg",
+    "https://imgur.com/votre-image.jpg",
+    "https://i.imgur.com/${imageId}.jpg`;",
+    "https://i.imgur.com/b1O92qz.jpeg",
+    "https://res.cloudinary.com/dtjab1akq/image/upload/v1234567890/bipcosa06/products/test-image.jpg",
+    "https://images.unsplash.com/photo-1536819114556-1e10f967fb61?w=400",
+    "https://images.unsplash.com/photo-1503262028195-93c528f03218?w=400",
+    "https://images.unsplash.com/photo-1550418290-a8d86ad674a6?w=400"
+  ],
+  "cloudinary": [
+    "https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}`;"
+  ],
+  "summary": {
+    "totalVideos": 1,
+    "totalImages": 8,
+    "totalCloudinary": 1
+  }
+}

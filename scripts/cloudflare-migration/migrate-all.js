@@ -430,7 +430,7 @@ class CompleteMigration {
     console.log('\n🖼️ Images:');
     console.log(`  ✅ Succès: ${this.results.images.success}`);
     console.log(`  ❌ Échecs: ${this.results.images.failed}`);
-    console.log('\n💻 URLs mises à jour: ${this.results.urls.updated}`);
+    console.log(`\n💻 URLs mises à jour: ${this.results.urls.updated}`);
     console.log('\n🧪 Tests:');
     console.log(`  ✅ Réussis: ${this.results.tests.passed}`);
     console.log(`  ❌ Échoués: ${this.results.tests.failed}`);

@@ -1,0 +1,2560 @@
+[
+  {
+    "uid": "ecece99cef2e56e3ed2b22910f44bd95",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/ecece99cef2e56e3ed2b22910f44bd95/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0.1,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:05:45.061605Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "GD33",
+      "downloaded-from": "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4",
+      "folder": "GD33/videos",
+      "name": "Produit Test 1 - Vidéo MP4 - Video",
+      "originalUrl": "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4",
+      "productId": "68ae75e3ef8da5dce8c15cd2",
+      "uploadedAt": "2025-08-27T03:05:38.121Z"
+    },
+    "created": "2025-08-27T03:05:39.165549Z",
+    "modified": "2025-08-27T03:05:46.358914Z",
+    "scheduledDeletion": null,
+    "size": 991017,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/ecece99cef2e56e3ed2b22910f44bd95/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:05:39.16547Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 10,
+    "input": {
+      "width": 640,
+      "height": 360
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/ecece99cef2e56e3ed2b22910f44bd95/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/ecece99cef2e56e3ed2b22910f44bd95/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "6cb80bc9d4f260598697345e7eaeb7cf",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6cb80bc9d4f260598697345e7eaeb7cf/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:05:21.266918Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "LAMAINVRTR",
+      "folder": "LAMAINVRTR/videos/",
+      "name": "test-video.mp4",
+      "originalPath": "/tmp/test-media/test-video.mp4",
+      "uploadedAt": "2025-08-27T03:05:04.641Z"
+    },
+    "created": "2025-08-27T03:05:07.037687Z",
+    "modified": "2025-08-27T03:05:21.269322Z",
+    "scheduledDeletion": null,
+    "size": 788493,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6cb80bc9d4f260598697345e7eaeb7cf/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:05:07.037683Z",
+    "uploadExpiry": "2025-08-28T03:05:07.037678Z",
+    "maxSizeBytes": null,
+    "maxDurationSeconds": 14400,
+    "duration": 10,
+    "input": {
+      "width": 320,
+      "height": 176
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6cb80bc9d4f260598697345e7eaeb7cf/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6cb80bc9d4f260598697345e7eaeb7cf/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "0b33ba0a980cd6803247ce927ebb6900",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0b33ba0a980cd6803247ce927ebb6900/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:15.444701Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1756043180/hashburger_videos/upload_1756043180746.mp4",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:02:09.255Z",
+      "name": "video-og-kush--upload-1756043180746",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1756043180/hashburger_videos/upload_1756043180746.mp4"
+    },
+    "created": "2025-08-27T03:02:09.822695Z",
+    "modified": "2025-08-27T03:02:21.478224Z",
+    "scheduledDeletion": null,
+    "size": 3913944,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0b33ba0a980cd6803247ce927ebb6900/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:02:09.822681Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 10.4,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0b33ba0a980cd6803247ce927ebb6900/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0b33ba0a980cd6803247ce927ebb6900/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "10cb9f0ddc899ff2f0f14c462a8010aa",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10cb9f0ddc899ff2f0f14c462a8010aa/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:14.116875Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753522190/hashburger_videos/upload_1753522190492.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:02:07.346Z",
+      "name": "video-cocainee-upload-1753522190492",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753522190/hashburger_videos/upload_1753522190492.mov"
+    },
+    "created": "2025-08-27T03:02:07.897746Z",
+    "modified": "2025-08-27T03:02:16.69964Z",
+    "scheduledDeletion": null,
+    "size": 1041993,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10cb9f0ddc899ff2f0f14c462a8010aa/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:02:07.897723Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 2.6,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10cb9f0ddc899ff2f0f14c462a8010aa/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10cb9f0ddc899ff2f0f14c462a8010aa/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "4cde2b0a00f580cf0885d189e3abcff0",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4cde2b0a00f580cf0885d189e3abcff0/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:14.06991Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753318403/hashburger_videos/upload_1753318403902.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:02:05.249Z",
+      "name": "video-sour-garlic-x-sour-banana-sherp-upload-1753318403902",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753318403/hashburger_videos/upload_1753318403902.mov"
+    },
+    "created": "2025-08-27T03:02:05.940819Z",
+    "modified": "2025-08-27T03:02:16.509302Z",
+    "scheduledDeletion": null,
+    "size": 3284275,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4cde2b0a00f580cf0885d189e3abcff0/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:02:05.940777Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 8.8,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4cde2b0a00f580cf0885d189e3abcff0/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4cde2b0a00f580cf0885d189e3abcff0/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "16dc10683ee8fe2d0ca1554bafc5b5d1",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16dc10683ee8fe2d0ca1554bafc5b5d1/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:13.554098Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753318259/hashburger_videos/upload_1753318258764.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:02:03.481Z",
+      "name": "video-forbidden----upload-1753318258764",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753318259/hashburger_videos/upload_1753318258764.mov"
+    },
+    "created": "2025-08-27T03:02:03.853322Z",
+    "modified": "2025-08-27T03:02:14.28671Z",
+    "scheduledDeletion": null,
+    "size": 4385519,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16dc10683ee8fe2d0ca1554bafc5b5d1/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:02:03.853304Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 10.7,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16dc10683ee8fe2d0ca1554bafc5b5d1/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16dc10683ee8fe2d0ca1554bafc5b5d1/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "16df98372893a57009f817c81d2eec76",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16df98372893a57009f817c81d2eec76/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:09.733206Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753318147/hashburger_videos/upload_1753318147157.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:02:00.962Z",
+      "name": "video-mahgred----upload-1753318147157",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753318147/hashburger_videos/upload_1753318147157.mov"
+    },
+    "created": "2025-08-27T03:02:02.020796Z",
+    "modified": "2025-08-27T03:02:10.356047Z",
+    "scheduledDeletion": null,
+    "size": 2453279,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16df98372893a57009f817c81d2eec76/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:02:02.020774Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 5.8,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16df98372893a57009f817c81d2eec76/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/16df98372893a57009f817c81d2eec76/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "7627157019a1ceefa674de04fee7b17b",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7627157019a1ceefa674de04fee7b17b/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:09.826432Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317997/hashburger_videos/upload_1753317996951.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:59.187Z",
+      "name": "video-yellow-gorilla-x-sour-garlic-x-bbo-upload-1753317996951",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317997/hashburger_videos/upload_1753317996951.mov"
+    },
+    "created": "2025-08-27T03:01:59.597933Z",
+    "modified": "2025-08-27T03:02:10.31602Z",
+    "scheduledDeletion": null,
+    "size": 2337289,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7627157019a1ceefa674de04fee7b17b/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:59.59791Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 6.1,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7627157019a1ceefa674de04fee7b17b/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7627157019a1ceefa674de04fee7b17b/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "20524f5aea08cd2027486653b4871d02",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/20524f5aea08cd2027486653b4871d02/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:04.425314Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317827/hashburger_videos/upload_1753317827295.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:56.926Z",
+      "name": "video-pressure----upload-1753317827295",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317827/hashburger_videos/upload_1753317827295.mov"
+    },
+    "created": "2025-08-27T03:01:57.734498Z",
+    "modified": "2025-08-27T03:02:05.445943Z",
+    "scheduledDeletion": null,
+    "size": 2238846,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/20524f5aea08cd2027486653b4871d02/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:57.734485Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 5.8,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/20524f5aea08cd2027486653b4871d02/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/20524f5aea08cd2027486653b4871d02/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "e77ec9a3edcf33c8339228540b1cecda",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/e77ec9a3edcf33c8339228540b1cecda/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:02:02.574658Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317742/hashburger_videos/upload_1753317742395.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:53.621Z",
+      "name": "video-amnesia----upload-1753317742395",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317742/hashburger_videos/upload_1753317742395.mov"
+    },
+    "created": "2025-08-27T03:01:54.681042Z",
+    "modified": "2025-08-27T03:02:03.007207Z",
+    "scheduledDeletion": null,
+    "size": 3981296,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/e77ec9a3edcf33c8339228540b1cecda/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:54.681018Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 9.8,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/e77ec9a3edcf33c8339228540b1cecda/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/e77ec9a3edcf33c8339228540b1cecda/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "7743a7c5a3cea53c6e1c7dbe19002afc",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7743a7c5a3cea53c6e1c7dbe19002afc/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:59.09946Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317590/hashburger_videos/upload_1753317590462.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:51.499Z",
+      "name": "video-champagne-----upload-1753317590462",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317590/hashburger_videos/upload_1753317590462.mov"
+    },
+    "created": "2025-08-27T03:01:52.168442Z",
+    "modified": "2025-08-27T03:02:06.893082Z",
+    "scheduledDeletion": null,
+    "size": 2742066,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7743a7c5a3cea53c6e1c7dbe19002afc/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:52.168418Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 7,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7743a7c5a3cea53c6e1c7dbe19002afc/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7743a7c5a3cea53c6e1c7dbe19002afc/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "97e5aa2d9045d02a663b087f9d1631d1",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/97e5aa2d9045d02a663b087f9d1631d1/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:57.33373Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317494/hashburger_videos/upload_1753317493991.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:48.843Z",
+      "name": "video-tiramisu----upload-1753317493991",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317494/hashburger_videos/upload_1753317493991.mov"
+    },
+    "created": "2025-08-27T03:01:50.029463Z",
+    "modified": "2025-08-27T03:01:57.866202Z",
+    "scheduledDeletion": null,
+    "size": 3325072,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/97e5aa2d9045d02a663b087f9d1631d1/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:50.029448Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 8.3,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/97e5aa2d9045d02a663b087f9d1631d1/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/97e5aa2d9045d02a663b087f9d1631d1/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "3ccd1c2855c1d844ac3b48c26361938b",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3ccd1c2855c1d844ac3b48c26361938b/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:55.814098Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317395/hashburger_videos/upload_1753317395687.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:46.528Z",
+      "name": "video--pinkcheddar-x-tacolada---------upload-1753317395687",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753317395/hashburger_videos/upload_1753317395687.mov"
+    },
+    "created": "2025-08-27T03:01:47.387171Z",
+    "modified": "2025-08-27T03:01:57.395792Z",
+    "scheduledDeletion": null,
+    "size": 3886059,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3ccd1c2855c1d844ac3b48c26361938b/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:47.38715Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 9.4,
+    "input": {
+      "width": 688,
+      "height": 1258
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3ccd1c2855c1d844ac3b48c26361938b/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3ccd1c2855c1d844ac3b48c26361938b/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "df75f3981f4ea64e659751278b64e4be",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/df75f3981f4ea64e659751278b64e4be/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:55.224288Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316969/hashburger_videos/upload_1753316968795.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:44.337Z",
+      "name": "video-tacco-berry-upload-1753316968795",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316969/hashburger_videos/upload_1753316968795.mov"
+    },
+    "created": "2025-08-27T03:01:45.142693Z",
+    "modified": "2025-08-27T03:01:57.611574Z",
+    "scheduledDeletion": null,
+    "size": 3836928,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/df75f3981f4ea64e659751278b64e4be/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:45.142675Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 9.9,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/df75f3981f4ea64e659751278b64e4be/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/df75f3981f4ea64e659751278b64e4be/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "259d33a359d67231b6396009a9abafb1",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/259d33a359d67231b6396009a9abafb1/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:51.755869Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316908/hashburger_videos/upload_1753316908107.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:42.082Z",
+      "name": "video-weeding-pay----upload-1753316908107",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316908/hashburger_videos/upload_1753316908107.mov"
+    },
+    "created": "2025-08-27T03:01:42.899826Z",
+    "modified": "2025-08-27T03:01:52.218518Z",
+    "scheduledDeletion": null,
+    "size": 3134636,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/259d33a359d67231b6396009a9abafb1/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:42.899815Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 7.7,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/259d33a359d67231b6396009a9abafb1/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/259d33a359d67231b6396009a9abafb1/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "c2fb57ab572e10d685e7a9fcc331adee",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c2fb57ab572e10d685e7a9fcc331adee/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:48.022461Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316847/hashburger_videos/upload_1753316847339.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:40.049Z",
+      "name": "video-m-cakez----upload-1753316847339",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316847/hashburger_videos/upload_1753316847339.mov"
+    },
+    "created": "2025-08-27T03:01:40.646943Z",
+    "modified": "2025-08-27T03:01:48.840954Z",
+    "scheduledDeletion": null,
+    "size": 2409179,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c2fb57ab572e10d685e7a9fcc331adee/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:40.646926Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 5.9,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c2fb57ab572e10d685e7a9fcc331adee/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c2fb57ab572e10d685e7a9fcc331adee/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "7988ecfccd026ca6a83cdfce4571974f",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7988ecfccd026ca6a83cdfce4571974f/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:45.250138Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316758/hashburger_videos/upload_1753316758426.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:38.009Z",
+      "name": "video-keymint-icc-upload-1753316758426",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316758/hashburger_videos/upload_1753316758426.mov"
+    },
+    "created": "2025-08-27T03:01:38.60286Z",
+    "modified": "2025-08-27T03:01:46.523943Z",
+    "scheduledDeletion": null,
+    "size": 1689959,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7988ecfccd026ca6a83cdfce4571974f/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:38.602844Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.1,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7988ecfccd026ca6a83cdfce4571974f/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/7988ecfccd026ca6a83cdfce4571974f/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "afd1402ab066aad5c8b99105e3a7ffa1",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/afd1402ab066aad5c8b99105e3a7ffa1/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:44.563933Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316689/hashburger_videos/upload_1753316689003.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:35.131Z",
+      "name": "video-citrus-cream----upload-1753316689003",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316689/hashburger_videos/upload_1753316689003.mov"
+    },
+    "created": "2025-08-27T03:01:36.120876Z",
+    "modified": "2025-08-27T03:01:46.529885Z",
+    "scheduledDeletion": null,
+    "size": 2182769,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/afd1402ab066aad5c8b99105e3a7ffa1/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:36.120847Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 5.2,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/afd1402ab066aad5c8b99105e3a7ffa1/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/afd1402ab066aad5c8b99105e3a7ffa1/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "c51f933832f494eef729782feb54fe5d",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c51f933832f494eef729782feb54fe5d/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:40.383434Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316601/hashburger_videos/upload_1753316601434.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:33.097Z",
+      "name": "video-orange-squeeze-----upload-1753316601434",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316601/hashburger_videos/upload_1753316601434.mov"
+    },
+    "created": "2025-08-27T03:01:33.744712Z",
+    "modified": "2025-08-27T03:01:40.96379Z",
+    "scheduledDeletion": null,
+    "size": 1984591,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c51f933832f494eef729782feb54fe5d/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:33.744699Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 5.1,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c51f933832f494eef729782feb54fe5d/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/c51f933832f494eef729782feb54fe5d/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "b140ded350823f487073a8ddbad5cb70",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b140ded350823f487073a8ddbad5cb70/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:39.575023Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316544/hashburger_videos/upload_1753316544377.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:30.832Z",
+      "name": "video-cheese-lemon-----upload-1753316544377",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316544/hashburger_videos/upload_1753316544377.mov"
+    },
+    "created": "2025-08-27T03:01:31.697534Z",
+    "modified": "2025-08-27T03:01:41.451086Z",
+    "scheduledDeletion": null,
+    "size": 2188625,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b140ded350823f487073a8ddbad5cb70/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:31.69752Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 5.5,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b140ded350823f487073a8ddbad5cb70/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b140ded350823f487073a8ddbad5cb70/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "d2db50ec3e8bc5478254cf2d08361577",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d2db50ec3e8bc5478254cf2d08361577/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:36.656074Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316482/hashburger_videos/upload_1753316482206.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:28.518Z",
+      "name": "video-runtz----upload-1753316482206",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316482/hashburger_videos/upload_1753316482206.mov"
+    },
+    "created": "2025-08-27T03:01:29.113355Z",
+    "modified": "2025-08-27T03:01:37.304325Z",
+    "scheduledDeletion": null,
+    "size": 2598444,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d2db50ec3e8bc5478254cf2d08361577/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:29.113342Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 6.7,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d2db50ec3e8bc5478254cf2d08361577/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d2db50ec3e8bc5478254cf2d08361577/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "f09486b7d5dd55c03e8d4a3b73ea60b4",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f09486b7d5dd55c03e8d4a3b73ea60b4/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:33.990636Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316382/hashburger_videos/upload_1753316382782.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:26.187Z",
+      "name": "video-purple-cream----upload-1753316382782",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316382/hashburger_videos/upload_1753316382782.mov"
+    },
+    "created": "2025-08-27T03:01:26.940932Z",
+    "modified": "2025-08-27T03:01:35.522219Z",
+    "scheduledDeletion": null,
+    "size": 2082648,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f09486b7d5dd55c03e8d4a3b73ea60b4/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:26.940869Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 5.1,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f09486b7d5dd55c03e8d4a3b73ea60b4/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f09486b7d5dd55c03e8d4a3b73ea60b4/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "824584f7ad59bab1e62565d8f1879dd6",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/824584f7ad59bab1e62565d8f1879dd6/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:33.147301Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316268/hashburger_videos/upload_1753316268333.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:24.054Z",
+      "name": "video-icc-x-la-bomba----upload-1753316268333",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316268/hashburger_videos/upload_1753316268333.mov"
+    },
+    "created": "2025-08-27T03:01:24.810661Z",
+    "modified": "2025-08-27T03:01:57.702995Z",
+    "scheduledDeletion": null,
+    "size": 3132508,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/824584f7ad59bab1e62565d8f1879dd6/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:24.810638Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 8.1,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/824584f7ad59bab1e62565d8f1879dd6/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/824584f7ad59bab1e62565d8f1879dd6/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "d78c68a84e65fcc09875c92e60bf36b6",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d78c68a84e65fcc09875c92e60bf36b6/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:28.049728Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316198/hashburger_videos/upload_1753316198114.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:21.790Z",
+      "name": "video-pop-tartz-x-oreoz-upload-1753316198114",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316198/hashburger_videos/upload_1753316198114.mov"
+    },
+    "created": "2025-08-27T03:01:22.616557Z",
+    "modified": "2025-08-27T03:01:30.525322Z",
+    "scheduledDeletion": null,
+    "size": 3185624,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d78c68a84e65fcc09875c92e60bf36b6/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:22.616538Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 7.8,
+    "input": {
+      "width": 720,
+      "height": 1280
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d78c68a84e65fcc09875c92e60bf36b6/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d78c68a84e65fcc09875c92e60bf36b6/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "88a14d52e94a805c45d61ccefca60357",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/88a14d52e94a805c45d61ccefca60357/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:27.193231Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316123/hashburger_videos/upload_1753316122945.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:19.217Z",
+      "name": "video-ghaniaf-x-shishkaberry-upload-1753316122945",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753316123/hashburger_videos/upload_1753316122945.mov"
+    },
+    "created": "2025-08-27T03:01:20.150905Z",
+    "modified": "2025-08-27T03:01:29.15167Z",
+    "scheduledDeletion": null,
+    "size": 2775043,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/88a14d52e94a805c45d61ccefca60357/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:20.150887Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 6.7,
+    "input": {
+      "width": 720,
+      "height": 1280
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/88a14d52e94a805c45d61ccefca60357/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/88a14d52e94a805c45d61ccefca60357/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "06f455256bf81d39c8865f0230acbe0b",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/06f455256bf81d39c8865f0230acbe0b/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:25.647689Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753315989/hashburger_videos/upload_1753315989657.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:17.038Z",
+      "name": "video-gushmint-x-oreoz--upload-1753315989657",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753315989/hashburger_videos/upload_1753315989657.mov"
+    },
+    "created": "2025-08-27T03:01:17.822826Z",
+    "modified": "2025-08-27T03:01:27.389132Z",
+    "scheduledDeletion": null,
+    "size": 3315325,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/06f455256bf81d39c8865f0230acbe0b/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:17.822813Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 8,
+    "input": {
+      "width": 720,
+      "height": 1280
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/06f455256bf81d39c8865f0230acbe0b/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/06f455256bf81d39c8865f0230acbe0b/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "398533177b72c4da52f74374ac946671",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/398533177b72c4da52f74374ac946671/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:23.29735Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753315921/hashburger_videos/upload_1753315920933.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:14.876Z",
+      "name": "video-garypayton-x-oreoz-upload-1753315920933",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753315921/hashburger_videos/upload_1753315920933.mov"
+    },
+    "created": "2025-08-27T03:01:15.605252Z",
+    "modified": "2025-08-27T03:01:26.833652Z",
+    "scheduledDeletion": null,
+    "size": 3775887,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/398533177b72c4da52f74374ac946671/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:15.605229Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 9.8,
+    "input": {
+      "width": 720,
+      "height": 1280
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/398533177b72c4da52f74374ac946671/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/398533177b72c4da52f74374ac946671/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "0251ba6128c6f822e098485de431b484",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0251ba6128c6f822e098485de431b484/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T03:01:21.852209Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "boutique": "HdhBurger",
+      "downloaded-from": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753315842/hashburger_videos/upload_1753315842272.mov",
+      "folder": "/HdhBurger/videos/",
+      "migratedAt": "2025-08-27T03:01:12.537Z",
+      "name": "video-tropicana-x-pp----upload-1753315842272",
+      "originalUrl": "https://res.cloudinary.com/ddccdadjk/video/upload/v1753315842/hashburger_videos/upload_1753315842272.mov"
+    },
+    "created": "2025-08-27T03:01:13.510646Z",
+    "modified": "2025-08-27T03:01:22.43494Z",
+    "scheduledDeletion": null,
+    "size": 3471674,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0251ba6128c6f822e098485de431b484/watch",
+    "allowedOrigins": [
+      "*"
+    ],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T03:01:13.510617Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 8.9,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0251ba6128c6f822e098485de431b484/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0251ba6128c6f822e098485de431b484/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "10233b5c493bc246c5fde0791bb7ebd7",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10233b5c493bc246c5fde0791bb7ebd7/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:55.39297Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1755600221/boutique_videos/upload_1755600220973.mp4",
+      "name": "Mousseux-USA--video"
+    },
+    "created": "2025-08-27T02:31:48.34218Z",
+    "modified": "2025-08-27T02:31:55.395308Z",
+    "scheduledDeletion": null,
+    "size": 590904,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10233b5c493bc246c5fde0791bb7ebd7/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:48.342166Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 11.4,
+    "input": {
+      "width": 288,
+      "height": 460
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10233b5c493bc246c5fde0791bb7ebd7/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/10233b5c493bc246c5fde0791bb7ebd7/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "5404acb47778da5a286ef96334ba524b",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5404acb47778da5a286ef96334ba524b/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:52.405527Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1755097101/boutique_videos/upload_1755097101185.mp4",
+      "name": "G21-haze--video"
+    },
+    "created": "2025-08-27T02:31:44.904735Z",
+    "modified": "2025-08-27T02:31:52.407006Z",
+    "scheduledDeletion": null,
+    "size": 1111282,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5404acb47778da5a286ef96334ba524b/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:44.904717Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 21.6,
+    "input": {
+      "width": 256,
+      "height": 458
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5404acb47778da5a286ef96334ba524b/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5404acb47778da5a286ef96334ba524b/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "cf54dde99c9a2584d63ecb728fc54652",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/cf54dde99c9a2584d63ecb728fc54652/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:48.825888Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1755097040/boutique_videos/upload_1755097040577.mp4",
+      "name": "Docteur-grinspoon--video"
+    },
+    "created": "2025-08-27T02:31:41.496122Z",
+    "modified": "2025-08-27T02:31:48.828067Z",
+    "scheduledDeletion": null,
+    "size": 1149484,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/cf54dde99c9a2584d63ecb728fc54652/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:41.496108Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 22.2,
+    "input": {
+      "width": 256,
+      "height": 458
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/cf54dde99c9a2584d63ecb728fc54652/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/cf54dde99c9a2584d63ecb728fc54652/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "52dcbe929501c416437f260b6c276d4d",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/52dcbe929501c416437f260b6c276d4d/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:42.939032Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1755096976/boutique_videos/upload_1755096976776.mp4",
+      "name": "Godzilla-haze--video"
+    },
+    "created": "2025-08-27T02:31:37.791143Z",
+    "modified": "2025-08-27T02:31:42.940714Z",
+    "scheduledDeletion": null,
+    "size": 777968,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/52dcbe929501c416437f260b6c276d4d/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:37.791125Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 15.4,
+    "input": {
+      "width": 256,
+      "height": 464
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/52dcbe929501c416437f260b6c276d4d/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/52dcbe929501c416437f260b6c276d4d/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "4be718e1a43fb10e17e41e8c06ec6be1",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4be718e1a43fb10e17e41e8c06ec6be1/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:41.162218Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1755096866/boutique_videos/upload_1755096866070.mp4",
+      "name": "Forbidden-fruit-video"
+    },
+    "created": "2025-08-27T02:31:33.709636Z",
+    "modified": "2025-08-27T02:31:41.164208Z",
+    "scheduledDeletion": null,
+    "size": 950582,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4be718e1a43fb10e17e41e8c06ec6be1/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:33.709609Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 18.5,
+    "input": {
+      "width": 256,
+      "height": 458
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4be718e1a43fb10e17e41e8c06ec6be1/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/4be718e1a43fb10e17e41e8c06ec6be1/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "9819825b564909ade5de979ed650b7cc",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/9819825b564909ade5de979ed650b7cc/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:35.132177Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754072268/boutique_videos/upload_1754072268129.mov",
+      "name": "Candy-Kane--video"
+    },
+    "created": "2025-08-27T02:31:29.906619Z",
+    "modified": "2025-08-27T02:31:38.871267Z",
+    "scheduledDeletion": null,
+    "size": 2431028,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/9819825b564909ade5de979ed650b7cc/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:29.90661Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 2.8,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/9819825b564909ade5de979ed650b7cc/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/9819825b564909ade5de979ed650b7cc/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "6a40ab187ba56c1db18223934996b368",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6a40ab187ba56c1db18223934996b368/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:33.814163Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754071830/boutique_videos/upload_1754071830399.mov",
+      "name": "Gush-Mint--video"
+    },
+    "created": "2025-08-27T02:31:25.954939Z",
+    "modified": "2025-08-27T02:31:35.645505Z",
+    "scheduledDeletion": null,
+    "size": 4068050,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6a40ab187ba56c1db18223934996b368/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:25.954922Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.8,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6a40ab187ba56c1db18223934996b368/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/6a40ab187ba56c1db18223934996b368/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "76442eb8242a10a819b3f524152b2a2d",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/76442eb8242a10a819b3f524152b2a2d/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:29.9659Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754070560/boutique_videos/upload_1754070560417.mov",
+      "name": "Guava-gelonade--video"
+    },
+    "created": "2025-08-27T02:31:20.969282Z",
+    "modified": "2025-08-27T02:31:31.491555Z",
+    "scheduledDeletion": null,
+    "size": 3726532,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/76442eb8242a10a819b3f524152b2a2d/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:20.969276Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.1,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/76442eb8242a10a819b3f524152b2a2d/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/76442eb8242a10a819b3f524152b2a2d/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "462984f7c53ec242b8d8d2901c447d1a",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/462984f7c53ec242b8d8d2901c447d1a/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:29.690323Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754070316/boutique_videos/upload_1754070316217.mov",
+      "name": "Wizzard--video"
+    },
+    "created": "2025-08-27T02:31:17.032836Z",
+    "modified": "2025-08-27T02:31:31.439137Z",
+    "scheduledDeletion": null,
+    "size": 3931904,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/462984f7c53ec242b8d8d2901c447d1a/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:17.032821Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.6,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/462984f7c53ec242b8d8d2901c447d1a/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/462984f7c53ec242b8d8d2901c447d1a/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "f4610ce92e6b91668c45822afd8f026e",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f4610ce92e6b91668c45822afd8f026e/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:26.270639Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754070113/boutique_videos/upload_1754070113217.mov",
+      "name": "Gummies--video"
+    },
+    "created": "2025-08-27T02:31:13.138598Z",
+    "modified": "2025-08-27T02:31:29.001165Z",
+    "scheduledDeletion": null,
+    "size": 3949542,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f4610ce92e6b91668c45822afd8f026e/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:13.138585Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.7,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f4610ce92e6b91668c45822afd8f026e/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f4610ce92e6b91668c45822afd8f026e/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "2fd10d3690b14e459f17d6b6aaf18aae",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/2fd10d3690b14e459f17d6b6aaf18aae/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:17.711643Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754070245/boutique_videos/upload_1754070245485.mov",
+      "name": "Pinky-Runtz--video"
+    },
+    "created": "2025-08-27T02:31:09.177773Z",
+    "modified": "2025-08-27T02:31:20.177304Z",
+    "scheduledDeletion": null,
+    "size": 4021816,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/2fd10d3690b14e459f17d6b6aaf18aae/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:09.177753Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.4,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/2fd10d3690b14e459f17d6b6aaf18aae/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/2fd10d3690b14e459f17d6b6aaf18aae/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "3c7d01de276be709ffcbc71152d07757",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3c7d01de276be709ffcbc71152d07757/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:11.916336Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1755096620/boutique_videos/upload_1755096620786.mp4",
+      "name": "Amnesia-haze-pro--video"
+    },
+    "created": "2025-08-27T02:31:05.519872Z",
+    "modified": "2025-08-27T02:31:11.918558Z",
+    "scheduledDeletion": null,
+    "size": 957055,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3c7d01de276be709ffcbc71152d07757/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:05.519861Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 18.5,
+    "input": {
+      "width": 256,
+      "height": 464
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3c7d01de276be709ffcbc71152d07757/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/3c7d01de276be709ffcbc71152d07757/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "5adacdb0a32327eb9e2bb4f621574748",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5adacdb0a32327eb9e2bb4f621574748/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:11.326943Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754063875/boutique_videos/upload_1754063875589.mov",
+      "name": "Blue-Twister--video"
+    },
+    "created": "2025-08-27T02:31:01.765756Z",
+    "modified": "2025-08-27T02:31:14.566961Z",
+    "scheduledDeletion": null,
+    "size": 3587576,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5adacdb0a32327eb9e2bb4f621574748/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:31:01.765749Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 9.4,
+    "input": {
+      "width": 704,
+      "height": 1262
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5adacdb0a32327eb9e2bb4f621574748/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/5adacdb0a32327eb9e2bb4f621574748/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "0e0873d946972af5281b59aa353ee472",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0e0873d946972af5281b59aa353ee472/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:05.082133Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754063534/boutique_videos/upload_1754063533990.mov",
+      "name": "Swartiz--video"
+    },
+    "created": "2025-08-27T02:30:57.883288Z",
+    "modified": "2025-08-27T02:31:11.156013Z",
+    "scheduledDeletion": null,
+    "size": 2922908,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0e0873d946972af5281b59aa353ee472/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:57.883282Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 7.6,
+    "input": {
+      "width": 720,
+      "height": 1280
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0e0873d946972af5281b59aa353ee472/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/0e0873d946972af5281b59aa353ee472/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "81b04cc7f744e7434ade97fb699909f3",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/81b04cc7f744e7434ade97fb699909f3/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:31:06.146373Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754063370/boutique_videos/upload_1754063370561.mov",
+      "name": "GMO--video"
+    },
+    "created": "2025-08-27T02:30:53.548848Z",
+    "modified": "2025-08-27T02:31:09.62428Z",
+    "scheduledDeletion": null,
+    "size": 3563120,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/81b04cc7f744e7434ade97fb699909f3/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:53.548831Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 9.4,
+    "input": {
+      "width": 720,
+      "height": 1280
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/81b04cc7f744e7434ade97fb699909f3/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/81b04cc7f744e7434ade97fb699909f3/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "f40f4755cb4ad5fd65eebc900b08e430",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f40f4755cb4ad5fd65eebc900b08e430/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:58.11621Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754071270/boutique_videos/upload_1754071270792.mov",
+      "name": "Pink-pineapple--video"
+    },
+    "created": "2025-08-27T02:30:49.802112Z",
+    "modified": "2025-08-27T02:30:59.872894Z",
+    "scheduledDeletion": null,
+    "size": 4337008,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f40f4755cb4ad5fd65eebc900b08e430/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:49.802097Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.9,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f40f4755cb4ad5fd65eebc900b08e430/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/f40f4755cb4ad5fd65eebc900b08e430/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "236a59c223abdca3743f528e80df4385",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/236a59c223abdca3743f528e80df4385/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:53.632155Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754071423/boutique_videos/upload_1754071422516.mov",
+      "name": "Formula-Z--video"
+    },
+    "created": "2025-08-27T02:30:45.97848Z",
+    "modified": "2025-08-27T02:31:00.550636Z",
+    "scheduledDeletion": null,
+    "size": 3830552,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/236a59c223abdca3743f528e80df4385/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:45.978468Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.2,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/236a59c223abdca3743f528e80df4385/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/236a59c223abdca3743f528e80df4385/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "b6e3e51791d3ccd281bc0dcc87affdef",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b6e3e51791d3ccd281bc0dcc87affdef/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:55.143009Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754070937/boutique_videos/upload_1754070937565.mov",
+      "name": "Lemon-cherry-gelato--video"
+    },
+    "created": "2025-08-27T02:30:42.376367Z",
+    "modified": "2025-08-27T02:30:57.415111Z",
+    "scheduledDeletion": null,
+    "size": 3754311,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b6e3e51791d3ccd281bc0dcc87affdef/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:42.376355Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b6e3e51791d3ccd281bc0dcc87affdef/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/b6e3e51791d3ccd281bc0dcc87affdef/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "bd134653c73159096332776925621916",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/bd134653c73159096332776925621916/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:47.938565Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754071065/boutique_videos/upload_1754071065137.mov",
+      "name": "Zoap--video"
+    },
+    "created": "2025-08-27T02:30:38.352768Z",
+    "modified": "2025-08-27T02:30:50.021709Z",
+    "scheduledDeletion": null,
+    "size": 3759876,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/bd134653c73159096332776925621916/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:38.352762Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.3,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/bd134653c73159096332776925621916/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/bd134653c73159096332776925621916/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "27fe1f6a714b07da18ffdac3116e21b0",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/27fe1f6a714b07da18ffdac3116e21b0/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:41.771309Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754071149/boutique_videos/upload_1754071149858.mov",
+      "name": "Girl-Scout-cookie--video"
+    },
+    "created": "2025-08-27T02:30:34.368586Z",
+    "modified": "2025-08-27T02:30:49.207879Z",
+    "scheduledDeletion": null,
+    "size": 4295035,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/27fe1f6a714b07da18ffdac3116e21b0/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:34.368551Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.8,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/27fe1f6a714b07da18ffdac3116e21b0/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/27fe1f6a714b07da18ffdac3116e21b0/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "fa1d815a187e5142fc74c02fac945e61",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/fa1d815a187e5142fc74c02fac945e61/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:38.378627Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754069155/boutique_videos/upload_1754069154953.mov",
+      "name": "Triple-mango--video"
+    },
+    "created": "2025-08-27T02:30:30.418294Z",
+    "modified": "2025-08-27T02:30:48.649178Z",
+    "scheduledDeletion": null,
+    "size": 3532988,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/fa1d815a187e5142fc74c02fac945e61/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:30.41828Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/fa1d815a187e5142fc74c02fac945e61/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/fa1d815a187e5142fc74c02fac945e61/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "d90b33e71b9736117d912f46be7a79b1",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d90b33e71b9736117d912f46be7a79b1/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:34.09354Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754068708/boutique_videos/upload_1754068708019.mov",
+      "name": "Forbidden-Fruit--video"
+    },
+    "created": "2025-08-27T02:30:26.507721Z",
+    "modified": "2025-08-27T02:30:38.951704Z",
+    "scheduledDeletion": null,
+    "size": 3778724,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d90b33e71b9736117d912f46be7a79b1/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:26.507697Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.1,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d90b33e71b9736117d912f46be7a79b1/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/d90b33e71b9736117d912f46be7a79b1/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "8cc8a282b114493a2ab6483249d59192",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/8cc8a282b114493a2ab6483249d59192/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:32.588537Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754068947/boutique_videos/upload_1754068946994.mov",
+      "name": "hashburger-S1--video"
+    },
+    "created": "2025-08-27T02:30:23.058777Z",
+    "modified": "2025-08-27T02:30:38.63086Z",
+    "scheduledDeletion": null,
+    "size": 3942500,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/8cc8a282b114493a2ab6483249d59192/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:23.058765Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.2,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/8cc8a282b114493a2ab6483249d59192/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/8cc8a282b114493a2ab6483249d59192/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  },
+  {
+    "uid": "84bd1b0afb786d91f3f74a67be68d93d",
+    "creator": null,
+    "thumbnail": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/84bd1b0afb786d91f3f74a67be68d93d/thumbnails/thumbnail.jpg",
+    "thumbnailTimestampPct": 0,
+    "readyToStream": true,
+    "readyToStreamAt": "2025-08-27T02:30:29.383601Z",
+    "status": {
+      "state": "ready",
+      "pctComplete": "100.000000",
+      "errorReasonCode": "",
+      "errorReasonText": ""
+    },
+    "meta": {
+      "downloaded-from": "https://res.cloudinary.com/dz179lycp/video/upload/v1754069032/boutique_videos/upload_1754069031917.mov",
+      "name": "Tropicburger--video"
+    },
+    "created": "2025-08-27T02:30:19.352336Z",
+    "modified": "2025-08-27T02:30:38.542908Z",
+    "scheduledDeletion": null,
+    "size": 4469863,
+    "preview": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/84bd1b0afb786d91f3f74a67be68d93d/watch",
+    "allowedOrigins": [],
+    "requireSignedURLs": false,
+    "uploaded": "2025-08-27T02:30:19.352326Z",
+    "uploadExpiry": null,
+    "maxSizeBytes": null,
+    "maxDurationSeconds": null,
+    "duration": 4.9,
+    "input": {
+      "width": 1072,
+      "height": 1920
+    },
+    "playback": {
+      "hls": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/84bd1b0afb786d91f3f74a67be68d93d/manifest/video.m3u8",
+      "dash": "https://customer-kydq3j0ibf8o7lm7.cloudflarestream.com/84bd1b0afb786d91f3f74a67be68d93d/manifest/video.mpd"
+    },
+    "watermark": null,
+    "clippedFrom": null,
+    "publicDetails": {
+      "title": null,
+      "share_link": null,
+      "channel_link": null,
+      "logo": null
+    }
+  }
+]
